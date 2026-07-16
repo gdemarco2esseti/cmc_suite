@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_closing_run_list" model="ir.ui.view">
+        <field name="name">cmc.closing.run.list</field>
+        <field name="model">cmc.closing.run</field>
+        <field name="arch" type="xml">
+            <list string="Closing Runs">
+                <field name="name"/>
+                <field name="method"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'done'"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_closing_run_form" model="ir.ui.view">
+        <field name="name">cmc.closing.run.form</field>
+        <field name="model">cmc.closing.run</field>
+        <field name="arch" type="xml">
+            <form string="Closing Run">
+                <header>
+                    <button name="action_compute" type="object" string="Compute"
+                            class="oe_highlight"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="method"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+                    </group>
+                    <field name="line_ids">
+                        <list string="Results" create="false" edit="false">
+                            <field name="center_id"/>
+                            <field name="center_type"/>
+                            <field name="cost_initial" sum="Initial"/>
+                            <field name="cost_received" sum="Received"/>
+                            <field name="cost_distributed" sum="Distributed"/>
+                            <field name="cost_residual" sum="Residual"
+                                   decoration-danger="cost_residual != 0 and center_type != 'final'"/>
+                            <field name="currency_id" column_invisible="1"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_closing_run" model="ir.actions.act_window">
+        <field name="name">Closing Runs</field>
+        <field name="res_model">cmc.closing.run</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a closing run</p>
+            <p>Close auxiliary and intermediate cost centers onto final centers
+               (direct, step-down or reciprocal method).</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_cmc_closing_run"
+              name="Closing Runs"
+              parent="menu_cmc_sec_base"
+              action="action_cmc_closing_run"
+              sequence="40"/>
+</odoo>

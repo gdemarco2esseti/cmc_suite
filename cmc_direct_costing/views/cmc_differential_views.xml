@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_differential_form" model="ir.ui.view">
+        <field name="name">cmc.differential.analysis.form</field>
+        <field name="model">cmc.differential.analysis</field>
+        <field name="arch" type="xml">
+            <form string="Differential Analysis">
+                <sheet>
+                    <group>
+                        <field name="decision_type"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                        <field name="currency_id" invisible="1"/>
+                    </group>
+                    <group string="Make or Buy" invisible="decision_type != 'make_or_buy'">
+                        <field name="volume"/>
+                        <field name="make_unit_cost"/>
+                        <field name="buy_unit_cost"/>
+                        <field name="opportunity_cost"/>
+                    </group>
+                    <group string="Eliminate Line" invisible="decision_type != 'drop_line'">
+                        <field name="lost_contribution"/>
+                        <field name="avoidable_fixed"/>
+                    </group>
+                    <group string="Replace Machine" invisible="decision_type != 'replace'">
+                        <field name="new_relevant_cost"/>
+                        <field name="old_relevant_cost"/>
+                    </group>
+                    <group string="Result">
+                        <field name="differential"/>
+                        <field name="verdict"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_differential" model="ir.actions.act_window">
+        <field name="name">Differential Analysis</field>
+        <field name="res_model">cmc.differential.analysis</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_cmc_differential" name="Differential Analysis"
+              parent="menu_cmc_sec_direct"
+              action="action_cmc_differential" sequence="30"/>
+</odoo>

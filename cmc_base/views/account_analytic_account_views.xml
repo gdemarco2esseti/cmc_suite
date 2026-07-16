@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_analytic_account_form_cmc" model="ir.ui.view">
+        <field name="name">account.analytic.account.form.cmc</field>
+        <field name="model">account.analytic.account</field>
+        <field name="inherit_id" ref="analytic.view_account_analytic_account_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='main']" position="after">
+                <group name="cmc_center" string="Cost Center">
+                    <group>
+                        <field name="cmc_center_type"/>
+                    </group>
+                    <group>
+                        <field name="cmc_parent_id"
+                               domain="[('id', '!=', id)]"
+                               options="{'no_quick_create': True}"/>
+                        <field name="cmc_is_period"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_analytic_account_list_cmc" model="ir.ui.view">
+        <field name="name">account.analytic.account.list.cmc</field>
+        <field name="model">account.analytic.account</field>
+        <field name="inherit_id" ref="analytic.view_account_analytic_account_list"/>
+        <field name="arch" type="xml">
+            <field name="plan_id" position="after">
+                <field name="cmc_center_type" optional="show"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="action_cmc_cost_center" model="ir.actions.act_window">
+        <field name="name">Cost Centers</field>
+        <field name="res_model">account.analytic.account</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('cmc_center_type', '!=', False)]</field>
+        <field name="context">{'search_default_group_by_plan': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a cost center</p>
+            <p>Type analytic accounts as auxiliary, intermediate or final cost centers.</p>
+        </field>
+    </record>
+</odoo>

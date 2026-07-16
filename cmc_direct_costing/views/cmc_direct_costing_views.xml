@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_dc_list" model="ir.ui.view">
+        <field name="name">cmc.direct.costing.list</field>
+        <field name="model">cmc.direct.costing</field>
+        <field name="arch" type="xml">
+            <list string="Direct Costing">
+                <field name="name"/>
+                <field name="mode"/>
+                <field name="total_mc_gross" sum="Gross MC"/>
+                <field name="total_mc_semigross" sum="Semigross MC"/>
+                <field name="operating_result" sum="Result"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_dc_form" model="ir.ui.view">
+        <field name="name">cmc.direct.costing.form</field>
+        <field name="model">cmc.direct.costing</field>
+        <field name="arch" type="xml">
+            <form string="Direct Costing / Contribution Margin">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="mode"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+                        <group>
+                            <field name="common_fixed_cost"/>
+                            <field name="total_mc_gross"/>
+                            <field name="total_mc_semigross" invisible="mode == 'simple'"/>
+                            <field name="operating_result"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <field name="line_ids">
+                        <list editable="bottom">
+                            <field name="name"/>
+                            <field name="revenue"/>
+                            <field name="variable_cost"/>
+                            <field name="mc_gross" sum="Gross MC"/>
+                            <field name="mc_ratio"/>
+                            <field name="specific_fixed_cost"
+                                   column_invisible="parent.mode == 'simple'"/>
+                            <field name="mc_semigross" sum="Semigross"
+                                   column_invisible="parent.mode == 'simple'"/>
+                            <field name="currency_id" column_invisible="1"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_direct_costing" model="ir.actions.act_window">
+        <field name="name">Direct Costing</field>
+        <field name="res_model">cmc.direct.costing</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_cmc_direct_costing" name="Direct Costing (MC)"
+              parent="menu_cmc_sec_direct"
+              action="action_cmc_direct_costing" sequence="10"/>
+</odoo>

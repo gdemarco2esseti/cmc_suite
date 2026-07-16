@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_cost_driver_list" model="ir.ui.view">
+        <field name="name">cmc.cost.driver.list</field>
+        <field name="model">cmc.cost.driver</field>
+        <field name="arch" type="xml">
+            <list string="Cost Drivers">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="uom_id"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_cost_driver_form" model="ir.ui.view">
+        <field name="name">cmc.cost.driver.form</field>
+        <field name="model">cmc.cost.driver</field>
+        <field name="arch" type="xml">
+            <form string="Cost Driver">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="e.g. Machine Hours"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="uom_id"/>
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    <field name="note" placeholder="Notes..."/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_cost_driver" model="ir.actions.act_window">
+        <field name="name">Cost Drivers</field>
+        <field name="res_model">cmc.cost.driver</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

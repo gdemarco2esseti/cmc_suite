@@ -1,0 +1,85 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* cmc_mrp
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-16 15:29+0000\n"
+"PO-Revision-Date: 2026-07-16 15:29+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: cmc_mrp
+#: model:ir.model,name:cmc_mrp.model_account_analytic_line
+msgid "Analytic Line"
+msgstr "Riga analitica"
+
+#. module: cmc_mrp
+#: model:ir.model.fields,field_description:cmc_mrp.field_mrp_production__cmc_center_id
+msgid "CMC Cost Center"
+msgstr "Centro di costo CMC"
+
+#. module: cmc_mrp
+#: model:ir.model.fields,field_description:cmc_mrp.field_stock_move__cmc_mrp_analytic_line_ids
+msgid "CMC Material Cost Lines"
+msgstr "Righe di costo materiali CMC"
+
+#. module: cmc_mrp
+#. odoo-python
+#: code:addons/cmc_mrp/models/mrp_production.py:0
+msgid ""
+"CMC cost center '%s' must belong to the root analytic plan to absorb "
+"manufacturing cost."
+msgstr ""
+"Il centro di costo CMC '%s' deve appartenere al piano analitico radice per "
+"assorbire il costo di produzione."
+
+#. module: cmc_mrp
+#: model:ir.model.fields,help:cmc_mrp.field_mrp_production__cmc_center_id
+msgid ""
+"Cost center that absorbs the direct material (MP) cost of this manufacturing"
+" order in management control. Must belong to the root analytic plan."
+msgstr ""
+"Centro di costo che assorbe il costo dei materiali diretti (MP) di questo "
+"ordine di produzione nel controllo di gestione. Deve appartenere al piano "
+"analitico radice."
+
+#. module: cmc_mrp
+#: model:ir.model.fields,field_description:cmc_mrp.field_account_analytic_line__display_name
+#: model:ir.model.fields,field_description:cmc_mrp.field_mrp_production__display_name
+#: model:ir.model.fields,field_description:cmc_mrp.field_stock_move__display_name
+msgid "Display Name"
+msgstr "Nome visualizzato"
+
+#. module: cmc_mrp
+#: model:ir.model.fields,field_description:cmc_mrp.field_account_analytic_line__id
+#: model:ir.model.fields,field_description:cmc_mrp.field_mrp_production__id
+#: model:ir.model.fields,field_description:cmc_mrp.field_stock_move__id
+msgid "ID"
+msgstr ""
+
+#. module: cmc_mrp
+#: model:ir.model.fields,help:cmc_mrp.field_stock_move__cmc_mrp_analytic_line_ids
+msgid ""
+"Management-control material cost lines posted from this consumption move; "
+"used to avoid double imputation."
+msgstr ""
+"Righe di costo materiali di controllo di gestione registrate da questo "
+"movimento di consumo; usate per evitare la doppia imputazione."
+
+#. module: cmc_mrp
+#: model:ir.model,name:cmc_mrp.model_mrp_production
+msgid "Manufacturing Order"
+msgstr "Ordine di produzione"
+
+#. module: cmc_mrp
+#: model:ir.model,name:cmc_mrp.model_stock_move
+msgid "Stock Move"
+msgstr "Movimento di magazzino"

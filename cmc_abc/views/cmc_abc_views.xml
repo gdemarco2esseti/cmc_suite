@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Activity master -->
+    <record id="view_cmc_abc_activity_list" model="ir.ui.view">
+        <field name="name">cmc.abc.activity.list</field>
+        <field name="model">cmc.abc.activity</field>
+        <field name="arch" type="xml">
+            <list string="Activities">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="driver_id"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_abc_activity_form" model="ir.ui.view">
+        <field name="name">cmc.abc.activity.form</field>
+        <field name="model">cmc.abc.activity</field>
+        <field name="arch" type="xml">
+            <form string="Activity">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <field name="code"/>
+                        <field name="driver_id"/>
+                        <field name="active"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_abc_activity" model="ir.actions.act_window">
+        <field name="name">ABC Activities</field>
+        <field name="res_model">cmc.abc.activity</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Run -->
+    <record id="view_cmc_abc_run_form" model="ir.ui.view">
+        <field name="name">cmc.abc.run.form</field>
+        <field name="model">cmc.abc.run</field>
+        <field name="arch" type="xml">
+            <form string="ABC Run">
+                <header>
+                    <button name="action_compute" string="Compute" type="object"
+                            class="oe_highlight"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Activity Drivers" name="lines">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="activity_id"/>
+                                    <field name="product_id"/>
+                                    <field name="driver_id"/>
+                                    <field name="driver_qty"/>
+                                    <field name="company_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Results" name="results">
+                            <field name="result_ids">
+                                <list create="false" edit="false">
+                                    <field name="product_id"/>
+                                    <field name="amount"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cmc_abc_run_list" model="ir.ui.view">
+        <field name="name">cmc.abc.run.list</field>
+        <field name="model">cmc.abc.run</field>
+        <field name="arch" type="xml">
+            <list string="ABC Runs">
+                <field name="name"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="state" widget="badge"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cmc_abc_run" model="ir.actions.act_window">
+        <field name="name">Activity-Based Costing</field>
+        <field name="res_model">cmc.abc.run</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Menus -->
+    <menuitem id="menu_cmc_sec_abc"
+              name="Activity-Based Costing"
+              parent="cmc_base.menu_cmc_operations"
+              sequence="50"/>
+    <menuitem id="menu_cmc_abc_run" name="Calcolo ABC"
+              parent="menu_cmc_sec_abc"
+              action="action_cmc_abc_run" sequence="10"/>
+    <menuitem id="menu_cmc_abc_activity" name="ABC Activities"
+              parent="cmc_base.menu_cmc_cfg_master"
+              action="action_cmc_abc_activity" sequence="40"/>
+</odoo>

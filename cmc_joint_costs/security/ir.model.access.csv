@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_cmc_joint_run_user,cmc.joint.run.user,model_cmc_joint_run,cmc_base.group_cmc_user,1,1,1,0
+access_cmc_joint_run_manager,cmc.joint.run.manager,model_cmc_joint_run,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_joint_line_user,cmc.joint.line.user,model_cmc_joint_line,cmc_base.group_cmc_user,1,1,1,1
+access_cmc_joint_line_manager,cmc.joint.line.manager,model_cmc_joint_line,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_joint_result_user,cmc.joint.result.user,model_cmc_joint_result,cmc_base.group_cmc_user,1,0,1,1
+access_cmc_joint_result_manager,cmc.joint.result.manager,model_cmc_joint_result,cmc_base.group_cmc_manager,1,1,1,1

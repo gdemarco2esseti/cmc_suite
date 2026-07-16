@@ -1,0 +1,1270 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* cmc_base
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-16 15:29+0000\n"
+"PO-Revision-Date: 2026-07-16 15:29+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_closing.py:0
+msgid " (the direct method ignores services to other auxiliary centers)"
+msgstr " (il metodo diretto ignora i servizi verso altri centri ausiliari)"
+
+#. module: cmc_base
+#: model:ir.actions.report,print_report_name:cmc_base.action_report_cmc_consuntivo
+msgid "'Cost Closing - %s' % object.name"
+msgstr ""
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.report_cmc_consuntivo
+msgid "<strong>Method:</strong>"
+msgstr ""
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/account_analytic_account.py:0
+msgid "A cost center cannot be its own ancestor (cycle on %(name)s)."
+msgstr ""
+"Un centro di costo non può essere antenato di se stesso (ciclo su %(name)s)."
+
+#. module: cmc_base
+#: model:ir.model.constraint,message:cmc_base.constraint_cmc_center_service_no_self_service
+msgid "A cost center cannot provide a service to itself."
+msgstr "Un centro di costo non può fornire un servizio a se stesso."
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_center_service.py:0
+msgid ""
+"A period cost center cannot receive a service: the reallocated cost would be"
+" lost (it is outside the closing)."
+msgstr ""
+"Un centro di costo di periodo non può ricevere un servizio: il costo "
+"ribaltato andrebbe perso (è fuori dalla chiusura)."
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/account_analytic_account.py:0
+msgid ""
+"A period cost center must not also have a cost center type (it would be "
+"double-counted in the ribaltamento)."
+msgstr ""
+"Un centro di costo di periodo non deve avere anche un tipo di centro di "
+"costo (verrebbe conteggiato due volte nel ribaltamento)."
+
+#. module: cmc_base
+#: model:ir.model.constraint,message:cmc_base.constraint_cmc_center_service_provider_receiver_uniq
+msgid "A service line for this provider/receiver/driver already exists."
+msgstr ""
+"Esiste già una riga di servizio per questo fornitore/ricevente/driver."
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_driver__active
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_element__active
+msgid "Active"
+msgstr "Attivo"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_capacity.py:0
+msgid ""
+"Actual capacity exceeds practical capacity for %(center)s. Per the method, "
+"review the practical-capacity assumption."
+msgstr ""
+"La capacità effettiva supera quella pratica per %(center)s. Secondo il "
+"metodo, rivedi l'ipotesi di capacità pratica."
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation_line__allocated_amount
+msgid "Allocated Amount"
+msgstr "Importo ripartito"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation_line__allocation_id
+msgid "Allocation"
+msgstr "Ripartizione"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_allocation.py:0
+msgid ""
+"Allocation %(name)s has an empty base (all driver quantities are zero): the "
+"cost cannot be spread."
+msgstr ""
+"La ripartizione %(name)s ha base vuota (tutte le quantità di driver a zero):"
+" il costo non può essere distribuito."
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_allocation_form
+msgid "Allocation Lines"
+msgstr "Righe di ripartizione"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_closing.py:0
+msgid "Allocation rounding failed to converge."
+msgstr "L'arrotondamento della ripartizione non è riuscito a convergere."
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_analysis_line__amount
+msgid "Amount"
+msgstr "Importo"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation__amount
+msgid "Amount to Allocate"
+msgstr "Importo da ripartire"
+
+#. module: cmc_base
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_cfg_master
+msgid "Anagrafiche"
+msgstr ""
+
+#. module: cmc_base
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_sec_analysis
+msgid "Analisi & controllo"
+msgstr ""
+
+#. module: cmc_base
+#: model:ir.model,name:cmc_base.model_account_analytic_account
+msgid "Analytic Account"
+msgstr "Conto analitico"
+
+#. module: cmc_base
+#: model:ir.model,name:cmc_base.model_account_analytic_line
+msgid "Analytic Line"
+msgstr "Riga analitica"
+
+#. module: cmc_base
+#: model_terms:ir.actions.act_window,help:cmc_base.action_cmc_capacity
+msgid "Analyze cost center capacity"
+msgstr "Analizza la capacità del centro di costo"
+
+#. module: cmc_base
+#: model:ir.model.fields.selection,name:cmc_base.selection__account_analytic_account__cmc_center_type__auxiliary
+msgid "Auxiliary"
+msgstr "Ausiliario"
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/cockpit/cmc_cockpit.xml:0
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_sec_base
+msgid "Base di costo"
+msgstr ""
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/cockpit/cmc_cockpit.xml:0
+msgid ""
+"Base di costo pronta. Scegli e applica una metodologia di costing qui sotto."
+msgstr ""
+
+#. module: cmc_base
+#: model:ir.model.fields,help:cmc_base.field_account_analytic_line__cmc_behavior
+msgid ""
+"Behavior of the cost with respect to the cost driver, within the relevant "
+"range."
+msgstr ""
+"Comportamento del costo rispetto al driver di costo, nell'intervallo di "
+"rilevanza."
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_capacity_form
+msgid "Capacity (driver units)"
+msgstr "Capacità (unità di driver)"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_capacity_analysis__capacity_actual
+msgid "Capacity Actual"
+msgstr "Capacità effettiva"
+
+#. module: cmc_base
+#: model:ir.actions.act_window,name:cmc_base.action_cmc_capacity
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_capacity
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_capacity_form
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_capacity_list
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_capacity_pivot
+msgid "Capacity Analysis"
+msgstr "Analisi di capacità"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_capacity_analysis__capacity_practical
+msgid "Capacity Practical"
+msgstr "Capacità pratica"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_capacity_analysis__capacity_theoretical
+msgid "Capacity Theoretical"
+msgstr "Capacità teorica"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_capacity_analysis__driver_id
+msgid "Capacity Unit"
+msgstr "Unità di capacità"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_capacity.py:0
+msgid "Capacity exceeded"
+msgstr "Capacità superata"
+
+#. module: cmc_base
+#: model:ir.model.constraint,message:cmc_base.constraint_cmc_capacity_analysis_capacity_non_negative
+msgid "Capacity values cannot be negative."
+msgstr "I valori di capacità non possono essere negativi."
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/cockpit/cmc_cockpit.xml:0
+msgid "Caricamento…"
+msgstr ""
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_line__center_id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_analysis_line__center_id
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_cost_analysis_search
+msgid "Center"
+msgstr "Centro"
+
+#. module: cmc_base
+#: model:ir.model.fields,help:cmc_base.field_cmc_allocation__source_account_id
+msgid "Center whose common cost is spread across the target centers."
+msgstr ""
+"Centro il cui costo comune viene ripartito sui centri di destinazione."
+
+#. module: cmc_base
+#: model_terms:ir.actions.act_window,help:cmc_base.action_cmc_closing_run
+msgid ""
+"Close auxiliary and intermediate cost centers onto final centers\n"
+"               (direct, step-down or reciprocal method)."
+msgstr ""
+"Ribalta i centri di costo ausiliari e intermedi sui centri finali\n"
+"               (metodo diretto, a cascata o reciproco)."
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_closing.py:0
+msgid "Closing"
+msgstr "Chiusura"
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_closing_run_form
+msgid "Closing Run"
+msgstr "Elaborazione di chiusura"
+
+#. module: cmc_base
+#: model:ir.actions.act_window,name:cmc_base.action_cmc_closing_run
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_closing_run
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_closing_run_list
+msgid "Closing Runs"
+msgstr "Chiusure"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_driver__code
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_element__code
+msgid "Code"
+msgstr "Codice"
+
+#. module: cmc_base
+#: model:ir.model.fields,help:cmc_base.field_account_analytic_account__cmc_is_period
+msgid ""
+"Commercial/administrative period costs. Excluded from the closing "
+"(ribaltamento) pool; consumed only at the 'complessivo' cost level. A period"
+" center should NOT have a cost center type."
+msgstr ""
+"Costi di periodo commerciali/amministrativi. Esclusi dal pool di chiusura "
+"(ribaltamento); consumati solo al livello di costo 'complessivo'. Un centro "
+"di periodo NON deve avere un tipo di centro di costo."
+
+#. module: cmc_base
+#: model:ir.model.fields.selection,name:cmc_base.selection__account_analytic_line__cmc_cost_traceability__common
+msgid "Common"
+msgstr "Comune"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation__source_account_id
+msgid "Common Cost Center"
+msgstr "Centro di costo comune"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation__company_id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation_line__company_id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_capacity_analysis__company_id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_center_service__company_id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_line__company_id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_run__company_id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_analysis_line__company_id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_driver__company_id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_element__company_id
+msgid "Company"
+msgstr "Azienda"
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/cockpit/cmc_cockpit.xml:0
+msgid "Completa prima la base di costo"
+msgstr ""
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_closing_run_form
+msgid "Compute"
+msgstr "Calcola"
+
+#. module: cmc_base
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_closing_run__state__done
+msgid "Computed"
+msgstr "Calcolato"
+
+#. module: cmc_base
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_config
+msgid "Configuration"
+msgstr "Configurazione"
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/cockpit/cmc_cockpit.xml:0
+msgid "Continua"
+msgstr ""
+
+#. module: cmc_base
+#: model:res.groups,name:cmc_base.group_cmc_manager
+msgid "Controlling Manager"
+msgstr "Manager controllo di gestione"
+
+#. module: cmc_base
+#: model:res.groups,name:cmc_base.group_cmc_user
+msgid "Controlling User"
+msgstr "Utente controllo di gestione"
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/cockpit/cmc_cockpit.xml:0
+msgid "Controllo di Gestione"
+msgstr ""
+
+#. module: cmc_base
+#: model:ir.model.fields,help:cmc_base.field_account_analytic_line__cmc_center_id
+msgid ""
+"Convenience field: routes the cost to a cost center regardless of the "
+"analytic plan it lives on."
+msgstr ""
+"Campo di comodità: instrada il costo a un centro di costo indipendentemente "
+"dal piano analitico su cui si trova."
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_allocation_form
+msgid "Cost Allocation"
+msgstr "Ripartizione di costo"
+
+#. module: cmc_base
+#: model:ir.model,name:cmc_base.model_cmc_allocation
+msgid "Cost Allocation (base di riparto)"
+msgstr "Ripartizione di costo (base di riparto)"
+
+#. module: cmc_base
+#: model:ir.model,name:cmc_base.model_cmc_allocation_line
+msgid "Cost Allocation Line"
+msgstr "Riga di ripartizione"
+
+#. module: cmc_base
+#: model:ir.actions.act_window,name:cmc_base.action_cmc_allocation
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_allocation
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_allocation_list
+msgid "Cost Allocations"
+msgstr "Ripartizioni di costo"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_run__cost_analysis_ids
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_cost_analysis_list
+msgid "Cost Analysis"
+msgstr "Analisi dei costi"
+
+#. module: cmc_base
+#: model:ir.actions.act_window,name:cmc_base.action_cmc_cost_analysis
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_cost_analysis
+msgid "Cost Analysis Matrix"
+msgstr "Quadro analisi costi"
+
+#. module: cmc_base
+#: model:ir.model,name:cmc_base.model_cmc_cost_analysis_line
+msgid "Cost Analysis Matrix Line (quadro analisi costi)"
+msgstr "Riga quadro analisi costi"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_account_analytic_line__cmc_behavior
+msgid "Cost Behavior"
+msgstr "Comportamento del costo"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_account_analytic_line__cmc_center_id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_capacity_analysis__center_id
+#: model_terms:ir.ui.view,arch_db:cmc_base.report_cmc_consuntivo
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_account_analytic_account_form_cmc
+msgid "Cost Center"
+msgstr "Centro di costo"
+
+#. module: cmc_base
+#: model:ir.model,name:cmc_base.model_cmc_closing_line
+msgid "Cost Center Closing Result Line"
+msgstr "Riga risultato chiusura centri"
+
+#. module: cmc_base
+#: model:ir.model,name:cmc_base.model_cmc_closing_run
+msgid "Cost Center Closing Run (ribaltamento)"
+msgstr "Chiusura centri di costo (ribaltamento)"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_account_analytic_account__cmc_center_type
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_line__center_type
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_analysis_line__center_type
+msgid "Cost Center Type"
+msgstr "Tipo di centro di costo"
+
+#. module: cmc_base
+#: model:ir.actions.act_window,name:cmc_base.action_cmc_cost_center
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_cost_center
+msgid "Cost Centers"
+msgstr "Centri di costo"
+
+#. module: cmc_base
+#: model:ir.actions.report,name:cmc_base.action_report_cmc_consuntivo
+msgid "Cost Closing Report"
+msgstr "Report chiusura costi"
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.report_cmc_consuntivo
+msgid "Cost Closing —"
+msgstr "Chiusura costi —"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_line__cost_distributed
+msgid "Cost Distributed"
+msgstr "Costo distribuito"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_account_analytic_line__cmc_driver_id
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_cost_driver_form
+msgid "Cost Driver"
+msgstr "Driver di costo"
+
+#. module: cmc_base
+#: model:ir.model,name:cmc_base.model_cmc_cost_driver
+msgid "Cost Driver (allocation base)"
+msgstr "Driver di costo (base di riparto)"
+
+#. module: cmc_base
+#: model:ir.actions.act_window,name:cmc_base.action_cmc_cost_driver
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_cost_driver
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_cost_driver_list
+msgid "Cost Drivers"
+msgstr "Driver di costo"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_account_analytic_line__cmc_cost_element_id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_analysis_line__element_id
+msgid "Cost Element"
+msgstr "Elemento di costo"
+
+#. module: cmc_base
+#: model:ir.model,name:cmc_base.model_cmc_cost_element
+msgid "Cost Element (nature)"
+msgstr "Elemento di costo (natura)"
+
+#. module: cmc_base
+#: model:ir.actions.act_window,name:cmc_base.action_cmc_cost_element
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_cost_element
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_cost_element_list
+msgid "Cost Elements"
+msgstr "Elementi di costo"
+
+#. module: cmc_base
+#: model:ir.actions.act_window,name:cmc_base.action_cmc_analytic_lines
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_analytic_lines
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_cost_entry_list
+msgid "Cost Entries"
+msgstr "Registrazioni di costo"
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_cost_entry_form
+msgid "Cost Entry"
+msgstr "Registrazione di costo"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_line__cost_initial
+msgid "Cost Initial"
+msgstr "Costo iniziale"
+
+#. module: cmc_base
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_root
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_account_analytic_line_form_cmc
+msgid "Cost Management"
+msgstr "Controllo di gestione"
+
+#. module: cmc_base
+#: model:ir.module.category,name:cmc_base.module_category_cmc
+#: model:res.groups.privilege,name:cmc_base.res_groups_privilege_cmc
+msgid "Cost Management & Controlling"
+msgstr "Controllo di gestione"
+
+#. module: cmc_base
+#: model:ir.model,name:cmc_base.model_cmc_cockpit
+msgid "Cost Management Cockpit"
+msgstr "Cruscotto controllo di gestione"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_account_analytic_line__cmc_cost_object_ref
+msgid "Cost Object"
+msgstr "Oggetto di costo"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_line__cost_received
+msgid "Cost Received"
+msgstr "Costo ricevuto"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_line__cost_residual
+msgid "Cost Residual"
+msgstr "Costo residuo"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_closing.py:0
+msgid "Cost analysis matrix not conserved: pre %(pre)s vs post %(post)s."
+msgstr "Quadro analisi costi non conservato: pre %(pre)s vs post %(post)s."
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_closing.py:0
+msgid ""
+"Cost center %(name)s cannot be closed: it has cost but renders no service."
+msgstr ""
+"Il centro di costo %(name)s non può essere chiuso: ha costi ma non rende "
+"alcun servizio."
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_closing.py:0
+msgid ""
+"Cost center %(name)s cannot be closed: no allocation base toward final "
+"centers.%(hint)s"
+msgstr ""
+"Il centro di costo %(name)s non può essere chiuso: nessuna base di riparto "
+"verso i centri finali.%(hint)s"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/account_analytic_line.py:0
+msgid ""
+"Cost line %(name)s has no behavior classification (fixed/variable). Classify"
+" it before using it in cost management calculations."
+msgstr ""
+"La riga di costo %(name)s non ha classificazione del comportamento "
+"(fisso/variabile). Classificala prima di usarla nei calcoli di controllo di "
+"gestione."
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_capacity_form
+msgid "Cost of Capacity"
+msgstr "Costo della capacità"
+
+#. module: cmc_base
+#: model:ir.actions.act_window,name:cmc_base.action_dash_cost_center
+#: model:ir.ui.menu,name:cmc_base.menu_dash_cost_center
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_closing_line_graph
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_closing_line_pivot
+msgid "Cost per Center"
+msgstr "Costo per centro"
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/cockpit/cmc_cockpit.xml:0
+msgid "Costi per natura (elemento)"
+msgstr ""
+
+#. module: cmc_base
+#: model_terms:ir.actions.act_window,help:cmc_base.action_cmc_analytic_lines
+msgid ""
+"Costs on cost centers, classified by behavior, element and\n"
+"               direct/indirect. They feed the closing and the product cost."
+msgstr ""
+"Costi sui centri di costo, classificati per comportamento, elemento e\n"
+"               diretto/indiretto. Alimentano la chiusura e il costo di prodotto."
+
+#. module: cmc_base
+#: model_terms:ir.actions.act_window,help:cmc_base.action_cmc_closing_run
+msgid "Create a closing run"
+msgstr "Crea un'elaborazione di chiusura"
+
+#. module: cmc_base
+#: model_terms:ir.actions.act_window,help:cmc_base.action_cmc_allocation
+msgid "Create a cost allocation"
+msgstr "Crea una ripartizione di costo"
+
+#. module: cmc_base
+#: model_terms:ir.actions.act_window,help:cmc_base.action_cmc_cost_center
+msgid "Create a cost center"
+msgstr "Crea un centro di costo"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation__create_uid
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation_line__create_uid
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_capacity_analysis__create_uid
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_center_service__create_uid
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_line__create_uid
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_run__create_uid
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cockpit__create_uid
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_analysis_line__create_uid
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_driver__create_uid
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_element__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation__create_date
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation_line__create_date
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_capacity_analysis__create_date
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_center_service__create_date
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_line__create_date
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_run__create_date
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cockpit__create_date
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_analysis_line__create_date
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_driver__create_date
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_element__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: cmc_base
+#: model:ir.actions.client,name:cmc_base.action_cmc_cockpit_dashboard
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_cockpit
+msgid "Cruscotto"
+msgstr ""
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation__currency_id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation_line__currency_id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_capacity_analysis__currency_id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_line__currency_id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_run__currency_id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_analysis_line__currency_id
+msgid "Currency"
+msgstr "Valuta"
+
+#. module: cmc_base
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_dashboard
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_capacity_analysis__date_from
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_run__date_from
+msgid "Date From"
+msgstr "Data inizio"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_capacity_analysis__date_to
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_run__date_to
+msgid "Date To"
+msgstr "Data fine"
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_cost_entry_form
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_cost_entry_list
+msgid "Description"
+msgstr "Descrizione"
+
+#. module: cmc_base
+#: model:ir.model.fields.selection,name:cmc_base.selection__account_analytic_line__cmc_directness__direct
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_closing_run__method__direct
+msgid "Direct"
+msgstr "Diretto"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_account_analytic_account__display_name
+#: model:ir.model.fields,field_description:cmc_base.field_account_analytic_line__display_name
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation__display_name
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation_line__display_name
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_capacity_analysis__display_name
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_center_service__display_name
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_line__display_name
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_run__display_name
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cockpit__display_name
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_analysis_line__display_name
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_driver__display_name
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_element__display_name
+msgid "Display Name"
+msgstr "Nome visualizzato"
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/cockpit/cmc_cockpit.xml:0
+msgid "Disponibile"
+msgstr ""
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.report_cmc_consuntivo
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_closing_run_form
+msgid "Distributed"
+msgstr "Distribuito"
+
+#. module: cmc_base
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_closing_run__state__draft
+msgid "Draft"
+msgstr "Bozza"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation__driver_id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_center_service__driver_id
+msgid "Driver"
+msgstr "Driver"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation_line__quantity
+msgid "Driver Quantity"
+msgstr "Quantità di driver"
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_cost_analysis_search
+msgid "Element"
+msgstr "Elemento"
+
+#. module: cmc_base
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_cost_element__cmc_kind__figurative
+msgid "Figurative (co.an.)"
+msgstr "Figurativo (co.an.)"
+
+#. module: cmc_base
+#: model:ir.model.fields,help:cmc_base.field_cmc_cost_element__cmc_kind
+msgid ""
+"Figurative elements never reach co.ge.; they enter only the economico-"
+"tecnico cost level."
+msgstr ""
+"Gli elementi figurativi non arrivano mai alla co.ge.; entrano solo nel "
+"livello di costo economico-tecnico."
+
+#. module: cmc_base
+#: model:ir.model.fields.selection,name:cmc_base.selection__account_analytic_account__cmc_center_type__final
+msgid "Final / Common"
+msgstr "Finale / Comune"
+
+#. module: cmc_base
+#: model:ir.model.fields.selection,name:cmc_base.selection__account_analytic_line__cmc_behavior__fixed
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_capacity_list
+msgid "Fixed"
+msgstr "Fisso"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_capacity_analysis__fixed_cost
+msgid "Fixed Cost"
+msgstr "Costo fisso"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_capacity_analysis__fixed_cost_coefficient
+msgid "Fixed Cost per Practical Unit"
+msgstr "Costo fisso per unità pratica"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_account_analytic_account__id
+#: model:ir.model.fields,field_description:cmc_base.field_account_analytic_line__id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation__id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation_line__id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_capacity_analysis__id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_center_service__id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_line__id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_run__id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cockpit__id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_analysis_line__id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_driver__id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_element__id
+msgid "ID"
+msgstr ""
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_account_analytic_line__cmc_directness
+msgid "Imputation"
+msgstr "Imputazione"
+
+#. module: cmc_base
+#: model_terms:ir.actions.act_window,help:cmc_base.action_cmc_capacity
+msgid ""
+"Impute fixed costs on practical capacity and isolate the cost of\n"
+"               unused capacity per center and period."
+msgstr ""
+"Imputa i costi fissi sulla capacità pratica e isola il costo della\n"
+"               capacità inutilizzata per centro e periodo."
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_capacity_list
+msgid "Imputed"
+msgstr "Imputato"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_capacity_analysis__imputed_fixed_cost
+msgid "Imputed Fixed Cost"
+msgstr "Costo fisso imputato"
+
+#. module: cmc_base
+#: model:ir.model.fields.selection,name:cmc_base.selection__account_analytic_line__cmc_directness__indirect
+msgid "Indirect"
+msgstr "Indiretto"
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.report_cmc_consuntivo
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_closing_run_form
+msgid "Initial"
+msgstr "Iniziale"
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_center_service_form
+msgid "Inter-Center Service"
+msgstr "Servizio inter-centro"
+
+#. module: cmc_base
+#: model:ir.model,name:cmc_base.model_cmc_center_service
+msgid "Inter-Center Service (provider -> receiver)"
+msgstr "Servizio inter-centro (fornitore -> ricevente)"
+
+#. module: cmc_base
+#: model:ir.actions.act_window,name:cmc_base.action_cmc_center_service
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_center_service
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_center_service_list
+msgid "Inter-Center Services"
+msgstr "Servizi inter-centro"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_element__cmc_kind
+msgid "Kind"
+msgstr "Tipo"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation__write_uid
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation_line__write_uid
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_capacity_analysis__write_uid
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_center_service__write_uid
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_line__write_uid
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_run__write_uid
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cockpit__write_uid
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_analysis_line__write_uid
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_driver__write_uid
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_element__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation__write_date
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation_line__write_date
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_capacity_analysis__write_date
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_center_service__write_date
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_line__write_date
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_run__write_date
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cockpit__write_date
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_analysis_line__write_date
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_driver__write_date
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_element__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation__line_ids
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_run__line_ids
+msgid "Line"
+msgstr "Riga"
+
+#. module: cmc_base
+#: model:cmc.cost.element,name:cmc_base.cmc_element_mod
+msgid "Manodopera diretta (MOD)"
+msgstr ""
+
+#. module: cmc_base
+#: model:cmc.cost.element,name:cmc_base.cmc_element_mp
+msgid "Materie prime (MP)"
+msgstr ""
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_run__method
+msgid "Method"
+msgstr "Metodo"
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/cockpit/cmc_cockpit.xml:0
+msgid "Metodologie di costing"
+msgstr ""
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation__name
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_capacity_analysis__name
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_run__name
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_driver__name
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_element__name
+msgid "Name"
+msgstr "Nome"
+
+#. module: cmc_base
+#: model:ir.model.fields,help:cmc_base.field_account_analytic_line__cmc_cost_element_id
+msgid "Nature of the cost (materials, direct labor, depreciation...)."
+msgstr "Natura del costo (materie, manodopera diretta, ammortamenti...)."
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/cockpit/cmc_cockpit.xml:0
+msgid ""
+"Nessun costo classificato per elemento. Registra i costi per vederli qui."
+msgstr ""
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_driver__note
+msgid "Note"
+msgstr "Nota"
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_cost_driver_form
+msgid "Notes..."
+msgstr "Note..."
+
+#. module: cmc_base
+#: model:ir.model.constraint,message:cmc_base.constraint_cmc_capacity_analysis_center_period_uniq
+msgid "One capacity analysis per cost center and period."
+msgstr "Un'analisi di capacità per centro di costo e periodo."
+
+#. module: cmc_base
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_operations
+msgid "Operations"
+msgstr "Operazioni"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_account_analytic_account__cmc_parent_id
+msgid "Parent Cost Center"
+msgstr "Centro di costo padre"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_account_analytic_account__cmc_is_period
+msgid "Period Cost Center"
+msgstr "Centro di costo di periodo"
+
+#. module: cmc_base
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_cost_analysis_line__state__post
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_cost_analysis_search
+msgid "Post Ribaltamento"
+msgstr "Post ribaltamento"
+
+#. module: cmc_base
+#: model:ir.model.constraint,message:cmc_base.constraint_cmc_capacity_analysis_practical_le_theoretical
+msgid "Practical capacity cannot exceed theoretical capacity."
+msgstr "La capacità pratica non può superare quella teorica."
+
+#. module: cmc_base
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_cost_analysis_line__state__pre
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_cost_analysis_search
+msgid "Pre Ribaltamento"
+msgstr "Pre ribaltamento"
+
+#. module: cmc_base
+#: model:ir.model.fields.selection,name:cmc_base.selection__account_analytic_account__cmc_center_type__intermediate
+msgid "Productive - Intermediate"
+msgstr "Produttivo - Intermedio"
+
+#. module: cmc_base
+#: model:ir.model,name:cmc_base.model_cmc_capacity_analysis
+msgid "Productive Capacity & Cost of Unused Capacity"
+msgstr "Capacità produttiva e costo della capacità inutilizzata"
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/cockpit/cmc_cockpit.xml:0
+msgid "Prossimo passo"
+msgstr ""
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_center_service__provider_id
+msgid "Provider Center"
+msgstr "Centro fornitore"
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_cost_analysis_pivot
+msgid "Quadro Analisi Costi"
+msgstr "Quadro analisi costi"
+
+#. module: cmc_base
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_cost_element__cmc_kind__real
+msgid "Real (contabile)"
+msgstr "Reale (contabile)"
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.report_cmc_consuntivo
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_closing_run_form
+msgid "Received"
+msgstr "Ricevuto"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_center_service__receiver_id
+msgid "Receiver Center"
+msgstr "Centro ricevente"
+
+#. module: cmc_base
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_closing_run__method__reciprocal
+msgid "Reciprocal"
+msgstr "Reciproco"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_closing.py:0
+msgid ""
+"Reciprocal closing has no path to any final center: the auxiliary centers "
+"only serve each other."
+msgstr ""
+"La chiusura reciproca non ha percorso verso alcun centro finale: i centri "
+"ausiliari servono solo se stessi."
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_capacity_form
+msgid "Recompute"
+msgstr "Ricalcola"
+
+#. module: cmc_base
+#: model_terms:ir.actions.act_window,help:cmc_base.action_cmc_analytic_lines
+msgid "Record a cost entry"
+msgstr "Registra un costo"
+
+#. module: cmc_base
+#: model_terms:ir.actions.act_window,help:cmc_base.action_cmc_center_service
+msgid "Record an inter-center service"
+msgstr "Registra un servizio inter-centro"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_account_analytic_line__cmc_relevance_max
+msgid "Relevant Range Max"
+msgstr "Intervallo di rilevanza max"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_account_analytic_line__cmc_relevance_min
+msgid "Relevant Range Min"
+msgstr "Intervallo di rilevanza min"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/account_analytic_line.py:0
+msgid "Relevant range max must be greater than or equal to min."
+msgstr ""
+"Il max dell'intervallo di rilevanza deve essere maggiore o uguale al min."
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.report_cmc_consuntivo
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_closing_run_form
+msgid "Residual"
+msgstr "Residuo"
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_closing_run_form
+msgid "Results"
+msgstr "Risultati"
+
+#. module: cmc_base
+#: model:cmc.cost.element,name:cmc_base.cost_element_ribaltamento
+msgid "Ribaltamento centri ausiliari"
+msgstr "Ribaltamento centri ausiliari"
+
+#. module: cmc_base
+#: model:ir.model.fields,help:cmc_base.field_account_analytic_account__cmc_center_type
+#: model:ir.model.fields,help:cmc_base.field_cmc_closing_line__center_type
+#: model:ir.model.fields,help:cmc_base.field_cmc_cost_analysis_line__center_type
+msgid ""
+"Role of the cost center in the allocation flow: auxiliary and intermediate "
+"centers are closed onto final centers."
+msgstr ""
+"Ruolo del centro di costo nel flusso di ripartizione: i centri ausiliari e "
+"intermedi sono ribaltati sui centri finali."
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_line__run_id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_analysis_line__run_id
+msgid "Run"
+msgstr "Elaborazione"
+
+#. module: cmc_base
+#: model:ir.model.fields.selection,name:cmc_base.selection__account_analytic_line__cmc_behavior__semi_variable
+msgid "Semi-variable"
+msgstr "Semi-variabile"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_element__sequence
+msgid "Sequence"
+msgstr "Sequenza"
+
+#. module: cmc_base
+#: model:ir.model.fields.selection,name:cmc_base.selection__account_analytic_line__cmc_cost_traceability__special
+msgid "Special"
+msgstr "Speciale"
+
+#. module: cmc_base
+#: model:ir.model.fields,help:cmc_base.field_account_analytic_line__cmc_cost_traceability
+msgid ""
+"Special vs common is RELATIVE to the cost object under evaluation, passed "
+"via the 'cmc_cost_object' context key."
+msgstr ""
+"Speciale vs comune è RELATIVO all'oggetto di costo in valutazione, passato "
+"tramite la chiave di contesto 'cmc_cost_object'."
+
+#. module: cmc_base
+#: model_terms:ir.actions.act_window,help:cmc_base.action_cmc_allocation
+msgid ""
+"Spread a common cost across cost centers by a driver-based allocation base."
+msgstr ""
+"Ripartisci un costo comune sui centri di costo con una base di riparto "
+"basata su driver."
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_run__state
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_analysis_line__state
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_cost_analysis_search
+msgid "State"
+msgstr "Stato"
+
+#. module: cmc_base
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_closing_run__method__step_down
+msgid "Step-down"
+msgstr "A cascata (step-down)"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_account_analytic_account__cmc_child_ids
+msgid "Sub Cost Centers"
+msgstr "Sotto-centri di costo"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation_line__target_account_id
+msgid "Target Account"
+msgstr "Conto destinazione"
+
+#. module: cmc_base
+#: model:ir.model.constraint,message:cmc_base.constraint_cmc_cost_driver_code_company_uniq
+msgid "The cost driver code must be unique per company."
+msgstr "Il codice del driver di costo deve essere univoco per azienda."
+
+#. module: cmc_base
+#: model:ir.model.constraint,message:cmc_base.constraint_cmc_cost_element_code_company_uniq
+msgid "The cost element code must be unique per company."
+msgstr "Il codice dell'elemento di costo deve essere univoco per azienda."
+
+#. module: cmc_base
+#: model:ir.model.fields,help:cmc_base.field_account_analytic_line__cmc_cost_object_ref
+msgid ""
+"The object this cost is referred to (product, line, project, cost center, "
+"customer, channel)."
+msgstr ""
+"L'oggetto a cui questo costo è riferito (prodotto, linea, progetto, centro "
+"di costo, cliente, canale)."
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_closing.py:0
+msgid "The reciprocal services form an unsolvable system."
+msgstr "I servizi reciproci formano un sistema irrisolvibile."
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_allocation_form
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_cost_analysis_list
+msgid "Total"
+msgstr "Totale"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_account_analytic_line__cmc_cost_traceability
+msgid "Traceability"
+msgstr "Tracciabilità"
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.report_cmc_consuntivo
+msgid "Type"
+msgstr "Tipo"
+
+#. module: cmc_base
+#: model_terms:ir.actions.act_window,help:cmc_base.action_cmc_cost_center
+msgid ""
+"Type analytic accounts as auxiliary, intermediate or final cost centers."
+msgstr ""
+"Tipizza i conti analitici come centri di costo ausiliari, intermedi o "
+"finali."
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_driver__uom_id
+msgid "Unit of Measure"
+msgstr "Unità di misura"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_center_service__quantity
+msgid "Units of Service"
+msgstr "Unità di servizio"
+
+#. module: cmc_base
+#: model_terms:ir.actions.act_window,help:cmc_base.action_cmc_center_service
+msgid "Units of service provided by auxiliary/intermediate centers to others."
+msgstr "Unità di servizio fornite dai centri ausiliari/intermedi ad altri."
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_capacity_list
+msgid "Unused"
+msgstr "Inutilizzata"
+
+#. module: cmc_base
+#: model:ir.actions.act_window,name:cmc_base.action_dash_idle
+#: model:ir.ui.menu,name:cmc_base.menu_dash_idle
+msgid "Unused Capacity"
+msgstr "Capacità inutilizzata"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_capacity_analysis__unused_capacity_cost
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_capacity_graph
+msgid "Unused Capacity Cost"
+msgstr "Costo della capacità inutilizzata"
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_capacity_analysis__utilization_rate
+msgid "Utilization %"
+msgstr "Utilizzo %"
+
+#. module: cmc_base
+#: model:ir.model.fields.selection,name:cmc_base.selection__account_analytic_line__cmc_behavior__variable
+msgid "Variable"
+msgstr "Variabile"
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_cost_driver_form
+msgid "e.g. Machine Hours"
+msgstr "es. ore macchina"
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_allocation_form
+msgid "e.g. Maintenance March"
+msgstr "es. Manutenzione marzo"
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/cockpit/cmc_cockpit.xml:0
+msgid "elaborazioni"
+msgstr ""
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.report_cmc_consuntivo
+msgid "· <strong>From:</strong>"
+msgstr ""
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.report_cmc_consuntivo
+msgid "· <strong>To:</strong>"
+msgstr ""
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/cockpit/cmc_cockpit.xml:0
+msgid "— scegli e applica quella che ti serve"
+msgstr ""

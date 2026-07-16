@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+<t t-name="cmc_base.CmcCockpit">
+    <Layout display="display" className="'o_cmc_cockpit'">
+        <t t-set-slot="control-panel-create-button">
+            <span class="o_cmc_brand fw-bold">Controllo di Gestione</span>
+        </t>
+
+        <!-- loading -->
+        <div t-if="state.loading" class="o_cmc_center d-flex justify-content-center align-items-center p-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Caricamento…</span>
+            </div>
+        </div>
+
+        <div t-else="" class="o_cmc_body container-fluid p-3 p-lg-4">
+            <!-- next-step callout (foundation pipeline) -->
+            <t t-set="next" t-value="state.data.pipeline.find((s) => s.state === 'next')"/>
+            <div t-if="next" class="alert o_cmc_next d-flex align-items-center gap-3 mb-4" role="status">
+                <i class="fa fa-arrow-circle-right fa-lg" aria-hidden="true"/>
+                <div class="flex-grow-1">
+                    <div class="text-muted small text-uppercase">Prossimo passo</div>
+                    <div class="fw-bold" t-esc="next.label"/>
+                </div>
+                <button class="btn btn-primary" t-on-click="() => this.openStep(next.action)"
+                        t-attf-aria-label="Apri {{ next.label }}">
+                    Continua
+                </button>
+            </div>
+            <div t-else="" class="alert alert-success d-flex align-items-center gap-2 mb-4" role="status">
+                <i class="fa fa-check-circle fa-lg" aria-hidden="true"/>
+                <span>Base di costo pronta. Scegli e applica una metodologia di costing qui sotto.</span>
+            </div>
+
+            <!-- foundation pipeline (sequential, numbered) -->
+            <div class="o_cmc_section_label text-muted small text-uppercase mb-2">
+                Base di costo
+            </div>
+            <div class="o_cmc_steps d-flex flex-wrap align-items-stretch gap-2 mb-4" role="list">
+                <t t-foreach="state.data.pipeline" t-as="step" t-key="step.key">
+                    <button role="listitem"
+                            class="o_cmc_step btn text-start d-flex align-items-center gap-2"
+                            t-att-class="{
+                                'o_cmc_step_done btn-outline-success': step.state === 'done',
+                                'o_cmc_step_next btn-primary': step.state === 'next',
+                                'o_cmc_step_todo btn-outline-secondary': step.state === 'todo',
+                            }"
+                            t-on-click="() => this.openStep(step.action)"
+                            t-attf-aria-label="Apri {{ step.label }}">
+                        <span class="o_cmc_num badge rounded-circle" t-esc="step.num"/>
+                        <span class="flex-grow-1" t-esc="step.label"/>
+                        <i t-if="step.state === 'done'" class="fa fa-check text-success" aria-hidden="true"/>
+                        <span class="badge rounded-pill text-bg-light" t-esc="step.count"/>
+                    </button>
+                </t>
+            </div>
+
+            <!-- costing methodologies (parallel alternatives) -->
+            <div t-if="state.data.methods.length" class="mb-4">
+                <div class="o_cmc_section_label text-muted small text-uppercase mb-2">
+                    Metodologie di costing
+                    <span class="o_cmc_hint">— scegli e applica quella che ti serve</span>
+                </div>
+                <div class="row g-2">
+                    <t t-foreach="state.data.methods" t-as="m" t-key="m.key">
+                        <div class="col-12 col-md-6 col-xl-3">
+                            <button class="o_cmc_method card w-100 h-100 text-start border-0"
+                                    t-att-class="{
+                                        'o_cmc_m_done': m.state === 'done',
+                                        'o_cmc_m_available': m.state === 'available',
+                                        'o_cmc_m_locked': m.state === 'locked',
+                                    }"
+                                    t-att-disabled="m.state === 'locked'"
+                                    t-on-click="() => this.openStep(m.action)"
+                                    t-attf-aria-label="Apri {{ m.label }}">
+                                <div class="card-body d-flex align-items-center gap-2">
+                                    <i t-att-class="{
+                                            'fa fa-check-circle text-success': m.state === 'done',
+                                            'fa fa-play-circle text-primary': m.state === 'available',
+                                            'fa fa-lock text-muted': m.state === 'locked',
+                                        }" aria-hidden="true"/>
+                                    <div class="flex-grow-1">
+                                        <div class="fw-semibold" t-esc="m.label"/>
+                                        <div class="small text-muted">
+                                            <t t-if="m.state === 'done'"><t t-esc="m.count"/> elaborazioni</t>
+                                            <t t-elif="m.state === 'available'">Disponibile</t>
+                                            <t t-else="">Completa prima la base di costo</t>
+                                        </div>
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+                    </t>
+                </div>
+            </div>
+
+            <!-- KPI grid -->
+            <div class="row g-3 mb-4">
+                <t t-foreach="state.data.kpis" t-as="kpi" t-key="kpi.key">
+                    <div class="col-6 col-lg-3">
+                        <div class="card o_cmc_kpi h-100">
+                            <div class="card-body">
+                                <div class="o_cmc_kpi_label text-muted small text-uppercase" t-esc="kpi.label"/>
+                                <div class="o_cmc_kpi_value fs-3 fw-bold" t-esc="kpi.value"/>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </div>
+
+            <!-- cost-by-element chart -->
+            <div class="card o_cmc_chart_card">
+                <div class="card-body">
+                    <div class="o_cmc_kpi_label text-muted small text-uppercase mb-2">
+                        Costi per natura (elemento)
+                    </div>
+                    <div t-if="hasChart" class="o_cmc_chart_wrap">
+                        <canvas t-ref="chartCanvas"/>
+                    </div>
+                    <div t-else="" class="o_cmc_center text-muted d-flex flex-column align-items-center p-4">
+                        <i class="fa fa-bar-chart fa-2x mb-2" aria-hidden="true"/>
+                        <span>Nessun costo classificato per elemento. Registra i costi per vederli qui.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </Layout>
+</t>
+
+</templates>

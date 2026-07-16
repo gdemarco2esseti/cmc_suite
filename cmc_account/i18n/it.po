@@ -1,0 +1,245 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* cmc_account
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-16 15:29+0000\n"
+"PO-Revision-Date: 2026-07-16 15:29+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: cmc_account
+#: model:ir.model,name:cmc_account.model_account_account
+msgid "Account"
+msgstr "Conto"
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__account_code_prefix
+msgid "Account Code Prefix"
+msgstr "Prefisso codice conto"
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__active
+msgid "Active"
+msgstr "Attivo"
+
+#. module: cmc_account
+#: model:ir.model,name:cmc_account.model_account_analytic_line
+msgid "Analytic Line"
+msgstr "Riga analitica"
+
+#. module: cmc_account
+#: model_terms:ir.ui.view,arch_db:cmc_account.view_cmc_rule_form
+msgid "Assign (fill-only)"
+msgstr "Assegna (solo se vuoto)"
+
+#. module: cmc_account
+#: model:ir.model,name:cmc_account.model_cmc_classification_rule
+msgid "CMC Cost Classification Rule"
+msgstr "Regola di classificazione costi CMC"
+
+#. module: cmc_account
+#: model_terms:ir.ui.view,arch_db:cmc_account.view_cmc_rule_form
+msgid "Classification Rule"
+msgstr "Regola di classificazione"
+
+#. module: cmc_account
+#: model:ir.actions.act_window,name:cmc_account.action_cmc_classification_rule
+#: model:ir.ui.menu,name:cmc_account.menu_cmc_classification_rule
+#: model_terms:ir.ui.view,arch_db:cmc_account.view_cmc_rule_list
+msgid "Classification Rules"
+msgstr "Regole di classificazione"
+
+#. module: cmc_account
+#. odoo-python
+#: code:addons/cmc_account/models/cmc_classification_rule.py:0
+msgid ""
+"Classification rule '%s' must set at least one match criterion, otherwise it"
+" matches every cost line."
+msgstr ""
+"La regola di classificazione '%s' deve impostare almeno un criterio di "
+"corrispondenza, altrimenti corrisponde a ogni riga di costo."
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__cmc_behavior
+msgid "Cmc Behavior"
+msgstr "Comportamento del costo"
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__cmc_cost_element_id
+msgid "Cmc Cost Element"
+msgstr "Elemento di costo"
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__cmc_directness
+msgid "Cmc Directness"
+msgstr "Direttezza"
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__company_id
+msgid "Company"
+msgstr "Azienda"
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__center_id
+msgid "Cost Center"
+msgstr "Centro di costo"
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_account_account__cmc_cost_element_id
+msgid "Cost Element (nature)"
+msgstr "Elemento di costo (natura)"
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: cmc_account
+#: model:ir.model.fields.selection,name:cmc_account.selection__cmc_classification_rule__cmc_directness__direct
+msgid "Direct"
+msgstr "Diretto"
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_account_account__display_name
+#: model:ir.model.fields,field_description:cmc_account.field_account_analytic_line__display_name
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__display_name
+msgid "Display Name"
+msgstr "Nome visualizzato"
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__general_account_id
+msgid "Financial Account"
+msgstr "Conto finanziario"
+
+#. module: cmc_account
+#: model:ir.model.fields.selection,name:cmc_account.selection__cmc_classification_rule__cmc_behavior__fixed
+msgid "Fixed"
+msgstr "Fisso"
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_account_account__id
+#: model:ir.model.fields,field_description:cmc_account.field_account_analytic_line__id
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__id
+msgid "ID"
+msgstr ""
+
+#. module: cmc_account
+#: model:ir.model.fields.selection,name:cmc_account.selection__cmc_classification_rule__cmc_directness__indirect
+msgid "Indirect"
+msgstr "Indiretto"
+
+#. module: cmc_account
+#: model:ir.ui.menu,name:cmc_account.menu_cmc_cfg_integration
+msgid "Integrazione contabile"
+msgstr ""
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: cmc_account
+#: model_terms:ir.actions.act_window,help:cmc_account.action_cmc_unclassified_lines
+msgid ""
+"Lines posted from documents without a behavior classification.\n"
+"               Classify them or refine the classification rules."
+msgstr ""
+"Righe registrate da documenti senza classificazione del comportamento.\n"
+"               Classificale o affina le regole di classificazione."
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_account_analytic_line__cmc_classified_manually
+msgid "Manually Classified"
+msgstr "Classificato manualmente"
+
+#. module: cmc_account
+#: model:ir.model.fields,help:cmc_account.field_account_account__cmc_cost_element_id
+msgid ""
+"Maps this financial account to a cost-element nature; derived onto analytic "
+"lines posted on this account."
+msgstr ""
+"Associa questo conto finanziario a una natura di elemento di costo; derivata"
+" sulle righe analitiche registrate su questo conto."
+
+#. module: cmc_account
+#: model_terms:ir.ui.view,arch_db:cmc_account.view_cmc_rule_form
+msgid "Match (blank = any)"
+msgstr "Corrispondenza (vuoto = qualsiasi)"
+
+#. module: cmc_account
+#: model:ir.model.fields,help:cmc_account.field_cmc_classification_rule__account_code_prefix
+msgid "Match if the financial account code starts with this prefix."
+msgstr ""
+"Corrisponde se il codice del conto finanziario inizia con questo prefisso."
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__name
+msgid "Name"
+msgstr "Nome"
+
+#. module: cmc_account
+#: model_terms:ir.actions.act_window,help:cmc_account.action_cmc_unclassified_lines
+msgid "No unclassified cost lines"
+msgstr "Nessuna riga di costo non classificata"
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__partner_id
+msgid "Partner"
+msgstr "Partner"
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__product_category_id
+msgid "Product Category"
+msgstr "Categoria prodotto"
+
+#. module: cmc_account
+#: model:ir.actions.server,name:cmc_account.action_cmc_reapply_rules
+msgid "Re-apply Classification Rules"
+msgstr "Riapplica le regole di classificazione"
+
+#. module: cmc_account
+#: model:ir.model.fields.selection,name:cmc_account.selection__cmc_classification_rule__cmc_behavior__semi_variable
+msgid "Semi-variable"
+msgstr "Semi-variabile"
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__sequence
+msgid "Sequence"
+msgstr "Sequenza"
+
+#. module: cmc_account
+#: model:ir.model.fields,help:cmc_account.field_account_analytic_line__cmc_classified_manually
+msgid "Set when a user classifies the line by hand; rules never overwrite it."
+msgstr ""
+"Impostato quando un utente classifica la riga a mano; le regole non lo "
+"sovrascrivono mai."
+
+#. module: cmc_account
+#: model:ir.actions.act_window,name:cmc_account.action_cmc_unclassified_lines
+#: model:ir.ui.menu,name:cmc_account.menu_cmc_unclassified
+msgid "Unclassified Cost Lines"
+msgstr "Righe di costo non classificate"
+
+#. module: cmc_account
+#: model:ir.model.fields.selection,name:cmc_account.selection__cmc_classification_rule__cmc_behavior__variable
+msgid "Variable"
+msgstr "Variabile"

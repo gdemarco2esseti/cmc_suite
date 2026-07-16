@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_center_service_list" model="ir.ui.view">
+        <field name="name">cmc.center.service.list</field>
+        <field name="model">cmc.center.service</field>
+        <field name="arch" type="xml">
+            <list string="Inter-Center Services" editable="bottom">
+                <field name="provider_id"/>
+                <field name="receiver_id"/>
+                <field name="driver_id"/>
+                <field name="quantity"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_center_service_form" model="ir.ui.view">
+        <field name="name">cmc.center.service.form</field>
+        <field name="model">cmc.center.service</field>
+        <field name="arch" type="xml">
+            <form string="Inter-Center Service">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="provider_id"/>
+                            <field name="receiver_id"/>
+                        </group>
+                        <group>
+                            <field name="driver_id"/>
+                            <field name="quantity"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_center_service" model="ir.actions.act_window">
+        <field name="name">Inter-Center Services</field>
+        <field name="res_model">cmc.center.service</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Record an inter-center service</p>
+            <p>Units of service provided by auxiliary/intermediate centers to others.</p>
+        </field>
+    </record>
+</odoo>

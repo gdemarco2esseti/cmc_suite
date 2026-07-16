@@ -1,0 +1,270 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* cmc_abc
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-16 15:29+0000\n"
+"PO-Revision-Date: 2026-07-16 15:29+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: cmc_abc
+#: model:ir.actions.act_window,name:cmc_abc.action_cmc_abc_activity
+#: model:ir.ui.menu,name:cmc_abc.menu_cmc_abc_activity
+msgid "ABC Activities"
+msgstr "Attività ABC"
+
+#. module: cmc_abc
+#: model:ir.model,name:cmc_abc.model_cmc_abc_activity
+#: model:ir.model.fields,field_description:cmc_abc.field_account_analytic_line__cmc_activity_id
+msgid "ABC Activity"
+msgstr "Attività ABC"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__amount
+msgid "ABC Cost"
+msgstr "Costo ABC"
+
+#. module: cmc_abc
+#: model:ir.model,name:cmc_abc.model_cmc_abc_run
+msgid "ABC Costing Run"
+msgstr "Elaborazione ABC"
+
+#. module: cmc_abc
+#: model:ir.model,name:cmc_abc.model_cmc_abc_line
+msgid "ABC Input Line (activity driver consumption)"
+msgstr "Riga input ABC (consumo activity driver)"
+
+#. module: cmc_abc
+#: model:ir.model,name:cmc_abc.model_cmc_abc_result
+msgid "ABC Result (cost per object)"
+msgstr "Risultato ABC (costo per oggetto)"
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abc.py:0
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_run_form
+msgid "ABC Run"
+msgstr "Elaborazione ABC"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_run_list
+msgid "ABC Runs"
+msgstr "Elaborazioni ABC"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__active
+msgid "Active"
+msgstr "Attivo"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_list
+msgid "Activities"
+msgstr "Attività"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__activity_id
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_form
+msgid "Activity"
+msgstr "Attività"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_run_form
+msgid "Activity Drivers"
+msgstr "Activity driver"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_account_analytic_line__cmc_activity_id
+msgid "Activity whose resource cost pool this line contributes to."
+msgstr "Attività al cui pool di costo delle risorse questa riga contribuisce."
+
+#. module: cmc_abc
+#: model:ir.actions.act_window,name:cmc_abc.action_cmc_abc_run
+#: model:ir.ui.menu,name:cmc_abc.menu_cmc_sec_abc
+msgid "Activity-Based Costing"
+msgstr ""
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_line__driver_qty
+msgid "Amount of the activity driver consumed by this product."
+msgstr "Quantità di activity driver consumata da questo prodotto."
+
+#. module: cmc_abc
+#: model:ir.model,name:cmc_abc.model_account_analytic_line
+msgid "Analytic Line"
+msgstr "Riga analitica"
+
+#. module: cmc_abc
+#: model:ir.ui.menu,name:cmc_abc.menu_cmc_abc_run
+msgid "Calcolo ABC"
+msgstr ""
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__code
+msgid "Code"
+msgstr "Codice"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__company_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__company_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__company_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__company_id
+msgid "Company"
+msgstr "Azienda"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_run_form
+msgid "Compute"
+msgstr "Calcola"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_activity__driver_id
+msgid "Cost driver that typically measures this activity's output."
+msgstr "Driver di costo che misura tipicamente l'output di questa attività."
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__create_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__create_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__create_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__create_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__create_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__create_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__currency_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__currency_id
+msgid "Currency"
+msgstr "Valuta"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__date_from
+msgid "Date From"
+msgstr "Data inizio"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__date_to
+msgid "Date To"
+msgstr "Data fine"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__driver_id
+msgid "Default Activity Driver"
+msgstr "Activity driver predefinito"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_account_analytic_line__display_name
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__display_name
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__display_name
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__display_name
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__display_name
+msgid "Display Name"
+msgstr "Nome visualizzato"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_run__state__done
+msgid "Done"
+msgstr "Completato"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_run__state__draft
+msgid "Draft"
+msgstr "Bozza"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__driver_id
+msgid "Driver"
+msgstr "Driver"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__driver_qty
+msgid "Driver Quantity"
+msgstr "Quantità di driver"
+
+#. module: cmc_abc
+#: model:ir.model.constraint,message:cmc_abc.constraint_cmc_abc_line_qty_positive
+msgid "Driver quantity must be greater than zero."
+msgstr "La quantità di driver deve essere maggiore di zero."
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_account_analytic_line__id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__id
+msgid "ID"
+msgstr ""
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__write_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__write_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__write_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__write_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__write_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__write_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__line_ids
+msgid "Line"
+msgstr "Riga"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__name
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__name
+msgid "Name"
+msgstr "Nome"
+
+#. module: cmc_abc
+#: model:ir.model.constraint,message:cmc_abc.constraint_cmc_abc_line_uniq
+msgid "One input line per activity/product in a run."
+msgstr "Una riga di input per attività/prodotto in un'elaborazione."
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__product_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__product_id
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__result_ids
+msgid "Result"
+msgstr "Risultato"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_run_form
+msgid "Results"
+msgstr "Risultati"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__run_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__run_id
+msgid "Run"
+msgstr "Elaborazione"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__state
+msgid "State"
+msgstr "Stato"

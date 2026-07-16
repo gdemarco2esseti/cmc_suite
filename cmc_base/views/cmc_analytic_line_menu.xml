@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_cost_entry_list" model="ir.ui.view">
+        <field name="name">cmc.cost.entry.list</field>
+        <field name="model">account.analytic.line</field>
+        <field name="arch" type="xml">
+            <list string="Cost Entries" editable="bottom">
+                <field name="cmc_center_id"/>
+                <field name="name" string="Description"/>
+                <field name="cmc_cost_element_id"/>
+                <field name="cmc_behavior"/>
+                <field name="amount"/>
+                <field name="date"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_cost_entry_form" model="ir.ui.view">
+        <field name="name">cmc.cost.entry.form</field>
+        <field name="model">account.analytic.line</field>
+        <field name="arch" type="xml">
+            <form string="Cost Entry">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="cmc_center_id"/>
+                            <field name="name" string="Description"/>
+                            <field name="date"/>
+                        </group>
+                        <group>
+                            <field name="amount"/>
+                            <field name="cmc_cost_element_id"/>
+                            <field name="cmc_behavior"/>
+                            <field name="cmc_directness"/>
+                            <field name="cmc_cost_object_ref"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_analytic_lines" model="ir.actions.act_window">
+        <field name="name">Cost Entries</field>
+        <field name="res_model">account.analytic.line</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'sequence': 1, 'view_mode': 'list', 'view_id': ref('view_cmc_cost_entry_list')}),
+            (0, 0, {'sequence': 2, 'view_mode': 'form', 'view_id': ref('view_cmc_cost_entry_form')})]"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Record a cost entry</p>
+            <p>Costs on cost centers, classified by behavior, element and
+               direct/indirect. They feed the closing and the product cost.</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_cmc_analytic_lines"
+              name="Cost Entries"
+              parent="menu_cmc_sec_base"
+              action="action_cmc_analytic_lines"
+              sequence="5"/>
+</odoo>

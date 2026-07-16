@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="cmc_joint_run_company_rule" model="ir.rule">
+            <field name="name">CMC joint run: multi-company</field>
+            <field name="model_id" ref="model_cmc_joint_run"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_joint_line_company_rule" model="ir.rule">
+            <field name="name">CMC joint line: multi-company</field>
+            <field name="model_id" ref="model_cmc_joint_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_joint_result_company_rule" model="ir.rule">
+            <field name="name">CMC joint result: multi-company</field>
+            <field name="model_id" ref="model_cmc_joint_result"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+    </data>
+</odoo>

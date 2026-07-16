@@ -1,0 +1,558 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* cmc_tdabc
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-16 17:54+0000\n"
+"PO-Revision-Date: 2026-07-16 17:54+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: cmc_tdabc
+#: model:ir.model.constraint,message:cmc_tdabc.constraint_cmc_tdabc_char_value_one_owner
+msgid ""
+"A characteristic value belongs to exactly one cost object (product or "
+"partner)."
+msgstr ""
+"Un valore caratteristica appartiene a un solo oggetto di costo (prodotto o "
+"partner)."
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_activity__active
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_characteristic__active
+msgid "Active"
+msgstr "Attivo"
+
+#. module: cmc_tdabc
+#: model_terms:ir.ui.view,arch_db:cmc_tdabc.view_cmc_tdabc_activity_list
+msgid "Activities"
+msgstr "Attività"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_result__activity_id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run_line__activity_id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_term__activity_id
+#: model_terms:ir.ui.view,arch_db:cmc_tdabc.view_cmc_tdabc_activity_form
+msgid "Activity"
+msgstr "Attività"
+
+#. module: cmc_tdabc
+#. odoo-python
+#: code:addons/cmc_tdabc/models/cmc_tdabc.py:0
+msgid ""
+"Activity %(a)s yields a negative unit time (%(t).2f min) for a cost object. "
+"Check the equation coefficients."
+msgstr ""
+"L'attività %(a)s produce un tempo unitario negativo (%(t).2f min) per un "
+"oggetto di costo. Controlla i coefficienti dell'equazione."
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,help:cmc_tdabc.field_account_analytic_line__cmc_tdabc_activity_id
+msgid "Activity this actual-hours line contributes to (timesheet scenario)."
+msgstr ""
+"Attività a cui questa riga di ore consuntive contribuisce (scenario "
+"timesheet)."
+
+#. module: cmc_tdabc
+#: model:ir.model.fields.selection,name:cmc_tdabc.selection__cmc_tdabc_capacity_result__scenario__timesheet
+#: model:ir.model.fields.selection,name:cmc_tdabc.selection__cmc_tdabc_result__scenario__timesheet
+msgid "Actual (timesheet)"
+msgstr "Consuntivo (timesheet)"
+
+#. module: cmc_tdabc
+#: model:ir.model,name:cmc_tdabc.model_account_analytic_line
+msgid "Analytic Line"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_activity__base_time
+msgid "Base Time (min)"
+msgstr "Tempo base (min)"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields.selection,name:cmc_tdabc.selection__cmc_tdabc_characteristic__ttype__bool
+msgid "Boolean flag"
+msgstr "Flag booleano"
+
+#. module: cmc_tdabc
+#: model:ir.ui.menu,name:cmc_tdabc.menu_cmc_tdabc_run
+msgid "Calcolo TDABC"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model_terms:ir.ui.view,arch_db:cmc_tdabc.view_cmc_tdabc_run_form
+msgid "Capacity"
+msgstr "Capacità"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run__capacity_result_ids
+msgid "Capacity Result"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_capacity_result__capacity_use_pct
+msgid "Capacity Use %"
+msgstr "Utilizzo capacità %"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_char_value__characteristic_id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_term__characteristic_id
+msgid "Characteristic"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model:ir.model.constraint,message:cmc_tdabc.constraint_cmc_tdabc_characteristic_code_uniq
+msgid "Characteristic code must be unique per company."
+msgstr "Il codice caratteristica deve essere univoco per azienda."
+
+#. module: cmc_tdabc
+#: model:ir.ui.menu,name:cmc_tdabc.menu_cmc_tdabc_characteristic
+#: model_terms:ir.ui.view,arch_db:cmc_tdabc.view_cmc_tdabc_characteristic_list
+msgid "Characteristics"
+msgstr "Caratteristiche"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_activity__code
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_characteristic__code
+msgid "Code"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_term__coefficient
+msgid "Coefficient (min)"
+msgstr "Coefficiente (min)"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_activity__company_id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_capacity_result__company_id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_char_value__company_id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_characteristic__company_id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_resource__company_id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_result__company_id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run__company_id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run_line__company_id
+msgid "Company"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model_terms:ir.ui.view,arch_db:cmc_tdabc.view_cmc_tdabc_run_form
+msgid "Compute"
+msgstr "Calcola"
+
+#. module: cmc_tdabc
+#: model:ir.model,name:cmc_tdabc.model_res_partner
+msgid "Contact"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_result__cost_absorbed
+msgid "Cost Absorbed"
+msgstr "Costo assorbito"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_result__cost_object_type
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run_line__cost_object_type
+msgid "Cost Object Type"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_resource__rate
+msgid "Cost per Minute"
+msgstr "Costo al minuto"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_activity__create_uid
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_capacity_result__create_uid
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_char_value__create_uid
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_characteristic__create_uid
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_resource__create_uid
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_result__create_uid
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run__create_uid
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run_line__create_uid
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_term__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_activity__create_date
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_capacity_result__create_date
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_char_value__create_date
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_characteristic__create_date
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_resource__create_date
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_result__create_date
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run__create_date
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run_line__create_date
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_term__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_capacity_result__currency_id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_resource__currency_id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_result__currency_id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run__currency_id
+msgid "Currency"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model:ir.model.fields.selection,name:cmc_tdabc.selection__cmc_tdabc_result__cost_object_type__customer
+#: model:ir.model.fields.selection,name:cmc_tdabc.selection__cmc_tdabc_run_line__cost_object_type__customer
+msgid "Customer"
+msgstr "Cliente"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run__date_from
+msgid "Date From"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run__date_to
+msgid "Date To"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run_line__volume_derived
+msgid "Derived Volume"
+msgstr "Volume derivato"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_account_analytic_line__display_name
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_activity__display_name
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_capacity_result__display_name
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_char_value__display_name
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_characteristic__display_name
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_resource__display_name
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_result__display_name
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run__display_name
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run_line__display_name
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_term__display_name
+#: model:ir.model.fields,field_description:cmc_tdabc.field_product_template__display_name
+#: model:ir.model.fields,field_description:cmc_tdabc.field_res_partner__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model:ir.model.fields.selection,name:cmc_tdabc.selection__cmc_tdabc_run__state__done
+msgid "Done"
+msgstr "Completato"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields.selection,name:cmc_tdabc.selection__cmc_tdabc_run__state__draft
+msgid "Draft"
+msgstr "Bozza"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields.selection,name:cmc_tdabc.selection__cmc_tdabc_capacity_result__scenario__manual
+#: model:ir.model.fields.selection,name:cmc_tdabc.selection__cmc_tdabc_result__scenario__manual
+msgid "Estimate (equation)"
+msgstr "Stima (equazione)"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_account_analytic_line__id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_activity__id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_capacity_result__id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_char_value__id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_characteristic__id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_resource__id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_result__id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run__id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run_line__id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_term__id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_product_template__id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_res_partner__id
+msgid "ID"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,help:cmc_tdabc.field_cmc_tdabc_run_line__volume_derived
+msgid ""
+"If set and the activity tags analytic lines, volume is counted from those "
+"lines per cost object."
+msgstr ""
+"Se attivo e l'attività etichetta righe analitiche, il volume è conteggiato "
+"da quelle righe per oggetto di costo."
+
+#. module: cmc_tdabc
+#: model_terms:ir.ui.view,arch_db:cmc_tdabc.view_cmc_tdabc_run_form
+msgid "Input"
+msgstr "Input"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_activity__write_uid
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_capacity_result__write_uid
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_char_value__write_uid
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_characteristic__write_uid
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_resource__write_uid
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_result__write_uid
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run__write_uid
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run_line__write_uid
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_term__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_activity__write_date
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_capacity_result__write_date
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_char_value__write_date
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_characteristic__write_date
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_resource__write_date
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_result__write_date
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run__write_date
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run_line__write_date
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_term__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run__line_ids
+msgid "Line"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_activity__name
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_characteristic__name
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_resource__name
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run__name
+msgid "Name"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model:ir.model.fields.selection,name:cmc_tdabc.selection__cmc_tdabc_characteristic__ttype__number
+msgid "Numeric"
+msgstr "Numerico"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_capacity_result__over_capacity
+msgid "Over Capacity"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_char_value__partner_id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_result__partner_id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run_line__partner_id
+msgid "Partner"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_resource__cost
+msgid "Period Cost"
+msgstr "Costo di periodo"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_resource__practical_capacity
+msgid "Practical Capacity (min)"
+msgstr "Capacità pratica (min)"
+
+#. module: cmc_tdabc
+#: model:ir.model,name:cmc_tdabc.model_product_template
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_result__product_id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run_line__product_id
+#: model:ir.model.fields.selection,name:cmc_tdabc.selection__cmc_tdabc_result__cost_object_type__product
+#: model:ir.model.fields.selection,name:cmc_tdabc.selection__cmc_tdabc_run_line__cost_object_type__product
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_char_value__product_tmpl_id
+msgid "Product Tmpl"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_capacity_result__required_time
+msgid "Required Time (min)"
+msgstr "Tempo richiesto (min)"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_activity__resource_id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_capacity_result__resource_id
+#: model_terms:ir.ui.view,arch_db:cmc_tdabc.view_cmc_tdabc_resource_form
+msgid "Resource"
+msgstr "Risorsa"
+
+#. module: cmc_tdabc
+#. odoo-python
+#: code:addons/cmc_tdabc/models/cmc_tdabc.py:0
+msgid "Resource %(r)s has no practical capacity; cannot derive a rate."
+msgstr ""
+"La risorsa %(r)s non ha capacità pratica; impossibile derivare una tariffa."
+
+#. module: cmc_tdabc
+#: model:ir.ui.menu,name:cmc_tdabc.menu_cmc_tdabc_resource
+#: model_terms:ir.ui.view,arch_db:cmc_tdabc.view_cmc_tdabc_resource_list
+msgid "Resources"
+msgstr "Risorse"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run__result_ids
+msgid "Result"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model_terms:ir.ui.view,arch_db:cmc_tdabc.view_cmc_tdabc_run_form
+msgid "Results"
+msgstr "Risultati"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_capacity_result__run_id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_result__run_id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run_line__run_id
+msgid "Run"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_capacity_result__scenario
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_result__scenario
+msgid "Scenario"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model:ir.model.constraint,message:cmc_tdabc.constraint_cmc_tdabc_run_line_obj_set
+msgid "Set the product (product line) or the customer (customer line)."
+msgstr "Imposta il prodotto (riga prodotto) o il cliente (riga cliente)."
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run__state
+msgid "State"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model:ir.actions.act_window,name:cmc_tdabc.action_cmc_tdabc_activity
+#: model:ir.ui.menu,name:cmc_tdabc.menu_cmc_tdabc_activity
+msgid "TDABC Activities"
+msgstr "Attività TDABC"
+
+#. module: cmc_tdabc
+#: model:ir.model,name:cmc_tdabc.model_cmc_tdabc_activity
+#: model:ir.model.fields,field_description:cmc_tdabc.field_account_analytic_line__cmc_tdabc_activity_id
+msgid "TDABC Activity"
+msgstr "Attività TDABC"
+
+#. module: cmc_tdabc
+#: model:ir.model,name:cmc_tdabc.model_cmc_tdabc_capacity_result
+msgid "TDABC Capacity Result (per resource per scenario)"
+msgstr "Risultato capacità TDABC (per risorsa per scenario)"
+
+#. module: cmc_tdabc
+#: model:ir.model,name:cmc_tdabc.model_cmc_tdabc_char_value
+msgid "TDABC Characteristic Value on a Cost Object"
+msgstr "Valore caratteristica su oggetto di costo TDABC"
+
+#. module: cmc_tdabc
+#: model:ir.actions.act_window,name:cmc_tdabc.action_cmc_tdabc_characteristic
+#: model:ir.model.fields,field_description:cmc_tdabc.field_product_product__tdabc_char_value_ids
+#: model:ir.model.fields,field_description:cmc_tdabc.field_product_template__tdabc_char_value_ids
+#: model:ir.model.fields,field_description:cmc_tdabc.field_res_partner__tdabc_char_value_ids
+#: model:ir.model.fields,field_description:cmc_tdabc.field_res_users__tdabc_char_value_ids
+msgid "TDABC Characteristics"
+msgstr "Caratteristiche TDABC"
+
+#. module: cmc_tdabc
+#: model:ir.model,name:cmc_tdabc.model_cmc_tdabc_characteristic
+msgid "TDABC Cost-Object Characteristic"
+msgstr "Caratteristica dell'oggetto di costo TDABC"
+
+#. module: cmc_tdabc
+#: model:ir.model,name:cmc_tdabc.model_cmc_tdabc_run
+msgid "TDABC Costing Run"
+msgstr "Elaborazione TDABC"
+
+#. module: cmc_tdabc
+#: model:ir.model,name:cmc_tdabc.model_cmc_tdabc_run_line
+msgid "TDABC Input Line"
+msgstr "Riga di input TDABC"
+
+#. module: cmc_tdabc
+#: model:ir.model,name:cmc_tdabc.model_cmc_tdabc_resource
+msgid "TDABC Resource (capacity supplier)"
+msgstr "Risorsa TDABC (fornitore di capacità)"
+
+#. module: cmc_tdabc
+#: model:ir.actions.act_window,name:cmc_tdabc.action_cmc_tdabc_resource
+msgid "TDABC Resources"
+msgstr "Risorse TDABC"
+
+#. module: cmc_tdabc
+#: model:ir.model,name:cmc_tdabc.model_cmc_tdabc_result
+msgid "TDABC Result (cost per object per scenario)"
+msgstr "Risultato TDABC (costo per oggetto per scenario)"
+
+#. module: cmc_tdabc
+#. odoo-python
+#: code:addons/cmc_tdabc/models/cmc_tdabc.py:0
+#: model_terms:ir.ui.view,arch_db:cmc_tdabc.view_cmc_tdabc_run_form
+msgid "TDABC Run"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model_terms:ir.ui.view,arch_db:cmc_tdabc.view_cmc_tdabc_run_list
+msgid "TDABC Runs"
+msgstr "Elaborazioni TDABC"
+
+#. module: cmc_tdabc
+#: model:ir.model,name:cmc_tdabc.model_cmc_tdabc_term
+msgid "TDABC Time-Equation Term"
+msgstr "Termine dell'equazione di tempo TDABC"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_activity__term_ids
+msgid "Term"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_resource__theoretical_time
+msgid "Theoretical Time (min)"
+msgstr "Tempo teorico (min)"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_result__time_absorbed
+msgid "Time Absorbed (min)"
+msgstr "Tempo assorbito (min)"
+
+#. module: cmc_tdabc
+#: model_terms:ir.ui.view,arch_db:cmc_tdabc.view_cmc_tdabc_activity_form
+msgid "Time Equation Terms"
+msgstr "Termini equazione di tempo"
+
+#. module: cmc_tdabc
+#: model:ir.actions.act_window,name:cmc_tdabc.action_cmc_tdabc_run
+#: model:ir.ui.menu,name:cmc_tdabc.menu_cmc_sec_tdabc
+msgid "Time-Driven ABC"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_characteristic__ttype
+msgid "Type"
+msgstr "Tipo"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_capacity_result__unused_cost
+msgid "Unused Capacity Cost"
+msgstr "Costo capacità inutilizzata"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_capacity_result__unused_time
+msgid "Unused Time (min)"
+msgstr "Tempo inutilizzato (min)"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_resource__util_factor
+msgid "Utilization %"
+msgstr "Utilizzo %"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_char_value__value
+msgid "Value"
+msgstr ""
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run_line__volume
+msgid "Volume"
+msgstr ""

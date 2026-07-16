@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="module_category_cmc" model="ir.module.category">
+            <field name="name">Cost Management &amp; Controlling</field>
+            <field name="sequence">90</field>
+        </record>
+
+        <record id="res_groups_privilege_cmc" model="res.groups.privilege">
+            <field name="name">Cost Management &amp; Controlling</field>
+            <field name="category_id" ref="module_category_cmc"/>
+            <field name="sequence">90</field>
+        </record>
+
+        <record id="group_cmc_user" model="res.groups">
+            <field name="name">Controlling User</field>
+            <field name="privilege_id" ref="res_groups_privilege_cmc"/>
+            <field name="implied_ids" eval="[(4, ref('analytic.group_analytic_accounting'))]"/>
+        </record>
+
+        <record id="group_cmc_manager" model="res.groups">
+            <field name="name">Controlling Manager</field>
+            <field name="privilege_id" ref="res_groups_privilege_cmc"/>
+            <field name="implied_ids" eval="[(4, ref('cmc_base.group_cmc_user'))]"/>
+        </record>
+
+        <record id="cmc_cost_driver_company_rule" model="ir.rule">
+            <field name="name">CMC cost driver: multi-company</field>
+            <field name="model_id" ref="model_cmc_cost_driver"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_allocation_company_rule" model="ir.rule">
+            <field name="name">CMC allocation: multi-company</field>
+            <field name="model_id" ref="model_cmc_allocation"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_allocation_line_company_rule" model="ir.rule">
+            <field name="name">CMC allocation line: multi-company</field>
+            <field name="model_id" ref="model_cmc_allocation_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_center_service_company_rule" model="ir.rule">
+            <field name="name">CMC center service: multi-company</field>
+            <field name="model_id" ref="model_cmc_center_service"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_closing_run_company_rule" model="ir.rule">
+            <field name="name">CMC closing run: multi-company</field>
+            <field name="model_id" ref="model_cmc_closing_run"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_closing_line_company_rule" model="ir.rule">
+            <field name="name">CMC closing line: multi-company</field>
+            <field name="model_id" ref="model_cmc_closing_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_capacity_company_rule" model="ir.rule">
+            <field name="name">CMC capacity analysis: multi-company</field>
+            <field name="model_id" ref="model_cmc_capacity_analysis"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_cost_element_company_rule" model="ir.rule">
+            <field name="name">CMC cost element: multi-company</field>
+            <field name="model_id" ref="model_cmc_cost_element"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_cost_analysis_company_rule" model="ir.rule">
+            <field name="name">CMC cost analysis: multi-company</field>
+            <field name="model_id" ref="model_cmc_cost_analysis_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+    </data>
+</odoo>

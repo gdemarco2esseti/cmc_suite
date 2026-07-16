@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_costing_run_list" model="ir.ui.view">
+        <field name="name">cmc.costing.run.list</field>
+        <field name="model">cmc.costing.run</field>
+        <field name="arch" type="xml">
+            <list string="Costing Runs">
+                <field name="name"/>
+                <field name="closing_run_id"/>
+                <field name="base"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_costing_run_form" model="ir.ui.view">
+        <field name="name">cmc.costing.run.form</field>
+        <field name="model">cmc.costing.run</field>
+        <field name="arch" type="xml">
+            <form string="Costing Run">
+                <header>
+                    <button name="action_compute" type="object" string="Compute"
+                            class="oe_highlight"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="closing_run_id"/>
+                            <field name="base"/>
+                            <field name="single_driver_id"
+                                   invisible="base != 'single'"
+                                   required="base == 'single'"/>
+                        </group>
+                        <group>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <field name="product_ids" widget="many2many_tags"/>
+                    <notebook>
+                        <page string="Driver Consumption" name="lines">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="center_id"/>
+                                    <field name="product_id"/>
+                                    <field name="driver_id"/>
+                                    <field name="driver_qty"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Results" name="results">
+                            <field name="result_ids">
+                                <list create="false" edit="false">
+                                    <field name="product_id"/>
+                                    <field name="cost_primo" sum="Primo"/>
+                                    <field name="cost_indiretto" sum="Indiretto"/>
+                                    <field name="cost_industriale" sum="Industriale"/>
+                                    <field name="cost_comm_admin" sum="Comm/Adm" optional="show"/>
+                                    <field name="cost_complessivo" sum="Complessivo" optional="show"/>
+                                    <field name="cost_figurativo" sum="Figurativo" optional="hide"/>
+                                    <field name="cost_economico_tecnico" sum="Economico-Tecnico"/>
+                                    <field name="std_price_delta" optional="hide"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cmc_costing_result_form" model="ir.ui.view">
+        <field name="name">cmc.costing.result.form</field>
+        <field name="model">cmc.costing.result</field>
+        <field name="arch" type="xml">
+            <form string="Product Full Cost">
+                <sheet>
+                    <group>
+                        <group string="Cost Configurations">
+                            <field name="product_id"/>
+                            <field name="cost_primo"/>
+                            <field name="cost_industriale"/>
+                            <field name="cost_complessivo"/>
+                            <field name="cost_economico_tecnico"/>
+                        </group>
+                        <group string="Components &amp; Reconciliation">
+                            <field name="cost_indiretto"/>
+                            <field name="cost_comm_admin"/>
+                            <field name="cost_figurativo"/>
+                            <field name="standard_price_ref"/>
+                            <field name="std_price_delta"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Levels" name="levels">
+                            <field name="config_ids">
+                                <list create="false" edit="false">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="level"/>
+                                    <field name="increment"/>
+                                    <field name="amount"/>
+                                    <field name="source"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Indirect Quotas" name="quotas">
+                    <field name="quota_ids">
+                        <list string="Indirect quotas by center" create="false" edit="false">
+                            <field name="center_id"/>
+                            <field name="coefficient"/>
+                            <field name="driver_qty"/>
+                            <field name="amount" sum="Total"/>
+                            <field name="currency_id" column_invisible="1"/>
+                        </list>
+                    </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cmc_costing_quota_pivot" model="ir.ui.view">
+        <field name="name">cmc.costing.quota.pivot</field>
+        <field name="model">cmc.costing.quota</field>
+        <field name="arch" type="xml">
+            <pivot string="Indirect Cost Matrix">
+                <field name="result_id" type="row"/>
+                <field name="center_id" type="col"/>
+                <field name="amount" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="action_cmc_costing_run" model="ir.actions.act_window">
+        <field name="name">Costing Runs</field>
+        <field name="res_model">cmc.costing.run</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a costing run</p>
+            <p>Compute the full (absorbed) product cost with a single or multiple
+               allocation base from the closed final centers.</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_cmc_sec_full"
+              name="Costo pieno (full costing)"
+              parent="cmc_base.menu_cmc_operations"
+              sequence="30"/>
+    <menuitem id="menu_cmc_costing_run"
+              name="Full Costing"
+              parent="menu_cmc_sec_full"
+              action="action_cmc_costing_run"
+              sequence="10"/>
+</odoo>

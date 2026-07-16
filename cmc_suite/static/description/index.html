@@ -1,0 +1,19 @@
+<section class="oe_container">
+<div class="oe_row oe_spaced">
+<div class="oe_span12">
+<h1>CMC – Cost Management Suite (cmc_suite)</h1>
+<p>Modulo <strong>ombrello</strong> della suite CMC per Odoo 19 Community. Non aggiunge modelli propri: dipende da tutti i moduli della suite e li installa in un unico passaggio.</p>
+<h2>Obiettivo</h2>
+<p>Dare un <strong>unico punto di installazione</strong> per l&#x27;intera suite di controllo di gestione, invece di installare i 9 moduli uno a uno. Utile per un ambiente demo/produzione dove si vuole avere subito disponibili tutte le metodologie di costing e tutti i bridge dati.</p>
+<p>Moduli inclusi:</p>
+<table class="table table-sm"><thead><tr><th>Modulo</th><th>Ruolo</th></tr></thead><tbody><tr><td><code>cmc_base</code></td><td>core: tassonomia costi, centri, ribaltamento, capacità, cockpit</td></tr><tr><td><code>cmc_abc</code></td><td>Activity-Based Costing a due stadi</td></tr><tr><td><code>cmc_tdabc</code></td><td>Time-Driven ABC (capacity cost rate + time equations)</td></tr><tr><td><code>cmc_full_costing</code></td><td>costo pieno (4 configurazioni) + costi figurativi</td></tr><tr><td><code>cmc_direct_costing</code></td><td>direct costing, CVR/break-even, leva operativa</td></tr><tr><td><code>cmc_joint_costs</code></td><td>ripartizione costi congiunti e sottoprodotti</td></tr><tr><td><code>cmc_account</code></td><td>bridge contabilità → controllo di gestione (mapping + classificazione)</td></tr><tr><td><code>cmc_hr_timesheet</code></td><td>bridge costo del lavoro (MOD) da timesheet</td></tr><tr><td><code>cmc_mrp</code></td><td>bridge costo primo (MP+MOD) da produzione</td></tr></tbody></table>
+<p><code>cmc_hr_timesheet</code> e <code>cmc_mrp</code> portano con sé le rispettive dipendenze Odoo (<code>hr_timesheet</code>, <code>mrp_account</code>): installando <code>cmc_suite</code> verranno installate anche loro.</p>
+<h2>Configurazione (step-by-step)</h2>
+<ol><li>Verifica che <code>custom</code> sia nell&#x27;<code>addons_path</code> (<code>config/odoo.conf</code>).</li><li><strong>App → Aggiorna elenco app</strong>.</li><li>Cerca <strong>&quot;CMC - Cost Management Suite&quot;</strong> e clicca <strong>Installa</strong>.</li><li>Odoo installa a cascata tutti i moduli in tabella (incluso <code>hr_timesheet</code> e <code>mrp_account</code> se non già presenti).</li><li>Assegna il gruppo <strong>CMC Manager</strong> (<code>cmc_base.group_cmc_manager</code>) agli utenti che devono operare sulla suite (Impostazioni → Utenti).</li></ol>
+<h2>Utilizzo (step-by-step)</h2>
+<ol><li>Apri l&#x27;app <strong>CMC</strong> dal menu principale: il <strong>Cruscotto</strong> (<code>cmc.cockpit</code>) mostra lo stato di avanzamento di ogni metodologia (chiusura, costing, ABC, TDABC, joint...).</li><li>Segui l&#x27;ordine consigliato dal cruscotto: <strong>chiusura centri → costing/ABC/TDABC/joint → CVR/direct costing</strong> per un ciclo di controllo di gestione completo sullo stesso periodo.</li><li>Per il dettaglio di configurazione e utilizzo di ciascuna metodologia, vedi il README del modulo specifico (<code>custom/cmc_*/README.md</code>).</li><li>Per popolare rapidamente un ambiente demo con dati coerenti su tutta la suite, esegui <code>scripts/cmc_seed_full.py</code> (vedi intestazione script per i parametri di connessione).</li></ol>
+<h2>Note</h2>
+<ul><li><code>cmc_suite</code> è solo un aggregatore: disinstallarlo <strong>non</strong> rimuove i moduli dipendenti già installati (comportamento standard Odoo).</li><li>Se non serve il bridge MRP o Timesheet, installa i moduli singolarmente invece di <code>cmc_suite</code> (evita di tirare dentro <code>hr_timesheet</code>/<code>mrp_account</code>).</li></ul>
+</div>
+</div>
+</section>

@@ -1,0 +1,18 @@
+<section class="oe_container">
+<div class="oe_row oe_spaced">
+<div class="oe_span12">
+<h1>CMC – Integrazione Contabile (cmc_account)</h1>
+<p>Modulo <strong>ponte</strong> della suite CMC. Dipende da <code>cmc_base</code> e <code>account</code>.</p>
+<h2>Obiettivo</h2>
+<p>Alimentare il controllo di gestione con i <strong>dati reali della contabilità</strong>: le righe analitiche generate dalla co.ge. vengono <strong>classificate automaticamente</strong> secondo la tassonomia CMC (comportamento, diretto/indiretto, elemento di costo), così da entrare nella base di costo senza doppia imputazione.</p>
+<p><img src="class_rule.png" alt="Regole di classificazione" class="img img-fluid"/></p>
+<h2>Configurazione (step-by-step)</h2>
+<ol><li>Installa <code>cmc_account</code> (richiede <code>cmc_base</code> + <code>account</code>).</li><li><strong>Mappatura conto → elemento</strong>: apri un conto (<em>Contabilità › Configurazione › Piano dei conti</em>) e valorizza <strong>Elemento di costo CMC</strong> per assegnare la natura del costo.</li><li><strong>Regole di classificazione</strong>: <em>Controllo di gestione › Configurazione › Integrazione contabile › Classification Rules</em> → <strong>Nuovo</strong>.</li></ol>
+<ul><li><strong>Match</strong> (lascia vuoto = qualsiasi): conto, prefisso codice conto, categoria prodotto, partner, centro.</li><li><strong>Assegna</strong> (solo fill): comportamento (fisso/variabile), diretto/indiretto, elemento di costo.</li><li>L&#x27;ordine (<strong>sequence</strong>) determina la priorità: la prima regola che combacia vince.</li></ul>
+<h2>Utilizzo (step-by-step)</h2>
+<ol><li>Registra normalmente in contabilità con conto analitico: alla creazione della riga analitica scatta l&#x27;<strong>auto-classificazione</strong> (<code>_cmc_auto_classify</code>) secondo le regole.</li><li><strong>Verifica gli scoperti</strong>: <em>Operazioni › Analisi &amp; controllo › Unclassified Cost Lines</em> elenca le righe non ancora classificate — aggiungi/riordina le regole finché la lista si svuota.</li><li>Le righe classificate confluiscono automaticamente nella base di costo di <code>cmc_base</code> (registrazione costi, ribaltamento, quadro analisi).</li></ol>
+<h2>Note</h2>
+<ul><li>La classificazione manuale (<code>cmc_classified_manually</code>) ha la precedenza e non viene sovrascritta dalle regole.</li><li>Base per i ponti operativi <code>cmc_hr_timesheet</code> (manodopera da timesheet) e <code>cmc_mrp</code> (costo primo da produzione), che ne estendono l&#x27;auto-classificazione.</li></ul>
+</div>
+</div>
+</section>

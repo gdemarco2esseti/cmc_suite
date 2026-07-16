@@ -13,16 +13,32 @@ nella base di costo senza doppia imputazione.
 
 ## Configurazione (step-by-step)
 
+La classificazione automatica di ogni riga analitica combina **due strati** (non sono
+alternative: lavorano insieme sulla stessa riga).
+
 1. Installa `cmc_account` (richiede `cmc_base` + `account`).
-2. **Mappatura conto → elemento**: apri un conto (*Contabilità › Configurazione › Piano
-   dei conti*) e valorizza **Elemento di costo CMC** per assegnare la natura del costo.
-3. **Regole di classificazione**: *Controllo di gestione › Configurazione › Integrazione
-   contabile › Classification Rules* → **Nuovo**.
+
+2. **Strato 1 — Mappatura conto → elemento** (assegna *solo l'elemento di costo*). Apri un
+   conto (*Contabilità › Configurazione › Piano dei conti*) e valorizza **Elemento di costo
+   CMC**. È la scorciatoia "questo conto è **sempre** questa natura di costo" (es. conto
+   *600100 Materie prime* → elemento *MP*). La mappatura **non** dice se il costo è
+   fisso/variabile o diretto/indiretto: solo la natura.
+
+3. **Strato 2 — Regole di classificazione** (assegnano *il resto*: comportamento e
+   diretto/indiretto, più l'elemento come **ripiego**). *Controllo di gestione ›
+   Configurazione › Integrazione contabile › Classification Rules* → **Nuovo**.
    - **Match** (lascia vuoto = qualsiasi): conto, prefisso codice conto, categoria
      prodotto, partner, centro.
-   - **Assegna** (solo fill): comportamento (fisso/variabile), diretto/indiretto,
-     elemento di costo.
+   - **Assegna** (solo fill): comportamento (fisso/variabile), diretto/indiretto, e —
+     solo se lo Strato 1 non ha già dato l'elemento — l'elemento di costo.
    - L'ordine (**sequence**) determina la priorità: la prima regola che combacia vince.
+
+   **Come si combinano su una riga**: prima la mappatura del conto fissa l'elemento; poi la
+   prima regola che combacia aggiunge comportamento e diretto/indiretto. Se il conto era
+   muto sull'elemento, ci pensa la regola. Perciò tipicamente usi la **mappatura** per la
+   natura del costo (stabile, per conto) e le **regole** per comportamento e direttezza
+   (dipendono dal contesto: centro, partner, categoria prodotto). Regola *fill-only*: non
+   sovrascrive mai un valore già presente.
 
 ## Utilizzo (step-by-step)
 

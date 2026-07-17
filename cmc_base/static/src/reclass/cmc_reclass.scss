@@ -1,0 +1,10 @@
+.cmc_reclass {
+    .cmc_reclass_title { font-weight: 600; font-size: 1.05rem; }
+    .cmc_reclass_sub { font-size: .85rem; margin-bottom: .5rem; }
+    .cmc_reclass_tbl {
+        td, th { white-space: nowrap; }
+        tr.cmc_k_subtotal td { font-weight: 600; border-top: 1px solid var(--gray-400, #ced4da); }
+        tr.cmc_k_result td { font-weight: 700; border-top: 2px solid var(--gray-500, #adb5bd); }
+        tr.cmc_k_percent td { font-style: italic; color: var(--gray-600, #6c757d); }
+    }
+}

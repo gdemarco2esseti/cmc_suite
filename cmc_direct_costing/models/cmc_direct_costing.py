@@ -3,8 +3,45 @@ from odoo import api, fields, models
 
 class CmcDirectCosting(models.Model):
     _name = "cmc.direct.costing"
+    _inherit = ["cmc.reclass.mixin"]
     _description = "Direct Costing / Contribution Margin Analysis"
     _order = "date_to desc, name"
+
+    def _cmc_reclass(self):
+        self.ensure_one()
+        lines = self.line_ids
+        cols = [{"key": "l%s" % ln.id, "label": ln.name} for ln in lines]
+
+        def vals(field):
+            return {"l%s" % ln.id: getattr(ln, field) for ln in lines}
+
+        def tot(field):
+            return sum(lines.mapped(field))
+
+        rev_tot = tot("revenue")
+        rows = [
+            {"label": "Ricavi", "kind": "revenue",
+             "values": vals("revenue"), "total": rev_tot},
+            {"label": "Costo variabile", "kind": "subtract",
+             "values": vals("variable_cost"), "total": tot("variable_cost")},
+            {"label": "MC lordo", "kind": "subtotal",
+             "values": vals("mc_gross"), "total": self.total_mc_gross},
+            {"label": "MC %", "kind": "percent",
+             "values": {"l%s" % ln.id: ln.mc_ratio for ln in lines},
+             "total": (self.total_mc_gross / rev_tot * 100) if rev_tot else 0.0},
+            {"label": "Costi fissi specifici", "kind": "subtract",
+             "values": vals("specific_fixed_cost"),
+             "total": tot("specific_fixed_cost")},
+            {"label": "MC semilordo", "kind": "subtotal",
+             "values": vals("mc_semigross"), "total": self.total_mc_semigross},
+            {"label": "Costi fissi comuni", "kind": "subtract",
+             "values": None, "total": self.common_fixed_cost},
+            {"label": "Risultato operativo", "kind": "result",
+             "values": None, "total": self.operating_result},
+        ]
+        return {"title": "Conto economico a margine di contribuzione",
+                "subtitle": "%s · %s" % (self.name, self._reclass_period()),
+                "currency": self._reclass_ccy(), "columns": cols, "rows": rows}
     _check_company_auto = True
 
     name = fields.Char(required=True, default=lambda s: s.env._("Direct Costing"))

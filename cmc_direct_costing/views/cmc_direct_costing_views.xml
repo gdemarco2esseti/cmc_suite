@@ -39,20 +39,27 @@
                             <field name="currency_id" invisible="1"/>
                         </group>
                     </group>
-                    <field name="line_ids">
-                        <list editable="bottom">
-                            <field name="name"/>
-                            <field name="revenue"/>
-                            <field name="variable_cost"/>
-                            <field name="mc_gross" sum="Gross MC"/>
-                            <field name="mc_ratio"/>
-                            <field name="specific_fixed_cost"
-                                   column_invisible="parent.mode == 'simple'"/>
-                            <field name="mc_semigross" sum="Semigross"
-                                   column_invisible="parent.mode == 'simple'"/>
-                            <field name="currency_id" column_invisible="1"/>
-                        </list>
-                    </field>
+                    <notebook>
+                        <page string="Righe" name="lines">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="revenue"/>
+                                    <field name="variable_cost"/>
+                                    <field name="mc_gross" sum="Gross MC"/>
+                                    <field name="mc_ratio"/>
+                                    <field name="specific_fixed_cost"
+                                           column_invisible="parent.mode == 'simple'"/>
+                                    <field name="mc_semigross" sum="Semigross"
+                                           column_invisible="parent.mode == 'simple'"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Riclassificato" name="reclass">
+                            <field name="cmc_reclass_json" widget="cmc_reclass" nolabel="1"/>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

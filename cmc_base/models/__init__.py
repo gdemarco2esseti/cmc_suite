@@ -7,3 +7,4 @@ from . import cmc_closing
 from . import cmc_capacity
 from . import cmc_cost_analysis
 from . import cmc_cockpit
+from . import cmc_reclass_mixin

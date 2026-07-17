@@ -10,6 +10,7 @@
         "security/ir.model.access.csv",
         "security/cmc_abc_security.xml",
         "views/cmc_abc_views.xml",
+        "report/report_actions.xml",
     ],
     "installable": True,
     "auto_install": False,

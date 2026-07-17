@@ -9,8 +9,42 @@ from odoo.addons.cmc_base.models.cmc_utils import largest_remainder
 
 class CmcCostingRun(models.Model):
     _name = "cmc.costing.run"
+    _inherit = ["cmc.reclass.mixin"]
     _description = "Full Cost Run (base unica/multipla)"
     _order = "date_to desc, id desc"
+
+    def _cmc_reclass(self):
+        self.ensure_one()
+        res = self.result_ids
+        cols = [{"key": "p%s" % r.product_id.id,
+                 "label": r.product_id.display_name} for r in res]
+
+        def vals(field):
+            return {"p%s" % r.product_id.id: getattr(r, field) for r in res}
+
+        def tot(field):
+            return sum(res.mapped(field))
+
+        rows = [
+            {"label": "Costo primo", "kind": "plain",
+             "values": vals("cost_primo"), "total": tot("cost_primo")},
+            {"label": "Overhead industriale", "kind": "plain",
+             "values": vals("cost_indiretto"), "total": tot("cost_indiretto")},
+            {"label": "Costo industriale", "kind": "subtotal",
+             "values": vals("cost_industriale"), "total": tot("cost_industriale")},
+            {"label": "Comm. & Amm.", "kind": "plain",
+             "values": vals("cost_comm_admin"), "total": tot("cost_comm_admin")},
+            {"label": "Costo complessivo", "kind": "subtotal",
+             "values": vals("cost_complessivo"), "total": tot("cost_complessivo")},
+            {"label": "Figurativo", "kind": "plain",
+             "values": vals("cost_figurativo"), "total": tot("cost_figurativo")},
+            {"label": "Costo economico-tecnico", "kind": "result",
+             "values": vals("cost_economico_tecnico"),
+             "total": tot("cost_economico_tecnico")},
+        ]
+        return {"title": "Costo pieno per configurazione",
+                "subtitle": "%s · %s" % (self.name, self._reclass_period()),
+                "currency": self._reclass_ccy(), "columns": cols, "rows": rows}
     _check_company_auto = True
 
     name = fields.Char(required=True, default=lambda self: self.env._("Costing"))

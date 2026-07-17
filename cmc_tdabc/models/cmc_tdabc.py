@@ -142,8 +142,59 @@ SCENARIOS = [("manual", "Estimate (equation)"), ("timesheet", "Actual (timesheet
 
 class CmcTdabcRun(models.Model):
     _name = "cmc.tdabc.run"
+    _inherit = ["cmc.reclass.mixin"]
     _description = "TDABC Costing Run"
     _check_company_auto = True
+
+    def _cmc_reclass(self):
+        self.ensure_one()
+        res = self.result_ids
+
+        def okey(r):
+            return ("p%s" % r.product_id.id) if r.product_id \
+                else ("c%s" % r.partner_id.id)
+
+        def olabel(r):
+            if r.product_id:
+                return r.product_id.display_name
+            if r.partner_id:
+                return r.partner_id.display_name
+            return self.env._("(nessun oggetto)")
+
+        cols, seen = [], set()
+        for r in res:
+            k = okey(r)
+            if k not in seen:
+                seen.add(k)
+                cols.append({"key": k, "label": olabel(r)})
+
+        labelmap = {"manual": "stima", "timesheet": "consuntivo"}
+        scenarios = [s for s in ("manual", "timesheet")
+                     if res.filtered(lambda x: x.scenario == s)]
+        rows = []
+        for s in scenarios:
+            sres = res.filtered(lambda x: x.scenario == s)
+            values = {}
+            for r in sres:
+                values[okey(r)] = values.get(okey(r), 0.0) + r.cost_absorbed
+            rows.append({"label": "Costo assorbito · %s" % labelmap[s],
+                         "kind": "plain", "values": values,
+                         "total": sum(sres.mapped("cost_absorbed"))})
+        if len(scenarios) > 1:
+            tvalues = {}
+            for r in res:
+                tvalues[okey(r)] = tvalues.get(okey(r), 0.0) + r.cost_absorbed
+            rows.append({"label": "Costo assorbito totale", "kind": "subtotal",
+                         "values": tvalues,
+                         "total": sum(res.mapped("cost_absorbed"))})
+        for s in scenarios:
+            cres = self.capacity_result_ids.filtered(lambda x: x.scenario == s)
+            rows.append({"label": "Capacità inutilizzata · %s" % labelmap[s],
+                         "kind": "subtract", "values": None,
+                         "total": sum(cres.mapped("unused_cost"))})
+        return {"title": "Costo assorbito TDABC (stima vs consuntivo)",
+                "subtitle": "%s · %s" % (self.name, self._reclass_period()),
+                "currency": self._reclass_ccy(), "columns": cols, "rows": rows}
 
     name = fields.Char(required=True, default=lambda self: self.env._("TDABC Run"))
     company_id = fields.Many2one(

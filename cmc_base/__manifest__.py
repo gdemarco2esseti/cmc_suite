@@ -22,10 +22,12 @@
         "views/cmc_capacity_views.xml",
         "views/cmc_reporting_views.xml",
         "views/report_consuntivo.xml",
+        "report/report_reclass.xml",
     ],
     "assets": {
         "web.assets_backend": [
             "cmc_base/static/src/cockpit/**/*",
+            "cmc_base/static/src/reclass/**/*",
         ],
     },
     "installable": True,

@@ -12,6 +12,7 @@
         "views/cmc_cvr_views.xml",
         "views/cmc_direct_costing_views.xml",
         "views/cmc_differential_views.xml",
+        "report/report_actions.xml",
     ],
     "installable": True,
     "application": False,

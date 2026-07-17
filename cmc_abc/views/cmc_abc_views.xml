@@ -88,6 +88,9 @@
                                 </list>
                             </field>
                         </page>
+                        <page string="Riclassificato" name="reclass">
+                            <field name="cmc_reclass_json" widget="cmc_reclass" nolabel="1"/>
+                        </page>
                     </notebook>
                 </sheet>
             </form>

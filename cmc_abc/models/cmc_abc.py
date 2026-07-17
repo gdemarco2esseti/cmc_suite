@@ -26,8 +26,43 @@ class CmcAbcActivity(models.Model):
 
 class CmcAbcRun(models.Model):
     _name = "cmc.abc.run"
+    _inherit = ["cmc.reclass.mixin"]
     _description = "ABC Costing Run"
     _check_company_auto = True
+
+    def _cmc_reclass(self):
+        self.ensure_one()
+        res = self.result_ids
+        prods = res.mapped("product_id")
+        cols = [{"key": "p%s" % p.id, "label": p.display_name} for p in prods]
+        pools = self.env["account.analytic.line"]._cmc_activity_pools(
+            self.date_from, self.date_to, self.company_id)
+        # single pass over the input lines: driver qty per (activity, product)
+        # and total driver qty per activity (avoids nested .filtered per read).
+        qty_ap = defaultdict(float)
+        qty_a = defaultdict(float)
+        for line in self.line_ids:
+            qty_ap[(line.activity_id.id, line.product_id.id)] += line.driver_qty
+            qty_a[line.activity_id.id] += line.driver_qty
+        rows = []
+        for act in self.line_ids.mapped("activity_id"):
+            # abs(): pools carry the signed analytic amount (costs are negative);
+            # the engine (_compute_abc) uses abs() too, so the reclass reconciles
+            # with the positive `Costo ABC totale` subtotal built from res.amount.
+            pool = abs(pools.get(act.id, 0.0))
+            tot_qty = qty_a[act.id]
+            values = {}
+            for p in prods:
+                qty = qty_ap.get((act.id, p.id), 0.0)
+                values["p%s" % p.id] = (pool * qty / tot_qty) if tot_qty else 0.0
+            rows.append({"label": act.display_name, "kind": "plain",
+                         "values": values, "total": pool})
+        rows.append({"label": "Costo ABC totale", "kind": "subtotal",
+                     "values": {"p%s" % r.product_id.id: r.amount for r in res},
+                     "total": sum(res.mapped("amount"))})
+        return {"title": "Costo per attività (ABC)",
+                "subtitle": "%s · %s" % (self.name, self._reclass_period()),
+                "currency": self._reclass_ccy(), "columns": cols, "rows": rows}
 
     name = fields.Char(
         required=True, default=lambda self: self.env._("ABC Run")

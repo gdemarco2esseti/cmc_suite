@@ -25,17 +25,17 @@
                 </div>
                 <button class="btn btn-primary" t-on-click="() => this.openStep(next.action)"
                         t-attf-aria-label="Apri {{ next.label }}">
-                    Continua
+                    Continue
                 </button>
             </div>
             <div t-else="" class="alert alert-success d-flex align-items-center gap-2 mb-4" role="status">
                 <i class="fa fa-check-circle fa-lg" aria-hidden="true"/>
-                <span>Base di costo pronta. Scegli e applica una metodologia di costing qui sotto.</span>
+                <span>Cost base ready. Pick a costing methodology below and apply it.</span>
             </div>
 
             <!-- foundation pipeline (sequential, numbered) -->
             <div class="o_cmc_section_label text-muted small text-uppercase mb-2">
-                Base di costo
+                Cost base
             </div>
             <div class="o_cmc_steps d-flex flex-wrap align-items-stretch gap-2 mb-4" role="list">
                 <t t-foreach="state.data.pipeline" t-as="step" t-key="step.key">
@@ -59,7 +59,7 @@
             <!-- costing methodologies (parallel alternatives) -->
             <div t-if="state.data.methods.length" class="mb-4">
                 <div class="o_cmc_section_label text-muted small text-uppercase mb-2">
-                    Metodologie di costing
+                    Costing methodologies
                     <span class="o_cmc_hint">— pick the one you need and apply it</span>
                 </div>
                 <div class="row g-2">
@@ -113,14 +113,14 @@
             <div class="card o_cmc_chart_card">
                 <div class="card-body">
                     <div class="o_cmc_kpi_label text-muted small text-uppercase mb-2">
-                        Costi per natura (elemento)
+                        Costs by nature (element)
                     </div>
                     <div t-if="hasChart" class="o_cmc_chart_wrap">
                         <canvas t-ref="chartCanvas"/>
                     </div>
                     <div t-else="" class="o_cmc_center text-muted d-flex flex-column align-items-center p-4">
                         <i class="fa fa-bar-chart fa-2x mb-2" aria-hidden="true"/>
-                        <span>Nessun costo classificato per elemento. Registra i costi per vederli qui.</span>
+                        <span>No cost classified by element yet. Book costs to see them here.</span>
                     </div>
                 </div>
             </div>

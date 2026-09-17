@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="action_cmc_cockpit_dashboard" model="ir.actions.client">
-        <field name="name">Cruscotto</field>
+        <field name="name">Cockpit</field>
         <field name="tag">cmc_cockpit</field>
     </record>
 
     <menuitem id="menu_cmc_cockpit"
-              name="Cruscotto"
+              name="Cockpit"
               parent="menu_cmc_root"
               action="action_cmc_cockpit_dashboard"
               sequence="1"/>

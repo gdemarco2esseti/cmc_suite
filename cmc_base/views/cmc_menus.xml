@@ -43,7 +43,7 @@
               sequence="90"
               groups="cmc_base.group_cmc_manager"/>
     <menuitem id="menu_cmc_cfg_master"
-              name="Anagrafiche"
+              name="Master Data"
               parent="menu_cmc_config"
               sequence="10"/>
     <menuitem id="menu_cmc_cost_driver"

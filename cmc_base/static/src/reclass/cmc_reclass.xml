@@ -8,10 +8,10 @@
                 <table class="table table-sm cmc_reclass_tbl">
                     <thead>
                         <tr>
-                            <th>Voce</th>
+                            <th>Item</th>
                             <th class="text-end" t-foreach="data.columns" t-as="c"
                                 t-key="c.key" t-esc="c.label"/>
-                            <th class="text-end">Totale</th>
+                            <th class="text-end">Total</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -30,7 +30,7 @@
             </div>
         </div>
         <div t-else="" class="text-muted p-3">
-            Esegui il calcolo per vedere il riclassificato.
+            Run the computation to see the reclassified view.
         </div>
     </t>
 </templates>

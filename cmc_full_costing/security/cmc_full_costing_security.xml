@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data noupdate="1">
+    <!-- ACL note (security/ir.model.access.csv): cmc.costing.result/.quota/
+         .config are engine-written only. Users get read-only access (1,0,0,0)
+         so nobody can inject rows over RPC into a run they can merely read;
+         _compute_costing() creates and unlinks them under sudo. -->
+    <!-- record rules live OUTSIDE noupdate: a domain fix must be able to
+         reach databases that already have the module installed -->
+    <data>
         <record id="cmc_costing_run_company_rule" model="ir.rule">
             <field name="name">CMC costing run: multi-company</field>
             <field name="model_id" ref="model_cmc_costing_run"/>
@@ -18,6 +24,20 @@
         <record id="cmc_costing_result_company_rule" model="ir.rule">
             <field name="name">CMC costing result: multi-company</field>
             <field name="model_id" ref="model_cmc_costing_result"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_costing_quota_company_rule" model="ir.rule">
+            <field name="name">CMC costing quota: multi-company</field>
+            <field name="model_id" ref="model_cmc_costing_quota"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_costing_config_company_rule" model="ir.rule">
+            <field name="name">CMC costing config: multi-company</field>
+            <field name="model_id" ref="model_cmc_costing_config"/>
             <field name="global" eval="True"/>
             <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
         </record>

@@ -7,7 +7,7 @@ class CmcDifferentialAnalysis(models.TransientModel):
     _check_company_auto = True
 
     company_id = fields.Many2one(
-        "res.company", required=True, default=lambda s: s.env.company
+        "res.company", required=True, default=lambda s: s.env.company, index=True
     )
     currency_id = fields.Many2one(related="company_id.currency_id")
     decision_type = fields.Selection(
@@ -27,24 +27,28 @@ class CmcDifferentialAnalysis(models.TransientModel):
     # drop line
     lost_contribution = fields.Monetary(string="Lost Contribution Margin")
     avoidable_fixed = fields.Monetary(string="Avoidable Fixed Cost")
-    # replace
-    new_relevant_cost = fields.Monetary(string="Keep — relevant cost")
-    old_relevant_cost = fields.Monetary(string="Replace — relevant cost")
+    # replace: the names follow the labels, so an edit cannot flip the sign
+    keep_relevant_cost = fields.Monetary(string="Keep — relevant cost")
+    replace_relevant_cost = fields.Monetary(string="Replace — relevant cost")
 
     differential = fields.Monetary(compute="_compute_result")
     verdict = fields.Char(compute="_compute_result")
 
+    def _verdicts(self, decision_type):
+        """(verdict when differential > 0, verdict when < 0). The literals sit
+        here so the translation extractor can see them."""
+        if decision_type == "make_or_buy":
+            return self.env._("Buy"), self.env._("Make")
+        if decision_type == "drop_line":
+            return self.env._("Keep line"), self.env._("Eliminate line")
+        return self.env._("Replace"), self.env._("Keep machine")
+
     @api.depends(
         "decision_type", "volume", "make_unit_cost", "buy_unit_cost",
         "opportunity_cost", "lost_contribution", "avoidable_fixed",
-        "new_relevant_cost", "old_relevant_cost",
+        "keep_relevant_cost", "replace_relevant_cost",
     )
     def _compute_result(self):
-        verdicts = {
-            "make_or_buy": ("Buy", "Make"),
-            "drop_line": ("Keep line", "Eliminate line"),
-            "replace": ("Replace", "Keep machine"),
-        }
         for rec in self:
             t = rec.decision_type
             if t == "make_or_buy":
@@ -53,11 +57,15 @@ class CmcDifferentialAnalysis(models.TransientModel):
             elif t == "drop_line":
                 rec.differential = rec.lost_contribution - rec.avoidable_fixed
             else:  # replace
-                rec.differential = rec.new_relevant_cost - rec.old_relevant_cost
-            pos, neg = verdicts[t]
-            if rec.differential > 0:
-                rec.verdict = rec.env._(pos)
-            elif rec.differential < 0:
-                rec.verdict = rec.env._(neg)
+                rec.differential = (
+                    rec.keep_relevant_cost - rec.replace_relevant_cost
+                )
+            pos, neg = rec._verdicts(t)
+            # a few cents of rounding noise must not read as a confident verdict
+            sign = rec.currency_id.compare_amounts(rec.differential, 0.0)
+            if sign > 0:
+                rec.verdict = pos
+            elif sign < 0:
+                rec.verdict = neg
             else:
                 rec.verdict = rec.env._("Indifferent")

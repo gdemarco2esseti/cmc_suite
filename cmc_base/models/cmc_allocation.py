@@ -1,11 +1,13 @@
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
-from odoo.tools import float_round
+from odoo.tools import float_is_zero
+
+from .cmc_utils import largest_remainder
 
 
 class CmcAllocation(models.Model):
     _name = "cmc.allocation"
-    _description = "Cost Allocation (base di riparto)"
+    _description = "Cost Allocation"
     _check_company_auto = True
     _check_company_domain = models.check_company_domain_parent_of
 
@@ -28,8 +30,12 @@ class CmcAllocation(models.Model):
     @api.constrains("amount", "line_ids")
     def _check_allocation_base(self):
         for alloc in self:
-            if alloc.amount and alloc.line_ids and not sum(
-                alloc.line_ids.mapped("quantity")
+            rounding = (alloc.company_id or self.env.company).currency_id.rounding
+            base = sum(alloc.line_ids.mapped("quantity"))
+            if (
+                alloc.amount
+                and alloc.line_ids
+                and float_is_zero(base, precision_rounding=rounding)
             ):
                 raise ValidationError(
                     self.env._(
@@ -46,33 +52,23 @@ class CmcAllocation(models.Model):
         rounding = (self.company_id or self.env.company).currency_id.rounding
         weights = {line.id: line.quantity for line in self.line_ids}
         total_weight = sum(weights.values())
-        if not total_weight:
-            return {line_id: 0.0 for line_id in weights}
+        if float_is_zero(total_weight, precision_rounding=rounding):
+            return dict.fromkeys(weights, 0.0)
         raw = {k: self.amount * w / total_weight for k, w in weights.items()}
-        rounded = {k: float_round(v, precision_rounding=rounding) for k, v in raw.items()}
-        residual = float_round(
-            self.amount - sum(rounded.values()), precision_rounding=rounding
-        )
-        if residual:
-            step = rounding if residual > 0 else -rounding
-            order = sorted(raw, key=lambda k: raw[k] - rounded[k], reverse=residual > 0)
-            i = 0
-            while float_round(residual, precision_rounding=rounding) != 0 and order:
-                k = order[i % len(order)]
-                rounded[k] = float_round(rounded[k] + step, precision_rounding=rounding)
-                residual = float_round(residual - step, precision_rounding=rounding)
-                i += 1
-        return rounded
+        return largest_remainder(self.amount, raw, rounding)
 
 
 class CmcAllocationLine(models.Model):
     _name = "cmc.allocation.line"
     _description = "Cost Allocation Line"
+    _check_company_auto = True
 
     allocation_id = fields.Many2one(
         "cmc.allocation", required=True, ondelete="cascade", index=True
     )
-    company_id = fields.Many2one(related="allocation_id.company_id", store=True)
+    company_id = fields.Many2one(
+        related="allocation_id.company_id", store=True, index=True
+    )
     currency_id = fields.Many2one(related="allocation_id.currency_id")
     target_account_id = fields.Many2one(
         "account.analytic.account", required=True, check_company=True
@@ -80,6 +76,11 @@ class CmcAllocationLine(models.Model):
     quantity = fields.Float(string="Driver Quantity", required=True)
     allocated_amount = fields.Monetary(
         compute="_compute_allocated_amount", store=True
+    )
+
+    _quantity_non_negative = models.Constraint(
+        "CHECK(quantity >= 0)",
+        "A driver quantity cannot be negative: it would invert the allocation.",
     )
 
     @api.depends(

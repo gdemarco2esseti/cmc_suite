@@ -10,6 +10,7 @@
                 <field name="total_mc_gross" sum="Gross MC"/>
                 <field name="total_mc_semigross" sum="Semigross MC"/>
                 <field name="operating_result" sum="Result"/>
+                <field name="company_id" groups="base.group_multi_company"/>
                 <field name="currency_id" column_invisible="1"/>
             </list>
         </field>
@@ -40,7 +41,7 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Righe" name="lines">
+                        <page string="Lines" name="lines">
                             <field name="line_ids">
                                 <list editable="bottom">
                                     <field name="name"/>
@@ -56,7 +57,7 @@
                                 </list>
                             </field>
                         </page>
-                        <page string="Riclassificato" name="reclass">
+                        <page string="Reclassified" name="reclass">
                             <field name="cmc_reclass_json" widget="cmc_reclass" nolabel="1"/>
                         </page>
                     </notebook>

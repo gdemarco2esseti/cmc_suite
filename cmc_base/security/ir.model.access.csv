@@ -17,4 +17,4 @@ access_cmc_cost_element_user,cmc.cost.element.user,model_cmc_cost_element,cmc_ba
 access_cmc_cost_element_manager,cmc.cost.element.manager,model_cmc_cost_element,cmc_base.group_cmc_manager,1,1,1,1
 access_cmc_cost_analysis_user,cmc.cost.analysis.line.user,model_cmc_cost_analysis_line,cmc_base.group_cmc_user,1,0,1,1
 access_cmc_cost_analysis_manager,cmc.cost.analysis.line.manager,model_cmc_cost_analysis_line,cmc_base.group_cmc_manager,1,1,1,1
-access_cmc_cockpit_user,cmc.cockpit.user,model_cmc_cockpit,cmc_base.group_cmc_user,1,1,1,1
+access_cmc_cockpit_user,cmc.cockpit.user,model_cmc_cockpit,cmc_base.group_cmc_user,1,0,0,0

@@ -1,5 +1,14 @@
 from odoo import api, fields, models
+from odoo.fields import Domain
 from odoo.exceptions import UserError, ValidationError
+
+CAPACITY_DERIVED_FIELDS = (
+    "fixed_cost",
+    "fixed_cost_coefficient",
+    "imputed_fixed_cost",
+    "unused_capacity_cost",
+    "utilization_rate",
+)
 
 
 class AccountAnalyticLine(models.Model):
@@ -28,6 +37,7 @@ class AccountAnalyticLine(models.Model):
         string="Cost Center",
         compute="_compute_cmc_center_id",
         inverse="_inverse_cmc_center_id",
+        search="_search_cmc_center_id",
         store=False,
         domain="['|', ('cmc_center_type', '!=', False), ('cmc_is_period', '=', True)]",
         help="Convenience field: routes the cost to a cost center regardless of "
@@ -86,6 +96,15 @@ class AccountAnalyticLine(models.Model):
                 lambda a: a.cmc_center_type or a.cmc_is_period
             )
             line.cmc_center_id = centers[:1].id if centers else False
+
+    def _search_cmc_center_id(self, operator, value):
+        """The field is the first column of the Cost Entry screen: without a
+        search implementation it cannot be filtered, grouped or sorted."""
+        if operator in Domain.NEGATIVE_OPERATORS:
+            return NotImplemented
+        return Domain.OR(
+            [[(fname, operator, value)] for fname in self._get_plan_fnames()]
+        )
 
     def _inverse_cmc_center_id(self):
         for line in self:
@@ -153,41 +172,70 @@ class AccountAnalyticLine(models.Model):
     # ---- keep capacity analyses in sync with the underlying costs ----------
 
     def _cmc_capacity_rows(self):
-        """Capacity analyses whose center+period covers these fixed lines."""
+        """Capacity analyses whose center+period covers these fixed lines.
+
+        Runs sudo on purpose: anybody may book an analytic line (timesheets,
+        vendor bills, manufacturing), while capacity rows are CMC-only data.
+        The author of the line must not need access to them just to keep the
+        derived figures in sync.
+        """
         CA = self.env["cmc.capacity.analysis"]
-        accounts = self.account_id
+        fixed = self.filtered(lambda line: line.cmc_behavior == "fixed" and line.date)
+        if not fixed:
+            return CA.sudo()
+        # plan-aware: the center may live on any analytic plan, not just the
+        # default column read by account_id.
+        accounts = fixed._get_analytic_accounts()
         if not accounts:
-            return CA
-        candidates = CA.search([("center_id", "in", accounts.ids)])
-        rows = CA
-        for line in self:
-            if line.cmc_behavior != "fixed" or not line.account_id or not line.date:
-                continue
+            return CA.sudo()
+        dates = fixed.mapped("date")
+        candidates = CA.sudo().search(
+            [
+                ("center_id", "in", accounts.ids),
+                ("date_from", "<=", max(dates)),
+                ("date_to", ">=", min(dates)),
+            ]
+        )
+        matched = set()
+        for line in fixed:
+            line_accounts = line._get_analytic_accounts()
             for ca in candidates:
                 if (
-                    ca.center_id == line.account_id
-                    and ca.date_from
-                    and ca.date_to
+                    ca.center_id in line_accounts
                     and ca.date_from <= line.date <= ca.date_to
                 ):
-                    rows |= ca
-        return rows
+                    matched.add(ca.id)
+        return CA.sudo().browse(matched)
+
+    def _cmc_touch_capacity(self, rows):
+        """Let the ORM recompute the derived figures.
+
+        Calling _compute_capacity() imperatively turns every assignment into a
+        separate write() with full access checks — five writes per capacity row
+        on every analytic-line CRUD. Scheduling the recompute batches them.
+        """
+        if not rows:
+            return
+        for fname in CAPACITY_DERIVED_FIELDS:
+            self.env.add_to_compute(rows._fields[fname], rows)
 
     @api.model_create_multi
     def create(self, vals_list):
         lines = super().create(vals_list)
-        lines._cmc_capacity_rows()._compute_capacity()
+        lines._cmc_touch_capacity(lines._cmc_capacity_rows())
         return lines
 
     def write(self, vals):
+        watched = {"amount", "date", "cmc_behavior"} | set(self._get_plan_fnames())
+        if not (vals.keys() & watched):
+            return super().write(vals)
         rows_before = self._cmc_capacity_rows()
         res = super().write(vals)
-        if vals.keys() & {"amount", "date", "cmc_behavior", "account_id"}:
-            (rows_before | self._cmc_capacity_rows())._compute_capacity()
+        self._cmc_touch_capacity(rows_before | self._cmc_capacity_rows())
         return res
 
     def unlink(self):
         rows = self._cmc_capacity_rows()
         res = super().unlink()
-        rows._compute_capacity()
+        self._cmc_touch_capacity(rows)
         return res

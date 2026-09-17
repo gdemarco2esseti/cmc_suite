@@ -10,7 +10,9 @@
                 <field name="bep_qty"/>
                 <field name="bep_revenue"/>
                 <field name="operating_leverage"/>
-                <field name="has_breakeven" widget="boolean_toggle"/>
+                <field name="has_breakeven" widget="badge"
+                       decoration-success="has_breakeven"
+                       decoration-danger="not has_breakeven"/>
                 <field name="company_id" groups="base.group_multi_company"/>
                 <field name="currency_id" column_invisible="1"/>
             </list>
@@ -107,7 +109,7 @@
     </record>
 
     <menuitem id="menu_cmc_sec_direct"
-              name="Direct costing &amp; decisioni"
+              name="Direct Costing &amp; Decisions"
               parent="cmc_base.menu_cmc_operations"
               sequence="40"/>
     <menuitem id="menu_cmc_cvr" name="CVR / Break-even"

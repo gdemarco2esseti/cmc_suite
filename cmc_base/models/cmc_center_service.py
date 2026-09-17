@@ -25,7 +25,7 @@ class CmcCenterService(models.Model):
         required=True,
         check_company=True,
         index=True,
-        domain="[('cmc_is_period', '=', False)]",
+        domain="[('cmc_center_type', '!=', False), ('cmc_is_period', '=', False)]",
     )
 
     @api.constrains("receiver_id")
@@ -38,8 +38,33 @@ class CmcCenterService(models.Model):
                         "reallocated cost would be lost (it is outside the closing)."
                     )
                 )
+
+    @api.constrains("receiver_id")
+    def _check_receiver_is_a_center(self):
+        """The domain is UI-only. An untyped receiver is not part of the closing
+        matrix, so cost distributed to it disappears and only surfaces later as
+        a cryptic "matrix not conserved" error."""
+        for svc in self:
+            if not svc.receiver_id.cmc_center_type:
+                raise ValidationError(
+                    self.env._(
+                        "Receiver %(name)s is not a cost center (no center "
+                        "type): the cost reallocated to it would be lost.",
+                        name=svc.receiver_id.display_name,
+                    )
+                )
+
     driver_id = fields.Many2one("cmc.cost.driver", required=True, check_company=True)
     quantity = fields.Float(string="Units of Service", required=True)
+
+    @api.depends("provider_id", "receiver_id", "driver_id")
+    def _compute_display_name(self):
+        for svc in self:
+            svc.display_name = "%s \u2192 %s (%s)" % (
+                svc.provider_id.display_name or "?",
+                svc.receiver_id.display_name or "?",
+                svc.driver_id.display_name or "?",
+            )
 
     _provider_receiver_uniq = models.Constraint(
         "UNIQUE(provider_id, receiver_id, driver_id, company_id)",
@@ -48,4 +73,8 @@ class CmcCenterService(models.Model):
     _no_self_service = models.Constraint(
         "CHECK(provider_id != receiver_id)",
         "A cost center cannot provide a service to itself.",
+    )
+    _quantity_non_negative = models.Constraint(
+        "CHECK(quantity >= 0)",
+        "Units of service cannot be negative: they would invert the closing.",
     )

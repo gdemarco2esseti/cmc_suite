@@ -1,3 +1,5 @@
+from datetime import date
+
 from odoo.tests.common import TransactionCase, tagged
 
 
@@ -36,6 +38,8 @@ class TestFullCostingExtra(TransactionCase):
         p1 = self.env["product.product"].create({"name": "P1", "standard_price": 10})
         run = self.env["cmc.costing.run"].create(
             {"name": "cst", "closing_run_id": closing.id, "base": "multiple",
+             "date_from": date(date.today().year, 1, 1),
+             "date_to": date(date.today().year, 12, 31),
              "product_ids": [(6, 0, p1.ids)],
              "line_ids": [(0, 0, {"center_id": z.id, "product_id": p1.id,
                                   "driver_id": self.driver.id, "driver_qty": 10})]}
@@ -57,6 +61,8 @@ class TestFullCostingExtra(TransactionCase):
             with self.env.cr.savepoint():
                 self.env["cmc.costing.run"].create(
                     {"name": "cd", "closing_run_id": closing.id, "base": "multiple",
+                     "date_from": date(date.today().year, 1, 1),
+                     "date_to": date(date.today().year, 12, 31),
                      "product_ids": [(6, 0, p.ids)],
                      "line_ids": [(0, 0, {"center_id": z.id, "product_id": p.id,
                                           "driver_id": self.driver.id, "driver_qty": 0})]}

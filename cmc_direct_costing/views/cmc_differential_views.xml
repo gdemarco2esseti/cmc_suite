@@ -22,8 +22,8 @@
                         <field name="avoidable_fixed"/>
                     </group>
                     <group string="Replace Machine" invisible="decision_type != 'replace'">
-                        <field name="new_relevant_cost"/>
-                        <field name="old_relevant_cost"/>
+                        <field name="keep_relevant_cost"/>
+                        <field name="replace_relevant_cost"/>
                     </group>
                     <group string="Result">
                         <field name="differential"/>

@@ -17,8 +17,8 @@ class TestDirectReclass(TransactionCase):
         d = self._dc()._cmc_reclass()
         self.assertEqual(len(d["columns"]), 2)
         labels = [r["label"] for r in d["rows"]]
-        self.assertIn("MC lordo", labels)
-        self.assertIn("Risultato operativo", labels)
+        self.assertIn("Gross CM", labels)
+        self.assertIn("Operating result", labels)
         for r in d["rows"]:
             self.assertIn("kind", r)
             self.assertIn("total", r)
@@ -28,11 +28,21 @@ class TestDirectReclass(TransactionCase):
         d = dc._cmc_reclass()
         rows = {r["label"]: r for r in d["rows"]}
         ka = "l%s" % dc.line_ids[0].id
-        self.assertAlmostEqual(rows["MC lordo"]["values"][ka], 10000 - 6000, 2)
+        self.assertAlmostEqual(rows["Gross CM"]["values"][ka], 10000 - 6000, 2)
         self.assertAlmostEqual(
-            rows["Risultato operativo"]["total"], dc.operating_result, 2)
-        self.assertIsNone(rows["Costi fissi comuni"]["values"])
+            rows["Operating result"]["total"], dc.operating_result, 2)
+        self.assertIsNone(rows["Common fixed costs"]["values"])
 
     def test_json_field(self):
         dc = self._dc()
         self.assertEqual(dc.cmc_reclass_json, dc._cmc_reclass())
+
+    # item 13 — simple mode drops the semigross rows instead of showing a
+    # margin the engine does not compute
+    def test_simple_mode_rows(self):
+        dc = self._dc()
+        dc.mode = "simple"
+        labels = [r["label"] for r in dc._cmc_reclass()["rows"]]
+        self.assertNotIn("Semigross CM", labels)
+        self.assertNotIn("Specific fixed costs", labels)
+        self.assertIn("Gross CM", labels)

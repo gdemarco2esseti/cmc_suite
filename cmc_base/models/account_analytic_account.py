@@ -4,7 +4,10 @@ from odoo.exceptions import ValidationError
 
 class AccountAnalyticAccount(models.Model):
     _inherit = "account.analytic.account"
-    _parent_name = "cmc_parent_id"
+    # NB: deliberately no _parent_name override — retargeting child_of /
+    # parent_of for every reader of this core model buys nothing here
+    # (no _parent_store, and the suite never queries the CMC hierarchy);
+    # _check_cmc_center_cycle below guards the recursion explicitly.
 
     cmc_center_type = fields.Selection(
         selection=[

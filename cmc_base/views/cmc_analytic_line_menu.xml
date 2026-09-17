@@ -46,6 +46,7 @@
         <field name="name">Cost Entries</field>
         <field name="res_model">account.analytic.line</field>
         <field name="view_mode">list,form</field>
+        <field name="domain">[('cmc_behavior', '!=', False)]</field>
         <field name="view_ids" eval="[(5, 0, 0),
             (0, 0, {'sequence': 1, 'view_mode': 'list', 'view_id': ref('view_cmc_cost_entry_list')}),
             (0, 0, {'sequence': 2, 'view_mode': 'form', 'view_id': ref('view_cmc_cost_entry_form')})]"/>

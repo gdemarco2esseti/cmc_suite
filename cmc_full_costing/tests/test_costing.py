@@ -1,3 +1,5 @@
+from datetime import date
+
 from odoo.exceptions import ValidationError
 from odoo.tests.common import TransactionCase, tagged
 
@@ -48,6 +50,8 @@ class TestCosting(TransactionCase):
         vals = {
             "name": "Costing",
             "closing_run_id": self.closing.id,
+            "date_from": date(date.today().year, 1, 1),
+            "date_to": date(date.today().year, 12, 31),
             "base": base,
             "product_ids": [(6, 0, (self.p1 | self.p2).ids)],
             "line_ids": [(0, 0, ln) for ln in lines],
@@ -119,6 +123,8 @@ class TestCosting(TransactionCase):
             {
                 "name": "Costing",
                 "closing_run_id": self.closing.id,
+                "date_from": date(date.today().year, 1, 1),
+                "date_to": date(date.today().year, 12, 31),
                 "base": "multiple",
                 "product_ids": [(6, 0, self.p1.ids)],  # solo P1 nello scope
                 "line_ids": [(0, 0, ln) for ln in self._lines()],  # righe per P1 e P2

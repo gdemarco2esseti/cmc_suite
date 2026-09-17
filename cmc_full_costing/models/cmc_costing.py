@@ -1,8 +1,8 @@
 from collections import defaultdict
 
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError
-from odoo.tools import float_round
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import SQL, float_is_zero, float_round
 
 from odoo.addons.cmc_base.models.cmc_utils import largest_remainder
 
@@ -10,41 +10,8 @@ from odoo.addons.cmc_base.models.cmc_utils import largest_remainder
 class CmcCostingRun(models.Model):
     _name = "cmc.costing.run"
     _inherit = ["cmc.reclass.mixin"]
-    _description = "Full Cost Run (base unica/multipla)"
+    _description = "Full Cost Run (single/multiple allocation base)"
     _order = "date_to desc, id desc"
-
-    def _cmc_reclass(self):
-        self.ensure_one()
-        res = self.result_ids
-        cols = [{"key": "p%s" % r.product_id.id,
-                 "label": r.product_id.display_name} for r in res]
-
-        def vals(field):
-            return {"p%s" % r.product_id.id: getattr(r, field) for r in res}
-
-        def tot(field):
-            return sum(res.mapped(field))
-
-        rows = [
-            {"label": "Costo primo", "kind": "plain",
-             "values": vals("cost_primo"), "total": tot("cost_primo")},
-            {"label": "Overhead industriale", "kind": "plain",
-             "values": vals("cost_indiretto"), "total": tot("cost_indiretto")},
-            {"label": "Costo industriale", "kind": "subtotal",
-             "values": vals("cost_industriale"), "total": tot("cost_industriale")},
-            {"label": "Comm. & Amm.", "kind": "plain",
-             "values": vals("cost_comm_admin"), "total": tot("cost_comm_admin")},
-            {"label": "Costo complessivo", "kind": "subtotal",
-             "values": vals("cost_complessivo"), "total": tot("cost_complessivo")},
-            {"label": "Figurativo", "kind": "plain",
-             "values": vals("cost_figurativo"), "total": tot("cost_figurativo")},
-            {"label": "Costo economico-tecnico", "kind": "result",
-             "values": vals("cost_economico_tecnico"),
-             "total": tot("cost_economico_tecnico")},
-        ]
-        return {"title": "Costo pieno per configurazione",
-                "subtitle": "%s · %s" % (self.name, self._reclass_period()),
-                "currency": self._reclass_ccy(), "columns": cols, "rows": rows}
     _check_company_auto = True
 
     name = fields.Char(required=True, default=lambda self: self.env._("Costing"))
@@ -52,8 +19,8 @@ class CmcCostingRun(models.Model):
         "res.company", required=True, default=lambda self: self.env.company, index=True
     )
     currency_id = fields.Many2one(related="company_id.currency_id")
-    date_from = fields.Date()
-    date_to = fields.Date()
+    date_from = fields.Date(required=True)
+    date_to = fields.Date(required=True)
     closing_run_id = fields.Many2one(
         "cmc.closing.run",
         string="Closing Run",
@@ -78,9 +45,95 @@ class CmcCostingRun(models.Model):
         default="draft",
         required=True,
     )
-    product_ids = fields.Many2many("product.product", string="Products in scope")
+    product_ids = fields.Many2many(
+        "product.product", string="Products in scope", check_company=True
+    )
     line_ids = fields.One2many("cmc.costing.line", "run_id")
     result_ids = fields.One2many("cmc.costing.result", "run_id")
+
+    _dates_ok = models.Constraint(
+        "CHECK(date_to >= date_from)", "End date must be on/after start date."
+    )
+
+    # ---- constraints ----------------------------------------------------
+
+    @api.constrains("date_from", "date_to", "closing_run_id")
+    def _check_period_within_closing(self):
+        """The costing window must sit inside the closing run window: a Q1
+        closing must not be combined with Q3 period costs."""
+        for run in self:
+            closing = run.closing_run_id
+            if closing.date_from and run.date_from < closing.date_from:
+                raise ValidationError(
+                    self.env._(
+                        "The costing period of %(name)s starts before its closing "
+                        "run period (%(start)s).",
+                        name=run.name,
+                        start=closing.date_from,
+                    )
+                )
+            if closing.date_to and run.date_to > closing.date_to:
+                raise ValidationError(
+                    self.env._(
+                        "The costing period of %(name)s ends after its closing "
+                        "run period (%(end)s).",
+                        name=run.name,
+                        end=closing.date_to,
+                    )
+                )
+
+    @api.onchange("closing_run_id")
+    def _onchange_closing_run_id(self):
+        """Default the costing window from the closing run it reads from."""
+        for run in self:
+            if run.closing_run_id.date_from and not run.date_from:
+                run.date_from = run.closing_run_id.date_from
+            if run.closing_run_id.date_to and not run.date_to:
+                run.date_to = run.closing_run_id.date_to
+
+    # ---- reclassified (transposed) report --------------------------------
+
+    def _cmc_reclass(self):
+        self.ensure_one()
+        res = self.result_ids
+        cols = [{"key": "p%s" % r.product_id.id,
+                 "label": r.product_id.display_name} for r in res]
+
+        def vals(field):
+            return {"p%s" % r.product_id.id: getattr(r, field) for r in res}
+
+        def tot(field):
+            return sum(res.mapped(field))
+
+        rows = [
+            {"label": self.env._("Prime cost"), "kind": "plain",
+             "values": vals("cost_primo"), "total": tot("cost_primo")},
+            {"label": self.env._("Industrial overhead"), "kind": "plain",
+             "values": vals("cost_indiretto"), "total": tot("cost_indiretto")},
+            {"label": self.env._("Industrial cost"), "kind": "subtotal",
+             "values": vals("cost_industriale"), "total": tot("cost_industriale")},
+            {"label": self.env._("Commercial & Administrative"), "kind": "plain",
+             "values": vals("cost_comm_admin"), "total": tot("cost_comm_admin")},
+            {"label": self.env._("Total cost"), "kind": "subtotal",
+             "values": vals("cost_complessivo"), "total": tot("cost_complessivo")},
+            {"label": self.env._("Figurative"), "kind": "plain",
+             "values": vals("cost_figurativo"), "total": tot("cost_figurativo")},
+            {"label": self.env._("Economic-technical cost"), "kind": "result",
+             "values": vals("cost_economico_tecnico"),
+             "total": tot("cost_economico_tecnico")},
+        ]
+        return {"title": self.env._("Full cost per configuration"),
+                "subtitle": "%s · %s" % (self.name, self._reclass_period()),
+                "currency": self._reclass_ccy(), "columns": cols, "rows": rows}
+
+    # ---- engine ----------------------------------------------------------
+
+    def _qty_rounding(self):
+        """Rounding step for driver quantities (a quantity, never a currency)."""
+        digits = self.env["decimal.precision"].precision_get(
+            "Product Unit of Measure"
+        )
+        return 10 ** -digits
 
     def _final_center_totals(self):
         self.ensure_one()
@@ -97,23 +150,39 @@ class CmcCostingRun(models.Model):
 
     def action_compute(self):
         if self.ids:
+            # the lock reads committed rows, so push pending writes first
+            self.env.flush_all()
             self.env.cr.execute(
-                "SELECT id FROM cmc_costing_run WHERE id IN %s FOR UPDATE",
-                (tuple(self.ids),),
+                SQL(
+                    "SELECT id FROM cmc_costing_run WHERE id IN %s FOR UPDATE",
+                    tuple(self.ids),
+                )
             )
         for run in self:
             run._compute_costing()
         return True
 
+    def action_reset_to_draft(self):
+        """Reopen a computed run so it can be recomputed deliberately."""
+        self.state = "draft"
+        return True
+
     def _compute_costing(self):
         self.ensure_one()
+        if self.closing_run_id.state != "done":
+            raise UserError(
+                self.env._(
+                    "Closing run %(name)s is not computed: its final centers "
+                    "carry no reliable cost yet.",
+                    name=self.closing_run_id.display_name,
+                )
+            )
         rounding = self.company_id.currency_id.rounding
+        qty_rounding = self._qty_rounding()
         totals = self._final_center_totals()
 
-        base = defaultdict(float)
         consume = defaultdict(lambda: defaultdict(float))
         for ln in self.line_ids:
-            base[ln.center_id.id] += ln.driver_qty
             consume[ln.center_id.id][ln.product_id.id] += ln.driver_qty
 
         if self.base == "single":
@@ -132,7 +201,11 @@ class CmcCostingRun(models.Model):
             center_map = {c: (totals.get(c, 0.0), consume.get(c, {})) for c in totals}
 
         for key, (total, pq) in center_map.items():
-            if total and not sum(pq.values()):
+            has_cost = not float_is_zero(total, precision_rounding=rounding)
+            has_base = not float_is_zero(
+                sum(pq.values()), precision_rounding=qty_rounding
+            )
+            if has_cost and not has_base:
                 center = self.env["account.analytic.account"].browse(key)
                 raise ValidationError(
                     self.env._(
@@ -151,7 +224,10 @@ class CmcCostingRun(models.Model):
         quotas = defaultdict(list)
         for key, (total, pq) in center_map.items():
             b = sum(pq.values())
-            coeff = total / b if b else 0.0
+            if float_is_zero(b, precision_rounding=qty_rounding):
+                # no allocation base: a non-zero cost was already rejected above
+                continue
+            coeff = total / b
             raw = {p: coeff * q for p, q in pq.items()}
             shares = largest_remainder(
                 float_round(total, precision_rounding=rounding), raw, rounding
@@ -175,7 +251,9 @@ class CmcCostingRun(models.Model):
 
         # TS-006: commercial/administrative period costs allocated to products
         period_pool = self._period_pool()
-        if period_pool and total_units:
+        if not float_is_zero(
+            period_pool, precision_rounding=rounding
+        ) and not float_is_zero(total_units, precision_rounding=qty_rounding):
             raw = {p: period_pool * u / total_units for p, u in prod_units.items()}
             comm_admin = largest_remainder(
                 float_round(period_pool, precision_rounding=rounding), raw, rounding
@@ -185,8 +263,11 @@ class CmcCostingRun(models.Model):
 
         # TS-002: figurative costs (direct to product, or indirect by units)
         figurative = self._figurative_costs(products, prod_units)
+        refs = self._reference_prices(products)
 
-        self.result_ids.unlink()
+        # the engine is the only writer of the derived rows: users get read-only
+        # access to them (see security/ir.model.access.csv)
+        self.result_ids.sudo().unlink()
         res_vals = []
         for product in products:
             p = product.id
@@ -197,7 +278,9 @@ class CmcCostingRun(models.Model):
             complessivo = float_round(industriale + comm, precision_rounding=rounding)
             figur = float_round(figurative.get(p, 0.0), precision_rounding=rounding)
             eco = float_round(complessivo + figur, precision_rounding=rounding)
-            std_ref, variance = self._reconcile(product, industriale, rounding)
+            ref = refs.get(p, 0.0)
+            std_ref = float_round(ref, precision_rounding=rounding)
+            variance = float_round(industriale - ref, precision_rounding=rounding)
             config = [
                 (0, 0, {"sequence": 10, "level": "primo", "amount": primo,
                         "increment": primo, "source": "standard_price"}),
@@ -225,7 +308,7 @@ class CmcCostingRun(models.Model):
                     "config_ids": config,
                 }
             )
-        self.env["cmc.costing.result"].create(res_vals)
+        self.env["cmc.costing.result"].sudo().create(res_vals)
         self.state = "done"
 
     def _period_pool(self):
@@ -248,6 +331,7 @@ class CmcCostingRun(models.Model):
         product, indirect ones are spread by units. Conserves the pool."""
         self.ensure_one()
         rounding = self.company_id.currency_id.rounding
+        qty_rounding = self._qty_rounding()
         domain = [("company_id", "in", [False] + self.company_id.ids)]
         # only figuratives overlapping the run period (undated = always applicable)
         if self.date_from:
@@ -270,7 +354,9 @@ class CmcCostingRun(models.Model):
             else:
                 indirect_pool += fc.amount
         total_units = sum(prod_units.values())
-        if indirect_pool and total_units:
+        if not float_is_zero(
+            indirect_pool, precision_rounding=rounding
+        ) and not float_is_zero(total_units, precision_rounding=qty_rounding):
             raw = {p: indirect_pool * u / total_units for p, u in prod_units.items()}
             for p, amount in largest_remainder(
                 float_round(indirect_pool, precision_rounding=rounding), raw, rounding
@@ -278,19 +364,20 @@ class CmcCostingRun(models.Model):
                 result[p] += amount
         return result
 
-    def _reconcile(self, product, industriale, rounding):
-        """Compare the computed industrial cost to the product standard cost
-        (Community-safe; deepens to valuation only if stock is present)."""
-        priced = product.with_company(self.company_id)
-        ref = priced.standard_price
-        if "total_value" in product._fields and "qty_available" in product._fields:
-            qty = priced.qty_available
-            if qty:
-                ref = priced.total_value / qty
-        return (
-            float_round(ref, precision_rounding=rounding),
-            float_round(industriale - ref, precision_rounding=rounding),
-        )
+    def _reference_prices(self, products):
+        """Reference unit price per product, resolved ONCE for the whole set
+        (Community-safe; deepens to valuation only if stock is present).
+        Keeping it out of the per-product loop avoids an N+1 quant read_group."""
+        self.ensure_one()
+        qty_rounding = self._qty_rounding()
+        priced = products.with_company(self.company_id)
+        refs = {p.id: p.standard_price for p in priced}
+        if "total_value" in products._fields and "qty_available" in products._fields:
+            for product in priced:
+                qty = product.qty_available
+                if not float_is_zero(qty, precision_rounding=qty_rounding):
+                    refs[product.id] = product.total_value / qty
+        return refs
 
 
 class CmcCostingLine(models.Model):
@@ -307,11 +394,16 @@ class CmcCostingLine(models.Model):
         string="Final Center",
         required=True,
         index=True,
+        ondelete="restrict",
         check_company=True,
         domain="[('cmc_center_type', '=', 'final')]",
     )
-    product_id = fields.Many2one("product.product", required=True, index=True)
-    driver_id = fields.Many2one("cmc.cost.driver", required=True, check_company=True)
+    product_id = fields.Many2one(
+        "product.product", required=True, index=True, ondelete="restrict"
+    )
+    driver_id = fields.Many2one(
+        "cmc.cost.driver", required=True, ondelete="restrict", check_company=True
+    )
     driver_qty = fields.Float(string="Driver Quantity", required=True)
 
     _uniq = models.Constraint(
@@ -333,16 +425,18 @@ class CmcCostingResult(models.Model):
     run_id = fields.Many2one(
         "cmc.costing.run", required=True, ondelete="cascade", index=True
     )
-    company_id = fields.Many2one(related="run_id.company_id", store=True)
+    company_id = fields.Many2one(related="run_id.company_id", store=True, index=True)
     currency_id = fields.Many2one(related="run_id.currency_id")
-    product_id = fields.Many2one("product.product", required=True, index=True)
+    product_id = fields.Many2one(
+        "product.product", required=True, index=True, ondelete="restrict"
+    )
     cost_primo = fields.Monetary()
     cost_indiretto = fields.Monetary()
     cost_industriale = fields.Monetary()
     cost_comm_admin = fields.Monetary(string="Commercial & Admin")
-    cost_complessivo = fields.Monetary(string="Costo Complessivo")
+    cost_complessivo = fields.Monetary(string="Total Cost")
     cost_figurativo = fields.Monetary(string="Figurative")
-    cost_economico_tecnico = fields.Monetary(string="Costo Economico-Tecnico")
+    cost_economico_tecnico = fields.Monetary(string="Economic-Technical Cost")
     standard_price_ref = fields.Monetary(string="Std Price (ref)")
     std_price_delta = fields.Monetary(
         string="Industrial vs Std Delta",
@@ -362,8 +456,13 @@ class CmcCostingQuota(models.Model):
     result_id = fields.Many2one(
         "cmc.costing.result", required=True, ondelete="cascade", index=True
     )
+    company_id = fields.Many2one(
+        related="result_id.company_id", store=True, index=True
+    )
     currency_id = fields.Many2one(related="result_id.currency_id")
-    center_id = fields.Many2one("account.analytic.account", string="Final Center")
+    center_id = fields.Many2one(
+        "account.analytic.account", string="Final Center", ondelete="restrict"
+    )
     coefficient = fields.Float(string="Center Coefficient")
     driver_qty = fields.Float(string="Product Driver Qty")
     amount = fields.Monetary()
@@ -377,14 +476,17 @@ class CmcCostingConfig(models.Model):
     result_id = fields.Many2one(
         "cmc.costing.result", required=True, ondelete="cascade", index=True
     )
+    company_id = fields.Many2one(
+        related="result_id.company_id", store=True, index=True
+    )
     currency_id = fields.Many2one(related="result_id.currency_id")
     sequence = fields.Integer(default=10)
     level = fields.Selection(
         selection=[
-            ("primo", "Costo Primo"),
-            ("industriale", "Costo Industriale"),
-            ("complessivo", "Costo Complessivo"),
-            ("economico_tecnico", "Costo Economico-Tecnico"),
+            ("primo", "Prime Cost"),
+            ("industriale", "Industrial Cost"),
+            ("complessivo", "Total Cost"),
+            ("economico_tecnico", "Economic-Technical Cost"),
         ],
         required=True,
     )

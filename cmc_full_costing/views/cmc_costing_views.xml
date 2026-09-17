@@ -21,7 +21,9 @@
             <form string="Costing Run">
                 <header>
                     <button name="action_compute" type="object" string="Compute"
-                            class="oe_highlight"/>
+                            class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_reset_to_draft" type="object"
+                            string="Reset to Draft" invisible="state != 'done'"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
@@ -71,7 +73,7 @@
                                 </list>
                             </field>
                         </page>
-                        <page string="Riclassificato" name="reclass">
+                        <page string="Reclassified" name="reclass">
                             <field name="cmc_reclass_json" widget="cmc_reclass" nolabel="1"/>
                         </page>
                     </notebook>
@@ -157,11 +159,11 @@
     </record>
 
     <menuitem id="menu_cmc_sec_full"
-              name="Costo pieno (full costing)"
+              name="Full Costing"
               parent="cmc_base.menu_cmc_operations"
               sequence="30"/>
     <menuitem id="menu_cmc_costing_run"
-              name="Full Costing"
+              name="Costing Runs"
               parent="menu_cmc_sec_full"
               action="action_cmc_costing_run"
               sequence="10"/>

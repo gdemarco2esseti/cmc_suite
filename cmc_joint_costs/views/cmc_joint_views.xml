@@ -7,7 +7,9 @@
             <form string="Joint Cost Run">
                 <header>
                     <button name="action_compute" string="Compute" type="object"
-                            class="oe_highlight"/>
+                            class="oe_highlight" invisible="state == 'done'"/>
+                    <button name="action_reset_to_draft" string="Reset to Draft"
+                            type="object" invisible="state != 'done'"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
@@ -29,7 +31,7 @@
                     </group>
                     <notebook>
                         <page string="Joint Products" name="lines">
-                            <field name="line_ids">
+                            <field name="line_ids" readonly="state == 'done'">
                                 <list editable="bottom">
                                     <field name="product_id"/>
                                     <field name="quantity"/>
@@ -43,7 +45,7 @@
                         </page>
                         <page string="Results" name="results">
                             <field name="result_ids">
-                                <list create="false" edit="false">
+                                <list create="false" edit="false" delete="false">
                                     <field name="product_id"/>
                                     <field name="is_byproduct"/>
                                     <field name="allocated_joint_cost"/>

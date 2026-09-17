@@ -49,10 +49,19 @@
             <form string="ABC Run">
                 <header>
                     <button name="action_compute" string="Compute" type="object"
-                            class="oe_highlight"/>
+                            class="oe_highlight" invisible="state == 'done'"/>
+                    <button name="action_reset_to_draft" string="Reset to Draft"
+                            type="object" invisible="state != 'done'"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
+                    <div class="alert alert-warning" role="alert"
+                         invisible="not unallocated_amount">
+                        Some activities carry cost but have no driver line in
+                        this run: that cost is NOT allocated to any cost object.
+                        Unallocated:
+                        <field name="unallocated_amount" class="oe_inline"/>
+                    </div>
                     <div class="oe_title">
                         <label for="name"/>
                         <h1><field name="name"/></h1>
@@ -69,7 +78,7 @@
                     </group>
                     <notebook>
                         <page string="Activity Drivers" name="lines">
-                            <field name="line_ids">
+                            <field name="line_ids" readonly="state == 'done'">
                                 <list editable="bottom">
                                     <field name="activity_id"/>
                                     <field name="product_id"/>
@@ -83,12 +92,25 @@
                             <field name="result_ids">
                                 <list create="false" edit="false">
                                     <field name="product_id"/>
-                                    <field name="amount"/>
+                                    <field name="amount" aggregator="sum"/>
                                     <field name="currency_id" column_invisible="1"/>
                                 </list>
                             </field>
                         </page>
-                        <page string="Riclassificato" name="reclass">
+                        <page string="Activity Pools" name="activity_results">
+                            <field name="activity_result_ids">
+                                <list create="false" edit="false">
+                                    <field name="activity_id"/>
+                                    <field name="product_id"/>
+                                    <field name="driver_qty"/>
+                                    <field name="pool_amount"/>
+                                    <field name="amount" aggregator="sum"/>
+                                    <field name="unallocated"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Reclassified" name="reclass">
                             <field name="cmc_reclass_json" widget="cmc_reclass" nolabel="1"/>
                         </page>
                     </notebook>
@@ -122,7 +144,7 @@
               name="Activity-Based Costing"
               parent="cmc_base.menu_cmc_operations"
               sequence="50"/>
-    <menuitem id="menu_cmc_abc_run" name="Calcolo ABC"
+    <menuitem id="menu_cmc_abc_run" name="ABC Computation"
               parent="menu_cmc_sec_abc"
               action="action_cmc_abc_run" sequence="10"/>
     <menuitem id="menu_cmc_abc_activity" name="ABC Activities"

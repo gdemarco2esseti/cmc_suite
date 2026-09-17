@@ -1,5 +1,8 @@
+import psycopg2
+
 from odoo.exceptions import UserError
 from odoo.tests.common import TransactionCase, tagged
+from odoo.tools import mute_logger
 
 
 @tagged("post_install", "-at_install")
@@ -73,19 +76,22 @@ class TestJoint(TransactionCase):
         self.assertAlmostEqual(b, 484.21, 2)
         self.assertEqual(a + b, 1000.0)
 
-    # by-product NRV nets the pool: C nrv 50 -> mains split 950 (physical 60/40)
+    # by-product NRV nets the pool: C nrv = 10*5 - 20 = 30 -> mains split 970
     def test_byproduct_netting(self):
         run = self._run("physical", 1000, [
             {"product_id": self.pA.id, "quantity": 60},
             {"product_id": self.pB.id, "quantity": 40},
             {"product_id": self.pC.id, "quantity": 10, "unit_sales_value": 5,
-             "is_byproduct": True},
+             "separable_cost": 20, "is_byproduct": True},
         ])
-        self.assertEqual(self._res(run, self.pA).allocated_joint_cost, 570.0)
-        self.assertEqual(self._res(run, self.pB).allocated_joint_cost, 380.0)
-        # by-product carries its own NRV
+        self.assertEqual(self._res(run, self.pA).allocated_joint_cost, 582.0)
+        self.assertEqual(self._res(run, self.pB).allocated_joint_cost, 388.0)
+        # by-product carries its own NRV, and total = NRV + separable cost
         c = self._res(run, self.pC)
-        self.assertEqual(c.allocated_joint_cost, 50.0)
+        self.assertEqual(c.allocated_joint_cost, 30.0)
+        self.assertEqual(c.separable_cost, 20.0)
+        self.assertEqual(c.total_cost, 50.0)
+        self.assertEqual(c.unit_cost, 5.0)
         self.assertTrue(c.is_byproduct)
 
     # unit cost = (allocated + separable) / qty
@@ -140,11 +146,109 @@ class TestJoint(TransactionCase):
             ])
 
     # quantity must be positive
+    @mute_logger("odoo.sql_db")
     def test_qty_positive(self):
-        with self.assertRaises(Exception):
+        with self.assertRaises(psycopg2.errors.CheckViolation):
             with self.env.cr.savepoint():
                 self.Run.create({
                     "name": "bad", "method": "physical", "joint_cost": 100,
                     "line_ids": [(0, 0, {"product_id": self.pA.id, "quantity": 0})],
                 })
                 self.env.flush_all()
+
+    # a negative joint cost pool is rejected at the database level, instead of
+    # surfacing later as the misleading "by-product NRV exceeds the pool" error
+    @mute_logger("odoo.sql_db")
+    def test_joint_cost_non_negative(self):
+        with self.assertRaises(psycopg2.errors.CheckViolation):
+            with self.env.cr.savepoint():
+                self.Run.create({
+                    "name": "bad", "method": "physical", "joint_cost": -500,
+                })
+                self.env.flush_all()
+
+    @mute_logger("odoo.sql_db")
+    def test_line_amounts_non_negative(self):
+        for field in ("unit_sales_value", "separable_cost"):
+            with self.subTest(field=field):
+                with self.assertRaises(psycopg2.errors.CheckViolation):
+                    with self.env.cr.savepoint():
+                        self.Run.create({
+                            "name": "bad", "method": "sales_value",
+                            "joint_cost": 100,
+                            "line_ids": [(0, 0, {
+                                "product_id": self.pA.id, "quantity": 1,
+                                field: -10,
+                            })],
+                        })
+                        self.env.flush_all()
+
+    # constant margin cannot hand a product a NEGATIVE share of the pool:
+    # A sells 100 but costs 900 to finish, so gm goes below zero
+    def test_constant_gm_negative_allocation_raises(self):
+        with self.assertRaises(UserError):
+            self._run("constant_gm", 1000, [
+                {"product_id": self.pA.id, "quantity": 1,
+                 "unit_sales_value": 100, "separable_cost": 900},
+                {"product_id": self.pB.id, "quantity": 1,
+                 "unit_sales_value": 1000},
+            ])
+
+    # unit cost is a rate, not an amount: 4200 over 1M units is 0.0042, and it
+    # must survive the write (the currency's 2 decimals would store 0.00)
+    def test_unit_cost_below_currency_rounding(self):
+        precision = self.env["decimal.precision"].search(
+            [("name", "=", "Product Price")]
+        )
+        precision.digits = 6
+        # the ormcache is global: drop it again so later tests re-read the db
+        self.addCleanup(self.env.registry.clear_cache, "stable")
+        run = self._run("physical", 4200, [
+            {"product_id": self.pA.id, "quantity": 1_000_000},
+        ])
+        result = self._res(run, self.pA)
+        self.assertEqual(result.total_cost, 4200.0)
+        self.assertEqual(result.unit_cost, 0.0042)
+
+    # editing an input after the run is done must not leave stale results
+    # vouched for by a "done" badge
+    def test_line_change_invalidates_results(self):
+        run = self._run("physical", 1000, [
+            {"product_id": self.pA.id, "quantity": 60},
+            {"product_id": self.pB.id, "quantity": 40},
+        ])
+        self.assertEqual(run.state, "done")
+        run.line_ids.filtered(lambda l: l.product_id == self.pA).quantity = 90
+        self.assertEqual(run.state, "draft")
+        self.assertFalse(run.result_ids)
+        run.action_compute()
+        self.assertEqual(self._res(run, self.pA).allocated_joint_cost, 692.31)
+
+    def test_line_unlink_invalidates_results(self):
+        run = self._run("physical", 1000, [
+            {"product_id": self.pA.id, "quantity": 60},
+            {"product_id": self.pB.id, "quantity": 40},
+        ])
+        run.line_ids.filtered(lambda l: l.product_id == self.pB).unlink()
+        self.assertEqual(run.state, "draft")
+        self.assertFalse(run.result_ids)
+
+    def test_line_add_invalidates_results(self):
+        run = self._run("physical", 1000, [
+            {"product_id": self.pA.id, "quantity": 60},
+            {"product_id": self.pB.id, "quantity": 40},
+        ])
+        run.write({
+            "line_ids": [(0, 0, {"product_id": self.pC.id, "quantity": 100})],
+        })
+        self.assertEqual(run.state, "draft")
+        self.assertFalse(run.result_ids)
+
+    def test_action_reset_to_draft(self):
+        run = self._run("physical", 1000, [
+            {"product_id": self.pA.id, "quantity": 60},
+            {"product_id": self.pB.id, "quantity": 40},
+        ])
+        run.action_reset_to_draft()
+        self.assertEqual(run.state, "draft")
+        self.assertFalse(run.result_ids)

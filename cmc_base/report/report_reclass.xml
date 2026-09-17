@@ -3,7 +3,15 @@
     <template id="report_reclass">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
-                <t t-set="d" t-value="o._cmc_reclass()"/>
+                <t t-set="d" t-value="o.cmc_reclass_json"/>
+                <t t-if="not d">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <p>No reclassified data: compute the run first.</p>
+                        </div>
+                    </t>
+                </t>
+                <t t-else="">
                 <t t-call="web.external_layout">
                     <div class="page">
                         <h3 t-esc="d['title']"/>
@@ -11,10 +19,10 @@
                         <table class="table table-sm o_main_table">
                             <thead>
                                 <tr>
-                                    <th>Voce</th>
+                                    <th>Item</th>
                                     <th class="text-end" t-foreach="d['columns']"
                                         t-as="c" t-esc="c['label']"/>
-                                    <th class="text-end">Totale</th>
+                                    <th class="text-end">Total</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -33,6 +41,7 @@
                             </tbody>
                         </table>
                     </div>
+                    </t>
                 </t>
             </t>
         </t>

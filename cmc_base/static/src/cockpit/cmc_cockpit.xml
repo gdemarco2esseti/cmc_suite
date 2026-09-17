@@ -4,13 +4,13 @@
 <t t-name="cmc_base.CmcCockpit">
     <Layout display="display" className="'o_cmc_cockpit'">
         <t t-set-slot="control-panel-create-button">
-            <span class="o_cmc_brand fw-bold">Controllo di Gestione</span>
+            <span class="o_cmc_brand fw-bold">Cost Management &amp; Controlling</span>
         </t>
 
         <!-- loading -->
         <div t-if="state.loading" class="o_cmc_center d-flex justify-content-center align-items-center p-5">
             <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Caricamento…</span>
+                <span class="visually-hidden">Loading…</span>
             </div>
         </div>
 
@@ -20,7 +20,7 @@
             <div t-if="next" class="alert o_cmc_next d-flex align-items-center gap-3 mb-4" role="status">
                 <i class="fa fa-arrow-circle-right fa-lg" aria-hidden="true"/>
                 <div class="flex-grow-1">
-                    <div class="text-muted small text-uppercase">Prossimo passo</div>
+                    <div class="text-muted small text-uppercase">Next step</div>
                     <div class="fw-bold" t-esc="next.label"/>
                 </div>
                 <button class="btn btn-primary" t-on-click="() => this.openStep(next.action)"
@@ -60,7 +60,7 @@
             <div t-if="state.data.methods.length" class="mb-4">
                 <div class="o_cmc_section_label text-muted small text-uppercase mb-2">
                     Metodologie di costing
-                    <span class="o_cmc_hint">— scegli e applica quella che ti serve</span>
+                    <span class="o_cmc_hint">— pick the one you need and apply it</span>
                 </div>
                 <div class="row g-2">
                     <t t-foreach="state.data.methods" t-as="m" t-key="m.key">
@@ -83,9 +83,9 @@
                                     <div class="flex-grow-1">
                                         <div class="fw-semibold" t-esc="m.label"/>
                                         <div class="small text-muted">
-                                            <t t-if="m.state === 'done'"><t t-esc="m.count"/> elaborazioni</t>
-                                            <t t-elif="m.state === 'available'">Disponibile</t>
-                                            <t t-else="">Completa prima la base di costo</t>
+                                            <t t-if="m.state === 'done'"><t t-esc="m.count"/> computations</t>
+                                            <t t-elif="m.state === 'available'">Available</t>
+                                            <t t-else="">Build the cost base first</t>
                                         </div>
                                     </div>
                                 </div>

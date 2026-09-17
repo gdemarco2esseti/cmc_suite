@@ -1,3 +1,5 @@
+from datetime import date
+
 from odoo.exceptions import ValidationError
 from odoo.tests.common import TransactionCase, tagged
 
@@ -67,6 +69,8 @@ class TestCostingLevels(TransactionCase):
             {
                 "name": "Costing",
                 "closing_run_id": self.closing.id,
+                "date_from": date(date.today().year, 1, 1),
+                "date_to": date(date.today().year, 12, 31),
                 "base": "multiple",
                 "product_ids": [(6, 0, (self.p1 | self.p2).ids)],
                 "line_ids": [(0, 0, ln) for ln in lines],
@@ -143,7 +147,6 @@ class TestCostingLevels(TransactionCase):
 
     # Gate fix1 — un figurativo fuori dalla finestra del run NON deve entrare
     def test_figurative_out_of_period_excluded(self):
-        from datetime import date
         self.env["cmc.figurative.cost"].create(
             {"name": "Vecchio", "cost_element_id": self.fig_el.id, "method": "lump",
              "amount": 999, "cmc_directness": "indirect",

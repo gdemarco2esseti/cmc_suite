@@ -21,6 +21,7 @@ class TestFullReclass(TransactionCase):
         closing.action_compute()
         run = self.env["cmc.costing.run"].create(
             {"name": "FC", "closing_run_id": closing.id, "base": "multiple",
+             "date_from": date(2026, 1, 1), "date_to": date(2026, 12, 31),
              "product_ids": [(6, 0, p1.ids)],
              "line_ids": [(0, 0, {"center_id": z.id, "product_id": p1.id,
                                   "driver_id": drv.id, "driver_qty": 10})]})
@@ -30,8 +31,8 @@ class TestFullReclass(TransactionCase):
     def test_structure(self):
         d = self._run()._cmc_reclass()
         labels = [r["label"] for r in d["rows"]]
-        self.assertIn("Costo industriale", labels)
-        self.assertIn("Costo economico-tecnico", labels)
+        self.assertIn("Industrial cost", labels)
+        self.assertIn("Economic-technical cost", labels)
         self.assertTrue(d["columns"])
 
     def test_quadratura(self):
@@ -41,10 +42,10 @@ class TestFullReclass(TransactionCase):
         for c in d["columns"]:
             k = c["key"]
             self.assertAlmostEqual(
-                rows["Costo industriale"]["values"][k],
-                rows["Costo primo"]["values"][k]
-                + rows["Overhead industriale"]["values"][k], 2)
+                rows["Industrial cost"]["values"][k],
+                rows["Prime cost"]["values"][k]
+                + rows["Industrial overhead"]["values"][k], 2)
             self.assertAlmostEqual(
-                rows["Costo economico-tecnico"]["values"][k],
-                rows["Costo complessivo"]["values"][k]
-                + rows["Figurativo"]["values"][k], 2)
+                rows["Economic-technical cost"]["values"][k],
+                rows["Total cost"]["values"][k]
+                + rows["Figurative"]["values"][k], 2)

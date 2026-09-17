@@ -1,25 +1,42 @@
-from odoo import models
+from odoo import api, models
+from odoo.tools import float_is_zero
+
+MOD_XMLID = "cmc_base.cmc_element_mod"
 
 
 class AccountAnalyticLine(models.Model):
     _inherit = "account.analytic.line"
 
+    @api.model
+    def _cmc_classify_trigger_fields(self):
+        # the timesheet grid, the portal and most imports create the row first
+        # and write project/employee/hours afterwards.
+        return super()._cmc_classify_trigger_fields() | {
+            "project_id", "employee_id", "unit_amount",
+        }
+
     def _cmc_is_timesheet_mod(self):
-        """A timesheet line booking direct labor: has a project, an employee
-        and logged hours. Timesheets are plain account.analytic.line records
-        (hr_timesheet extends the model), so they flow through the same
-        classification engine but carry no financial account to derive from."""
+        """A timesheet line booking DIRECT labor.
+
+        Having a project, an employee and hours is not enough: direct labor is
+        by definition attributable to the cost object, so only hours landing on
+        a FINAL (productive) cost center are MOD. Hours booked on auxiliary,
+        administrative, R&D or period centers are indirect labor and must stay
+        indirect, otherwise the direct/indirect split the whole suite rests on
+        is wrong at the source.
+        """
         self.ensure_one()
-        return bool(self.project_id) and bool(self.employee_id) and bool(
-            self.unit_amount
-        )
+        if not (self.project_id and self.employee_id):
+            return False
+        if float_is_zero(self.unit_amount, precision_digits=2):
+            return False
+        return self.cmc_center_id.cmc_center_type == "final"
 
     def _cmc_auto_classify(self):
         """Enrich timesheet labor lines as MOD (direct labor) before delegating
         to the financial-account engine. Fill-only and manual-safe."""
-        mod = self.env.ref(
-            "cmc_base.cmc_element_mod", raise_if_not_found=False
-        )
+        mod = self._cmc_element_ref(MOD_XMLID)
+        vals_by_line = []
         for line in self:
             if line.cmc_classified_manually or not line._cmc_is_timesheet_mod():
                 continue
@@ -31,5 +48,6 @@ class AccountAnalyticLine(models.Model):
             if line.cmc_directness != "direct":
                 vals["cmc_directness"] = "direct"  # direct labor on the object
             if vals:
-                line.with_context(cmc_auto_classify=True).write(vals)
+                vals_by_line.append((line.id, vals))
+        self._cmc_write_batched(vals_by_line)
         return super()._cmc_auto_classify()

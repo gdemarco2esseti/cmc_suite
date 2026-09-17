@@ -1,8 +1,13 @@
+import logging
 from collections import defaultdict
 
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
-from odoo.tools import float_round
+from odoo.tools import SQL, float_compare, float_round
+
+from .cmc_utils import largest_remainder
+
+_logger = logging.getLogger(__name__)
 
 
 def _solve_linear(matrix, vector):
@@ -24,9 +29,11 @@ def _solve_linear(matrix, vector):
     return [a[i][n] for i in range(n)]
 
 
+
+
 class CmcClosingRun(models.Model):
     _name = "cmc.closing.run"
-    _description = "Cost Center Closing Run (ribaltamento)"
+    _description = "Cost Center Closing Run"
     _order = "date_to desc, id desc"
     _check_company_auto = True
 
@@ -82,13 +89,20 @@ class CmcClosingRun(models.Model):
                 ("company_id", "in", [False] + self.company_id.ids),
             ]
         )
+        qty_rounding = 10 ** -self.env["decimal.precision"].precision_get(
+            "Product Unit"
+        )
         raw = defaultdict(lambda: defaultdict(float))
         for svc in services:
             raw[svc.provider_id.id][svc.receiver_id.id] += svc.quantity
 
         def _normalize(weights):
             total = sum(weights.values())
-            return {rid: q / total for rid, q in weights.items()} if total > 0 else {}
+            # a residual quantity is not an allocation base: dividing by it
+            # would explode the proportions instead of reporting "no base"
+            if float_compare(total, 0.0, precision_rounding=qty_rounding) <= 0:
+                return {}
+            return {rid: q / total for rid, q in weights.items()}
 
         prop_full, prop_final = {}, {}
         for pid in to_close.ids:
@@ -99,36 +113,36 @@ class CmcClosingRun(models.Model):
             )
         return prop_full, prop_final
 
+    @api.constrains("date_from", "date_to")
+    def _check_dates_ordered(self):
+        for run in self:
+            if run.date_from and run.date_to and run.date_to < run.date_from:
+                raise ValidationError(
+                    self.env._("The period end date cannot precede its start date.")
+                )
+
     def _conserve(self, total, raw):
         """Round raw {key: value} so the rounded parts re-sum to `total` exactly."""
         rounding = self.company_id.currency_id.rounding
-        rounded = {k: float_round(v, precision_rounding=rounding) for k, v in raw.items()}
-        residual = float_round(total - sum(rounded.values()), precision_rounding=rounding)
-        if residual and rounded:
-            step = rounding if residual > 0 else -rounding
-            order = sorted(raw, key=lambda k: raw[k] - rounded[k], reverse=residual > 0)
-            # bounded loop: at most one step per rounding unit of residual, with margin
-            max_iter = len(order) * (int(abs(residual) / rounding) + 2) + 1
-            i = 0
-            while float_round(residual, precision_rounding=rounding) != 0:
-                if i > max_iter:
-                    raise ValidationError(
-                        self.env._("Allocation rounding failed to converge.")
-                    )
-                k = order[i % len(order)]
-                rounded[k] = float_round(rounded[k] + step, precision_rounding=rounding)
-                residual = float_round(residual - step, precision_rounding=rounding)
-                i += 1
-        return rounded
+        try:
+            return largest_remainder(total, raw, rounding)
+        except ValueError as err:
+            raise ValidationError(
+                self.env._("Allocation rounding failed to converge.")
+            ) from err
 
     # ---- engine ---------------------------------------------------------
 
     def action_compute(self):
         if self.ids:
-            # serialize concurrent Compute on the same run(s)
+            # serialize concurrent Compute on the same run(s); flush first so the
+            # lock sees the pending ORM writes on these rows
+            self.env.flush_all()
             self.env.cr.execute(
-                "SELECT id FROM cmc_closing_run WHERE id IN %s FOR UPDATE",
-                (tuple(self.ids),),
+                SQL(
+                    "SELECT id FROM cmc_closing_run WHERE id IN %s FOR UPDATE",
+                    tuple(self.ids),
+                )
             )
         for run in self:
             run._compute_closing()
@@ -187,6 +201,14 @@ class CmcClosingRun(models.Model):
         ribalt = self.env.ref(
             "cmc_base.cost_element_ribaltamento", raise_if_not_found=False
         )
+        if not ribalt:
+            # the record is noupdate="1", so a reinstall will not bring it back:
+            # say it out loud instead of silently merging the reallocated cost
+            # into the "no element" bucket
+            _logger.warning(
+                "cmc_base.cost_element_ribaltamento is missing: reallocated "
+                "cost will be booked without a cost element."
+            )
         vals = []
         for (cid, eid), amount in cost_by.items():
             vals.append(
@@ -352,7 +374,9 @@ class CmcClosingLine(models.Model):
     )
     company_id = fields.Many2one(related="run_id.company_id", store=True)
     currency_id = fields.Many2one(related="run_id.currency_id")
-    center_id = fields.Many2one("account.analytic.account", required=True, index=True)
+    center_id = fields.Many2one(
+        "account.analytic.account", required=True, index=True, ondelete="cascade"
+    )
     center_type = fields.Selection(related="center_id.cmc_center_type", store=True)
     cost_initial = fields.Monetary()
     cost_received = fields.Monetary()

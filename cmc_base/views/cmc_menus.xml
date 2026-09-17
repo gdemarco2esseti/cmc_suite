@@ -13,11 +13,11 @@
 
     <!-- ===== Sezioni tematiche (sempre presenti, cmc_base) ===== -->
     <menuitem id="menu_cmc_sec_base"
-              name="Base di costo"
+              name="Cost Base"
               parent="menu_cmc_operations"
               sequence="10"/>
     <menuitem id="menu_cmc_sec_analysis"
-              name="Analisi &amp; controllo"
+              name="Analysis &amp; Control"
               parent="menu_cmc_operations"
               sequence="20"/>
 

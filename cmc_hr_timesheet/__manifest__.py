@@ -6,7 +6,6 @@
     "license": "LGPL-3",
     "author": "2ST",
     "depends": ["cmc_account", "hr_timesheet"],
-    "data": [],
     "installable": True,
     "auto_install": False,
 }

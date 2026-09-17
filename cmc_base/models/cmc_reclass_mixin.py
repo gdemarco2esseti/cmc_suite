@@ -10,7 +10,7 @@ class CmcReclassMixin(models.AbstractModel):
     _description = "CMC reclassified (transposed) report contract"
 
     cmc_reclass_json = fields.Json(
-        string="Riclassificato", compute="_compute_cmc_reclass_json")
+        string="Reclassified", compute="_compute_cmc_reclass_json")
 
     def _compute_cmc_reclass_json(self):
         # Intentionally no @api.depends: the field is non-stored and recomputed on
@@ -32,11 +32,13 @@ class CmcReclassMixin(models.AbstractModel):
 
     # ---- shared helpers ----
     def _reclass_ccy(self):
+        self.ensure_one()
         if "currency_id" in self._fields and self.currency_id:
             return self.currency_id.symbol or ""
         return ""
 
     def _reclass_period(self):
+        self.ensure_one()
         df = self.date_from if "date_from" in self._fields else False
         dt = self.date_to if "date_to" in self._fields else False
         if df and dt:

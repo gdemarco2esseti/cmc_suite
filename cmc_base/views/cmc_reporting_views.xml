@@ -29,7 +29,7 @@
         <field name="name">cmc.cost.analysis.line.pivot</field>
         <field name="model">cmc.cost.analysis.line</field>
         <field name="arch" type="xml">
-            <pivot string="Quadro Analisi Costi" sample="1">
+            <pivot string="Cost Analysis Matrix" sample="1">
                 <field name="center_id" type="row"/>
                 <field name="element_id" type="col"/>
                 <field name="amount" type="measure"/>
@@ -57,8 +57,8 @@
         <field name="model">cmc.cost.analysis.line</field>
         <field name="arch" type="xml">
             <search>
-                <filter name="pre" string="Pre Ribaltamento" domain="[('state','=','pre')]"/>
-                <filter name="post" string="Post Ribaltamento" domain="[('state','=','post')]"/>
+                <filter name="pre" string="Before Closing" domain="[('state','=','pre')]"/>
+                <filter name="post" string="After Closing" domain="[('state','=','post')]"/>
                 <separator/>
                 <field name="center_id"/>
                 <field name="element_id"/>

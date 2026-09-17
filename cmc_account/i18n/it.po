@@ -144,8 +144,8 @@ msgstr "Indiretto"
 
 #. module: cmc_account
 #: model:ir.ui.menu,name:cmc_account.menu_cmc_cfg_integration
-msgid "Integrazione contabile"
-msgstr ""
+msgid "Accounting Integration"
+msgstr "Integrazione contabile"
 
 #. module: cmc_account
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__write_uid

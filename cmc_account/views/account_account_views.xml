@@ -5,9 +5,11 @@
         <field name="model">account.account</field>
         <field name="inherit_id" ref="account.view_account_form"/>
         <field name="arch" type="xml">
-            <field name="account_type" position="after">
-                <field name="cmc_cost_element_id"/>
-            </field>
+            <xpath expr="//page[@name='accounting']/group" position="after">
+                <group string="Management Control" groups="cmc_base.group_cmc_user">
+                    <field name="cmc_cost_element_id"/>
+                </group>
+            </xpath>
         </field>
     </record>
 </odoo>

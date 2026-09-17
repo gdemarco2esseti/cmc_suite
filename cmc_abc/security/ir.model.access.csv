@@ -7,3 +7,5 @@ access_cmc_abc_line_user,cmc.abc.line.user,model_cmc_abc_line,cmc_base.group_cmc
 access_cmc_abc_line_manager,cmc.abc.line.manager,model_cmc_abc_line,cmc_base.group_cmc_manager,1,1,1,1
 access_cmc_abc_result_user,cmc.abc.result.user,model_cmc_abc_result,cmc_base.group_cmc_user,1,0,1,1
 access_cmc_abc_result_manager,cmc.abc.result.manager,model_cmc_abc_result,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_abc_activity_result_user,cmc.abc.activity.result.user,model_cmc_abc_activity_result,cmc_base.group_cmc_user,1,0,1,1
+access_cmc_abc_activity_result_manager,cmc.abc.activity.result.manager,model_cmc_abc_activity_result,cmc_base.group_cmc_manager,1,1,1,1

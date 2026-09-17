@@ -3,11 +3,11 @@ access_cmc_costing_run_user,cmc.costing.run.user,model_cmc_costing_run,cmc_base.
 access_cmc_costing_run_manager,cmc.costing.run.manager,model_cmc_costing_run,cmc_base.group_cmc_manager,1,1,1,1
 access_cmc_costing_line_user,cmc.costing.line.user,model_cmc_costing_line,cmc_base.group_cmc_user,1,1,1,1
 access_cmc_costing_line_manager,cmc.costing.line.manager,model_cmc_costing_line,cmc_base.group_cmc_manager,1,1,1,1
-access_cmc_costing_result_user,cmc.costing.result.user,model_cmc_costing_result,cmc_base.group_cmc_user,1,0,1,1
+access_cmc_costing_result_user,cmc.costing.result.user,model_cmc_costing_result,cmc_base.group_cmc_user,1,0,0,0
 access_cmc_costing_result_manager,cmc.costing.result.manager,model_cmc_costing_result,cmc_base.group_cmc_manager,1,1,1,1
-access_cmc_costing_quota_user,cmc.costing.quota.user,model_cmc_costing_quota,cmc_base.group_cmc_user,1,0,1,1
+access_cmc_costing_quota_user,cmc.costing.quota.user,model_cmc_costing_quota,cmc_base.group_cmc_user,1,0,0,0
 access_cmc_costing_quota_manager,cmc.costing.quota.manager,model_cmc_costing_quota,cmc_base.group_cmc_manager,1,1,1,1
-access_cmc_costing_config_user,cmc.costing.config.user,model_cmc_costing_config,cmc_base.group_cmc_user,1,0,1,1
+access_cmc_costing_config_user,cmc.costing.config.user,model_cmc_costing_config,cmc_base.group_cmc_user,1,0,0,0
 access_cmc_costing_config_manager,cmc.costing.config.manager,model_cmc_costing_config,cmc_base.group_cmc_manager,1,1,1,1
 access_cmc_figurative_user,cmc.figurative.cost.user,model_cmc_figurative_cost,cmc_base.group_cmc_user,1,1,1,0
 access_cmc_figurative_manager,cmc.figurative.cost.manager,model_cmc_figurative_cost,cmc_base.group_cmc_manager,1,1,1,1

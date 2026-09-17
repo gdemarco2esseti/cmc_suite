@@ -7,8 +7,8 @@
     "license": "LGPL-3",
     "depends": ["cmc_base", "account"],
     "data": [
-        "security/cmc_account_security.xml",
         "security/ir.model.access.csv",
+        "security/cmc_account_security.xml",
         "views/cmc_classification_rule_views.xml",
         "views/account_account_views.xml",
         "views/cmc_exception_views.xml",

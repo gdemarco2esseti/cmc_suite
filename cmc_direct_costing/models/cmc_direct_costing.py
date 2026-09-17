@@ -6,42 +6,6 @@ class CmcDirectCosting(models.Model):
     _inherit = ["cmc.reclass.mixin"]
     _description = "Direct Costing / Contribution Margin Analysis"
     _order = "date_to desc, name"
-
-    def _cmc_reclass(self):
-        self.ensure_one()
-        lines = self.line_ids
-        cols = [{"key": "l%s" % ln.id, "label": ln.name} for ln in lines]
-
-        def vals(field):
-            return {"l%s" % ln.id: getattr(ln, field) for ln in lines}
-
-        def tot(field):
-            return sum(lines.mapped(field))
-
-        rev_tot = tot("revenue")
-        rows = [
-            {"label": "Ricavi", "kind": "revenue",
-             "values": vals("revenue"), "total": rev_tot},
-            {"label": "Costo variabile", "kind": "subtract",
-             "values": vals("variable_cost"), "total": tot("variable_cost")},
-            {"label": "MC lordo", "kind": "subtotal",
-             "values": vals("mc_gross"), "total": self.total_mc_gross},
-            {"label": "MC %", "kind": "percent",
-             "values": {"l%s" % ln.id: ln.mc_ratio for ln in lines},
-             "total": (self.total_mc_gross / rev_tot * 100) if rev_tot else 0.0},
-            {"label": "Costi fissi specifici", "kind": "subtract",
-             "values": vals("specific_fixed_cost"),
-             "total": tot("specific_fixed_cost")},
-            {"label": "MC semilordo", "kind": "subtotal",
-             "values": vals("mc_semigross"), "total": self.total_mc_semigross},
-            {"label": "Costi fissi comuni", "kind": "subtract",
-             "values": None, "total": self.common_fixed_cost},
-            {"label": "Risultato operativo", "kind": "result",
-             "values": None, "total": self.operating_result},
-        ]
-        return {"title": "Conto economico a margine di contribuzione",
-                "subtitle": "%s · %s" % (self.name, self._reclass_period()),
-                "currency": self._reclass_ccy(), "columns": cols, "rows": rows}
     _check_company_auto = True
 
     name = fields.Char(required=True, default=lambda s: s.env._("Direct Costing"))
@@ -66,12 +30,64 @@ class CmcDirectCosting(models.Model):
         "CHECK(date_to >= date_from)", "End date must be on/after start date."
     )
 
-    @api.depends("line_ids.mc_gross", "line_ids.mc_semigross", "common_fixed_cost")
+    @api.depends(
+        "line_ids.mc_gross", "line_ids.mc_semigross", "common_fixed_cost", "mode"
+    )
     def _compute_totals(self):
         for rec in self:
             rec.total_mc_gross = sum(rec.line_ids.mapped("mc_gross"))
-            rec.total_mc_semigross = sum(rec.line_ids.mapped("mc_semigross"))
+            if rec.mode == "simple":
+                # one margin only: specific fixed costs are not modelled, so
+                # they must not keep subtracting from the operating result
+                # while the form hides them
+                rec.total_mc_semigross = rec.total_mc_gross
+            else:
+                rec.total_mc_semigross = sum(rec.line_ids.mapped("mc_semigross"))
             rec.operating_result = rec.total_mc_semigross - rec.common_fixed_cost
+
+    def _cmc_reclass(self):
+        self.ensure_one()
+        lines = self.line_ids
+        cols = [{"key": "l%s" % ln.id, "label": ln.name} for ln in lines]
+
+        def vals(field):
+            return {"l%s" % ln.id: getattr(ln, field) for ln in lines}
+
+        def tot(field):
+            return sum(lines.mapped(field))
+
+        rev_tot = tot("revenue")
+        rows = [
+            {"label": self.env._("Revenue"), "kind": "revenue",
+             "values": vals("revenue"), "total": rev_tot},
+            {"label": self.env._("Variable cost"), "kind": "subtract",
+             "values": vals("variable_cost"), "total": tot("variable_cost")},
+            {"label": self.env._("Gross CM"), "kind": "subtotal",
+             "values": vals("mc_gross"), "total": self.total_mc_gross},
+            {"label": self.env._("CM %"), "kind": "percent",
+             "values": {"l%s" % ln.id: ln.mc_ratio for ln in lines},
+             "total": (self.total_mc_gross / rev_tot * 100) if rev_tot else 0.0},
+        ]
+        if self.mode != "simple":
+            # the simple mode ignores specific fixed costs: showing the rows
+            # would state a margin the engine does not compute
+            rows += [
+                {"label": self.env._("Specific fixed costs"), "kind": "subtract",
+                 "values": vals("specific_fixed_cost"),
+                 "total": tot("specific_fixed_cost")},
+                {"label": self.env._("Semigross CM"), "kind": "subtotal",
+                 "values": vals("mc_semigross"), "total": self.total_mc_semigross},
+            ]
+        rows += [
+            {"label": self.env._("Common fixed costs"), "kind": "subtract",
+             "values": None, "total": self.common_fixed_cost},
+            {"label": self.env._("Operating result"), "kind": "result",
+             "values": None, "total": self.operating_result},
+        ]
+        return {"title": self.env._("Contribution margin income statement"),
+                "subtitle": "%s · %s" % (self.name, self._reclass_period()),
+                "currency": self._reclass_ccy(), "columns": cols, "rows": rows}
+
 
 
 class CmcDirectCostingLine(models.Model):

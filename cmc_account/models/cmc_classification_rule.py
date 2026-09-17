@@ -16,14 +16,24 @@ class CmcClassificationRule(models.Model):
     )
 
     # --- match criteria (blank = wildcard; AND across the set ones) ---
-    general_account_id = fields.Many2one("account.account", string="Financial Account")
+    #
+    # ondelete="cascade" on every criterion is deliberate. With the ORM default
+    # ('set null') PostgreSQL blanks the column without the ORM noticing, so
+    # _check_has_criterion -- an @api.constrains -- never re-fires and the rule
+    # survives with every criterion empty. _matches() then returns True for
+    # EVERY line: deleting or merging one account would silently reclassify the
+    # whole cost base. A rule whose only criterion is gone has no reason to live.
+    general_account_id = fields.Many2one(
+        "account.account", string="Financial Account", ondelete="cascade"
+    )
     account_code_prefix = fields.Char(
         help="Match if the financial account code starts with this prefix."
     )
-    product_category_id = fields.Many2one("product.category")
-    partner_id = fields.Many2one("res.partner")
+    product_category_id = fields.Many2one("product.category", ondelete="cascade")
+    partner_id = fields.Many2one("res.partner", ondelete="cascade")
     center_id = fields.Many2one(
-        "account.analytic.account", string="Cost Center", check_company=True
+        "account.analytic.account", string="Cost Center", check_company=True,
+        ondelete="cascade",
     )
 
     # --- assignments (fill-only on the line, see _cmc_auto_classify) ---
@@ -75,9 +85,16 @@ class CmcClassificationRule(models.Model):
 
     @api.model
     def _rules_for_company(self, company):
-        """Rules of this company or any of its parents (aligned with the
-        record rule's ``parent_of`` semantics). Run as sudo: classification is
-        a system derivation triggered by any user posting a cost line."""
-        return self.sudo().with_company(company).search(
+        """Rules applicable to ``company``: its own plus its parents' plus the
+        company-less ones.
+
+        No sudo. Classification rules are non-sensitive configuration and every
+        internal user has a read-only ACL row on them, so the record rule in
+        security/cmc_account_security.xml stays the single security boundary
+        and cannot drift from a hand-written sudo domain. The domain below is a
+        BUSINESS filter (only the rules of the line's own company may classify
+        it), not a security one.
+        """
+        return self.with_company(company).search(
             ["|", ("company_id", "=", False), ("company_id", "parent_of", company.id)]
         )

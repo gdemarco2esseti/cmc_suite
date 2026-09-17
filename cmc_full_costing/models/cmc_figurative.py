@@ -4,7 +4,7 @@ from odoo.exceptions import ValidationError
 
 class CmcFigurativeCost(models.Model):
     _name = "cmc.figurative.cost"
-    _description = "Figurative cost (co.an.-only, economico-tecnico)"
+    _description = "Figurative cost (cost accounting only, economic-technical)"
     _order = "date_to desc, id desc"
     _check_company_auto = True
 
@@ -29,7 +29,10 @@ class CmcFigurativeCost(models.Model):
     )
     capital = fields.Monetary()
     rate = fields.Float(string="Annual Rate", digits=(16, 6))
-    amount = fields.Monetary(compute="_compute_amount", store=True, readonly=False)
+    # plain stored value: a compute that skips branches is nulled by the ORM
+    # for the records it leaves unset, which silently zeroed lump-sum amounts
+    # while editing the form. The interest method derives it instead (below).
+    amount = fields.Monetary()
     cost_object_ref = fields.Reference(
         selection="_selection_cost_object", string="Cost Object"
     )
@@ -42,11 +45,28 @@ class CmcFigurativeCost(models.Model):
     def _selection_cost_object(self):
         return self.env["account.analytic.line"]._selection_cost_object()
 
-    @api.depends("method", "capital", "rate")
-    def _compute_amount(self):
+    @api.onchange("method", "capital", "rate")
+    def _onchange_interest_amount(self):
         for rec in self:
             if rec.method == "interest":
                 rec.amount = rec.rate * rec.capital
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get("method") == "interest" and "amount" not in vals:
+                vals["amount"] = vals.get("rate", 0.0) * vals.get("capital", 0.0)
+        return super().create(vals_list)
+
+    def write(self, vals):
+        res = super().write(vals)
+        # the form keeps `amount` read-only under the interest method, so the
+        # client never sends it: re-derive it server-side (RPC included)
+        if "amount" not in vals and {"method", "capital", "rate"} & vals.keys():
+            for rec in self:
+                if rec.method == "interest":
+                    rec.write({"amount": rec.rate * rec.capital})
+        return res
 
     @api.constrains("cost_element_id")
     def _check_figurative_element(self):

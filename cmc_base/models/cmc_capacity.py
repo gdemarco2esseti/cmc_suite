@@ -30,9 +30,9 @@ class CmcCapacityAnalysis(models.Model):
     )
 
     # capacity inputs (in driver units, typically hours) — user-entered facts
-    capacity_theoretical = fields.Float(digits="Product Unit of Measure")
-    capacity_practical = fields.Float(digits="Product Unit of Measure")
-    capacity_actual = fields.Float(digits="Product Unit of Measure")
+    capacity_theoretical = fields.Float(digits="Product Unit")
+    capacity_practical = fields.Float(digits="Product Unit")
+    capacity_actual = fields.Float(digits="Product Unit")
 
     # derived figures — stored because the row IS period-scoped
     fixed_cost = fields.Monetary(compute="_compute_capacity", store=True)
@@ -52,6 +52,10 @@ class CmcCapacityAnalysis(models.Model):
     _practical_le_theoretical = models.Constraint(
         "CHECK(capacity_theoretical = 0 OR capacity_practical <= capacity_theoretical)",
         "Practical capacity cannot exceed theoretical capacity.",
+    )
+    _dates_ordered = models.Constraint(
+        "CHECK(date_from <= date_to)",
+        "The period end date cannot precede its start date.",
     )
     _capacity_non_negative = models.Constraint(
         "CHECK(capacity_theoretical >= 0 AND capacity_practical >= 0 "

@@ -1,5 +1,9 @@
 from odoo import api, fields, models
-from odoo.tools import float_is_zero
+from odoo.tools import float_compare, float_is_zero
+
+# ratio fields carry 4 decimals (see mc_ratio digits): compare them at that step,
+# never at the currency step
+RATIO_ROUNDING = 0.0001
 
 
 class CmcCvrAnalysis(models.Model):
@@ -7,6 +11,12 @@ class CmcCvrAnalysis(models.Model):
     _description = "Cost-Volume-Profit / Break-even Analysis"
     _order = "date_to desc, name"
     _check_company_auto = True
+
+    # a write on any of these invalidates the plotted break-even curve
+    CURVE_TRIGGERS = frozenset(
+        {"price_unit", "variable_unit", "fixed_cost", "is_multiproduct",
+         "mode", "center_id", "date_from", "date_to"}
+    )
 
     name = fields.Char(required=True, default=lambda s: s.env._("CVR Analysis"))
     company_id = fields.Many2one(
@@ -28,10 +38,11 @@ class CmcCvrAnalysis(models.Model):
     # inputs (manual; fixed cost derivable from the center)
     price_unit = fields.Monetary(string="Unit Price (p)")
     variable_unit = fields.Monetary(string="Unit Variable Cost (v)")
-    fixed_cost = fields.Monetary(
-        string="Fixed Cost (CF)", compute="_compute_fixed_cost",
-        store=True, readonly=False,
-    )
+    # plain stored value: an editable compute that skips branches is nulled by
+    # the ORM for the records it leaves unset (a CF typed in simulation mode was
+    # silently reset), and no @api.depends can track the analytic lines behind
+    # the actual mode. It is derived on change and by action_recompute() instead.
+    fixed_cost = fields.Monetary(string="Fixed Cost (CF)")
     target_profit = fields.Monetary(string="Target Profit (Uo)")
     volume = fields.Float(string="Volume (Q)", digits="Product Unit of Measure")
 
@@ -73,8 +84,11 @@ class CmcCvrAnalysis(models.Model):
         "Price and variable cost cannot be negative.",
     )
 
-    @api.depends("center_id", "date_from", "date_to", "mode")
-    def _compute_fixed_cost(self):
+    # ---- fixed cost (actual mode) ---------------------------------------
+
+    def _derive_fixed_cost(self):
+        """Pull the fixed cost of the center from its analytic lines. Only in
+        actual mode: a simulation CF is typed by the user and kept as is."""
         for rec in self:
             if not (rec.mode == "consuntivo" and rec.center_id
                     and rec.date_from and rec.date_to):
@@ -84,6 +98,12 @@ class CmcCvrAnalysis(models.Model):
             )
             rec.fixed_cost = groups.get(rec.center_id.id, 0.0)
 
+    @api.onchange("mode", "center_id", "date_from", "date_to")
+    def _onchange_fixed_cost_source(self):
+        self._derive_fixed_cost()
+
+    # ---- CVP maths -------------------------------------------------------
+
     @api.depends(
         "price_unit", "variable_unit", "fixed_cost", "target_profit", "volume",
         "is_multiproduct",
@@ -91,37 +111,55 @@ class CmcCvrAnalysis(models.Model):
     )
     def _compute_cvr(self):
         for rec in self:
+            # a margin below the currency step is rounding noise, not a margin:
+            # comparing bare floats turned v=9.999 against p=10.00 into a
+            # break-even quantity three orders of magnitude off
+            rounding = rec.company_id.currency_id.rounding or 0.01
             cf = rec.fixed_cost
             if rec.is_multiproduct and rec.line_ids:
                 tot_rev = sum(l.qty * l.price_unit for l in rec.line_ids)
                 tot_mc = sum(
                     l.qty * (l.price_unit - l.variable_unit) for l in rec.line_ids
                 )
-                ratio = (tot_mc / tot_rev) if tot_rev else 0.0
+                has_rev = not float_is_zero(tot_rev, precision_rounding=rounding)
+                ratio = (tot_mc / tot_rev) if has_rev else 0.0
+                positive_mc = float_compare(
+                    tot_mc, 0.0, precision_rounding=rounding
+                ) > 0
                 rec.mc_unit = 0.0
                 rec.mc_ratio = ratio
-                rec.has_breakeven = ratio > 0
+                rec.has_breakeven = positive_mc and has_rev
                 rec.bep_qty = 0.0
-                rec.bep_revenue = (cf / ratio) if ratio else 0.0
+                rec.bep_revenue = (
+                    (cf / ratio)
+                    if not float_is_zero(ratio, precision_rounding=RATIO_ROUNDING)
+                    else 0.0
+                )
                 rec.target_qty = 0.0
                 mc_total = tot_mc
                 actual_rev = tot_rev
             else:
                 p, v = rec.price_unit, rec.variable_unit
                 mc = p - v
-                ratio = (mc / p) if p else 0.0
+                has_price = not float_is_zero(p, precision_rounding=rounding)
+                ratio = (mc / p) if has_price else 0.0
                 rec.mc_unit = mc
                 rec.mc_ratio = ratio
-                rec.has_breakeven = mc > 0
-                if mc > 0:
+                rec.has_breakeven = (
+                    float_compare(mc, 0.0, precision_rounding=rounding) > 0
+                )
+                if rec.has_breakeven:
                     rec.bep_qty = cf / mc
-                    rec.bep_revenue = (cf / ratio) if ratio else 0.0
+                    rec.bep_revenue = (
+                        (cf / ratio)
+                        if not float_is_zero(ratio, precision_rounding=RATIO_ROUNDING)
+                        else 0.0
+                    )
                     rec.target_qty = (rec.target_profit + cf) / mc
                 else:
                     rec.bep_qty = rec.bep_revenue = rec.target_qty = 0.0
                 mc_total = mc * rec.volume
                 actual_rev = p * rec.volume
-            rounding = rec.company_id.currency_id.rounding or 0.01
             # margin of safety
             rec.margin_of_safety = actual_rev - rec.bep_revenue
             rec.mos_ratio = (
@@ -143,32 +181,53 @@ class CmcCvrAnalysis(models.Model):
         return self.operating_leverage * revenue_change_pct
 
     def action_recompute(self):
-        for rec in self:
-            # re-derive the fixed cost from current analytic lines (consuntivo),
-            # then rebuild the break-even curve — never from a stale CF
-            rec.invalidate_recordset(["fixed_cost"])
-            rec._compute_fixed_cost()
-            rec._build_curve()
+        # re-derive the fixed cost from current analytic lines (consuntivo),
+        # then rebuild the break-even curve — never from a stale CF
+        self._derive_fixed_cost()
+        self._build_curve()
         return True
 
+    # ---- break-even curve ------------------------------------------------
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super().create(vals_list)
+        records._build_curve()
+        return records
+
+    def write(self, vals):
+        res = super().write(vals)
+        # the curve is a snapshot of the parameters: never leave the tab showing
+        # points computed from the previous ones
+        if self.CURVE_TRIGGERS & vals.keys():
+            self._build_curve()
+        return res
+
     def _build_curve(self):
-        self.ensure_one()
+        """(Re)build the plotted points. No break-even (or a zero one, whose
+        four samples would collapse on the origin) means no curve at all."""
         self.curve_ids.unlink()
-        if not self.has_breakeven or self.is_multiproduct:
-            return
-        p, v, cf = self.price_unit, self.variable_unit, self.fixed_cost
-        points = [0.0, self.bep_qty, self.bep_qty * 1.5, self.bep_qty * 2]
-        self.env["cmc.cvr.curve"].create(
-            [
+        qty_rounding = 10 ** -self.env["decimal.precision"].precision_get(
+            "Product Unit of Measure"
+        )
+        vals_list = []
+        for rec in self:
+            if rec.is_multiproduct or not rec.has_breakeven:
+                continue
+            if float_is_zero(rec.bep_qty, precision_rounding=qty_rounding):
+                continue
+            p, v, cf = rec.price_unit, rec.variable_unit, rec.fixed_cost
+            vals_list += [
                 {
-                    "analysis_id": self.id,
+                    "analysis_id": rec.id,
                     "volume": q,
                     "revenue": p * q,
                     "total_cost": cf + v * q,
                 }
-                for q in points
+                for q in (0.0, rec.bep_qty, rec.bep_qty * 1.5, rec.bep_qty * 2)
             ]
-        )
+        if vals_list:
+            self.env["cmc.cvr.curve"].create(vals_list)
 
 
 class CmcCvrLine(models.Model):
@@ -178,7 +237,7 @@ class CmcCvrLine(models.Model):
     analysis_id = fields.Many2one(
         "cmc.cvr.analysis", required=True, ondelete="cascade", index=True
     )
-    company_id = fields.Many2one(related="analysis_id.company_id", store=True)
+    company_id = fields.Many2one(related="analysis_id.company_id", store=True, index=True)
     currency_id = fields.Many2one(related="analysis_id.currency_id")
     product_id = fields.Many2one("product.product")
     qty = fields.Float(digits="Product Unit of Measure")
@@ -199,6 +258,9 @@ class CmcCvrCurve(models.Model):
 
     analysis_id = fields.Many2one(
         "cmc.cvr.analysis", required=True, ondelete="cascade", index=True
+    )
+    company_id = fields.Many2one(
+        related="analysis_id.company_id", store=True, index=True
     )
     currency_id = fields.Many2one(related="analysis_id.currency_id")
     volume = fields.Float(digits="Product Unit of Measure")

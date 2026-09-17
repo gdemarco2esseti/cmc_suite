@@ -23,7 +23,11 @@
             <field name="privilege_id" ref="res_groups_privilege_cmc"/>
             <field name="implied_ids" eval="[(4, ref('cmc_base.group_cmc_user'))]"/>
         </record>
+    </data>
 
+    <!-- record rules live OUTSIDE noupdate: a domain fix must be able to
+         reach databases that already have the module installed -->
+    <data>
         <record id="cmc_cost_driver_company_rule" model="ir.rule">
             <field name="name">CMC cost driver: multi-company</field>
             <field name="model_id" ref="model_cmc_cost_driver"/>
@@ -86,6 +90,5 @@
             <field name="global" eval="True"/>
             <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
         </record>
-
     </data>
 </odoo>

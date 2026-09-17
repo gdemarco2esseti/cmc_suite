@@ -62,3 +62,15 @@ Costruire la **base di costo** su cui poggiano tutte le metodologie di costing:
 - Arrotondamenti a conservazione tramite `cmc_utils.largest_remainder` (usato da tutta la suite).
 - Il cruscotto rileva **a runtime** quali moduli capillari sono installati: mostra solo le
   metodologie effettivamente disponibili.
+
+## Note di sicurezza (2026-09-17)
+
+- Il hook che tiene allineate le analisi di capacità gira in `sudo()` su
+  `account.analytic.line`: qualunque utente registra righe analitiche
+  (timesheet, fatture fornitore, produzione), mentre `cmc.capacity.analysis` è
+  dato riservato ai gruppi CMC. Senza `sudo()` installare `cmc_base` renderebbe
+  i diritti CMC un prerequisito per registrare una riga analitica.
+- ACL `1,0,1,1` (lettura + creazione + cancellazione, senza scrittura) su
+  `cmc.closing.line` e `cmc.cost.analysis.line`: le righe di risultato non
+  vengono mai modificate sul posto, il motore le ricostruisce con
+  `unlink()` + `create()`. Il CSV delle ACL non ammette commenti, la nota sta qui.

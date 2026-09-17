@@ -5,3 +5,4 @@ from . import test_capacity
 from . import test_cost_analysis
 from . import test_ux_plan_aware
 from . import test_reclass_mixin
+from . import test_security

@@ -1,18 +1,23 @@
 from odoo import api, models
 from odoo.tools import formatLang
+from odoo.tools.translate import LazyTranslate
+
+# module-level labels: lazily translated so they are extractable AND
+# resolved in the reader's language at render time
+_lt = LazyTranslate(__name__)
 
 # Foundation pipeline: mandatory, sequential, always present. Numbered at
 # render time (1..N) so there are never gaps.
 # (key, label, model, domain, action xml-id)
 BASE_STEPS = [
-    ("centers", "Centri di costo", "account.analytic.account",
+    ("centers", _lt("Cost Centers"), "account.analytic.account",
      ["|", ("cmc_center_type", "!=", False), ("cmc_is_period", "=", True)],
      "cmc_base.action_cmc_cost_center"),
-    ("costs", "Registrazione costi", "account.analytic.line",
+    ("costs", _lt("Cost Entry"), "account.analytic.line",
      [("cmc_behavior", "!=", False)], "cmc_base.action_cmc_analytic_lines"),
-    ("services", "Servizi inter-centro", "cmc.center.service",
+    ("services", _lt("Inter-Center Services"), "cmc.center.service",
      [], "cmc_base.action_cmc_center_service"),
-    ("closing", "Ribaltamento", "cmc.closing.run",
+    ("closing", _lt("Center Closing"), "cmc.closing.run",
      [("state", "=", "done")], "cmc_base.action_cmc_closing_run"),
 ]
 
@@ -20,15 +25,15 @@ BASE_STEPS = [
 # Only the installed ones appear (runtime detection) — a deployment typically
 # picks the methodology it needs, so no fixed numbering / no gaps.
 METHOD_STEPS = [
-    ("costing", "Costo pieno", "cmc.costing.run",
+    ("costing", _lt("Full Costing"), "cmc.costing.run",
      [("state", "=", "done")], "cmc_full_costing.action_cmc_costing_run"),
-    ("cvr", "Direct costing / CVR", "cmc.cvr.analysis",
+    ("cvr", _lt("Direct Costing / CVP"), "cmc.cvr.analysis",
      [], "cmc_direct_costing.action_cmc_cvr_analysis"),
-    ("abc", "Activity-Based Costing", "cmc.abc.run",
+    ("abc", _lt("Activity-Based Costing"), "cmc.abc.run",
      [("state", "=", "done")], "cmc_abc.action_cmc_abc_run"),
-    ("joint", "Costi congiunti", "cmc.joint.run",
+    ("joint", _lt("Joint Costs"), "cmc.joint.run",
      [("state", "=", "done")], "cmc_joint_costs.action_cmc_joint_run"),
-    ("tdabc", "Time-Driven ABC", "cmc.tdabc.run",
+    ("tdabc", _lt("Time-Driven ABC"), "cmc.tdabc.run",
      [("state", "=", "done")], "cmc_tdabc.action_cmc_tdabc_run"),
 ]
 
@@ -47,12 +52,13 @@ class CmcCockpit(models.TransientModel):
                 continue  # capillary module not installed
             count = self.env[model].search_count(domain)
             out.append({
-                "key": key, "label": label, "count": count,
+                "key": key, "label": str(label), "count": count,
                 "state": "done" if count else "todo", "action": action,
             })
         return out
 
     @api.model
+    @api.readonly
     def get_cockpit_data(self):
         """JSON-able payload for the OWL cockpit. The foundation `pipeline` is
         sequential and numbered at render time (no gaps); `methods` are the
@@ -94,11 +100,13 @@ class CmcCockpit(models.TransientModel):
         centers = next((s["count"] for s in pipeline if s["key"] == "centers"), 0)
 
         kpis = [
-            {"key": "centers", "label": "Centri di costo", "value": str(centers)},
-            {"key": "cost", "label": "Costi registrati",
+            {"key": "centers", "label": self.env._("Cost Centers"),
+             "value": str(centers)},
+            {"key": "cost", "label": self.env._("Booked Costs"),
              "value": formatLang(self.env, total_cost, currency_obj=currency)},
-            {"key": "runs", "label": "Elaborazioni", "value": str(runs_done)},
-            {"key": "products", "label": "Prodotti a costo",
+            {"key": "runs", "label": self.env._("Computations"),
+             "value": str(runs_done)},
+            {"key": "products", "label": self.env._("Costed Products"),
              "value": str(products_costed)},
         ]
 

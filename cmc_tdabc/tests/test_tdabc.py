@@ -1,4 +1,9 @@
-from odoo.tests.common import TransactionCase, tagged
+from datetime import date
+
+import psycopg2
+
+from odoo.exceptions import UserError, ValidationError
+from odoo.tests.common import TransactionCase, new_test_user, tagged
 
 
 @tagged("post_install", "-at_install")
@@ -171,7 +176,6 @@ class TestTdabc(TransactionCase):
         self.assertEqual(run.state, "done")
 
     def test_practical_zero_raises(self):
-        from odoo.exceptions import UserError
         res = self.Res.create({
             "name": "Z", "cost": 1000.0, "theoretical_time": 0.0, "util_factor": 100.0,
         })
@@ -188,7 +192,6 @@ class TestTdabc(TransactionCase):
             run.action_compute()
 
     def test_unit_time_negative_raises(self):
-        from odoo.exceptions import UserError
         neg = self.Char.create({"code": "NEG", "name": "Neg", "ttype": "number"})
         res = self.Res.create({
             "name": "R", "cost": 1000.0, "theoretical_time": 2000.0, "util_factor": 100.0,
@@ -368,3 +371,281 @@ class TestTdabc(TransactionCase):
         # unscoped: value applies -> 1 + 1*9 = 10.0
         cmap_all = act._char_map(self.p1, self.env["res.partner"])
         self.assertEqual(act._unit_time(cmap_all), 10.0)
+
+    # --- B-8: volume must not be negative -----------------------------------
+    def test_negative_volume_rejected(self):
+        act = self.Act.create({
+            "name": "A", "code": "NV", "resource_id": self._res_default().id,
+            "base_time": 1.0,
+        })
+        with self.assertRaises(psycopg2.errors.CheckViolation):
+            with self.env.cr.savepoint():
+                self.Run.create({
+                    "name": "R", "line_ids": [(0, 0, {
+                        "activity_id": act.id, "cost_object_type": "product",
+                        "product_id": self.p1.id, "volume": -5,
+                    })],
+                })
+                self.env.flush_all()
+
+    # --- B-9: one cost object per line, one column per result row -----------
+    def test_run_line_rejects_both_cost_objects(self):
+        act = self.Act.create({
+            "name": "A", "code": "BOTH", "resource_id": self._res_default().id,
+            "base_time": 1.0,
+        })
+        with self.assertRaises(psycopg2.errors.CheckViolation):
+            with self.env.cr.savepoint():
+                self.Run.create({
+                    "name": "R", "line_ids": [(0, 0, {
+                        "activity_id": act.id, "cost_object_type": "product",
+                        "product_id": self.p1.id, "partner_id": self.cust.id,
+                        "volume": 10,
+                    })],
+                })
+                self.env.flush_all()
+
+    def test_customer_result_has_no_product(self):
+        res = self.Res.create({
+            "name": "R", "cost": 1000.0, "theoretical_time": 2000.0,
+            "util_factor": 100.0,
+        })
+        act = self.Act.create({
+            "name": "Serve", "code": "SV", "resource_id": res.id, "base_time": 2.0,
+        })
+        run = self.Run.create({
+            "name": "R", "line_ids": [(0, 0, {
+                "activity_id": act.id, "cost_object_type": "customer",
+                "partner_id": self.cust.id, "volume": 10,
+            })],
+        })
+        run.action_compute()
+        row = run.result_ids.filtered(lambda r: r.scenario == "manual")
+        self.assertFalse(row.product_id)
+        self.assertEqual(row.partner_id, self.cust)
+        # the reclass therefore keys the column on the partner, not the product
+        d = run._cmc_reclass()
+        self.assertEqual([c["key"] for c in d["columns"]],
+                         ["c%s" % self.cust.id])
+
+    # --- B-10: a negative correction timesheet must not kill the whole run ---
+    def test_negative_timesheet_keeps_manual_scenario(self):
+        center = self._center()
+        res = self.Res.create({
+            "name": "R", "cost": 1000.0, "theoretical_time": 20000.0,
+            "util_factor": 100.0,
+        })
+        act = self.Act.create({
+            "name": "NegTs", "code": "NEGTS", "resource_id": res.id,
+            "base_time": 1.0,
+        })
+        self._tag_hours(act, 10.0, center)
+        self._tag_hours(act, -12.0, center)  # in-period reversal: net -2 h
+        run = self.Run.create({
+            "name": "R", "line_ids": [(0, 0, {
+                "activity_id": act.id, "cost_object_type": "product",
+                "product_id": self.p1.id, "volume": 100,
+            })],
+        })
+        run.action_compute()
+        self.assertEqual(run.state, "done")
+        # the timesheet scenario drops the offending activity and says so...
+        self.assertEqual(set(run.result_ids.mapped("scenario")), {"manual"})
+        self.assertTrue(run.scenario_warning)
+        self.assertIn("NegTs", run.scenario_warning)
+        # ...while the estimate scenario is delivered intact
+        man = run.result_ids.filtered(lambda r: r.scenario == "manual")
+        self.assertEqual(man.time_absorbed, 100.0)
+
+    # --- B-11 / B-12: characteristic values are single-valued and typed ------
+    def test_char_value_unique_per_product(self):
+        char = self.Char.create({"code": "UQ", "name": "U", "ttype": "number"})
+        tmpl = self.p1.product_tmpl_id
+        tmpl.tdabc_char_value_ids = [
+            (0, 0, {"characteristic_id": char.id, "value": 2.0})]
+        self.env.flush_all()
+        with self.assertRaises(psycopg2.errors.UniqueViolation):
+            with self.env.cr.savepoint():
+                self.env["cmc.tdabc.char.value"].create({
+                    "characteristic_id": char.id,
+                    "product_tmpl_id": tmpl.id, "value": 3.0,
+                })
+                self.env.flush_all()
+
+    def test_char_value_unique_per_partner(self):
+        char = self.Char.create({"code": "UQP", "name": "U", "ttype": "number"})
+        self.cust.tdabc_char_value_ids = [
+            (0, 0, {"characteristic_id": char.id, "value": 2.0})]
+        self.env.flush_all()
+        with self.assertRaises(psycopg2.errors.UniqueViolation):
+            with self.env.cr.savepoint():
+                self.env["cmc.tdabc.char.value"].create({
+                    "characteristic_id": char.id,
+                    "partner_id": self.cust.id, "value": 3.0,
+                })
+                self.env.flush_all()
+
+    def test_bool_characteristic_value_is_a_flag(self):
+        char = self.Char.create({"code": "FLG", "name": "F", "ttype": "bool"})
+        with self.assertRaises(ValidationError):
+            self.env["cmc.tdabc.char.value"].create({
+                "characteristic_id": char.id,
+                "product_tmpl_id": self.p1.product_tmpl_id.id, "value": 7.5,
+            })
+
+    # --- B-13: a checkbox must not silently zero the typed volume -----------
+    def test_derived_volume_product_needs_product_field(self):
+        AL = self.env["account.analytic.line"]
+        if "product_id" in AL._fields:
+            self.skipTest("account/hr_timesheet installed: product_id available")
+        act = self.Act.create({
+            "name": "A", "code": "DV", "resource_id": self._res_default().id,
+            "base_time": 1.0,
+        })
+        run = self.Run.create({
+            "name": "R", "line_ids": [(0, 0, {
+                "activity_id": act.id, "cost_object_type": "product",
+                "product_id": self.p1.id, "volume": 42, "volume_derived": True,
+            })],
+        })
+        with self.assertRaises(UserError):
+            run.action_compute()
+
+    # --- B-14: degenerate divisors ------------------------------------------
+    def test_negative_util_factor_rejected(self):
+        with self.assertRaises(psycopg2.errors.CheckViolation):
+            with self.env.cr.savepoint():
+                self.Res.create({
+                    "name": "neg", "cost": 100.0, "theoretical_time": 100.0,
+                    "util_factor": -10.0,
+                })
+                self.env.flush_all()
+
+    def test_degenerate_capacity_raises(self):
+        # 1e-12 min of practical capacity passes a bare `> 0` gate and yields a
+        # rate of ~1e15; it must be rejected as "no capacity" instead.
+        res = self.Res.create({
+            "name": "tiny", "cost": 1000.0, "theoretical_time": 1e-12,
+            "util_factor": 100.0,
+        })
+        act = self.Act.create({
+            "name": "A", "code": "TINY", "resource_id": res.id, "base_time": 1.0,
+        })
+        run = self.Run.create({
+            "name": "R", "line_ids": [(0, 0, {
+                "activity_id": act.id, "cost_object_type": "product",
+                "product_id": self.p1.id, "volume": 1,
+            })],
+        })
+        with self.assertRaises(UserError):
+            run.action_compute()
+
+    # --- period scoping -----------------------------------------------------
+    def test_period_scoping(self):
+        center = self._center()
+        res = self.Res.create({
+            "name": "R", "cost": 1000.0, "theoretical_time": 20000.0,
+            "util_factor": 100.0,
+        })
+        act = self.Act.create({
+            "name": "Pick", "code": "PSC", "resource_id": res.id, "base_time": 15.0,
+        })
+        AL = self.env["account.analytic.line"]
+        for day, hours in ((date(2026, 1, 15), 100.0), (date(2026, 3, 15), 50.0)):
+            AL.create({
+                "name": "act", "account_id": center.id, "date": day,
+                "unit_amount": hours, "cmc_tdabc_activity_id": act.id,
+            })
+        run = self.Run.create({
+            "name": "R", "date_from": date(2026, 1, 1), "date_to": date(2026, 1, 31),
+            "line_ids": [(0, 0, {
+                "activity_id": act.id, "cost_object_type": "product",
+                "product_id": self.p1.id, "volume": 8000,
+            })],
+        })
+        run.action_compute()
+        ts = run.result_ids.filtered(lambda r: r.scenario == "timesheet")
+        self.assertAlmostEqual(ts.time_absorbed, 6000.0, places=2)  # 100h only
+        run.date_to = date(2026, 3, 31)
+        run.action_compute()
+        ts = run.result_ids.filtered(lambda r: r.scenario == "timesheet")
+        self.assertAlmostEqual(ts.time_absorbed, 9000.0, places=2)  # 150h
+
+    # --- security: the run must produce the same numbers for a plain CMC user
+    def test_group_cmc_user_end_to_end(self):
+        user = new_test_user(
+            self.env, login="cmc_tdabc_user",
+            groups="base.group_user,cmc_base.group_cmc_user",
+        )
+        center = self._center()
+        res = self.Res.create({
+            "name": "R", "cost": 79200.0, "theoretical_time": 158400.0,
+            "util_factor": 100.0,
+        })
+        act = self.Act.create({
+            "name": "Pick", "code": "GU", "resource_id": res.id, "base_time": 15.0,
+        })
+        self._tag_hours(act, 100.0, center)
+        run = self.Run.with_user(user).create({
+            "name": "R user", "line_ids": [(0, 0, {
+                "activity_id": act.id, "cost_object_type": "product",
+                "product_id": self.p1.id, "volume": 8000,
+            })],
+        })
+        run.action_compute()
+        self.assertEqual(run.state, "done")
+        man = run.result_ids.filtered(lambda r: r.scenario == "manual")
+        self.assertEqual(man.cost_absorbed, 60000.0)  # rate .5 * 15 * 8000
+        # the analytic aggregate must be visible to this user too, or the
+        # timesheet scenario would silently disappear
+        ts = run.result_ids.filtered(lambda r: r.scenario == "timesheet")
+        self.assertAlmostEqual(ts.time_absorbed, 6000.0, places=2)
+
+    # --- multi-company ------------------------------------------------------
+    def test_two_company_isolation(self):
+        c2 = self.env["res.company"].create({"name": "TDABC Company B"})
+        plan = self.env["account.analytic.plan"].search(
+            [("parent_id", "=", False)]
+        ).filtered(lambda p: p._column_name() == "account_id")[:1]
+        center_b = self.env["account.analytic.account"].create({
+            "name": "CB", "plan_id": plan.id, "cmc_center_type": "final",
+            "company_id": c2.id,
+        })
+        res_b = self.Res.create({
+            "name": "RB", "cost": 1000.0, "theoretical_time": 20000.0,
+            "util_factor": 100.0, "company_id": c2.id,
+        })
+        act_b = self.Act.create({
+            "name": "AB", "code": "AB", "resource_id": res_b.id,
+            "base_time": 1.0, "company_id": c2.id,
+        })
+        self.env["account.analytic.line"].create({
+            "name": "act", "account_id": center_b.id, "unit_amount": 100.0,
+            "cmc_tdabc_activity_id": act_b.id, "company_id": c2.id,
+        })
+        # a company-A run must not see company-B actual hours at all
+        res_a = self.Res.create({
+            "name": "RA", "cost": 1000.0, "theoretical_time": 20000.0,
+            "util_factor": 100.0,
+        })
+        act_a = self.Act.create({
+            "name": "AA", "code": "AA", "resource_id": res_a.id, "base_time": 1.0,
+        })
+        run_a = self.Run.create({
+            "name": "RA", "line_ids": [(0, 0, {
+                "activity_id": act_a.id, "cost_object_type": "product",
+                "product_id": self.p1.id, "volume": 100,
+            })],
+        })
+        run_a.action_compute()
+        self.assertEqual(set(run_a.result_ids.mapped("scenario")), {"manual"})
+
+        run_b = self.Run.create({
+            "name": "RB", "company_id": c2.id, "line_ids": [(0, 0, {
+                "activity_id": act_b.id, "cost_object_type": "product",
+                "product_id": self.p1.id, "volume": 100,
+            })],
+        })
+        run_b.action_compute()
+        self.assertEqual(set(run_b.result_ids.mapped("scenario")),
+                         {"manual", "timesheet"})

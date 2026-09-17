@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="action_report_tdabc_reclass" model="ir.actions.report">
-        <field name="name">TDABC (riclassificato)</field>
+        <field name="name">TDABC (reclassified)</field>
         <field name="model">cmc.tdabc.run</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">cmc_base.report_reclass</field>

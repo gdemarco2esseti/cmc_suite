@@ -6,15 +6,26 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-16 17:54+0000\n"
-"PO-Revision-Date: 2026-07-16 17:54+0000\n"
+"POT-Creation-Date: 2026-09-17 15:13+0000\n"
+"PO-Revision-Date: 2026-09-17 15:14+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: it\n"
+"Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: \n"
+
+#. module: cmc_tdabc
+#: model:ir.actions.report,print_report_name:cmc_tdabc.action_report_tdabc_reclass
+msgid "'TDABC - %s' % object.name"
+msgstr ""
+
+#. module: cmc_tdabc
+#. odoo-python
+#: code:addons/cmc_tdabc/models/cmc_tdabc.py:0
+msgid "(no cost object)"
+msgstr "(nessun oggetto)"
 
 #. module: cmc_tdabc
 #: model:ir.model.constraint,message:cmc_tdabc.constraint_cmc_tdabc_char_value_one_owner
@@ -24,6 +35,17 @@ msgid ""
 msgstr ""
 "Un valore caratteristica appartiene a un solo oggetto di costo (prodotto o "
 "partner)."
+
+#. module: cmc_tdabc
+#: model:ir.model.constraint,message:cmc_tdabc.constraint_cmc_tdabc_result_obj_single
+msgid "A result row carries a product or a partner, never both."
+msgstr "Una riga di risultato porta un prodotto o un partner, mai entrambi."
+
+#. module: cmc_tdabc
+#. odoo-python
+#: code:addons/cmc_tdabc/models/cmc_tdabc.py:0
+msgid "Absorbed cost · %(scenario)s"
+msgstr "Costo assorbito · %(scenario)s"
 
 #. module: cmc_tdabc
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_activity__active
@@ -37,12 +59,28 @@ msgid "Activities"
 msgstr "Attività"
 
 #. module: cmc_tdabc
+#: model:ir.model.fields,help:cmc_tdabc.field_cmc_tdabc_run__scenario_warning
+msgid "Activities left out of a scenario by the last computation, and why."
+msgstr "Attività escluse da uno scenario dall'ultimo calcolo, e perché."
+
+#. module: cmc_tdabc
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_result__activity_id
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run_line__activity_id
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_term__activity_id
 #: model_terms:ir.ui.view,arch_db:cmc_tdabc.view_cmc_tdabc_activity_form
 msgid "Activity"
 msgstr "Attività"
+
+#. module: cmc_tdabc
+#. odoo-python
+#: code:addons/cmc_tdabc/models/cmc_tdabc.py:0
+msgid ""
+"Activity %(a)s has negative net actual hours (%(m).2f min) over the period: "
+"excluded from the timesheet scenario. The estimate scenario is unaffected."
+msgstr ""
+"L'attività %(a)s ha ore consuntivate nette negative (%(m).2f min) nel "
+"periodo: esclusa dallo scenario a consuntivo. Lo scenario di stima non è "
+"interessato."
 
 #. module: cmc_tdabc
 #. odoo-python
@@ -70,7 +108,7 @@ msgstr "Consuntivo (timesheet)"
 #. module: cmc_tdabc
 #: model:ir.model,name:cmc_tdabc.model_account_analytic_line
 msgid "Analytic Line"
-msgstr ""
+msgstr "Riga analitica"
 
 #. module: cmc_tdabc
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_activity__base_time
@@ -83,11 +121,6 @@ msgid "Boolean flag"
 msgstr "Flag booleano"
 
 #. module: cmc_tdabc
-#: model:ir.ui.menu,name:cmc_tdabc.menu_cmc_tdabc_run
-msgid "Calcolo TDABC"
-msgstr ""
-
-#. module: cmc_tdabc
 #: model_terms:ir.ui.view,arch_db:cmc_tdabc.view_cmc_tdabc_run_form
 msgid "Capacity"
 msgstr "Capacità"
@@ -95,7 +128,7 @@ msgstr "Capacità"
 #. module: cmc_tdabc
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run__capacity_result_ids
 msgid "Capacity Result"
-msgstr ""
+msgstr "Risultato di capacità"
 
 #. module: cmc_tdabc
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_capacity_result__capacity_use_pct
@@ -106,7 +139,28 @@ msgstr "Utilizzo capacità %"
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_char_value__characteristic_id
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_term__characteristic_id
 msgid "Characteristic"
+msgstr "Caratteristica"
+
+#. module: cmc_tdabc
+#. odoo-python
+#: code:addons/cmc_tdabc/models/cmc_tdabc.py:0
+msgid ""
+"Characteristic %(char)s is a boolean flag: its value must be 0 or 1, not "
+"%(value)s."
 msgstr ""
+"La caratteristica %(char)s è un flag booleano: il suo valore deve essere 0 o"
+" 1, non %(value)s."
+
+#. module: cmc_tdabc
+#: model_terms:ir.ui.view,arch_db:cmc_tdabc.view_cmc_tdabc_char_value_form
+msgid "Characteristic Value"
+msgstr "Valore di caratteristica"
+
+#. module: cmc_tdabc
+#: model:ir.ui.menu,name:cmc_tdabc.menu_cmc_tdabc_char_value
+#: model_terms:ir.ui.view,arch_db:cmc_tdabc.view_cmc_tdabc_char_value_list
+msgid "Characteristic Values"
+msgstr "Valori delle caratteristiche"
 
 #. module: cmc_tdabc
 #: model:ir.model.constraint,message:cmc_tdabc.constraint_cmc_tdabc_characteristic_code_uniq
@@ -123,7 +177,7 @@ msgstr "Caratteristiche"
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_activity__code
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_characteristic__code
 msgid "Code"
-msgstr ""
+msgstr "Codice"
 
 #. module: cmc_tdabc
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_term__coefficient
@@ -139,8 +193,9 @@ msgstr "Coefficiente (min)"
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_result__company_id
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run__company_id
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run_line__company_id
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_term__company_id
 msgid "Company"
-msgstr ""
+msgstr "Azienda"
 
 #. module: cmc_tdabc
 #: model_terms:ir.ui.view,arch_db:cmc_tdabc.view_cmc_tdabc_run_form
@@ -150,7 +205,7 @@ msgstr "Calcola"
 #. module: cmc_tdabc
 #: model:ir.model,name:cmc_tdabc.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Contatto"
 
 #. module: cmc_tdabc
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_result__cost_absorbed
@@ -161,7 +216,7 @@ msgstr "Costo assorbito"
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_result__cost_object_type
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run_line__cost_object_type
 msgid "Cost Object Type"
-msgstr ""
+msgstr "Tipo oggetto di costo"
 
 #. module: cmc_tdabc
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_resource__rate
@@ -200,7 +255,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_result__currency_id
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run__currency_id
 msgid "Currency"
-msgstr ""
+msgstr "Valuta"
 
 #. module: cmc_tdabc
 #: model:ir.model.fields.selection,name:cmc_tdabc.selection__cmc_tdabc_result__cost_object_type__customer
@@ -211,17 +266,31 @@ msgstr "Cliente"
 #. module: cmc_tdabc
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run__date_from
 msgid "Date From"
-msgstr ""
+msgstr "Data inizio"
 
 #. module: cmc_tdabc
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run__date_to
 msgid "Date To"
-msgstr ""
+msgstr "Data fine"
 
 #. module: cmc_tdabc
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run_line__volume_derived
 msgid "Derived Volume"
 msgstr "Volume derivato"
+
+#. module: cmc_tdabc
+#. odoo-python
+#: code:addons/cmc_tdabc/models/cmc_tdabc.py:0
+msgid ""
+"Derived Volume on a product line needs the Product field on analytic lines, "
+"which none of the installed modules provides. Install Invoicing (account), "
+"Timesheets (hr_timesheet) or Sales (sale), or untick Derived Volume and "
+"enter the volume manually."
+msgstr ""
+"Il volume derivato su una riga prodotto richiede il campo Prodotto sulle "
+"righe analitiche, che nessuno dei moduli installati fornisce. Installa "
+"Contabilità (account), Fogli ore (hr_timesheet) o Vendite (sale), oppure "
+"togli la spunta a Volume derivato e inserisci il volume manualmente."
 
 #. module: cmc_tdabc
 #: model:ir.model.fields,field_description:cmc_tdabc.field_account_analytic_line__display_name
@@ -237,7 +306,7 @@ msgstr "Volume derivato"
 #: model:ir.model.fields,field_description:cmc_tdabc.field_product_template__display_name
 #: model:ir.model.fields,field_description:cmc_tdabc.field_res_partner__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nome visualizzato"
 
 #. module: cmc_tdabc
 #: model:ir.model.fields.selection,name:cmc_tdabc.selection__cmc_tdabc_run__state__done
@@ -314,7 +383,7 @@ msgstr ""
 #. module: cmc_tdabc
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run__line_ids
 msgid "Line"
-msgstr ""
+msgstr "Riga"
 
 #. module: cmc_tdabc
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_activity__name
@@ -322,7 +391,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_resource__name
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run__name
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 #. module: cmc_tdabc
 #: model:ir.model.fields.selection,name:cmc_tdabc.selection__cmc_tdabc_characteristic__ttype__number
@@ -332,14 +401,14 @@ msgstr "Numerico"
 #. module: cmc_tdabc
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_capacity_result__over_capacity
 msgid "Over Capacity"
-msgstr ""
+msgstr "Oltre la capacità"
 
 #. module: cmc_tdabc
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_char_value__partner_id
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_result__partner_id
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run_line__partner_id
 msgid "Partner"
-msgstr ""
+msgstr "Partner"
 
 #. module: cmc_tdabc
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_resource__cost
@@ -363,7 +432,13 @@ msgstr "Prodotto"
 #. module: cmc_tdabc
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_char_value__product_tmpl_id
 msgid "Product Tmpl"
-msgstr ""
+msgstr "Modello prodotto"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run__cmc_reclass_json
+#: model_terms:ir.ui.view,arch_db:cmc_tdabc.view_cmc_tdabc_run_form
+msgid "Reclassified"
+msgstr "Riclassificato"
 
 #. module: cmc_tdabc
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_capacity_result__required_time
@@ -393,7 +468,7 @@ msgstr "Risorse"
 #. module: cmc_tdabc
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run__result_ids
 msgid "Result"
-msgstr ""
+msgstr "Risultato"
 
 #. module: cmc_tdabc
 #: model_terms:ir.ui.view,arch_db:cmc_tdabc.view_cmc_tdabc_run_form
@@ -405,23 +480,42 @@ msgstr "Risultati"
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_result__run_id
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run_line__run_id
 msgid "Run"
-msgstr ""
+msgstr "Elaborazione"
 
 #. module: cmc_tdabc
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_capacity_result__scenario
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_result__scenario
 msgid "Scenario"
-msgstr ""
+msgstr "Scenario"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run__scenario_warning
+msgid "Scenario Warnings"
+msgstr "Avvisi sugli scenari"
 
 #. module: cmc_tdabc
 #: model:ir.model.constraint,message:cmc_tdabc.constraint_cmc_tdabc_run_line_obj_set
-msgid "Set the product (product line) or the customer (customer line)."
-msgstr "Imposta il prodotto (riga prodotto) o il cliente (riga cliente)."
+msgid ""
+"Set the product (product line) or the customer (customer line), not both."
+msgstr ""
+"Imposta il prodotto (riga prodotto) o il cliente (riga cliente), non "
+"entrambi."
 
 #. module: cmc_tdabc
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run__state
 msgid "State"
+msgstr "Stato"
+
+#. module: cmc_tdabc
+#: model_terms:ir.ui.view,arch_db:cmc_tdabc.view_partner_form_tdabc
+#: model_terms:ir.ui.view,arch_db:cmc_tdabc.view_product_template_form_tdabc
+msgid "TDABC"
 msgstr ""
+
+#. module: cmc_tdabc
+#: model:ir.actions.report,name:cmc_tdabc.action_report_tdabc_reclass
+msgid "TDABC (reclassified)"
+msgstr "TDABC (riclassificato)"
 
 #. module: cmc_tdabc
 #: model:ir.actions.act_window,name:cmc_tdabc.action_cmc_tdabc_activity
@@ -446,6 +540,11 @@ msgid "TDABC Characteristic Value on a Cost Object"
 msgstr "Valore caratteristica su oggetto di costo TDABC"
 
 #. module: cmc_tdabc
+#: model:ir.actions.act_window,name:cmc_tdabc.action_cmc_tdabc_char_value
+msgid "TDABC Characteristic Values"
+msgstr "Valori delle caratteristiche TDABC"
+
+#. module: cmc_tdabc
 #: model:ir.actions.act_window,name:cmc_tdabc.action_cmc_tdabc_characteristic
 #: model:ir.model.fields,field_description:cmc_tdabc.field_product_product__tdabc_char_value_ids
 #: model:ir.model.fields,field_description:cmc_tdabc.field_product_template__tdabc_char_value_ids
@@ -453,6 +552,11 @@ msgstr "Valore caratteristica su oggetto di costo TDABC"
 #: model:ir.model.fields,field_description:cmc_tdabc.field_res_users__tdabc_char_value_ids
 msgid "TDABC Characteristics"
 msgstr "Caratteristiche TDABC"
+
+#. module: cmc_tdabc
+#: model:ir.ui.menu,name:cmc_tdabc.menu_cmc_tdabc_run
+msgid "TDABC Computation"
+msgstr "Calcolo TDABC"
 
 #. module: cmc_tdabc
 #: model:ir.model,name:cmc_tdabc.model_cmc_tdabc_characteristic
@@ -489,7 +593,7 @@ msgstr "Risultato TDABC (costo per oggetto per scenario)"
 #: code:addons/cmc_tdabc/models/cmc_tdabc.py:0
 #: model_terms:ir.ui.view,arch_db:cmc_tdabc.view_cmc_tdabc_run_form
 msgid "TDABC Run"
-msgstr ""
+msgstr "Elaborazione TDABC"
 
 #. module: cmc_tdabc
 #: model_terms:ir.ui.view,arch_db:cmc_tdabc.view_cmc_tdabc_run_list
@@ -502,14 +606,30 @@ msgid "TDABC Time-Equation Term"
 msgstr "Termine dell'equazione di tempo TDABC"
 
 #. module: cmc_tdabc
+#. odoo-python
+#: code:addons/cmc_tdabc/models/cmc_tdabc.py:0
+msgid "TDABC absorbed cost (estimate vs actual)"
+msgstr "Costo assorbito TDABC (stima vs consuntivo)"
+
+#. module: cmc_tdabc
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_activity__term_ids
 msgid "Term"
-msgstr ""
+msgstr "Termine"
 
 #. module: cmc_tdabc
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_resource__theoretical_time
 msgid "Theoretical Time (min)"
 msgstr "Tempo teorico (min)"
+
+#. module: cmc_tdabc
+#: model:ir.model.constraint,message:cmc_tdabc.constraint_cmc_tdabc_char_value_partner_char_uniq
+msgid "This characteristic is already set on this partner."
+msgstr "Questa caratteristica è già impostata su questo partner."
+
+#. module: cmc_tdabc
+#: model:ir.model.constraint,message:cmc_tdabc.constraint_cmc_tdabc_char_value_product_char_uniq
+msgid "This characteristic is already set on this product."
+msgstr "Questa caratteristica è già impostata su questo prodotto."
 
 #. module: cmc_tdabc
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_result__time_absorbed
@@ -528,6 +648,12 @@ msgid "Time-Driven ABC"
 msgstr ""
 
 #. module: cmc_tdabc
+#. odoo-python
+#: code:addons/cmc_tdabc/models/cmc_tdabc.py:0
+msgid "Total absorbed cost"
+msgstr "Costo assorbito totale"
+
+#. module: cmc_tdabc
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_characteristic__ttype
 msgid "Type"
 msgstr "Tipo"
@@ -543,16 +669,44 @@ msgid "Unused Time (min)"
 msgstr "Tempo inutilizzato (min)"
 
 #. module: cmc_tdabc
+#. odoo-python
+#: code:addons/cmc_tdabc/models/cmc_tdabc.py:0
+msgid "Unused capacity · %(scenario)s"
+msgstr "Capacità inutilizzata · %(scenario)s"
+
+#. module: cmc_tdabc
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_resource__util_factor
 msgid "Utilization %"
 msgstr "Utilizzo %"
 
 #. module: cmc_tdabc
+#: model:ir.model.constraint,message:cmc_tdabc.constraint_cmc_tdabc_resource_util_factor_positive
+msgid "Utilization % cannot be negative."
+msgstr "La % di utilizzo non può essere negativa."
+
+#. module: cmc_tdabc
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_char_value__value
 msgid "Value"
-msgstr ""
+msgstr "Valore"
 
 #. module: cmc_tdabc
 #: model:ir.model.fields,field_description:cmc_tdabc.field_cmc_tdabc_run_line__volume
 msgid "Volume"
-msgstr ""
+msgstr "Volume"
+
+#. module: cmc_tdabc
+#: model:ir.model.constraint,message:cmc_tdabc.constraint_cmc_tdabc_run_line_volume_positive
+msgid "Volume cannot be negative."
+msgstr "Il volume non può essere negativo."
+
+#. module: cmc_tdabc
+#. odoo-python
+#: code:addons/cmc_tdabc/models/cmc_tdabc.py:0
+msgid "actual"
+msgstr "consuntivo"
+
+#. module: cmc_tdabc
+#. odoo-python
+#: code:addons/cmc_tdabc/models/cmc_tdabc.py:0
+msgid "estimate"
+msgstr "stima"

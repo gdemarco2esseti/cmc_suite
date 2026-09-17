@@ -21,13 +21,13 @@ class TestTdabcReclass(TransactionCase):
         d = run._cmc_reclass()
         self.assertTrue(d["columns"])
         labels = [r["label"] for r in d["rows"]]
-        self.assertTrue(any("Costo assorbito" in l for l in labels))
+        self.assertTrue(any("Absorbed cost" in lb for lb in labels))
 
     def test_has_manual_scenario(self):
         run, p1 = self._run()
         d = run._cmc_reclass()
         key = "p%s" % p1.id
         manual = next(r for r in d["rows"]
-                      if r["label"] == "Costo assorbito · stima")
+                      if r["label"] == "Absorbed cost · estimate")
         self.assertIn(key, manual["values"])
         self.assertGreater(manual["total"], 0)

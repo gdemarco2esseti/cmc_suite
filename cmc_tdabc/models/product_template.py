@@ -7,4 +7,5 @@ class ProductTemplate(models.Model):
     tdabc_char_value_ids = fields.One2many(
         "cmc.tdabc.char.value", "product_tmpl_id",
         string="TDABC Characteristics",
+        groups="cmc_base.group_cmc_user",
     )

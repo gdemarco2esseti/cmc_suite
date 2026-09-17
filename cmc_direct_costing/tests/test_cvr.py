@@ -68,3 +68,118 @@ class TestCvr(TransactionCase):
         self.assertEqual(len(a.curve_ids), 4)
         at_bep = a.curve_ids.filtered(lambda c: c.volume == 15000.0)
         self.assertEqual(at_bep.revenue, at_bep.total_cost)  # crossing at BEP
+
+    # item 11 — a margin below the currency step is rounding noise, not a
+    # margin: bare float comparisons turned it into a BEP three orders of
+    # magnitude off, presented as a fact
+    def test_near_zero_margin_has_no_breakeven(self):
+        a = self._cvr(price_unit=10, variable_unit=9.999, fixed_cost=1000)
+        self.assertFalse(a.has_breakeven)
+        self.assertEqual(a.bep_qty, 0.0)
+        self.assertEqual(a.bep_revenue, 0.0)
+        self.assertEqual(a.target_qty, 0.0)
+        self.assertFalse(a.curve_ids)
+
+    def test_near_zero_margin_multiproduct(self):
+        a = self._cvr(
+            is_multiproduct=True, fixed_cost=1000,
+            line_ids=[(0, 0, {"qty": 1, "price_unit": 10, "variable_unit": 9.999})],
+        )
+        self.assertFalse(a.has_breakeven)
+
+    # item 17 — the curve must never show points from previous parameters
+    def test_curve_follows_parameters(self):
+        a = self._cvr(price_unit=10, variable_unit=4, fixed_cost=90000)
+        self.assertEqual(sorted(a.curve_ids.mapped("volume"))[1], 15000.0)
+        a.fixed_cost = 60000  # Q* = 10.000
+        self.assertEqual(a.bep_qty, 10000.0)
+        self.assertEqual(sorted(a.curve_ids.mapped("volume"))[1], 10000.0)
+
+    def test_no_curve_without_breakeven(self):
+        a = self._cvr(price_unit=4, variable_unit=4, fixed_cost=1000)
+        self.assertFalse(a.curve_ids)
+
+    # a zero break-even collapses the four samples onto the origin: no curve
+    def test_no_curve_when_bep_is_zero(self):
+        a = self._cvr(price_unit=10, variable_unit=4, fixed_cost=0)
+        self.assertTrue(a.has_breakeven)
+        self.assertEqual(a.bep_qty, 0.0)
+        self.assertFalse(a.curve_ids)
+
+    # item 12 — a CF typed in simulation mode must survive an edit of the
+    # fields the old editable compute depended on
+    def test_simulation_fixed_cost_survives_edits(self):
+        a = self._cvr(mode="simulazione", price_unit=10, variable_unit=4,
+                      fixed_cost=90000)
+        a.date_to = date(2026, 2, 28)
+        a.mode = "simulazione"
+        self.assertEqual(a.fixed_cost, 90000.0)
+        self.assertEqual(a.bep_qty, 15000.0)
+
+
+@tagged("post_install", "-at_install")
+class TestCvrActualMode(TransactionCase):
+    """item 12 — the only path in this module that reads cmc_base analytic
+    data. No @api.depends can track it, so action_recompute() must."""
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.plan = (
+            cls.env["account.analytic.plan"]
+            .search([("parent_id", "=", False)])
+            .filtered(lambda p: p._column_name() == "account_id")[:1]
+        )
+        cls.center = cls.env["account.analytic.account"].create(
+            {"name": "CVR center", "plan_id": cls.plan.id,
+             "cmc_center_type": "final"}
+        )
+
+    def _cost(self, amount, behavior="fixed", day=15):
+        return self.env["account.analytic.line"].create(
+            {"name": "c", "account_id": self.center.id, "amount": amount,
+             "date": date(2026, 1, day), "cmc_behavior": behavior}
+        )
+
+    def test_actual_mode_derives_fixed_cost(self):
+        self._cost(30000)
+        self._cost(20000)
+        self._cost(5000, behavior="variable")  # not a fixed cost
+        a = self.env["cmc.cvr.analysis"].create(
+            {"name": "actual", "mode": "consuntivo", "center_id": self.center.id,
+             "date_from": date(2026, 1, 1), "date_to": date(2026, 1, 31),
+             "price_unit": 10, "variable_unit": 4}
+        )
+        a.action_recompute()
+        self.assertEqual(a.fixed_cost, 50000.0)
+        self.assertAlmostEqual(a.bep_qty, 50000.0 / 6.0, places=2)
+        self.assertTrue(a.curve_ids)
+
+    def test_actual_mode_refreshes_stale_fixed_cost(self):
+        self._cost(30000)
+        a = self.env["cmc.cvr.analysis"].create(
+            {"name": "actual", "mode": "consuntivo", "center_id": self.center.id,
+             "date_from": date(2026, 1, 1), "date_to": date(2026, 1, 31),
+             "price_unit": 10, "variable_unit": 4}
+        )
+        a.action_recompute()
+        self.assertEqual(a.fixed_cost, 30000.0)
+        self._cost(30000)  # a new analytic line no depends could track
+        a.action_recompute()
+        self.assertEqual(a.fixed_cost, 60000.0)
+        self.assertEqual(a.bep_qty, 10000.0)
+
+    def test_actual_mode_ignores_lines_outside_the_window(self):
+        self._cost(30000)
+        self._cost(99999, day=15)
+        self.env["account.analytic.line"].create(
+            {"name": "old", "account_id": self.center.id, "amount": 777,
+             "date": date(2025, 1, 15), "cmc_behavior": "fixed"}
+        )
+        a = self.env["cmc.cvr.analysis"].create(
+            {"name": "actual", "mode": "consuntivo", "center_id": self.center.id,
+             "date_from": date(2026, 1, 1), "date_to": date(2026, 1, 31),
+             "price_unit": 10, "variable_unit": 4}
+        )
+        a.action_recompute()
+        self.assertEqual(a.fixed_cost, 129999.0)

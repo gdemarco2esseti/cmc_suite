@@ -44,7 +44,7 @@ class CmcCvrAnalysis(models.Model):
     # the actual mode. It is derived on change and by action_recompute() instead.
     fixed_cost = fields.Monetary(string="Fixed Cost (CF)")
     target_profit = fields.Monetary(string="Target Profit (Uo)")
-    volume = fields.Float(string="Volume (Q)", digits="Product Unit of Measure")
+    volume = fields.Float(string="Volume (Q)", digits="Product Unit")
 
     line_ids = fields.One2many("cmc.cvr.line", "analysis_id")
     curve_ids = fields.One2many("cmc.cvr.curve", "analysis_id")
@@ -59,12 +59,12 @@ class CmcCvrAnalysis(models.Model):
     )
     bep_qty = fields.Float(
         "Break-even Qty (Q*)", compute="_compute_cvr", store=True,
-        digits="Product Unit of Measure",
+        digits="Product Unit",
     )
     bep_revenue = fields.Monetary("Break-even Revenue", compute="_compute_cvr", store=True)
     target_qty = fields.Float(
         "Target-Profit Qty (Qo)", compute="_compute_cvr", store=True,
-        digits="Product Unit of Measure",
+        digits="Product Unit",
     )
     margin_of_safety = fields.Monetary(
         "Margin of Safety", compute="_compute_cvr", store=True
@@ -208,7 +208,7 @@ class CmcCvrAnalysis(models.Model):
         four samples would collapse on the origin) means no curve at all."""
         self.curve_ids.unlink()
         qty_rounding = 10 ** -self.env["decimal.precision"].precision_get(
-            "Product Unit of Measure"
+            "Product Unit"
         )
         vals_list = []
         for rec in self:
@@ -240,7 +240,7 @@ class CmcCvrLine(models.Model):
     company_id = fields.Many2one(related="analysis_id.company_id", store=True, index=True)
     currency_id = fields.Many2one(related="analysis_id.currency_id")
     product_id = fields.Many2one("product.product")
-    qty = fields.Float(digits="Product Unit of Measure")
+    qty = fields.Float(digits="Product Unit")
     price_unit = fields.Monetary()
     variable_unit = fields.Monetary()
     mc_unit = fields.Monetary(compute="_compute_mc", store=True)
@@ -263,6 +263,6 @@ class CmcCvrCurve(models.Model):
         related="analysis_id.company_id", store=True, index=True
     )
     currency_id = fields.Many2one(related="analysis_id.currency_id")
-    volume = fields.Float(digits="Product Unit of Measure")
+    volume = fields.Float(digits="Product Unit")
     revenue = fields.Monetary()
     total_cost = fields.Monetary()

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="action_report_costing_reclass" model="ir.actions.report">
-        <field name="name">Costo pieno (riclassificato)</field>
+        <field name="name">Full cost (reclassified)</field>
         <field name="model">cmc.costing.run</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">cmc_base.report_reclass</field>
         <field name="report_file">cmc_base.report_reclass</field>
-        <field name="print_report_name">'Costo pieno - %s' % object.name</field>
+        <field name="print_report_name">'Full cost - %s' % object.name</field>
         <field name="binding_model_id" ref="model_cmc_costing_run"/>
         <field name="binding_type">report</field>
     </record>

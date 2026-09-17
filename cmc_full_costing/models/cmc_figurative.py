@@ -1,5 +1,9 @@
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
+from odoo.tools import float_is_zero
+
+# `rate` carries 6 decimals (see its digits)
+RATE_ROUNDING = 1e-6
 
 
 class CmcFigurativeCost(models.Model):
@@ -45,10 +49,20 @@ class CmcFigurativeCost(models.Model):
     def _selection_cost_object(self):
         return self.env["account.analytic.line"]._selection_cost_object()
 
+    def _has_interest_inputs(self):
+        """True once capital or rate is filled in. Without them the interest
+        formula yields 0 and would wipe an amount the user typed by hand."""
+        self.ensure_one()
+        rounding = self.currency_id.rounding or 0.01
+        return not (
+            float_is_zero(self.capital, precision_rounding=rounding)
+            and float_is_zero(self.rate, precision_rounding=RATE_ROUNDING)
+        )
+
     @api.onchange("method", "capital", "rate")
     def _onchange_interest_amount(self):
         for rec in self:
-            if rec.method == "interest":
+            if rec.method == "interest" and rec._has_interest_inputs():
                 rec.amount = rec.rate * rec.capital
 
     @api.model_create_multi
@@ -64,7 +78,7 @@ class CmcFigurativeCost(models.Model):
         # client never sends it: re-derive it server-side (RPC included)
         if "amount" not in vals and {"method", "capital", "rate"} & vals.keys():
             for rec in self:
-                if rec.method == "interest":
+                if rec.method == "interest" and rec._has_interest_inputs():
                     rec.write({"amount": rec.rate * rec.capital})
         return res
 

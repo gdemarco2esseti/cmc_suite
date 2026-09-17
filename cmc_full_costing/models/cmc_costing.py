@@ -131,7 +131,7 @@ class CmcCostingRun(models.Model):
     def _qty_rounding(self):
         """Rounding step for driver quantities (a quantity, never a currency)."""
         digits = self.env["decimal.precision"].precision_get(
-            "Product Unit of Measure"
+            "Product Unit"
         )
         return 10 ** -digits
 

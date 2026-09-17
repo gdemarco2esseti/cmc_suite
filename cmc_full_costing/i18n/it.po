@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-16 15:29+0000\n"
+"POT-Creation-Date: 2026-09-17 15:17+0000\n"
 "PO-Revision-Date: 2026-07-16 15:29+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -15,6 +15,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: cmc_full_costing
+#: model:ir.actions.report,print_report_name:cmc_full_costing.action_report_costing_reclass
+msgid "'Full cost - %s' % object.name"
+msgstr "'Costo pieno - %s' % object.name"
 
 #. module: cmc_full_costing
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_quota__amount
@@ -48,13 +53,21 @@ msgid "Closing Run"
 msgstr "Elaborazione di chiusura"
 
 #. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid ""
+"Closing run %(name)s is not computed: its final centers carry no reliable "
+"cost yet."
+msgstr ""
+
+#. module: cmc_full_costing
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_figurative_cost__cmc_directness
 msgid "Cmc Directness"
 msgstr "Direttezza"
 
 #. module: cmc_full_costing
 #: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
-msgid "Comm/Adm"
+msgid "Comm/Admin"
 msgstr "Comm/Amm"
 
 #. module: cmc_full_costing
@@ -63,17 +76,20 @@ msgid "Commercial & Admin"
 msgstr "Commerciali e amministrativi"
 
 #. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid "Commercial & Administrative"
+msgstr "Commerciale e amministrativo"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_config__company_id
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_line__company_id
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_quota__company_id
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__company_id
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__company_id
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_figurative_cost__company_id
 msgid "Company"
 msgstr "Azienda"
-
-#. module: cmc_full_costing
-#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
-msgid "Complessivo"
-msgstr ""
 
 #. module: cmc_full_costing
 #: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_result_form
@@ -162,36 +178,10 @@ msgstr "Elaborazione di costing"
 
 #. module: cmc_full_costing
 #: model:ir.actions.act_window,name:cmc_full_costing.action_cmc_costing_run
+#: model:ir.ui.menu,name:cmc_full_costing.menu_cmc_costing_run
 #: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_list
 msgid "Costing Runs"
 msgstr "Elaborazioni di costing"
-
-#. module: cmc_full_costing
-#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__cost_complessivo
-#: model:ir.model.fields.selection,name:cmc_full_costing.selection__cmc_costing_config__level__complessivo
-msgid "Costo Complessivo"
-msgstr ""
-
-#. module: cmc_full_costing
-#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__cost_economico_tecnico
-#: model:ir.model.fields.selection,name:cmc_full_costing.selection__cmc_costing_config__level__economico_tecnico
-msgid "Costo Economico-Tecnico"
-msgstr ""
-
-#. module: cmc_full_costing
-#: model:ir.model.fields.selection,name:cmc_full_costing.selection__cmc_costing_config__level__industriale
-msgid "Costo Industriale"
-msgstr ""
-
-#. module: cmc_full_costing
-#: model:ir.model.fields.selection,name:cmc_full_costing.selection__cmc_costing_config__level__primo
-msgid "Costo Primo"
-msgstr ""
-
-#. module: cmc_full_costing
-#: model:ir.ui.menu,name:cmc_full_costing.menu_cmc_sec_full
-msgid "Costo pieno (full costing)"
-msgstr ""
 
 #. module: cmc_full_costing
 #: model_terms:ir.actions.act_window,help:cmc_full_costing.action_cmc_costing_run
@@ -295,11 +285,31 @@ msgstr ""
 
 #. module: cmc_full_costing
 #: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
-msgid "Economico-Tecnico"
-msgstr ""
+msgid "Economic-Technical"
+msgstr "Economico-Tecnico"
 
 #. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__cost_economico_tecnico
+#: model:ir.model.fields.selection,name:cmc_full_costing.selection__cmc_costing_config__level__economico_tecnico
+msgid "Economic-Technical Cost"
+msgstr "Costo economico-tecnico"
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid "Economic-technical cost"
+msgstr "Costo economico-tecnico"
+
+#. module: cmc_full_costing
+#: model:ir.model.constraint,message:cmc_full_costing.constraint_cmc_costing_run_dates_ok
+msgid "End date must be on/after start date."
+msgstr "La data di fine deve essere uguale o successiva alla data di inizio."
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__cost_figurativo
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
 msgid "Figurative"
 msgstr "Figurativo"
 
@@ -324,13 +334,8 @@ msgstr ""
 
 #. module: cmc_full_costing
 #: model:ir.model,name:cmc_full_costing.model_cmc_figurative_cost
-msgid "Figurative cost (co.an.-only, economico-tecnico)"
+msgid "Figurative cost (cost accounting only, economic-technical)"
 msgstr "Costo figurativo (solo co.an., economico-tecnico)"
-
-#. module: cmc_full_costing
-#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
-msgid "Figurativo"
-msgstr "Figurativo"
 
 #. module: cmc_full_costing
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_line__center_id
@@ -340,13 +345,24 @@ msgstr "Centro finale"
 
 #. module: cmc_full_costing
 #: model:ir.model,name:cmc_full_costing.model_cmc_costing_run
-msgid "Full Cost Run (base unica/multipla)"
-msgstr "Elaborazione costo pieno (base unica/multipla)"
+msgid "Full Cost Run (single/multiple allocation base)"
+msgstr "Elaborazione a costo pieno (base unica/multipla)"
 
 #. module: cmc_full_costing
-#: model:ir.ui.menu,name:cmc_full_costing.menu_cmc_costing_run
+#: model:ir.ui.menu,name:cmc_full_costing.menu_cmc_sec_full
 msgid "Full Costing"
-msgstr ""
+msgstr "Costo pieno (full costing)"
+
+#. module: cmc_full_costing
+#: model:ir.actions.report,name:cmc_full_costing.action_report_costing_reclass
+msgid "Full cost (reclassified)"
+msgstr "Costo pieno (riclassificato)"
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid "Full cost per configuration"
+msgstr "Costo pieno per configurazione"
 
 #. module: cmc_full_costing
 #: model:ir.model,name:cmc_full_costing.model_cmc_costing_result
@@ -415,18 +431,30 @@ msgstr "Quote indirette per centro"
 
 #. module: cmc_full_costing
 #: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
-msgid "Indiretto"
-msgstr ""
+msgid "Industrial"
+msgstr "Industriale"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields.selection,name:cmc_full_costing.selection__cmc_costing_config__level__industriale
+msgid "Industrial Cost"
+msgstr "Costo industriale"
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid "Industrial cost"
+msgstr "Costo industriale"
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid "Industrial overhead"
+msgstr "Overhead industriale"
 
 #. module: cmc_full_costing
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__std_price_delta
 msgid "Industrial vs Std Delta"
 msgstr "Delta industriale vs standard"
-
-#. module: cmc_full_costing
-#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
-msgid "Industriale"
-msgstr ""
 
 #. module: cmc_full_costing
 #: model:ir.model.fields.selection,name:cmc_full_costing.selection__cmc_figurative_cost__method__interest
@@ -496,6 +524,11 @@ msgstr ""
 "Una riga di consumo driver per prodotto/centro/driver in un'elaborazione."
 
 #. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
+msgid "Overhead"
+msgstr "Indiretto"
+
+#. module: cmc_full_costing
 #. odoo-python
 #: code:addons/cmc_full_costing/models/cmc_costing.py:0
 msgid "Plant"
@@ -508,8 +541,19 @@ msgstr "Driver di stabilimento"
 
 #. module: cmc_full_costing
 #: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
-msgid "Primo"
-msgstr ""
+msgid "Prime"
+msgstr "Primo"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields.selection,name:cmc_full_costing.selection__cmc_costing_config__level__primo
+msgid "Prime Cost"
+msgstr "Costo primo"
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid "Prime cost"
+msgstr "Costo primo"
 
 #. module: cmc_full_costing
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_line__product_id
@@ -538,9 +582,20 @@ msgid "Quota"
 msgstr "Quota"
 
 #. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__cmc_reclass_json
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
+msgid "Reclassified"
+msgstr "Riclassificato"
+
+#. module: cmc_full_costing
 #: model_terms:ir.actions.act_window,help:cmc_full_costing.action_cmc_figurative
 msgid "Record a figurative cost"
 msgstr "Registra un costo figurativo"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
+msgid "Reset to Draft"
+msgstr "Riporta in bozza"
 
 #. module: cmc_full_costing
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_config__result_id
@@ -602,10 +657,38 @@ msgid "Std Price (ref)"
 msgstr "Prezzo std (rif.)"
 
 #. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid ""
+"The costing period of %(name)s ends after its closing run period (%(end)s)."
+msgstr ""
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid ""
+"The costing period of %(name)s starts before its closing run period "
+"(%(start)s)."
+msgstr ""
+
+#. module: cmc_full_costing
 #: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_result_form
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
 #: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_figurative_list
 msgid "Total"
 msgstr "Totale"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__cost_complessivo
+#: model:ir.model.fields.selection,name:cmc_full_costing.selection__cmc_costing_config__level__complessivo
+msgid "Total Cost"
+msgstr "Costo complessivo"
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid "Total cost"
+msgstr "Costo complessivo"
 
 #. module: cmc_full_costing
 #: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_figurative_form

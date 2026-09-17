@@ -61,13 +61,13 @@
                             <field name="result_ids">
                                 <list create="false" edit="false">
                                     <field name="product_id"/>
-                                    <field name="cost_primo" sum="Primo"/>
-                                    <field name="cost_indiretto" sum="Indiretto"/>
-                                    <field name="cost_industriale" sum="Industriale"/>
-                                    <field name="cost_comm_admin" sum="Comm/Adm" optional="show"/>
-                                    <field name="cost_complessivo" sum="Complessivo" optional="show"/>
-                                    <field name="cost_figurativo" sum="Figurativo" optional="hide"/>
-                                    <field name="cost_economico_tecnico" sum="Economico-Tecnico"/>
+                                    <field name="cost_primo" sum="Prime"/>
+                                    <field name="cost_indiretto" sum="Overhead"/>
+                                    <field name="cost_industriale" sum="Industrial"/>
+                                    <field name="cost_comm_admin" sum="Comm/Admin" optional="show"/>
+                                    <field name="cost_complessivo" sum="Total" optional="show"/>
+                                    <field name="cost_figurativo" sum="Figurative" optional="hide"/>
+                                    <field name="cost_economico_tecnico" sum="Economic-Technical"/>
                                     <field name="std_price_delta" optional="hide"/>
                                     <field name="currency_id" column_invisible="1"/>
                                 </list>

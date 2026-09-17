@@ -23,7 +23,7 @@
         <field name="name">cmc.cvr.curve.graph</field>
         <field name="model">cmc.cvr.curve</field>
         <field name="arch" type="xml">
-            <graph string="Break-even (Profittogramma)" type="line" sample="1">
+            <graph string="Break-even Chart" type="line" sample="1">
                 <field name="volume" type="row"/>
                 <field name="revenue" type="measure"/>
                 <field name="total_cost" type="measure"/>

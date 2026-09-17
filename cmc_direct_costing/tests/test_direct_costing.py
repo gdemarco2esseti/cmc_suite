@@ -40,3 +40,23 @@ class TestDirectCosting(TransactionCase):
     def test_zero_revenue(self):
         a = self._dc([{"name": "A", "revenue": 0, "variable_cost": 0}])
         self.assertEqual(a.line_ids.mc_ratio, 0.0)
+
+    # item 13 — the simple mode hides the specific fixed costs in the UI: they
+    # must stop subtracting from the operating result too
+    def test_simple_mode_ignores_specific_fixed_costs(self):
+        a = self._dc(
+            [
+                {"name": "A", "revenue": 1000, "variable_cost": 400,
+                 "specific_fixed_cost": 150},
+                {"name": "B", "revenue": 800, "variable_cost": 300,
+                 "specific_fixed_cost": 100},
+            ],
+            common=200,
+        )
+        self.assertEqual(a.operating_result, 650.0)  # evoluto: 850 - 200
+        a.mode = "simple"
+        self.assertEqual(a.total_mc_gross, 1100.0)
+        self.assertEqual(a.total_mc_semigross, 1100.0)
+        self.assertEqual(a.operating_result, 900.0)  # 1100 - 200
+        a.mode = "evoluto"
+        self.assertEqual(a.operating_result, 650.0)

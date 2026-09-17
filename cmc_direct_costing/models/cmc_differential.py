@@ -20,7 +20,7 @@ class CmcDifferentialAnalysis(models.TransientModel):
         default="make_or_buy",
     )
     # make-or-buy
-    volume = fields.Float(digits="Product Unit of Measure", default=1.0)
+    volume = fields.Float(digits="Product Unit", default=1.0)
     make_unit_cost = fields.Monetary(string="Make Unit Cost (avoidable)")
     buy_unit_cost = fields.Monetary(string="Buy Unit Price")
     opportunity_cost = fields.Monetary()

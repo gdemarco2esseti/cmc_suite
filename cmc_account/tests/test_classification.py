@@ -1,6 +1,7 @@
-from odoo.tests.common import TransactionCase
+from odoo.tests.common import TransactionCase, tagged
 
 
+@tagged("post_install", "-at_install")
 class TestClassification(TransactionCase):
     """Fase 1.5a — mapping conto->elemento + auto-classificazione (fill-only)."""
 

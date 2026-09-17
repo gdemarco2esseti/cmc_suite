@@ -53,6 +53,14 @@ alternative: lavorano insieme sulla stessa riga).
 ## Note
 
 - La classificazione manuale (`cmc_classified_manually`) ha la precedenza e non viene
-  sovrascritta dalle regole.
+  sovrascritta dalle regole, **e sopravvive al ciclo bozza → ripubblicazione**: Odoo
+  cancella le righe analitiche quando una registrazione torna in bozza e ne crea di nuove
+  al ripristino, quindi l'override manuale viene conservato sulla **scrittura contabile**
+  (`account.move.line`) e ri-applicato alla riga ricreata.
+- La classificazione si ri-innesca anche **in scrittura** (non solo alla creazione): se
+  cambia il conto, il prodotto, il partner o il centro di una riga non manuale, le regole
+  vengono ri-applicate.
+- La coda *Unclassified Cost Lines* elenca **tutte** le righe di costo senza comportamento
+  (contabilità, timesheet, produzione) ed esclude i ricavi.
 - Base per i ponti operativi `cmc_hr_timesheet` (manodopera da timesheet) e `cmc_mrp`
   (costo primo da produzione), che ne estendono l'auto-classificazione.

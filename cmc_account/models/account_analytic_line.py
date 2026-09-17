@@ -154,16 +154,24 @@ class AccountAnalyticLine(models.Model):
         # item; a warehouse or shop-floor user posting a cost line has no read
         # access to account.move.line.
         manual_move_lines = {
-            move_line.id
+            move_line.id: move_line
             for move_line in self.move_line_id.sudo()
             if move_line.cmc_classified_manually
         }
+        # why sudo: read-only read of the account -> cost-element mapping, which
+        # any user posting a cost line must be able to trigger. Resolved ONCE
+        # for the whole batch: calling .sudo() inside the loop would build a
+        # fresh environment per line and defeat the ORM prefetch (one extra
+        # query per line).
+        element_by_account = {
+            account.id: account.cmc_cost_element_id.id
+            for account in self.general_account_id.sudo()
+        }
         vals_by_line = []
         for line in self:
-            move_line = line.move_line_id
-            if move_line.id in manual_move_lines:
+            source = manual_move_lines.get(line.move_line_id.id)
+            if source is not None:
                 if not line.cmc_classified_manually:
-                    source = move_line.sudo()
                     vals_by_line.append((line.id, {
                         "cmc_behavior": source.cmc_behavior or False,
                         "cmc_directness": source.cmc_directness or False,
@@ -177,11 +185,9 @@ class AccountAnalyticLine(models.Model):
             if company.id not in rules_by_company:
                 rules_by_company[company.id] = Rule._rules_for_company(company)
             vals = {}
-            # why sudo: read-only read of the account -> cost-element mapping,
-            # which any user posting a cost line must be able to trigger.
-            account = line.general_account_id.sudo()
-            if not line.cmc_cost_element_id and account.cmc_cost_element_id:
-                vals["cmc_cost_element_id"] = account.cmc_cost_element_id.id
+            mapped_element = element_by_account.get(line.general_account_id.id)
+            if not line.cmc_cost_element_id and mapped_element:
+                vals["cmc_cost_element_id"] = mapped_element
             center = line.cmc_center_id  # non-stored compute: read once per line
             rule = next(
                 (r for r in rules_by_company[company.id] if r._matches(line, center=center)),

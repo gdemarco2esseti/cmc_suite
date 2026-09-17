@@ -1,6 +1,7 @@
-from odoo.tests.common import TransactionCase
+from odoo.tests.common import TransactionCase, tagged
 
 
+@tagged("post_install", "-at_install")
 class TestMrpCost(TransactionCase):
     """Fase 1.5c — feed prime cost (MP materials, MOD labor) from MRP."""
 
@@ -24,9 +25,9 @@ class TestMrpCost(TransactionCase):
         })
         self.assertEqual(line.cmc_behavior, "variable")
         self.assertEqual(line.cmc_directness, "direct")
-        mod = self.env.ref("cmc_base.cmc_element_mod", raise_if_not_found=False)
-        if mod:
-            self.assertEqual(line.cmc_cost_element_id, mod)
+        self.assertEqual(
+            line.cmc_cost_element_id, self.env.ref("cmc_base.cmc_element_mod")
+        )
 
     # MP: materials consumed on MO done create classified cost lines
     def test_mp_lines_created_on_done(self):

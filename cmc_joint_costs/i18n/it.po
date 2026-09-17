@@ -6,15 +6,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-16 15:29+0000\n"
-"PO-Revision-Date: 2026-07-16 15:29+0000\n"
+"POT-Creation-Date: 2026-09-17 15:27+0000\n"
+"PO-Revision-Date: 2026-09-17 15:27+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: it_IT\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: cmc_joint_costs
 #. odoo-python
@@ -90,14 +90,24 @@ msgstr ""
 "positivo."
 
 #. module: cmc_joint_costs
+#. odoo-python
+#: code:addons/cmc_joint_costs/models/cmc_joint.py:0
+msgid ""
+"Constant-margin allocation would assign a negative joint cost to "
+"%(products)s: the total cost (joint pool %(pool)s plus separable costs "
+"%(separable)s) exceeds the total sales value %(sales)s. Use the Net "
+"Realizable Value or Sales Value at Split-off method instead."
+msgstr ""
+"La ripartizione a margine lordo costante assegnerebbe un costo congiunto "
+"negativo a %(products)s: il costo totale (pool congiunto %(pool)s più costi "
+"separabili %(separable)s) supera il valore di vendita totale %(sales)s. Usa "
+"il metodo del valore netto di realizzo o del valore di vendita allo split-"
+"off."
+
+#. module: cmc_joint_costs
 #: model:ir.model.fields,help:cmc_joint_costs.field_cmc_joint_line__separable_cost
 msgid "Cost to process this product beyond the split-off point."
 msgstr "Costo per lavorare questo prodotto oltre il punto di separazione."
-
-#. module: cmc_joint_costs
-#: model:ir.ui.menu,name:cmc_joint_costs.menu_cmc_sec_joint
-msgid "Costi congiunti"
-msgstr ""
 
 #. module: cmc_joint_costs
 #: model:ir.model.fields,field_description:cmc_joint_costs.field_cmc_joint_line__create_uid
@@ -165,6 +175,11 @@ msgid "Joint Cost"
 msgstr "Costo congiunto"
 
 #. module: cmc_joint_costs
+#: model:ir.ui.menu,name:cmc_joint_costs.menu_cmc_joint_run
+msgid "Joint Cost Allocation"
+msgstr "Ripartizione congiunti"
+
+#. module: cmc_joint_costs
 #: model:ir.model,name:cmc_joint_costs.model_cmc_joint_run
 msgid "Joint Cost Allocation Run"
 msgstr "Elaborazione di ripartizione costi congiunti"
@@ -186,6 +201,7 @@ msgstr "Elaborazioni costi congiunti"
 
 #. module: cmc_joint_costs
 #: model:ir.actions.act_window,name:cmc_joint_costs.action_cmc_joint_run
+#: model:ir.ui.menu,name:cmc_joint_costs.menu_cmc_sec_joint
 msgid "Joint Costs"
 msgstr "Costi congiunti"
 
@@ -276,6 +292,11 @@ msgid "Quantity must be greater than zero."
 msgstr "La quantità deve essere maggiore di zero."
 
 #. module: cmc_joint_costs
+#: model_terms:ir.ui.view,arch_db:cmc_joint_costs.view_cmc_joint_run_form
+msgid "Reset to Draft"
+msgstr "Riporta in bozza"
+
+#. module: cmc_joint_costs
 #: model:ir.model.fields,field_description:cmc_joint_costs.field_cmc_joint_run__result_ids
 msgid "Result"
 msgstr "Risultato"
@@ -284,11 +305,6 @@ msgstr "Risultato"
 #: model_terms:ir.ui.view,arch_db:cmc_joint_costs.view_cmc_joint_run_form
 msgid "Results"
 msgstr "Risultati"
-
-#. module: cmc_joint_costs
-#: model:ir.ui.menu,name:cmc_joint_costs.menu_cmc_joint_run
-msgid "Ripartizione congiunti"
-msgstr ""
 
 #. module: cmc_joint_costs
 #: model:ir.model.fields,field_description:cmc_joint_costs.field_cmc_joint_line__run_id
@@ -320,6 +336,21 @@ msgstr "Costo separabile"
 #: model:ir.model.fields,field_description:cmc_joint_costs.field_cmc_joint_run__state
 msgid "State"
 msgstr "Stato"
+
+#. module: cmc_joint_costs
+#: model:ir.model.constraint,message:cmc_joint_costs.constraint_cmc_joint_run_joint_cost_non_negative
+msgid "The joint cost pool cannot be negative."
+msgstr "Il pool di costi congiunti non può essere negativo."
+
+#. module: cmc_joint_costs
+#: model:ir.model.constraint,message:cmc_joint_costs.constraint_cmc_joint_line_separable_cost_non_negative
+msgid "The separable cost cannot be negative."
+msgstr "Il costo separabile non può essere negativo."
+
+#. module: cmc_joint_costs
+#: model:ir.model.constraint,message:cmc_joint_costs.constraint_cmc_joint_line_sales_value_non_negative
+msgid "The unit sales value cannot be negative."
+msgstr "Il valore di vendita unitario non può essere negativo."
 
 #. module: cmc_joint_costs
 #: model:ir.model.fields,field_description:cmc_joint_costs.field_cmc_joint_result__total_cost

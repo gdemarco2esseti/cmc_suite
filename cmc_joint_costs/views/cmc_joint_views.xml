@@ -83,10 +83,10 @@
     </record>
 
     <menuitem id="menu_cmc_sec_joint"
-              name="Costi congiunti"
+              name="Joint Costs"
               parent="cmc_base.menu_cmc_operations"
               sequence="60"/>
-    <menuitem id="menu_cmc_joint_run" name="Ripartizione congiunti"
+    <menuitem id="menu_cmc_joint_run" name="Joint Cost Allocation"
               parent="menu_cmc_sec_joint"
               action="action_cmc_joint_run" sequence="10"/>
 </odoo>

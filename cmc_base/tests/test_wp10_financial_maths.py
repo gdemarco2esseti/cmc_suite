@@ -9,9 +9,12 @@ CONTRACT (``odoo.addons.cmc_base.models.cmc_utils``, Python stdlib only, no Odoo
   (not discounted).
 - ``npv(rate, flows)`` -> float = Σ flows[t] / (1 + rate) ** t; ``rate`` = 0 -> plain sum.
 - ``irr(flows)`` -> float rate with npv = 0, found by bisection (stdlib only), precision <= 1e-7;
-  raises ValueError when the flows do not change sign (no IRR).
+  raises ValueError when the flows do not change sign (no IRR). RN-002: raises ``cmc_utils.MultipleIrrError``
+  (subclass of ValueError, so every ``except ValueError`` still holds) when the flows change sign more than
+  once (zeros ignored): a non-conventional pattern may have several IRRs and none is meaningful.
 - ``payback(flows)`` -> fractional periods at which the cumulative flow reaches 0 (linear inside the
   period), None when it never does; ``discounted_payback(rate, flows)`` same on the present values.
+  RN-002: both return None when ``flows[0] >= 0`` (no investment at t = 0: nothing to pay back).
 - ``nominal_rate(real, inflation)`` = (1 + real) * (1 + inflation) - 1 and ``real_rate(nominal, inflation)``
   = (1 + nominal) / (1 + inflation) - 1 (Fisher, exact - never the "nominal - inflation" approximation).
 - ``indifference_qty(fixed_a, var_a, fixed_b, var_b)`` -> Q where fixed_a + var_a*Q = fixed_b + var_b*Q,
@@ -56,7 +59,25 @@ class TestWp10FinancialMaths(TransactionCase):
         with self.assertRaises(ValueError):
             cmc_utils.irr([100.0, 50.0])
 
+    def test_irr_multiple_sign_changes_raises_specific_error(self):
+        # RN-002: -100, +230, -132 -> 100x^2 - 230x + 132 = 0, x = 1.1 and 1.2: two IRRs (10%, 20%)
+        self.assertAlmostEqual(cmc_utils.npv(0.10, [-100.0, 230.0, -132.0]), 0.0, places=9)
+        self.assertAlmostEqual(cmc_utils.npv(0.20, [-100.0, 230.0, -132.0]), 0.0, places=9)
+        self.assertTrue(issubclass(cmc_utils.MultipleIrrError, ValueError))
+        with self.assertRaises(cmc_utils.MultipleIrrError):
+            cmc_utils.irr([-100.0, 230.0, -132.0])
+
+    def test_irr_zeros_do_not_count_as_sign_changes(self):
+        # RN-002: a deferred conventional investment (0, -1000, 600, 600) keeps its single IRR
+        self.assertAlmostEqual(cmc_utils.irr([0.0, -1000.0, 600.0, 600.0]), 0.1306624, places=6)
+
     # ---- payback -------------------------------------------------------------------
+
+    def test_payback_without_initial_investment(self):
+        # RN-002: no outflow at t = 0 -> None, never "0 periods"
+        self.assertIsNone(cmc_utils.payback([0.0, -1000.0, 600.0, 600.0]))
+        self.assertIsNone(cmc_utils.payback([100.0, 50.0]))
+        self.assertIsNone(cmc_utils.discounted_payback(0.10, [0.0, -1000.0, 600.0, 600.0]))
 
     def test_payback_fractional(self):
         # DIF-06: cumulative -1000, -700, -300, +200 -> 2 + 300/500 = 2.6

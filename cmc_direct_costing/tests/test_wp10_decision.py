@@ -14,9 +14,17 @@ CONTRACT (part of wp10_common)
 - make_or_buy (current = make, alternative = buy): alternative derived as in drop_line plus
   ``buy_price_unit`` x ``volume``; ``opportunity_cost`` added to make; hidden activity costs
   (``activity_ids``, qty x rate looked up at Compute) added to their side. Indifference
-  Q* = (CFr + A_make - A_buy) / (Pe - v), v = Σ variable make cost lines / volume, CFr = Σ fixed avoidable
-  make cost lines, A_side = activity cost of the side (treated as fixed); ``has_indifference`` False and
-  Q* 0 when Pe <= v. ``verdict_label``: "Make" (current) / "Buy" (alternative).
+  Q* = (CFr + OC + A_make - A_buy) / (Pe - v), v = Σ variable make cost lines / volume, CFr = Σ fixed
+  avoidable make cost lines, OC = ``opportunity_cost`` (RN-001: a fixed burden of the make side, so the
+  verdict and Q* always agree: volume < Q* <=> Buy), A_side = activity cost of the side (treated as fixed);
+  ``has_indifference`` False and Q* 0 when Pe <= v. ``verdict_label``: "Make" (current) / "Buy" (alternative).
+- RN-001: a ``cost_behavior`` = ``variable`` cost line is ALWAYS avoidable in the derived alternative
+  column (drop_line and make_or_buy), whatever its element / ``avoidable`` flag: producing nothing incurs no
+  variable cost. ``avoidable`` only discriminates the FIXED lines (derivation and CFr alike).
+- Wording of ``verdict_label`` per type (alternative / current): make_or_buy "Buy" / "Make", drop_line
+  "Eliminate line" / "Keep line", replace "Replace" / "Keep machine"; "Indifferent" at 0 (currency step,
+  so rounding noise is never a verdict). These scenarios replace the removed transient
+  ``cmc.differential.analysis`` (same numbers, sign convention differential = alternative - current).
 """
 
 from odoo.exceptions import UserError
@@ -204,3 +212,110 @@ class TestWp10Decision(Wp10Case):
         decision.action_reset_to_draft()
         self.producer.action_reset_to_draft()
         self.assertEqual(self.producer.state, "draft")
+
+    # ---- RN-001 verdict and Q* agree --------------------------------------------------
+
+    def test_make_or_buy_opportunity_cost_moves_indifference(self):
+        # RN-001: opportunity 5,000 burdens make -> Q* = (20,000 + 5,000) / (12 - 8) = 6,250; at 6,000 < Q* -> Buy
+        decision = self._make_or_buy(6000, opportunity_cost=5000.0)
+        decision.action_compute()
+        self.assertRecordValues(decision, [{"differential": 1000.0, "verdict": "alternative", "verdict_label": "Buy",
+                                            "has_indifference": True, "indifference_qty": 6250.0}])
+
+    def test_make_or_buy_variable_cost_always_avoidable(self):
+        # RN-001: material 40,000 variable WITHOUT element (avoidable False) still disappears when buying:
+        # make 40,000 + 20,000 = 60,000 vs buy 12 x 4,000 = 48,000 -> Δ +12,000 Buy; Q* = 20,000 / (12 - 10) = 10,000 > 4,000
+        decision = self._decision(
+            "make_or_buy",
+            volume=4000,
+            buy_price_unit=12.0,
+            line_ids=[
+                self._line("Direct material", "cost", 40000, cost_behavior="variable"),
+                self._line("Avoidable fixed", "cost", 20000, element_id=self.el_avoidable.id),
+            ],
+        )
+        self.assertFalse(decision.line_ids.filtered(lambda line: line.name == "Direct material").avoidable)
+        decision.action_compute()
+        self.assertRecordValues(decision, [{"current_total": -60000.0, "alternative_total": -48000.0, "differential": 12000.0,
+                                            "verdict": "alternative", "has_indifference": True, "indifference_qty": 10000.0}])
+
+    def test_drop_line_variable_cost_always_avoidable(self):
+        # RN-001: the same derivation for drop_line: an element-less variable cost goes with the line
+        # -100,000 + 70,000 + 32,000 = +2,000 -> eliminate, as with the avoidable element
+        decision = self._decision(
+            "drop_line",
+            line_ids=[
+                self._line("Revenue", "revenue", 100000),
+                self._line("Variable cost", "cost", 70000, cost_behavior="variable"),
+                self._line("Specific fixed avoidable", "cost", 32000, element_id=self.el_avoidable.id),
+                self._line("Common fixed allocated", "cost", 15000, element_id=self.el_fixed.id),
+            ],
+        )
+        decision.action_compute()
+        self.assertRecordValues(decision, [{"differential": 2000.0, "verdict": "alternative", "verdict_label": "Eliminate line"}])
+
+    # ---- scenarios of the removed transient cmc.differential.analysis (same numbers) ---
+
+    def _unit_make_or_buy(self, make_unit, buy_unit, volume=1.0, **kw):
+        return self._decision(
+            "make_or_buy", volume=volume, buy_price_unit=buy_unit,
+            line_ids=[self._line("Make cost", "cost", make_unit * volume, element_id=self.el_avoidable.id, cost_behavior="variable")],
+            **kw,
+        )
+
+    def test_legacy_make_cheaper(self):
+        # DIF-03 (ex test_make_or_buy_make): make 8 vs buy 10 -> Δ -2 -> Make
+        decision = self._unit_make_or_buy(8.0, 10.0)
+        decision.action_compute()
+        self.assertRecordValues(decision, [{"differential": -2.0, "verdict": "current", "verdict_label": "Make"}])
+
+    def test_legacy_buy_cheaper(self):
+        # DIF-03 (ex test_make_or_buy_buy): make 12 vs buy 10 -> Δ +2 -> Buy
+        decision = self._unit_make_or_buy(12.0, 10.0)
+        decision.action_compute()
+        self.assertRecordValues(decision, [{"differential": 2.0, "verdict": "alternative", "verdict_label": "Buy"}])
+
+    def test_legacy_volume_and_opportunity(self):
+        # DIF-03 / RN-001 (ex test_make_or_buy_volume_and_opportunity): make 800 + 150 = 950 vs buy 1,000 -> Δ -50 Make;
+        # Q* = 150 / (10 - 8) = 75 < 100 -> Make, consistent
+        decision = self._unit_make_or_buy(8.0, 10.0, volume=100.0, opportunity_cost=150.0)
+        decision.action_compute()
+        self.assertRecordValues(decision, [{"differential": -50.0, "verdict": "current", "has_indifference": True,
+                                            "indifference_qty": 75.0}])
+
+    def _legacy_drop(self, lost_contribution, avoidable_fixed):
+        return self._decision("drop_line", line_ids=[
+            self._line("Contribution", "revenue", lost_contribution),
+            self._line("Avoidable fixed", "cost", avoidable_fixed, element_id=self.el_avoidable.id),
+        ])
+
+    def test_legacy_drop_line_keep(self):
+        # DIF-01 (ex test_drop_line_keep): lost MC 500 > avoidable fixed 300 -> Δ -200 -> Keep line
+        decision = self._legacy_drop(500.0, 300.0)
+        decision.action_compute()
+        self.assertRecordValues(decision, [{"differential": -200.0, "verdict": "current", "verdict_label": "Keep line"}])
+
+    def test_legacy_drop_line_eliminate(self):
+        # DIF-01 (ex test_drop_line_eliminate): lost MC 200 < avoidable fixed 300 -> Δ +100 -> Eliminate line
+        decision = self._legacy_drop(200.0, 300.0)
+        decision.action_compute()
+        self.assertRecordValues(decision, [{"differential": 100.0, "verdict": "alternative", "verdict_label": "Eliminate line"}])
+
+    def test_legacy_replace(self):
+        # DIF-01 (ex test_replace): keeping costs 1,000, replacing 800 -> Δ +200 -> Replace
+        decision = self._decision("replace", line_ids=[self._line("Relevant cost", "cost", 1000.0, 800.0)])
+        decision.action_compute()
+        self.assertRecordValues(decision, [{"differential": 200.0, "verdict": "alternative", "verdict_label": "Replace"}])
+
+    def test_legacy_indifferent(self):
+        # DIF-03 (ex test_indifferent): make 10 = buy 10 -> Δ 0 -> Indifferent
+        decision = self._unit_make_or_buy(10.0, 10.0)
+        decision.action_compute()
+        self.assertRecordValues(decision, [{"differential": 0.0, "verdict": "indifferent", "verdict_label": "Indifferent"}])
+
+    def test_legacy_rounding_noise_is_indifferent(self):
+        # DIF-03 (ex test_rounding_noise_is_indifferent): buy 10 x 1.0004 = 10.004 vs make 10 -> -0.004 below the currency step
+        decision = self._decision("make_or_buy", volume=1.0004, buy_price_unit=10.0,
+                                  line_ids=[self._line("Make cost", "cost", 10.0, element_id=self.el_avoidable.id)])
+        decision.action_compute()
+        self.assertRecordValues(decision, [{"differential": 0.0, "verdict": "indifferent"}])

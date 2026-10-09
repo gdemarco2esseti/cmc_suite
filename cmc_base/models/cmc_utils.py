@@ -105,10 +105,17 @@ def npv(rate, flows):
     return sum(flow / (1.0 + rate) ** period for period, flow in enumerate(flows))
 
 
+class MultipleIrrError(ValueError):
+    """More than one sign change: several IRRs may exist and none is meaningful."""
+
+
 def irr(flows, precision=1e-9):
     """Rate (fraction) with npv = 0, by bisection. ValueError when there is none to find."""
     if not (any(f > 0 for f in flows) and any(f < 0 for f in flows)):
         raise ValueError("The flows do not change sign: no IRR")
+    signs = [f > 0 for f in flows if f]
+    if sum(a != b for a, b in zip(signs, signs[1:], strict=False)) > 1:
+        raise MultipleIrrError("The flows change sign more than once: multiple IRR")
     low, high = -0.99, 1.0
     npv_low = npv(low, flows)
     while npv_low * npv(high, flows) > 0:
@@ -129,6 +136,8 @@ def irr(flows, precision=1e-9):
 
 def payback(flows):
     """Periods (linear inside the period) at which the cumulative flow reaches 0, None if it never does."""
+    if not flows or flows[0] >= 0:  # no investment at t = 0: nothing to pay back
+        return None
     cumulative = 0.0
     for period, flow in enumerate(flows):
         previous, cumulative = cumulative, cumulative + flow

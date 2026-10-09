@@ -97,6 +97,7 @@
                             <field name="npv" invisible="decision_type != 'investment'"/>
                             <field name="has_irr" invisible="1"/>
                             <field name="irr" invisible="decision_type != 'investment' or not has_irr"/>
+                            <field name="irr_note" invisible="decision_type != 'investment' or not irr_note"/>
                             <field name="has_payback" invisible="1"/>
                             <field name="payback_years" invisible="decision_type != 'investment' or not has_payback"/>
                             <field name="has_discounted_payback" invisible="1"/>
@@ -176,6 +177,7 @@
                                 <list editable="bottom">
                                     <field name="year"/>
                                     <field name="amount"/>
+                                    <field name="taxable"/>
                                     <field name="depreciation"/>
                                     <field name="currency_id" column_invisible="1"/>
                                 </list>

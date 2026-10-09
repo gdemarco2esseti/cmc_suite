@@ -23,7 +23,7 @@ OUTPUTS = (
     "current_total", "alternative_total", "differential", "verdict", "verdict_label", "has_indifference",
     "indifference_qty", "activity_cost", "idle_burden", "sustaining_burden", "quote_cost", "quote_margin",
     "quote_margin_pct", "mix_total_mc", "mix_total_throughput", "mix_result", "resource_used",
-    "effective_rate", "npv", "has_irr", "irr", "has_payback", "payback_years", "has_discounted_payback",
+    "effective_rate", "npv", "has_irr", "irr", "irr_note", "has_payback", "payback_years", "has_discounted_payback",
     "discounted_payback_years", "roi", "cbr",
 )
 
@@ -90,6 +90,7 @@ class CmcDecision(models.Model):
     npv = fields.Monetary(readonly=True, copy=False)
     has_irr = fields.Boolean(readonly=True, copy=False)
     irr = fields.Float(readonly=True, copy=False, digits=(16, 6))
+    irr_note = fields.Char(readonly=True, copy=False)
     has_payback = fields.Boolean(readonly=True, copy=False)
     payback_years = fields.Float(readonly=True, copy=False, digits=(16, 6))
     has_discounted_payback = fields.Boolean(readonly=True, copy=False)
@@ -195,8 +196,8 @@ class CmcDecision(models.Model):
         for line in self.line_ids.filtered(lambda ln: not ln.sunk):
             sign = 1 if line.line_type == "revenue" else -1
             typed = line.amount_alternative
-            # the alternative column is derived: revenue goes, avoidable cost goes, the rest stays
-            alt = (0.0 if line.line_type == "revenue" or line.avoidable else line.amount_current) if derive else typed
+            # the alternative column is derived: revenue goes, avoidable (or variable) cost goes, the rest stays
+            alt = (0.0 if line.line_type == "revenue" or line._cmc_is_avoidable() else line.amount_current) if derive else typed
             current += sign * line.amount_current
             alternative += sign * alt
         activities = self._cmc_price_activities()
@@ -214,11 +215,11 @@ class CmcDecision(models.Model):
         costs = self.line_ids.filtered(lambda ln: ln.line_type == "cost" and not ln.sunk)
         variable = sum(costs.filtered(lambda ln: ln.cost_behavior == "variable").mapped("amount_current"))
         unit_variable = variable / self.volume if self.volume else 0.0
-        fixed_avoidable = sum(costs.filtered(lambda ln: ln.cost_behavior == "fixed" and ln.avoidable).mapped("amount_current"))
+        fixed_avoidable = sum(costs.filtered(lambda ln: ln.cost_behavior == "fixed" and ln._cmc_is_avoidable()).mapped("amount_current"))
         qty = None
         if self.buy_price_unit > unit_variable:
             qty = cmc_utils.indifference_qty(
-                fixed_avoidable + activities.get("current", 0.0), unit_variable, activities.get("alternative", 0.0), self.buy_price_unit
+                fixed_avoidable + self.opportunity_cost + activities.get("current", 0.0), unit_variable, activities.get("alternative", 0.0), self.buy_price_unit
             )
         return {"has_indifference": qty is not None, "indifference_qty": qty or 0.0}
 
@@ -283,12 +284,17 @@ class CmcDecision(models.Model):
     def _cmc_compute_investment(self):
         if not self.cash_flow_ids:
             raise UserError(self.env._("Enter the cash flows of the investment."))
-        by_year = {flow.year: flow for flow in self.cash_flow_ids}
-        taxes, nets = [], []
+        by_year = defaultdict(lambda: self.env["cmc.decision.cash.flow"])
+        for flow in self.cash_flow_ids:
+            by_year[flow.year] |= flow
+        taxes, nets, amounts = [], [], []
         for year in range(max(by_year) + 1):
-            flow = by_year.get(year)
-            amount, depreciation = (flow.amount, flow.depreciation) if flow else (0.0, 0.0)
-            tax = self.tax_rate / 100 * (amount - depreciation) if year else 0.0  # year 0 is untaxed
+            flows = by_year[year]
+            amount = sum(flows.mapped("amount"))
+            # RN-002: capex / working capital / salvage (non-taxable lines) stay out of the tax base
+            base = sum(flows.filtered("taxable").mapped("amount")) - sum(flows.mapped("depreciation"))
+            tax = self.tax_rate / 100 * base if year else 0.0  # year 0 is untaxed
+            amounts.append(amount)
             taxes.append(tax)
             nets.append(amount - tax)
         rate = self._cmc_effective_rate()
@@ -299,21 +305,24 @@ class CmcDecision(models.Model):
             cumulative += net
             cumulative_pv += pv
             vals_list.append({
-                "decision_id": self.id, "year": year, "amount": nets[year] + tax, "tax": tax, "net_flow": net,
+                "decision_id": self.id, "year": year, "amount": amounts[year], "tax": tax, "net_flow": net,
                 "discount_factor": factor, "present_value": pv, "cumulative_flow": cumulative, "cumulative_pv": cumulative_pv,
             })
         # why sudo: users read the table, the engine writes it
         self.env["cmc.decision.cash.flow.result"].sudo().create(vals_list)
+        irr, note = None, False
         try:
             irr = cmc_utils.irr(nets) * 100
+        except cmc_utils.MultipleIrrError:
+            note = self.env._("Multiple IRR: the flows change sign more than once, no single rate is stated.")
         except ValueError:
-            irr = None
+            pass  # no sign change: no IRR, nothing to explain
         payback = cmc_utils.payback(nets)
         discounted = cmc_utils.discounted_payback(rate / 100, nets)
         invested = -nets[0]
         outflow = -sum(pv for pv in present if pv < 0)
         self._cmc_finish(
-            0.0, sum(present), effective_rate=rate, npv=sum(present), has_irr=irr is not None, irr=irr or 0.0,
+            0.0, sum(present), effective_rate=rate, npv=sum(present), has_irr=irr is not None, irr=irr or 0.0, irr_note=note,
             has_payback=payback is not None, payback_years=payback or 0.0,
             has_discounted_payback=discounted is not None, discounted_payback_years=discounted or 0.0,
             roi=(sum(nets[1:]) - invested) / invested * 100 if invested > 0 else 0.0,
@@ -348,6 +357,11 @@ class CmcDecisionLine(models.Model):
         for line in self:
             line.avoidable = line.element_id.cmc_avoidable
             line.sunk = line.element_id.cmc_sunk
+
+    def _cmc_is_avoidable(self):
+        # RN-001: producing nothing incurs no variable cost, whatever the element flag
+        self.ensure_one()
+        return self.cost_behavior == "variable" or self.avoidable
 
     @api.depends("sunk", "amount_current", "amount_alternative", "currency_id")
     def _compute_relevant(self):
@@ -411,7 +425,7 @@ class CmcDecisionMixLine(models.Model):
 class CmcDecisionCashFlow(models.Model):
     _name = "cmc.decision.cash.flow"
     _inherit = ["cmc.run.line.mixin"]
-    _description = "Decision cash flow (one per year)"
+    _description = "Decision cash flow (one per year and kind)"
     _order = "year"
     _cmc_run_field = "decision_id"
 
@@ -421,9 +435,10 @@ class CmcDecisionCashFlow(models.Model):
     year = fields.Integer(required=True)
     amount = fields.Monetary(help="Net pre-tax flow of the year; the investment of year 0 is negative.")
     depreciation = fields.Monetary()
+    taxable = fields.Boolean(default=True, help="Untick capex, working capital and salvage at book value: out of the tax base.")
 
     _year_positive = models.Constraint("CHECK(year >= 0)", "The year cannot be negative.")
-    _year_uniq = models.UniqueIndex("(decision_id, year)", "One cash flow per year.")
+    _year_uniq = models.UniqueIndex("(decision_id, year, taxable)", "One cash flow per year and kind.")
 
 
 class CmcDecisionMixResult(models.Model):

@@ -364,6 +364,7 @@ class CmcCvrAnalysis(models.Model):
         res = super().write(vals)
         if "fixed_cost" not in vals and self.FIXED_COST_TRIGGERS & vals.keys():
             self._derive_fixed_cost()  # before the curve, which reads fixed_cost
+        if (self.CURVE_TRIGGERS | {"volume"}) & vals.keys():
             self._refresh_range_warning()
         # the curve is a snapshot of the parameters: never leave the tab showing
         # points computed from the previous ones

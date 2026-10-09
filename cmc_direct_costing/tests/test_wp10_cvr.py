@@ -25,7 +25,9 @@ DC-09 multi-product with constant volume mix
   digits "Product Unit"), ``bep_revenue`` Monetary (= bep_qty x price); Σ line bep_revenue = header bep_revenue.
 G-1 relevant-range warnings (WP-01 API ``cmc.cost.function._cmc_range_warning``)
 - ``range_warning`` Text (stored, readonly): set by the fixed-cost derivation (create / write of its
-  triggers / ``action_recompute``) when the analysis has a center: the warnings of every cost function of
+  triggers / ``action_recompute``) when the analysis has a center - RN-003: also refreshed by a plain
+  ``write`` of ``volume`` or of any curve trigger (``price_unit``, ``variable_unit``, ``fixed_cost``, ...),
+  without calling ``action_recompute`` (a stale warning is as misleading as a missing one) -: the warnings of every cost function of
   the center (same company) at ``volume`` and at ``bep_qty``, joined by newlines; False when all are
   inside their range (or no function). Functions of other centers are ignored.
 """
@@ -204,3 +206,34 @@ class TestWp10CvrRangeWarning(TransactionCase):
         cvr.write({"volume": 2000})
         cvr.action_recompute()
         self.assertFalse(cvr.range_warning)
+
+    # ---- RN-003: the warning follows every write, no explicit recompute ---------------
+
+    def test_write_volume_refreshes_warning(self):
+        # RN-003: volume 2,000 -> 8,000 warns, back to 2,000 clears, with no action_recompute
+        cvr = self._cvr(2000)
+        cvr.write({"volume": 8000})
+        self.assertIn("G1 press line", cvr.range_warning or "")
+        cvr.write({"volume": 2000})
+        self.assertFalse(cvr.range_warning)
+
+    def test_write_price_refreshes_warning(self):
+        # RN-003: p 5.5 -> MC 1.5 -> Q* 4,000 > 3,000
+        cvr = self._cvr(2000)
+        cvr.write({"price_unit": 5.5})
+        self.assertAlmostEqual(cvr.bep_qty, 4000.0, places=2)
+        self.assertIn("G1 press line", cvr.range_warning or "")
+
+    def test_write_variable_cost_refreshes_warning(self):
+        # RN-003: v 8.5 -> MC 1.5 -> Q* 4,000 > 3,000
+        cvr = self._cvr(2000)
+        cvr.write({"variable_unit": 8.5})
+        self.assertAlmostEqual(cvr.bep_qty, 4000.0, places=2)
+        self.assertIn("G1 press line", cvr.range_warning or "")
+
+    def test_write_fixed_cost_refreshes_warning(self):
+        # RN-003: CF 30,000 / MC 6 -> Q* 5,000 > 3,000
+        cvr = self._cvr(2000)
+        cvr.write({"fixed_cost": 30000})
+        self.assertAlmostEqual(cvr.bep_qty, 5000.0, places=2)
+        self.assertIn("G1 press line", cvr.range_warning or "")

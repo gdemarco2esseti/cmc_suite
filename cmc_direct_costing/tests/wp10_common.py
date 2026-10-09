@@ -15,7 +15,7 @@ reset clears outputs and result rows; company rule parent_of; ``_check_company_a
   ``decision_type`` Selection ``make_or_buy`` / ``drop_line`` / ``special_order`` / ``replace`` /
   ``generic`` / ``mix`` / ``investment`` required.
   make_or_buy: ``volume`` Float, ``buy_price_unit`` Monetary, ``opportunity_cost`` Monetary (added to the
-  make = current column).
+  make = current column AND to the make fixed cost of Q*, RN-001: verdict and Q* never disagree).
   special_order (quote, DIF-04): ``quote_price`` Monetary, ``target_margin_pct`` Float (percent),
   ``capital_charge`` Monetary, ``include_idle`` / ``include_sustaining`` Boolean,
   ``idle_burden_pct`` / ``sustaining_burden_pct`` Float (percent of the activity cost).
@@ -30,7 +30,8 @@ reset clears outputs and result rows; company rule parent_of; ``_check_company_a
   ``variable`` / ``fixed`` (default fixed), ``amount_current`` / ``amount_alternative`` Monetary,
   ``avoidable`` / ``sunk`` Boolean stored computed from ``element_id.cmc_avoidable`` / ``cmc_sunk``,
   readonly=False (CLS-04 flags, overridable per line), ``relevant`` Boolean stored computed = not sunk and
-  the two columns differ.
+  the two columns differ. RN-001: in the derived columns (drop_line / make_or_buy) and in Q* a
+  ``variable`` cost line is always avoidable; ``avoidable`` discriminates the fixed lines only.
   ``activity_ids`` -> ``cmc.decision.activity`` (DIF-03/04): ``name``, ``holder_model`` Char +
   ``holder_id`` Many2oneReference (any rate holder: activity, center, resource), ``driver_id`` required,
   ``quantity`` Float, ``side`` Selection ``current`` / ``alternative`` (default alternative); readonly
@@ -39,7 +40,9 @@ reset clears outputs and result rows; company rule parent_of; ``_check_company_a
   ``variable_unit``, ``material_unit`` Monetary, ``resource_per_unit`` Float (> 0: ValidationError),
   ``max_demand`` Float.
   ``cash_flow_ids`` -> ``cmc.decision.cash.flow``: ``year`` Integer (>= 0), ``amount`` Monetary (net
-  pre-tax flow, year 0 investment negative), ``depreciation`` Monetary; one line per (decision, year).
+  pre-tax flow, year 0 investment negative), ``depreciation`` Monetary, ``taxable`` Boolean default True
+  (RN-002: capex / working capital / salvage lines False, out of the tax base); one line per
+  (decision, year, taxable).
 - Results (``cmc.run.result.mixin``, written by Compute only): ``mix_result_ids`` ->
   ``cmc.decision.mix.result`` (``mix_line_id``, ``rank`` 1 = first served, ``mc_unit``,
   ``mc_per_resource``, ``throughput_per_resource``, ``planned_qty``, ``resource_used``, ``contribution``,
@@ -54,8 +57,9 @@ reset clears outputs and result rows; company rule parent_of; ``_check_company_a
   ``idle_burden``, ``sustaining_burden``, ``quote_cost``, ``quote_margin``, ``quote_margin_pct``;
   mix: ``mix_total_mc``, ``mix_total_throughput``, ``mix_result`` (= total MC - fixed cost),
   ``resource_used``; investment: ``effective_rate`` (percent), ``npv``, ``has_irr``, ``irr`` (percent),
-  ``has_payback``, ``payback_years``, ``has_discounted_payback``, ``discounted_payback_years``, ``roi``
-  (percent), ``cbr``.
+  ``irr_note`` Char (RN-002: "multiple IRR" when the flows change sign more than once, ``has_irr`` False),
+  ``has_payback``, ``payback_years``, ``has_discounted_payback``, ``discounted_payback_years`` (RN-002:
+  ``has_*`` False when there is no investment at t = 0), ``roi`` (percent), ``cbr``.
 - Float digits (assertRecordValues compares a Float without digits exactly): percents ``(16, 2)``
   (``quote_margin_pct``, ``mix``/burden pcts), ``irr`` / ``effective_rate`` / ``roi`` ``(16, 6)``, ``cbr``
   ``(16, 4)``, ``rate_value`` ``(16, 6)``, quantities (``indifference_qty``, ``planned_qty``,
@@ -64,8 +68,12 @@ reset clears outputs and result rows; company rule parent_of; ``_check_company_a
   company=decision.company_id)``; missing rate -> UserError naming the line; the origins read are
   recorded with ``_cmc_record_usage`` (AD-002: the producer run cannot be reset while the decision is
   computed). Every Compute reads its rates in one batch (no per-line search, AD-114).
-- The transient ``cmc.differential.analysis`` is superseded (AD-118 "replaces the transient wizard"):
-  its 3 types live on in ``cmc.decision``.
+- The transient ``cmc.differential.analysis`` is REMOVED (AD-118 "replaces the transient wizard", ronin
+  SIMPLIFY): model, views, menu, ACL, rule and its tests go; its scenarios (make/buy/opportunity,
+  drop line keep/eliminate, replace, indifferent, rounding noise, verdict wording) live on in
+  test_wp10_decision.py with the same numbers and the sign differential = alternative - current.
+CVR (test_wp10_cvr.py, RN-003): ``range_warning`` refreshed on every write of ``volume`` or a curve
+trigger, not only by ``action_recompute``.
 Security: group_cmc_user read/write/create on decision + lines (no unlink of a decision), read on results;
 manager full; plain internal users nothing.
 """

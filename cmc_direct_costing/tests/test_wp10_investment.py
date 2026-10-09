@@ -1,18 +1,26 @@
 """WP-10 DIF-06 - investment / replacement appraisal over a horizon with a cash-flow table.
 
 CONTRACT (part of wp10_common; decision_type ``investment``; maths through cmc_utils, AD-119)
-- Inputs: ``cash_flow_ids`` (``year`` >= 0, ``amount``, ``depreciation``; ``models.UniqueIndex`` on
-  (decision_id, year) -> IntegrityError on a second line for the same year), ``discount_rate`` / ``inflation_rate`` / ``tax_rate`` percent,
-  ``rate_basis`` / ``flows_basis`` ``nominal`` | ``real``.
-- Tax (years >= 1): ``tax`` = tax_rate x (amount - depreciation) (negative = tax saving); ``net_flow`` =
-  amount - tax; year 0 untaxed.
+- Inputs: ``cash_flow_ids`` (``year`` >= 0, ``amount``, ``depreciation``, ``taxable`` Boolean default True
+  (RN-002: False for capex / working capital / salvage at book value); ``models.UniqueIndex`` on
+  (decision_id, year, taxable) -> IntegrityError on a second line of the same year AND kind, while one
+  taxable (operating) + one non-taxable (capital) line per year is allowed), ``discount_rate`` /
+  ``inflation_rate`` / ``tax_rate`` percent, ``rate_basis`` / ``flows_basis`` ``nominal`` | ``real``.
+- Tax (years >= 1): ``tax`` = tax_rate x (Σ amount of the TAXABLE lines - Σ depreciation of the year)
+  (negative = tax saving); a non-taxable amount is never in the base (a mid-life capex is no tax credit,
+  a salvage at book value is no taxable gain); ``net_flow`` = Σ amount of all lines - tax; year 0 untaxed.
+  The result row ``amount`` = Σ amount of the year (pre-tax).
 - Rate consistent with the flows (Fisher, exact): same basis -> discount_rate; real flows + nominal rate
   -> real_rate(rate, inflation); nominal flows + real rate -> nominal_rate(rate, inflation); stored as
   ``effective_rate`` (percent).
 - One ``cmc.decision.cash.flow.result`` per year (ordered by year): ``discount_factor`` = 1/(1+r)^t,
   ``present_value``, ``cumulative_flow``, ``cumulative_pv``.
 - Outputs: ``npv`` = Σ PV of net flows; ``irr`` percent (``has_irr`` False and 0 when no sign change);
-  ``payback_years`` / ``discounted_payback_years`` (``has_*`` False when never recovered); ``roi`` =
+  RN-002: more than one sign change -> ``has_irr`` False, ``irr`` 0 and ``irr_note`` Char (readonly, an
+  output cleared by reset) containing "multiple IRR" (cmc_utils.irr raises ``MultipleIrrError``);
+  ``irr_note`` False when the IRR is stated;
+  ``payback_years`` / ``discounted_payback_years`` (``has_*`` False when never recovered; RN-002: also
+  False when the year-0 net flow is >= 0 - no investment at t = 0, nothing to pay back -, never 0 years); ``roi`` =
   (Σ net flows of years >= 1 - I) / I x 100 with I = -(year-0 net flow); ``cbr`` = PV of positive net flows
   / |PV of negative net flows|; verdict alternative (invest) when npv > 0, current when < 0.
 """
@@ -28,7 +36,9 @@ from .wp10_common import Wp10Case
 @tagged("post_install", "-at_install")
 class TestWp10Investment(Wp10Case):
     def _investment(self, flows, **kw):
-        cash = [(0, 0, {"year": year, "amount": amount, "depreciation": dep}) for year, amount, dep in flows]
+        # flows: (year, amount, depreciation) or (year, amount, depreciation, taxable)
+        cash = [(0, 0, {"year": f[0], "amount": f[1], "depreciation": f[2], **({"taxable": f[3]} if len(f) > 3 else {})})
+                for f in flows]
         return self._decision("investment", cash_flow_ids=cash, **kw)
 
     def test_npv_irr_payback(self):
@@ -104,3 +114,57 @@ class TestWp10Investment(Wp10Case):
         with self.assertRaises(psycopg2.IntegrityError), mute_logger("odoo.sql_db"), self.env.cr.savepoint():
             self._investment([(1, 600, 0), (1, 100, 0)], discount_rate=10.0)
             self.env.flush_all()
+
+    # ---- RN-002 -----------------------------------------------------------------------
+
+    def test_taxable_defaults_true(self):
+        # RN-002: an operating flow is taxed unless the user says otherwise
+        decision = self._investment([(0, -1000, 0), (1, 600, 0)])
+        self.assertEqual(decision.cash_flow_ids.mapped("taxable"), [True, True])
+
+    def test_capital_flows_are_not_taxed(self):
+        # RN-002: t 30%, r 10%. y1 600 dep 400 -> tax 60, net 540; y2 600 dep 400 + capex -400 (not taxable)
+        # -> tax 60 (not -60), net 140; y3 600 dep 400 + salvage 200 at book value (not taxable) -> tax 60
+        # (not 120), net 740. NPV = -1000 + 540/1.1 + 140/1.21 + 740/1.331 = 162.58
+        decision = self._investment([
+            (0, -1000, 0, False),
+            (1, 600, 400),
+            (2, 600, 400), (2, -400, 0, False),
+            (3, 600, 400), (3, 200, 0, False),
+        ], discount_rate=10.0, tax_rate=30.0)
+        decision.action_compute()
+        rows = decision.cash_flow_result_ids.sorted("year")
+        self.assertEqual(rows.mapped("year"), [0, 1, 2, 3])
+        for row, amount, tax, net in zip(rows, [-1000.0, 600.0, 200.0, 800.0], [0.0, 60.0, 60.0, 60.0],
+                                         [-1000.0, 540.0, 140.0, 740.0], strict=True):
+            self.assertAlmostEqual(row.amount, amount, places=2)
+            self.assertAlmostEqual(row.tax, tax, places=2)
+            self.assertAlmostEqual(row.net_flow, net, places=2)
+        self.assertAlmostEqual(decision.npv, 162.58, places=2)
+
+    def test_no_investment_at_year_zero_has_no_payback(self):
+        # RN-002: a deferred outflow (0, -1000, +600, +600) is not "paid back in 0 years"
+        decision = self._investment([(0, 0, 0), (1, -1000, 0), (2, 600, 0), (3, 600, 0)], discount_rate=10.0)
+        decision.action_compute()
+        self.assertRecordValues(decision, [{"has_payback": False, "payback_years": 0.0,
+                                            "has_discounted_payback": False, "discounted_payback_years": 0.0,
+                                            "has_irr": True, "irr_note": False}])
+        self.assertAlmostEqual(decision.irr, 13.0662, places=3)  # same IRR, just shifted one year
+        inflow_only = self._investment([(0, 100, 0), (1, 50, 0)], discount_rate=10.0)
+        inflow_only.action_compute()
+        self.assertRecordValues(inflow_only, [{"has_payback": False, "has_discounted_payback": False}])
+
+    def test_multiple_irr_is_not_stated(self):
+        # RN-002: -100, +230, -132 has two IRRs (10% and 20%): neither is reported, the note says why
+        decision = self._investment([(0, -100, 0), (1, 230, 0), (2, -132, 0)], discount_rate=15.0)
+        decision.action_compute()
+        self.assertRecordValues(decision, [{"has_irr": False, "irr": 0.0}])
+        self.assertIn("multiple irr", (decision.irr_note or "").lower())
+        decision.action_reset_to_draft()
+        self.assertFalse(decision.irr_note)
+
+    def test_conventional_flows_have_no_irr_note(self):
+        # RN-002: the note only appears when the IRR is withheld
+        decision = self._investment([(0, -1000, 0), (1, 600, 0), (2, 600, 0)], discount_rate=10.0)
+        decision.action_compute()
+        self.assertRecordValues(decision, [{"has_irr": True, "irr_note": False}])

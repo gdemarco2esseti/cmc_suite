@@ -98,3 +98,52 @@ def ols_fit(points):
     syy = sum((c - mean_c) ** 2 for _q, c in points)
     v = sxy / sxx
     return mean_c - v * mean_q, v, sxy**2 / (sxx * syy) if syy else 1.0
+
+
+def equivalent_units(method, completed, ending_units, ending_pct, beginning_units=0.0, beginning_pct=0.0, spoiled_units=0.0, spoiled_pct=100.0):
+    """Equivalent units of ONE cost element (percentages 0..100). Weighted average merges the beginning WIP;
+    FIFO subtracts the work it already carries (V = P + alpha Rsf - beta Rsi)."""
+    if method not in ("weighted_average", "fifo"):
+        raise ValueError("unknown method %s" % method)
+    units = completed + ending_units * ending_pct / 100.0 + spoiled_units * spoiled_pct / 100.0
+    return units - beginning_units * beginning_pct / 100.0 if method == "fifo" else units
+
+
+def spoilage_split(spoiled_units, good_units, normal_pct):
+    """(normal, abnormal) spoiled units: normal up to `normal_pct` % of the good units."""
+    normal = min(spoiled_units, good_units * normal_pct / 100.0)
+    return normal, spoiled_units - normal
+
+
+def process_cost_report(method, units, elements, rounding=None):
+    """Cost of production report of one department: equivalent units, cost per EU (full precision) and
+    assignment per cost element. The spoiled units are inspected at the end of the process (100 %)."""
+    spoiled = units["normal_spoiled"] + units["abnormal_spoiled"]
+    accounted = units["completed"] + units["ending"] + spoiled
+    if abs(units["beginning"] + units["started"] - accounted) > 1e-6:
+        raise ValueError("units to account for differ from units accounted for")
+    result = {"elements": {}, "cost_to_account": 0.0, "transferred": 0.0, "ending": 0.0, "abnormal": 0.0, "normal_spoilage": 0.0}
+    for key, element in elements.items():
+        eu = equivalent_units(
+            method, units["completed"], units["ending"], element["ending_pct"], units["beginning"], element["beginning_pct"], spoiled
+        )
+        to_account = element["beginning_cost"] + element["period_cost"]
+        basis = to_account if method == "weighted_average" else element["period_cost"]
+        if abs(eu) < 1e-9:
+            if abs(basis) > 1e-9:
+                raise ValueError("element %s has cost but no equivalent units" % key)
+            cost_per_eu = 0.0
+        else:
+            cost_per_eu = basis / eu
+        ending = units["ending"] * element["ending_pct"] / 100.0 * cost_per_eu
+        abnormal = units["abnormal_spoiled"] * cost_per_eu
+        normal = units["normal_spoiled"] * cost_per_eu
+        parts = {"transferred": to_account - ending - abnormal, "ending": ending, "abnormal": abnormal}
+        if rounding:
+            to_account = float_round(to_account, precision_rounding=rounding)
+            parts = largest_remainder(to_account, parts, rounding)
+            normal = float_round(normal, precision_rounding=rounding)
+        result["elements"][key] = {"eu": eu, "cost_per_eu": cost_per_eu, "cost_to_account": to_account, "normal_spoilage": normal, **parts}
+        for name in ("cost_to_account", "normal_spoilage", *parts):
+            result[name] += result["elements"][key][name]
+    return result

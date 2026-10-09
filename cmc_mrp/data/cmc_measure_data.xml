@@ -9,4 +9,13 @@
         <field name="source">feeder</field>
         <field name="feeder_key">mrp_produced_qty</field>
     </record>
+    <record id="cmc_measure_scrap_qty" model="cmc.cost.driver">
+        <field name="name">Scrapped quantity</field>
+        <field name="code">MRP_SCRAP_QTY</field>
+        <field name="measure_kind">statistical</field>
+        <field name="measure_type">transaction</field>
+        <field name="company_id" eval="False"/>
+        <field name="source">feeder</field>
+        <field name="feeder_key">mrp_scrap_qty</field>
+    </record>
 </odoo>

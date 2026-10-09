@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_cmc_sec_process_costing"
+              name="Process Costing"
+              parent="cmc_base.menu_cmc_operations"
+              sequence="37"/>
+    <menuitem id="menu_cmc_process_run"
+              name="Process Runs"
+              parent="menu_cmc_sec_process_costing"
+              action="action_cmc_process_run"
+              sequence="10"/>
+</odoo>

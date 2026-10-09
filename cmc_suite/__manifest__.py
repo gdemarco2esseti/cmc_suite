@@ -20,6 +20,7 @@
         "cmc_budget",
         "cmc_job_costing",
         "cmc_standard_cost",
+        "cmc_process_costing",
     ],
     "installable": True,
     "application": True,

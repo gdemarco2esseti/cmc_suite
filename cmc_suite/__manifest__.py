@@ -21,6 +21,7 @@
         "cmc_job_costing",
         "cmc_standard_cost",
         "cmc_profitability",
+        "cmc_target_lcc",
     ],
     "installable": True,
     "application": True,

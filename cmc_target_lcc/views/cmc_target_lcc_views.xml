@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_cmc_sec_target_lcc" name="Target &amp; Life-Cycle Costing" parent="cmc_base.menu_cmc_operations" sequence="45"/>
+
+    <record id="view_cmc_target_cost_list" model="ir.ui.view">
+        <field name="name">cmc.target.cost.list</field>
+        <field name="model">cmc.target.cost</field>
+        <field name="arch" type="xml">
+            <list string="Target Costing">
+                <field name="date"/>
+                <field name="name"/>
+                <field name="product_id"/>
+                <field name="target_price"/>
+                <field name="allowable_cost"/>
+                <field name="current_cost"/>
+                <field name="cost_gap"/>
+                <field name="target_met"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_target_cost_form" model="ir.ui.view">
+        <field name="name">cmc.target.cost.form</field>
+        <field name="model">cmc.target.cost</field>
+        <field name="arch" type="xml">
+            <form string="Target Costing Sheet">
+                <header>
+                    <button name="action_compute" type="object" string="Compute" class="btn-primary" invisible="state == 'done'"/>
+                    <button name="action_reset_to_draft" type="object" string="Reset to Draft" invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><label for="name"/><h1><field name="name" readonly="state == 'done'"/></h1></div>
+                    <group>
+                        <group string="Inputs">
+                            <field name="product_id" readonly="state == 'done'"/>
+                            <field name="unit_driver_id" readonly="state == 'done'"/>
+                            <field name="date" readonly="state == 'done'"/>
+                            <field name="target_price" readonly="state == 'done'"/>
+                            <field name="target_margin_pct" readonly="state == 'done'"/>
+                            <field name="non_mfg_cost" readonly="state == 'done'"/>
+                            <field name="assembly_cost" readonly="state == 'done'"/>
+                            <field name="company_id" groups="base.group_multi_company" readonly="state == 'done'"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group string="Target vs Current" invisible="state == 'draft'">
+                            <field name="allowable_cost"/>
+                            <field name="deployable_cost"/>
+                            <field name="current_cost"/>
+                            <field name="cost_gap" decoration-danger="cost_gap &gt; 0" decoration-success="cost_gap &lt;= 0"/>
+                            <field name="reduction_pct"/>
+                            <field name="target_met"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Functions" name="functions">
+                            <field name="function_ids" readonly="state == 'done'">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="importance_pct"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Components" name="components">
+                            <field name="component_ids" readonly="state == 'done'">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="product_id"/>
+                                    <field name="cost_source"/>
+                                    <field name="current_cost"/>
+                                    <field name="purchased"/>
+                                    <field name="partner_id"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Function-Cost Matrix" name="matrix">
+                            <field name="matrix_ids" readonly="state == 'done'">
+                                <list editable="bottom">
+                                    <field name="component_id"/>
+                                    <field name="function_id"/>
+                                    <field name="share_pct"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Deployment" name="deployment" invisible="state == 'draft'">
+                            <field name="result_ids">
+                                <list decoration-warning="value_index &lt; 1">
+                                    <field name="line_type"/>
+                                    <field name="function_id"/>
+                                    <field name="component_id"/>
+                                    <field name="partner_id"/>
+                                    <field name="importance_pct"/>
+                                    <field name="current_cost"/>
+                                    <field name="cost_pct"/>
+                                    <field name="target_cost"/>
+                                    <field name="gap"/>
+                                    <field name="value_index"/>
+                                    <field name="supplier_target_price"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_target_cost" model="ir.actions.act_window">
+        <field name="name">Target Costing</field>
+        <field name="res_model">cmc.target.cost</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_cmc_target_cost" name="Target Costing" parent="menu_cmc_sec_target_lcc" action="action_cmc_target_cost" sequence="10"/>
+
+    <record id="view_cmc_kaizen_list" model="ir.ui.view">
+        <field name="name">cmc.kaizen.target.list</field>
+        <field name="model">cmc.kaizen.target</field>
+        <field name="arch" type="xml">
+            <list string="Kaizen Targets">
+                <field name="name"/>
+                <field name="basis"/>
+                <field name="reduction_pct"/>
+                <field name="achieved_pct"/>
+                <field name="variance"/>
+                <field name="target_met"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_kaizen_form" model="ir.ui.view">
+        <field name="name">cmc.kaizen.target.form</field>
+        <field name="model">cmc.kaizen.target</field>
+        <field name="arch" type="xml">
+            <form string="Kaizen Target">
+                <header>
+                    <button name="action_compute" type="object" string="Compute" class="btn-primary" invisible="state == 'done'"/>
+                    <button name="action_reset_to_draft" type="object" string="Reset to Draft" invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><label for="name"/><h1><field name="name" readonly="state == 'done'"/></h1></div>
+                    <group>
+                        <group string="Inputs">
+                            <field name="basis" readonly="state == 'done'"/>
+                            <field name="reduction_pct" readonly="state == 'done'"/>
+                            <field name="product_id" readonly="state == 'done'" invisible="basis != 'unit'"/>
+                            <field name="unit_driver_id" readonly="state == 'done'" invisible="basis != 'unit'"/>
+                            <field name="base_date" readonly="state == 'done'" invisible="basis != 'unit'"/>
+                            <field name="date_from" readonly="state == 'done'" invisible="basis != 'unit'"/>
+                            <field name="date_to" readonly="state == 'done'" invisible="basis != 'unit'"/>
+                            <field name="fixed_budget" readonly="state == 'done'" invisible="basis != 'flexible'"/>
+                            <field name="variable_budget" readonly="state == 'done'" invisible="basis != 'flexible'"/>
+                            <field name="actual_cost" readonly="state == 'done'" invisible="basis != 'flexible'"/>
+                            <field name="company_id" groups="base.group_multi_company" readonly="state == 'done'"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group string="Outcome" invisible="state == 'draft'">
+                            <field name="base_unit_cost" invisible="basis != 'unit'"/>
+                            <field name="target_unit_cost" invisible="basis != 'unit'"/>
+                            <field name="achieved_pct" invisible="basis != 'unit'"/>
+                            <field name="target_total" invisible="basis != 'flexible'"/>
+                            <field name="variance"/>
+                            <field name="target_met"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Tracking" name="tracking" invisible="basis != 'unit' or state == 'draft'">
+                            <field name="line_ids">
+                                <list decoration-success="met" decoration-danger="not met">
+                                    <field name="date"/>
+                                    <field name="actual_unit_cost"/>
+                                    <field name="achieved_pct"/>
+                                    <field name="variance"/>
+                                    <field name="met"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_kaizen" model="ir.actions.act_window">
+        <field name="name">Kaizen Targets</field>
+        <field name="res_model">cmc.kaizen.target</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_cmc_kaizen" name="Kaizen Targets" parent="menu_cmc_sec_target_lcc" action="action_cmc_kaizen" sequence="20"/>
+
+    <record id="view_cmc_feature_costing_list" model="ir.ui.view">
+        <field name="name">cmc.feature.costing.list</field>
+        <field name="model">cmc.feature.costing</field>
+        <field name="arch" type="xml">
+            <list string="Feature Costing">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="target_cost_id"/>
+                <field name="best_alternative_id"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_feature_costing_form" model="ir.ui.view">
+        <field name="name">cmc.feature.costing.form</field>
+        <field name="model">cmc.feature.costing</field>
+        <field name="arch" type="xml">
+            <form string="Feature Costing">
+                <header>
+                    <button name="action_compute" type="object" string="Compute" class="btn-primary" invisible="state == 'done'"/>
+                    <button name="action_reset_to_draft" type="object" string="Reset to Draft" invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><label for="name"/><h1><field name="name" readonly="state == 'done'"/></h1></div>
+                    <group>
+                        <group string="Inputs">
+                            <field name="date" readonly="state == 'done'"/>
+                            <field name="target_cost_id" readonly="state == 'done'"/>
+                            <field name="company_id" groups="base.group_multi_company" readonly="state == 'done'"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group string="Outcome" invisible="state == 'draft'">
+                            <field name="best_alternative_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Alternatives" name="alternatives">
+                            <field name="alternative_ids" readonly="state == 'done'">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Design Variables" name="variables">
+                            <field name="variable_ids" readonly="state == 'done'">
+                                <list editable="bottom">
+                                    <field name="alternative_id"/>
+                                    <field name="name"/>
+                                    <field name="holder_model"/>
+                                    <field name="holder_id"/>
+                                    <field name="driver_id"/>
+                                    <field name="quantity"/>
+                                    <field name="guideline_id"/>
+                                    <field name="rate_value"/>
+                                    <field name="amount"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Results" name="results" invisible="state == 'draft'">
+                            <field name="result_ids">
+                                <list decoration-success="meets_target" decoration-danger="not meets_target">
+                                    <field name="rank"/>
+                                    <field name="alternative_id"/>
+                                    <field name="estimated_cost"/>
+                                    <field name="allowable_cost"/>
+                                    <field name="gap"/>
+                                    <field name="meets_target"/>
+                                    <field name="violation_count"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Guideline Violations" name="violations" invisible="state == 'draft'">
+                            <field name="violation_ids">
+                                <list decoration-danger="excess &gt; 0">
+                                    <field name="alternative_id"/>
+                                    <field name="guideline_id"/>
+                                    <field name="quantity"/>
+                                    <field name="max_quantity"/>
+                                    <field name="excess"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_feature_costing" model="ir.actions.act_window">
+        <field name="name">Feature Costing</field>
+        <field name="res_model">cmc.feature.costing</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_cmc_feature_costing" name="Feature Costing" parent="menu_cmc_sec_target_lcc" action="action_cmc_feature_costing" sequence="30"/>
+
+    <record id="view_cmc_design_guideline_list" model="ir.ui.view">
+        <field name="name">cmc.design.guideline.list</field>
+        <field name="model">cmc.design.guideline</field>
+        <field name="arch" type="xml">
+            <list string="Design Guidelines" editable="bottom">
+                <field name="name"/>
+                <field name="driver_id"/>
+                <field name="max_quantity"/>
+                <field name="relative_factor"/>
+                <field name="note"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cmc_design_guideline" model="ir.actions.act_window">
+        <field name="name">Design Guidelines</field>
+        <field name="res_model">cmc.design.guideline</field>
+        <field name="view_mode">list</field>
+    </record>
+    <menuitem id="menu_cmc_design_guideline" name="Design Guidelines" parent="cmc_base.menu_cmc_cfg_master"
+              action="action_cmc_design_guideline" sequence="60"/>
+
+    <record id="view_cmc_lcc_model_list" model="ir.ui.view">
+        <field name="name">cmc.lcc.model.list</field>
+        <field name="model">cmc.lcc.model</field>
+        <field name="arch" type="xml">
+            <list string="Life-Cycle Models">
+                <field name="name"/>
+                <field name="product_id"/>
+                <field name="partner_id"/>
+                <field name="lc_cost"/>
+                <field name="lc_unit_cost"/>
+                <field name="lc_profit"/>
+                <field name="lc_profit_npv"/>
+                <field name="breakeven_year"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_lcc_model_form" model="ir.ui.view">
+        <field name="name">cmc.lcc.model.form</field>
+        <field name="model">cmc.lcc.model</field>
+        <field name="arch" type="xml">
+            <form string="Life-Cycle Cost Model">
+                <header>
+                    <button name="action_compute" type="object" string="Compute" class="btn-primary" invisible="state == 'done'"/>
+                    <button name="action_reset_to_draft" type="object" string="Reset to Draft" invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><label for="name"/><h1><field name="name" readonly="state == 'done'"/></h1></div>
+                    <group>
+                        <group string="Inputs">
+                            <field name="product_id" readonly="state == 'done'"/>
+                            <field name="partner_id" readonly="state == 'done'"/>
+                            <field name="start_year" readonly="state == 'done'"/>
+                            <field name="horizon_years" readonly="state == 'done'"/>
+                            <field name="discount_rate" readonly="state == 'done'"/>
+                            <field name="inflation_rate" readonly="state == 'done'"/>
+                            <field name="rate_basis" readonly="state == 'done'"/>
+                            <field name="flows_basis" readonly="state == 'done'"/>
+                            <field name="rate_date" readonly="state == 'done'"/>
+                            <field name="previous_id" readonly="state == 'done'"/>
+                            <field name="baseline_id" readonly="state == 'done'"/>
+                            <field name="company_id" groups="base.group_multi_company" readonly="state == 'done'"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group string="Life-Cycle Outcome" invisible="state == 'draft'">
+                            <field name="effective_rate"/>
+                            <field name="lc_cost"/>
+                            <field name="lc_cost_npv"/>
+                            <field name="recurring_cost"/>
+                            <field name="non_recurring_cost"/>
+                            <field name="lifetime_volume"/>
+                            <field name="lc_unit_cost"/>
+                            <field name="lc_revenue"/>
+                            <field name="lc_profit"/>
+                            <field name="lc_profit_npv"/>
+                            <field name="has_breakeven" invisible="1"/>
+                            <field name="breakeven_year" invisible="not has_breakeven"/>
+                            <field name="has_actuals" invisible="1"/>
+                            <field name="absorbed_to_date" invisible="not has_actuals"/>
+                            <field name="residual_cost" invisible="not has_actuals"/>
+                            <field name="residual_volume" invisible="not has_actuals"/>
+                            <field name="residual_unit_cost" invisible="not has_actuals"/>
+                            <field name="incremental_npv" invisible="not baseline_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Years" name="years">
+                            <field name="year_ids" readonly="state == 'done'">
+                                <list editable="bottom">
+                                    <field name="year"/>
+                                    <field name="volume"/>
+                                    <field name="price_unit"/>
+                                    <field name="is_actual"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Costs" name="costs">
+                            <field name="cost_line_ids" readonly="state == 'done'">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="phase"/>
+                                    <field name="category"/>
+                                    <field name="recurrence"/>
+                                    <field name="year"/>
+                                    <field name="commit_year"/>
+                                    <field name="amount"/>
+                                    <field name="probability_pct"/>
+                                    <field name="actual_amount"/>
+                                    <field name="actual_zero"/>
+                                    <field name="holder_model"/>
+                                    <field name="holder_id"/>
+                                    <field name="driver_id"/>
+                                    <field name="quantity"/>
+                                    <field name="rate_value"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Cost View (phase x category)" name="phases" invisible="state == 'draft'">
+                            <field name="phase_result_ids">
+                                <list>
+                                    <field name="phase"/>
+                                    <field name="category"/>
+                                    <field name="amount"/>
+                                    <field name="pv_amount"/>
+                                    <field name="share_pct"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Cash View (years)" name="cash" invisible="state == 'draft'">
+                            <field name="year_result_ids">
+                                <list>
+                                    <field name="calendar_year"/>
+                                    <field name="volume"/>
+                                    <field name="revenue"/>
+                                    <field name="cost"/>
+                                    <field name="non_recurring_cost" optional="hide"/>
+                                    <field name="net_flow"/>
+                                    <field name="discount_factor" optional="hide"/>
+                                    <field name="pv_cost" optional="hide"/>
+                                    <field name="pv_net"/>
+                                    <field name="cumulative_net"/>
+                                    <field name="cumulative_pv" optional="hide"/>
+                                    <field name="committed_cost"/>
+                                    <field name="cumulative_committed_pct"/>
+                                    <field name="cumulative_incurred_pct"/>
+                                    <field name="incremental_flow" optional="hide"/>
+                                    <field name="is_actual" optional="hide"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_lcc_model" model="ir.actions.act_window">
+        <field name="name">Life-Cycle Costing</field>
+        <field name="res_model">cmc.lcc.model</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_cmc_lcc_model" name="Life-Cycle Costing" parent="menu_cmc_sec_target_lcc" action="action_cmc_lcc_model" sequence="40"/>
+
+</odoo>

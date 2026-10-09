@@ -109,31 +109,8 @@ class TestDirectCostingSecurity(TransactionCase):
         with self.assertRaises(AccessError):
             curves_a.with_user(self.user_b).read(["revenue"])
 
-    def test_differential_is_user_and_company_scoped(self):
-        """A TransientModel uses ACLs and record rules like a regular model:
-        there is NO implicit create_uid ownership filter in v19."""
-        Diff = self.env["cmc.differential.analysis"]
-        mine = (
-            Diff.with_user(self.user_a)
-            .with_company(self.company_a)
-            .create(
-                {
-                    "company_id": self.company_a.id,
-                    "decision_type": "make_or_buy",
-                    "volume": 1,
-                    "make_unit_cost": 12,
-                    "buy_unit_cost": 10,
-                }
-            )
-        )
-        self.assertEqual(mine.verdict, "Buy")
-        self.assertEqual(
-            Diff.with_user(self.user_a).search([("id", "=", mine.id)]), mine
-        )
-        self.assertFalse(
-            Diff.with_user(self.user_b).search([("id", "=", mine.id)]),
-            "another user's make-or-buy parameters must not be readable",
-        )
+    # (the transient cmc.differential.analysis scoping test left with the model: cmc.decision company
+    #  scoping is covered by test_wp10_security.test_other_company_cannot_see)
 
     def test_cvr_analyses_do_not_mix(self):
         analysis_a = self._cvr(self.company_a)

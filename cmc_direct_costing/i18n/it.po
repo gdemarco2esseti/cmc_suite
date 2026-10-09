@@ -34,11 +34,6 @@ msgid "Analysis"
 msgstr "Analisi"
 
 #. module: cmc_direct_costing
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_differential_analysis__avoidable_fixed
-msgid "Avoidable Fixed Cost"
-msgstr "Costo fisso evitabile"
-
-#. module: cmc_direct_costing
 #: model_terms:ir.ui.view,arch_db:cmc_direct_costing.view_cmc_cvr_curve_graph
 msgid "Break-even Chart"
 msgstr "Profittogramma (break-even)"
@@ -62,17 +57,6 @@ msgstr "Quantità di pareggio (Q*)"
 #: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_analysis__bep_revenue
 msgid "Break-even Revenue"
 msgstr "Ricavo di pareggio"
-
-#. module: cmc_direct_costing
-#. odoo-python
-#: code:addons/cmc_direct_costing/models/cmc_differential.py:0
-msgid "Buy"
-msgstr "Acquistare"
-
-#. module: cmc_direct_costing
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_differential_analysis__buy_unit_cost
-msgid "Buy Unit Price"
-msgstr "Prezzo unitario di acquisto"
 
 #. module: cmc_direct_costing
 #. odoo-python
@@ -120,16 +104,6 @@ msgid "Common fixed costs"
 msgstr "Costi fissi comuni"
 
 #. module: cmc_direct_costing
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_analysis__company_id
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_curve__company_id
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_line__company_id
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_differential_analysis__company_id
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing__company_id
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing_line__company_id
-msgid "Company"
-msgstr "Azienda"
-
-#. module: cmc_direct_costing
 #. odoo-python
 #: code:addons/cmc_direct_costing/models/cmc_direct_costing.py:0
 msgid "Contribution margin income statement"
@@ -144,36 +118,6 @@ msgstr "Centro di costo"
 #: model:ir.model,name:cmc_direct_costing.model_cmc_cvr_analysis
 msgid "Cost-Volume-Profit / Break-even Analysis"
 msgstr "Analisi costi-volumi-risultati / punto di pareggio"
-
-#. module: cmc_direct_costing
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_analysis__create_uid
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_curve__create_uid
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_line__create_uid
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_differential_analysis__create_uid
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing__create_uid
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing_line__create_uid
-msgid "Created by"
-msgstr "Creato da"
-
-#. module: cmc_direct_costing
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_analysis__create_date
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_curve__create_date
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_line__create_date
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_differential_analysis__create_date
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing__create_date
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing_line__create_date
-msgid "Created on"
-msgstr "Creato il"
-
-#. module: cmc_direct_costing
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_analysis__currency_id
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_curve__currency_id
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_line__currency_id
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_differential_analysis__currency_id
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing__currency_id
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing_line__currency_id
-msgid "Currency"
-msgstr "Valuta"
 
 #. module: cmc_direct_costing
 #: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_analysis__curve_ids
@@ -191,28 +135,6 @@ msgstr "Data inizio"
 #: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing__date_to
 msgid "Date To"
 msgstr "Data fine"
-
-#. module: cmc_direct_costing
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_differential_analysis__decision_type
-msgid "Decision Type"
-msgstr "Tipo di decisione"
-
-#. module: cmc_direct_costing
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_differential_analysis__differential
-msgid "Differential"
-msgstr "Differenziale"
-
-#. module: cmc_direct_costing
-#: model:ir.model,name:cmc_direct_costing.model_cmc_differential_analysis
-msgid "Differential / Relevant-Cost Analysis"
-msgstr "Analisi differenziale / costi rilevanti"
-
-#. module: cmc_direct_costing
-#: model:ir.actions.act_window,name:cmc_direct_costing.action_cmc_differential
-#: model:ir.ui.menu,name:cmc_direct_costing.menu_cmc_differential
-#: model_terms:ir.ui.view,arch_db:cmc_direct_costing.view_cmc_differential_form
-msgid "Differential Analysis"
-msgstr "Analisi differenziale"
 
 #. module: cmc_direct_costing
 #. odoo-python
@@ -248,32 +170,6 @@ msgid "Direct Costing Line (product/line margin)"
 msgstr "Riga Direct Costing (margine prodotto/linea)"
 
 #. module: cmc_direct_costing
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_analysis__display_name
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_curve__display_name
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_line__display_name
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_differential_analysis__display_name
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing__display_name
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing_line__display_name
-msgid "Display Name"
-msgstr "Nome visualizzato"
-
-#. module: cmc_direct_costing
-#: model_terms:ir.ui.view,arch_db:cmc_direct_costing.view_cmc_differential_form
-msgid "Eliminate Line"
-msgstr "Eliminazione linea"
-
-#. module: cmc_direct_costing
-#: model:ir.model.fields.selection,name:cmc_direct_costing.selection__cmc_differential_analysis__decision_type__drop_line
-msgid "Eliminate Product Line"
-msgstr "Eliminazione linea di prodotto"
-
-#. module: cmc_direct_costing
-#. odoo-python
-#: code:addons/cmc_direct_costing/models/cmc_differential.py:0
-msgid "Eliminate line"
-msgstr "Eliminare la linea"
-
-#. module: cmc_direct_costing
 #: model:ir.model.constraint,message:cmc_direct_costing.constraint_cmc_cvr_analysis_dates_ok
 #: model:ir.model.constraint,message:cmc_direct_costing.constraint_cmc_direct_costing_dates_ok
 msgid "End date must be on/after start date."
@@ -303,22 +199,6 @@ msgid "Gross MC"
 msgstr "MC lordo"
 
 #. module: cmc_direct_costing
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_analysis__id
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_curve__id
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_line__id
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_differential_analysis__id
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing__id
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing_line__id
-msgid "ID"
-msgstr "ID"
-
-#. module: cmc_direct_costing
-#. odoo-python
-#: code:addons/cmc_direct_costing/models/cmc_differential.py:0
-msgid "Indifferent"
-msgstr "Indifferente"
-
-#. module: cmc_direct_costing
 #: model_terms:ir.ui.view,arch_db:cmc_direct_costing.view_cmc_cvr_form
 msgid "Inputs"
 msgstr "Dati di input"
@@ -327,43 +207,6 @@ msgstr "Dati di input"
 #: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_analysis__is_multiproduct
 msgid "Is Multiproduct"
 msgstr "Multiprodotto"
-
-#. module: cmc_direct_costing
-#. odoo-python
-#: code:addons/cmc_direct_costing/models/cmc_differential.py:0
-msgid "Keep line"
-msgstr "Mantenere la linea"
-
-#. module: cmc_direct_costing
-#. odoo-python
-#: code:addons/cmc_direct_costing/models/cmc_differential.py:0
-msgid "Keep machine"
-msgstr "Mantenere la macchina"
-
-#. module: cmc_direct_costing
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_differential_analysis__keep_relevant_cost
-msgid "Keep — relevant cost"
-msgstr "Mantenere — costo rilevante"
-
-#. module: cmc_direct_costing
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_analysis__write_uid
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_curve__write_uid
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_line__write_uid
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_differential_analysis__write_uid
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing__write_uid
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing_line__write_uid
-msgid "Last Updated by"
-msgstr "Ultimo aggiornamento di"
-
-#. module: cmc_direct_costing
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_analysis__write_date
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_curve__write_date
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_line__write_date
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_differential_analysis__write_date
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing__write_date
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing_line__write_date
-msgid "Last Updated on"
-msgstr "Ultimo aggiornamento il"
 
 #. module: cmc_direct_costing
 #: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_analysis__line_ids
@@ -377,11 +220,6 @@ msgid "Lines"
 msgstr "Righe"
 
 #. module: cmc_direct_costing
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_differential_analysis__lost_contribution
-msgid "Lost Contribution Margin"
-msgstr "Margine di contribuzione perso"
-
-#. module: cmc_direct_costing
 #: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing_line__mc_ratio
 msgid "MC %"
 msgstr "MC %"
@@ -390,23 +228,6 @@ msgstr "MC %"
 #: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_analysis__mc_ratio
 msgid "MC Ratio"
 msgstr "Rapporto MC"
-
-#. module: cmc_direct_costing
-#. odoo-python
-#: code:addons/cmc_direct_costing/models/cmc_differential.py:0
-msgid "Make"
-msgstr "Produrre"
-
-#. module: cmc_direct_costing
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_differential_analysis__make_unit_cost
-msgid "Make Unit Cost (avoidable)"
-msgstr "Costo unitario di produzione (evitabile)"
-
-#. module: cmc_direct_costing
-#: model:ir.model.fields.selection,name:cmc_direct_costing.selection__cmc_differential_analysis__decision_type__make_or_buy
-#: model_terms:ir.ui.view,arch_db:cmc_direct_costing.view_cmc_differential_form
-msgid "Make or Buy"
-msgstr "Produrre o acquistare (make or buy)"
 
 #. module: cmc_direct_costing
 #: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_analysis__margin_of_safety
@@ -457,11 +278,6 @@ msgid "Operating result"
 msgstr "Risultato operativo"
 
 #. module: cmc_direct_costing
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_differential_analysis__opportunity_cost
-msgid "Opportunity Cost"
-msgstr "Costo opportunità"
-
-#. module: cmc_direct_costing
 #: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_line__price_unit
 msgid "Price Unit"
 msgstr "Prezzo unitario"
@@ -506,29 +322,6 @@ msgstr "Riclassificato (margine di contribuzione)"
 #: model_terms:ir.ui.view,arch_db:cmc_direct_costing.view_cmc_cvr_form
 msgid "Recompute"
 msgstr "Ricalcola"
-
-#. module: cmc_direct_costing
-#. odoo-python
-#: code:addons/cmc_direct_costing/models/cmc_differential.py:0
-msgid "Replace"
-msgstr "Sostituire"
-
-#. module: cmc_direct_costing
-#: model:ir.model.fields.selection,name:cmc_direct_costing.selection__cmc_differential_analysis__decision_type__replace
-#: model_terms:ir.ui.view,arch_db:cmc_direct_costing.view_cmc_differential_form
-msgid "Replace Machine"
-msgstr "Sostituzione macchinario"
-
-#. module: cmc_direct_costing
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_differential_analysis__replace_relevant_cost
-msgid "Replace — relevant cost"
-msgstr "Sostituire — costo rilevante"
-
-#. module: cmc_direct_costing
-#: model_terms:ir.ui.view,arch_db:cmc_direct_costing.view_cmc_dc_list
-#: model_terms:ir.ui.view,arch_db:cmc_direct_costing.view_cmc_differential_form
-msgid "Result"
-msgstr "Risultato"
 
 #. module: cmc_direct_costing
 #: model_terms:ir.ui.view,arch_db:cmc_direct_costing.view_cmc_cvr_form
@@ -636,17 +429,6 @@ msgstr "Costo variabile unitario"
 #: code:addons/cmc_direct_costing/models/cmc_direct_costing.py:0
 msgid "Variable cost"
 msgstr "Costo variabile"
-
-#. module: cmc_direct_costing
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_differential_analysis__verdict
-msgid "Verdict"
-msgstr "Esito"
-
-#. module: cmc_direct_costing
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_curve__volume
-#: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_differential_analysis__volume
-msgid "Volume"
-msgstr "Volume"
 
 #. module: cmc_direct_costing
 #: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_analysis__volume

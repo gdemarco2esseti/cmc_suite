@@ -59,7 +59,11 @@ class AccountAnalyticLine(models.Model):
         mod = self._cmc_element_ref(MOD_XMLID)
         vals_by_line = []
         for line in self:
-            if line.cmc_classified_manually or not line._cmc_is_timesheet_mod():
+            if (
+                line.cmc_classified_manually
+                or line.cmc_excluded
+                or not line._cmc_is_timesheet_mod()
+            ):
                 continue
             vals = {}
             if mod and not line.cmc_cost_element_id:

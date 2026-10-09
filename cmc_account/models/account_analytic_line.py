@@ -3,6 +3,8 @@ from collections import defaultdict
 
 from odoo import api, fields, models
 
+from odoo.addons.cmc_base.models.account_analytic_line import CMC_AUTO
+
 _logger = logging.getLogger(__name__)
 
 CLASSIFICATION_FIELDS = ("cmc_behavior", "cmc_directness", "cmc_cost_element_id")
@@ -69,7 +71,7 @@ class AccountAnalyticLine(models.Model):
         for line_id, vals in vals_by_line:
             batches[tuple(sorted(vals.items()))].append(line_id)
         for key, ids in batches.items():
-            self.browse(ids).with_context(cmc_auto_classify=True).write(dict(key))
+            self.browse(ids).with_context(cmc_auto_classify=CMC_AUTO).write(dict(key))
 
     # ------------------------------------------------------------------
     # CRUD
@@ -79,7 +81,7 @@ class AccountAnalyticLine(models.Model):
     def create(self, vals_list):
         lines = super().create(vals_list)
         # a classification provided explicitly at create time = manual
-        if not self.env.context.get("cmc_auto_classify"):
+        if self.env.context.get("cmc_auto_classify") is not CMC_AUTO:
             manual_ids = [
                 line.id
                 for line, vals in zip(lines, vals_list)
@@ -91,7 +93,7 @@ class AccountAnalyticLine(models.Model):
         return lines
 
     def write(self, vals):
-        auto = self.env.context.get("cmc_auto_classify")
+        auto = self.env.context.get("cmc_auto_classify") is CMC_AUTO
         # a user write of a TRUTHY classification value marks the line as manual
         manual = not auto and any(vals.get(fname) for fname in CLASSIFICATION_FIELDS)
         if manual:
@@ -156,8 +158,10 @@ class AccountAnalyticLine(models.Model):
         for its (journal item, center), then derive the element from the financial account
         mapping and apply the first matching rule. Never touches manually
         classified lines; never creates new lines."""
-        self = self.filtered(lambda line: not line.cmc_excluded)
-        if not self:
+        # why not filtered by the bridges' callers: bridge overrides run BEFORE
+        # this base (MRO), so each of them skips excluded lines on its own.
+        lines = self.filtered(lambda line: not line.cmc_excluded)
+        if not lines:
             return True
         Rule = self.env["cmc.classification.rule"]
         rules_by_company = {}
@@ -167,7 +171,7 @@ class AccountAnalyticLine(models.Model):
         manual_by_key = {
             (rec.move_line_id.id, rec.center_id.id): rec
             for rec in self.env["cmc.manual.classification"].sudo().search(
-                [("move_line_id", "in", self.move_line_id.ids)]
+                [("move_line_id", "in", lines.move_line_id.ids)]
             )
         }
         # why sudo: read-only read of the account -> cost-element mapping, which
@@ -177,10 +181,10 @@ class AccountAnalyticLine(models.Model):
         # query per line).
         element_by_account = {
             account.id: account.cmc_cost_element_id.id
-            for account in self.general_account_id.sudo()
+            for account in lines.general_account_id.sudo()
         }
         vals_by_line = []
-        for line in self:
+        for line in lines:
             center = line.cmc_center_id  # non-stored compute: read once per line
             source = manual_by_key.get((line.move_line_id.id, center.id))
             if source is not None:
@@ -221,5 +225,5 @@ class AccountAnalyticLine(models.Model):
                     vals["cmc_cost_element_id"] = rule.cmc_cost_element_id.id
             if vals:
                 vals_by_line.append((line.id, vals))
-        self._cmc_write_batched(vals_by_line)
+        lines._cmc_write_batched(vals_by_line)
         return True

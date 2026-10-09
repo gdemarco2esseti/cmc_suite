@@ -151,3 +151,16 @@ class TestTimesheetMod(TransactionCase):
             "partner_id": partner.id, "company_id": company_b.id,
         })
         self.assertEqual(line_b2.cmc_behavior, "semi_variable")
+
+    # an excluded line (system twin) is never enriched as MOD
+    def test_excluded_timesheet_is_not_classified(self):
+        line = self._ts()
+        line.write({
+            "cmc_excluded": True, "cmc_behavior": False,
+            "cmc_cost_element_id": False, "cmc_directness": "indirect",
+            "cmc_classified_manually": False,
+        })
+        line._cmc_auto_classify()
+        self.assertFalse(line.cmc_cost_element_id)
+        self.assertFalse(line.cmc_behavior)
+        self.assertEqual(line.cmc_directness, "indirect")

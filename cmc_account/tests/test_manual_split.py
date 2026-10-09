@@ -1,4 +1,5 @@
 from odoo import Command, fields
+from odoo.exceptions import UserError
 from odoo.tests.common import TransactionCase, new_test_user, tagged
 
 
@@ -189,3 +190,30 @@ class TestManualClassificationSplit(TransactionCase):
         line_x = self._line_of(bill, self.center_x)
         self._classify_by_hand(line_x, self.el_x, "fixed", "direct", user=self.plain_controller)
         self.assertEqual(line_x.cmc_cost_element_id, self.el_x)
+
+    # the context key is settable over RPC: it must not switch the manual
+    # flag off for a user write (only the in-process sentinel does)
+    def test_client_context_cannot_skip_the_manual_flag(self):
+        bill = self._post_bill({str(self.center_x.id): 100})
+        line_x = self._line_of(bill, self.center_x)
+        line_x.with_user(self.controller).with_context(cmc_auto_classify=True).write({
+            "cmc_cost_element_id": self.el_x.id,
+            "cmc_behavior": "fixed",
+        })
+        self.assertTrue(line_x.cmc_classified_manually)
+        new = self.env["account.analytic.line"].with_user(self.controller).with_context(
+            cmc_auto_classify=True
+        ).create({
+            "name": "x", "account_id": self.center_y.id, "amount": -5.0,
+            "cmc_behavior": "fixed",
+        })
+        self.assertTrue(new.cmc_classified_manually)
+
+    def test_client_context_cannot_classify_an_excluded_line(self):
+        bill = self._post_bill({str(self.center_x.id): 100})
+        line_x = self._line_of(bill, self.center_x)
+        line_x.write({"cmc_excluded": True})  # system (superuser) flag
+        with self.assertRaises(UserError):
+            line_x.with_user(self.controller).with_context(
+                cmc_auto_classify=True
+            ).write({"cmc_behavior": "fixed"})

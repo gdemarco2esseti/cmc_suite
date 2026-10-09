@@ -283,3 +283,5 @@ to be assigned by the orchestrator.
 - CB-5 (ronin WP-09 SIMPLIFY): batch form of `cmc.rate._cmc_lookup` used by cmc_profitability `_cmc_unit_rates` and cmc_direct_costing decision rate search.
 - CB-6 (done, WP-06): computed runs locked except `_cmc_editable_when_done`.
 - CB-7: header-output guard + reset duplicated in `cmc.tlc.run.mixin` (cmc_target_lcc), `cmc.scenario.run.mixin` (cmc_scenario) and cmc.decision — move one `_cmc_output_fields` guard into cmc_base `cmc.run.mixin`.
+- CB-5, CB-7 (done, 048faf9; ronin: no sustainable objection).
+- CB-8 (open, technical debt — behaviour change, quote separately): nine runs still reset outputs by hand and have no draft write guard (abc, abb_run, abb_variance, profit_run, transfer_charge, full_costing, job_cost_run, evm_run, standard_variance, process_run). Traps: job_cost_run/evm_run/standard_variance/process_run override `_cmc_reset_values` WITHOUT super(); abb_variance TOTAL_FIELDS is a dict (tuple + dict TypeError). Done runs are already locked by CB-6, so no data risk today.

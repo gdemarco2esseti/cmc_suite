@@ -50,7 +50,11 @@ class CmcCockpit(models.TransientModel):
         for key, label, model, domain, action in defs:
             if model not in self.env:
                 continue  # capillary module not installed
-            count = self.env[model].search_count(domain)
+            Model = self.env[model]
+            if "company_id" in Model._fields:
+                # shared (no company) records count for everyone
+                domain = domain + [("company_id", "in", [False, self.env.company.id])]
+            count = Model.search_count(domain)
             out.append({
                 "key": key, "label": str(label), "count": count,
                 "state": "done" if count else "todo", "action": action,
@@ -84,17 +88,18 @@ class CmcCockpit(models.TransientModel):
 
         currency = self.env.company.currency_id
         AL = self.env["account.analytic.line"]
+        company_domain = [("company_id", "=", self.env.company.id)]
 
         # total booked cost (classified lines), as a magnitude
         cost_groups = AL._read_group(
-            [("cmc_behavior", "!=", False)], aggregates=["amount:sum"]
+            [("cmc_behavior", "!=", False)] + company_domain, aggregates=["amount:sum"]
         )
         total_cost = abs((cost_groups[0][0] or 0.0) if cost_groups else 0.0)
 
         all_steps = pipeline + methods
         runs_done = sum(s["count"] for s in all_steps if s["key"] in DONE_RUN_KEYS)
         products_costed = (
-            self.env["cmc.costing.result"].search_count([])
+            self.env["cmc.costing.result"].search_count(company_domain)
             if "cmc.costing.result" in self.env else 0
         )
         centers = next((s["count"] for s in pipeline if s["key"] == "centers"), 0)
@@ -112,7 +117,7 @@ class CmcCockpit(models.TransientModel):
 
         # cost-by-element chart (stored FK -> _read_group is fine)
         el_groups = AL._read_group(
-            [("cmc_cost_element_id", "!=", False)],
+            [("cmc_cost_element_id", "!=", False)] + company_domain,
             groupby=["cmc_cost_element_id"], aggregates=["amount:sum"],
         )
         chart = {

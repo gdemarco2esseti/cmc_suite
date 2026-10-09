@@ -55,6 +55,8 @@
                                    help="Part of the management accounting cost made of figurative cost elements (no general ledger counterpart)."/>
                             <field name="neutral_amount"
                                    help="General ledger expense items without any analytic distribution."/>
+                            <field name="coan_no_gl"
+                                   help="Analytic cost lines without a general ledger account and not figurative (e.g. manual Cost Entries): kept out of the Management Accounting Cost."/>
                         </group>
                         <group>
                             <field name="unexplained_amount" class="fw-bold"

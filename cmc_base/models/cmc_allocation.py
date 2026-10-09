@@ -29,10 +29,17 @@ class CmcAllocation(models.Model):
     amount = fields.Monetary(string="Amount to Allocate", required=True)
     date = fields.Date(required=True, default=fields.Date.context_today, help="Posting date of the result.")
     element_id = fields.Many2one("cmc.cost.element", string="Cost Element", check_company=True)
+    behavior = fields.Selection(
+        [("fixed", "Fixed"), ("variable", "Variable")],
+        string="Cost Behavior",
+        required=True,
+        default="fixed",
+        help="Behavior of the cost that is moved: the source loses it, the targets gain it.",
+    )
     line_ids = fields.One2many("cmc.allocation.line", "allocation_id")
     posted_line_ids = fields.One2many("account.analytic.line", "cmc_allocation_id", string="Posted Lines")
 
-    _cmc_input_fields = ("company_id", "source_account_id", "driver_id", "amount", "date", "element_id", "line_ids")
+    _cmc_input_fields = ("company_id", "source_account_id", "driver_id", "amount", "date", "element_id", "behavior", "line_ids")
     _cmc_result_fields = ("posted_line_ids",)
 
     @api.constrains("amount", "line_ids")
@@ -82,6 +89,7 @@ class CmcAllocation(models.Model):
                 "amount": amount,
                 center.plan_id._column_name(): center.id,
                 "cmc_cost_element_id": self.element_id.id,
+                "cmc_behavior": self.behavior,
                 "cmc_allocation_id": self.id,
             }
             for center, amount in postings

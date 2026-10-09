@@ -5,12 +5,15 @@ CONTRACT
   ``parent_of``; ACL group_cmc_user r/w/c, manager full): ``name``, ``company_id`` (required, default
   env.company), ``date_from``, ``date_to`` (inputs), ``currency_id`` related; result header figures written
   by Compute and cleared by reset (``_cmc_reset_values``): ``coge_amount``, ``coan_amount``,
-  ``figurative_amount``, ``neutral_amount``, ``unexplained_amount`` (Monetary).
+  ``figurative_amount``, ``neutral_amount``, ``unexplained_amount``, ``coan_no_gl`` (Monetary).
 - Compute (snapshot, AD-113; GL read through the cmc_account reader scope, AD-111; ``_read_group`` only):
   * COGE = sum(balance) of posted journal items of the company in the span on accounts of type ``expense``,
     ``expense_depreciation``, ``expense_direct_cost`` (credit notes net by sign);
-  * COAN = cost (-amount) of the company's cost-base analytic lines (``cmc_excluded`` False) in the span,
-    except lines whose ``general_account_id`` is an income account;
+  * COAN = cost (-amount) of the company's cost-base analytic lines (``cmc_excluded`` False) in the span
+    that HAVE a ``general_account_id`` (not an income account), plus the figurative lines;
+  * coan_no_gl (RN-002, ronin) = cost of the cost-base analytic lines with NO ``general_account_id`` and
+    a non-figurative element (valued timesheets, manual Cost Entries): management cost whose GL counterpart,
+    if any, is booked without analytic (salaries -> neutral). Shown, NOT in COAN and NOT in unexplained;
   * figurative = the part of COAN whose element has ``cmc_kind = 'figurative'`` (never in the GL);
   * neutral = GL expense balance in COGE whose journal item has NO analytic distribution (never reaches COAN);
   * unexplained = COGE - (COAN - figurative + neutral)   [closed system: COAN + excluded - figurative = COGE].
@@ -19,7 +22,9 @@ CONTRACT
 
 Hand-computed (span March 2031): bill 1000 on center 100% (COAN 1000), bill 200 without distribution
 (neutral 200), figurative analytic line 300 -> COGE 1200, COAN 1300, figurative 300, neutral 200,
-unexplained 0. + manual non-figurative analytic line 50 -> unexplained -50. + bill 400 distributed 50% ->
+unexplained 0. + manual non-figurative analytic line 50 (no GL) -> coan_no_gl 50, unexplained 0 (RN-002).
++ salaries 2000 in GL without analytic (neutral 2200) and 2000 of valued timesheet on the center (no GL) ->
+COGE 3200, COAN 1300, coan_no_gl 2000, unexplained 0 (RN-002). + bill 400 distributed 50% ->
 unexplained +200. + vendor refund 100 on center 100% -> COGE 1100, COAN 1200, unexplained 0.
 """
 
@@ -104,14 +109,40 @@ class TestCogeReconciliation(AccountTestInvoicingCommon):
         rec = self._compute()
         self.assertRecordValues(rec, [{
             "state": "done", "coge_amount": 1200.0, "coan_amount": 1300.0, "figurative_amount": 300.0,
-            "neutral_amount": 200.0, "unexplained_amount": 0.0,
+            "neutral_amount": 200.0, "unexplained_amount": 0.0, "coan_no_gl": 0.0,
         }])
 
-    def test_analytic_without_gl_is_unexplained(self):
-        # FIN-13: a non-figurative analytic cost with no GL counterpart is shown, not absorbed
+    def test_analytic_without_gl_goes_to_coan_no_gl(self):
+        # RN-002 / FIN-13: a manual Cost Entry without GL account is shown in coan_no_gl, not as unexplained
         self._analytic(50.0)
         rec = self._compute()
-        self.assertAlmostEqual(rec.unexplained_amount, -50.0)
+        self.assertAlmostEqual(rec.unexplained_amount, 0.0)
+        self.assertAlmostEqual(rec.coan_amount, 1300.0)
+        self.assertAlmostEqual(rec.coan_no_gl, 50.0)
+
+    def test_salaries_neutral_and_timesheet_cost_reconcile(self):
+        # RN-002: salaries in GL without analytic (neutral) + valued timesheets (analytic, no GL) -> unexplained 0
+        misc = self.company_data["default_journal_misc"]
+        self.env["account.move"].with_company(self.company).create({
+            "move_type": "entry", "date": DAY, "journal_id": misc.id, "line_ids": [
+                Command.create({"name": "salaries", "account_id": self.expense.id, "debit": 2000.0}),
+                Command.create({"name": "salaries", "account_id": self.company_data["default_journal_bank"].default_account_id.id,
+                                "credit": 2000.0}),
+            ],
+        }).action_post()
+        # why manual: hr_timesheet is not a dependency of cmc_account; a valued timesheet is an analytic
+        # cost line on the center with no general account, which is exactly what is created here
+        self.AL.with_company(self.company).create([
+            {"name": "timesheet", "account_id": self.center.id, "amount": -cost, "unit_amount": hours,
+             "date": DAY, "company_id": self.company.id}
+            for hours, cost in ((30.0, 1200.0), (20.0, 800.0))
+        ])
+        rec = self._compute()
+        self.assertAlmostEqual(rec.unexplained_amount, 0.0)
+        self.assertRecordValues(rec, [{
+            "coge_amount": 3200.0, "neutral_amount": 2200.0, "coan_amount": 1300.0, "figurative_amount": 300.0,
+            "coan_no_gl": 2000.0, "unexplained_amount": 0.0,
+        }])
 
     def test_partial_distribution_is_unexplained(self):
         # FIN-13: a GL cost carried to COAN only in part leaves a difference

@@ -281,3 +281,5 @@ to be assigned by the orchestrator.
 - CB-3: `account.analytic.line` create/write overrides now in 4 modules; allocation lock called twice (cmc_base + cmc_hr_timesheet) — candidate single guard entry point (ronin WP-01 watch-point).
 - CB-4 (ronin WP-09 RN-003, CONSOLIDA accepted): one shared "relocation posting" predicate in cmc_base (lines that only move cost: cmc_allocation_id, cmc_transfer_charge_id, future ones) used by the lock, responsibility summary, cost-function history, auto-classify/gate/manual marking in cmc_account, allocated-share guard. Merges CB-3. Until done, chargeback lines are mis-read by responsibility/auto-classify.
 - CB-5 (ronin WP-09 SIMPLIFY): batch form of `cmc.rate._cmc_lookup` used by cmc_profitability `_cmc_unit_rates` and cmc_direct_costing decision rate search.
+- CB-6 (done, WP-06): computed runs locked except `_cmc_editable_when_done`.
+- CB-7: header-output guard + reset duplicated in `cmc.tlc.run.mixin` (cmc_target_lcc), `cmc.scenario.run.mixin` (cmc_scenario) and cmc.decision — move one `_cmc_output_fields` guard into cmc_base `cmc.run.mixin`.

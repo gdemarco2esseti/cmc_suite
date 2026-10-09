@@ -98,3 +98,68 @@ def ols_fit(points):
     syy = sum((c - mean_c) ** 2 for _q, c in points)
     v = sxy / sxx
     return mean_c - v * mean_q, v, sxy**2 / (sxx * syy) if syy else 1.0
+
+
+def npv(rate, flows):
+    """Net present value of `flows` (index = period, flows[0] undiscounted); `rate` is a fraction."""
+    return sum(flow / (1.0 + rate) ** period for period, flow in enumerate(flows))
+
+
+class MultipleIrrError(ValueError):
+    """More than one sign change: several IRRs may exist and none is meaningful."""
+
+
+def irr(flows, precision=1e-9):
+    """Rate (fraction) with npv = 0, by bisection. ValueError when there is none to find."""
+    if not (any(f > 0 for f in flows) and any(f < 0 for f in flows)):
+        raise ValueError("The flows do not change sign: no IRR")
+    signs = [f > 0 for f in flows if f]
+    if sum(a != b for a, b in zip(signs, signs[1:], strict=False)) > 1:
+        raise MultipleIrrError("The flows change sign more than once: multiple IRR")
+    low, high = -0.99, 1.0
+    npv_low = npv(low, flows)
+    while npv_low * npv(high, flows) > 0:
+        high *= 2
+        if high > 1e6:
+            raise ValueError("No IRR found")
+    for _i in range(200):
+        mid = (low + high) / 2
+        npv_mid = npv(mid, flows)
+        if npv_low * npv_mid > 0:
+            low, npv_low = mid, npv_mid
+        else:
+            high = mid
+        if high - low < precision:
+            break
+    return (low + high) / 2
+
+
+def payback(flows):
+    """Periods (linear inside the period) at which the cumulative flow reaches 0, None if it never does."""
+    if not flows or flows[0] >= 0:  # no investment at t = 0: nothing to pay back
+        return None
+    cumulative = 0.0
+    for period, flow in enumerate(flows):
+        previous, cumulative = cumulative, cumulative + flow
+        if cumulative >= 0:
+            return period - 1 + (-previous / flow) if previous < 0 else float(period)
+    return None
+
+
+def discounted_payback(rate, flows):
+    return payback([flow / (1.0 + rate) ** period for period, flow in enumerate(flows)])
+
+
+def nominal_rate(real, inflation):
+    return (1.0 + real) * (1.0 + inflation) - 1.0
+
+
+def real_rate(nominal, inflation):
+    return (1.0 + nominal) / (1.0 + inflation) - 1.0
+
+
+def indifference_qty(fixed_a, var_a, fixed_b, var_b):
+    """Q where fixed_a + var_a * Q = fixed_b + var_b * Q; None for parallel structures."""
+    if var_a == var_b:
+        return None
+    return (fixed_b - fixed_a) / (var_a - var_b)

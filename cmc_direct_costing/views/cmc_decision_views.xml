@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_decision_list" model="ir.ui.view">
+        <field name="name">cmc.decision.list</field>
+        <field name="model">cmc.decision</field>
+        <field name="arch" type="xml">
+            <list string="Decisions">
+                <field name="date"/>
+                <field name="name"/>
+                <field name="decision_type"/>
+                <field name="differential"/>
+                <field name="verdict_label"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_decision_search" model="ir.ui.view">
+        <field name="name">cmc.decision.search</field>
+        <field name="model">cmc.decision</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <filter name="quote" string="Quotes" domain="[('decision_type', '=', 'special_order')]"/>
+                <filter name="make_or_buy" string="Make or Buy" domain="[('decision_type', '=', 'make_or_buy')]"/>
+                <filter name="mix" string="Product Mix" domain="[('decision_type', '=', 'mix')]"/>
+                <filter name="investment" string="Investments" domain="[('decision_type', '=', 'investment')]"/>
+                <group>
+                    <filter name="group_type" string="Type" context="{'group_by': 'decision_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_cmc_decision_form" model="ir.ui.view">
+        <field name="name">cmc.decision.form</field>
+        <field name="model">cmc.decision</field>
+        <field name="arch" type="xml">
+            <form string="Decision">
+                <header>
+                    <button name="action_compute" type="object" string="Compute" class="btn-primary"
+                            invisible="state == 'done'"/>
+                    <button name="action_reset_to_draft" type="object" string="Reset to Draft"
+                            invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" readonly="state == 'done'"/></h1>
+                    </div>
+                    <group>
+                        <group string="Inputs">
+                            <field name="decision_type" readonly="state == 'done'"/>
+                            <field name="date" readonly="state == 'done'"/>
+                            <field name="company_id" groups="base.group_multi_company" readonly="state == 'done'"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="volume" readonly="state == 'done'" invisible="decision_type != 'make_or_buy'"/>
+                            <field name="buy_price_unit" readonly="state == 'done'" invisible="decision_type != 'make_or_buy'"/>
+                            <field name="opportunity_cost" readonly="state == 'done'" invisible="decision_type != 'make_or_buy'"/>
+                            <field name="quote_price" readonly="state == 'done'" invisible="decision_type != 'special_order'"/>
+                            <field name="target_margin_pct" readonly="state == 'done'" invisible="decision_type != 'special_order'"/>
+                            <field name="capital_charge" readonly="state == 'done'" invisible="decision_type != 'special_order'"/>
+                            <field name="include_idle" readonly="state == 'done'" invisible="decision_type != 'special_order'"/>
+                            <field name="idle_burden_pct" readonly="state == 'done'" invisible="decision_type != 'special_order' or not include_idle"/>
+                            <field name="include_sustaining" readonly="state == 'done'" invisible="decision_type != 'special_order'"/>
+                            <field name="sustaining_burden_pct" readonly="state == 'done'" invisible="decision_type != 'special_order' or not include_sustaining"/>
+                            <field name="resource_available" readonly="state == 'done'" invisible="decision_type != 'mix'"/>
+                            <field name="fixed_cost" readonly="state == 'done'" invisible="decision_type != 'mix'"/>
+                            <field name="mix_ranking" readonly="state == 'done'" invisible="decision_type != 'mix'"/>
+                            <field name="discount_rate" readonly="state == 'done'" invisible="decision_type != 'investment'"/>
+                            <field name="inflation_rate" readonly="state == 'done'" invisible="decision_type != 'investment'"/>
+                            <field name="tax_rate" readonly="state == 'done'" invisible="decision_type != 'investment'"/>
+                            <field name="rate_basis" readonly="state == 'done'" invisible="decision_type != 'investment'"/>
+                            <field name="flows_basis" readonly="state == 'done'" invisible="decision_type != 'investment'"/>
+                        </group>
+                        <group string="Verdict" invisible="state == 'draft'">
+                            <field name="verdict_label" invisible="decision_type == 'mix'" class="fw-bold"/>
+                            <field name="current_total" invisible="decision_type in ('mix', 'investment', 'special_order')"/>
+                            <field name="alternative_total" invisible="decision_type in ('mix', 'investment', 'special_order')"/>
+                            <field name="differential" invisible="decision_type == 'mix'"/>
+                            <field name="has_indifference" invisible="1"/>
+                            <field name="indifference_qty" invisible="decision_type != 'make_or_buy' or not has_indifference"/>
+                            <field name="activity_cost" invisible="decision_type != 'special_order'"/>
+                            <field name="idle_burden" invisible="decision_type != 'special_order'"/>
+                            <field name="sustaining_burden" invisible="decision_type != 'special_order'"/>
+                            <field name="quote_cost" invisible="decision_type != 'special_order'"/>
+                            <field name="quote_margin" invisible="decision_type != 'special_order'"/>
+                            <field name="quote_margin_pct" invisible="decision_type != 'special_order'"/>
+                            <field name="mix_total_mc" invisible="decision_type != 'mix'"/>
+                            <field name="mix_total_throughput" invisible="decision_type != 'mix'"/>
+                            <field name="mix_result" invisible="decision_type != 'mix'"/>
+                            <field name="resource_used" invisible="decision_type != 'mix'"/>
+                            <field name="effective_rate" invisible="decision_type != 'investment'"/>
+                            <field name="npv" invisible="decision_type != 'investment'"/>
+                            <field name="has_irr" invisible="1"/>
+                            <field name="irr" invisible="decision_type != 'investment' or not has_irr"/>
+                            <field name="irr_note" invisible="decision_type != 'investment' or not irr_note"/>
+                            <field name="has_payback" invisible="1"/>
+                            <field name="payback_years" invisible="decision_type != 'investment' or not has_payback"/>
+                            <field name="has_discounted_payback" invisible="1"/>
+                            <field name="discounted_payback_years" invisible="decision_type != 'investment' or not has_discounted_payback"/>
+                            <field name="roi" invisible="decision_type != 'investment'"/>
+                            <field name="cbr" invisible="decision_type != 'investment'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Revenues &amp; Costs" name="lines"
+                              invisible="decision_type in ('mix', 'investment')">
+                            <field name="line_ids" readonly="state == 'done'">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="line_type"/>
+                                    <field name="element_id"/>
+                                    <field name="cost_behavior"/>
+                                    <field name="amount_current"/>
+                                    <field name="amount_alternative" column_invisible="parent.decision_type in ('drop_line', 'make_or_buy')"/>
+                                    <field name="avoidable"/>
+                                    <field name="sunk"/>
+                                    <field name="relevant"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Activities" name="activities"
+                              invisible="decision_type in ('mix', 'investment', 'drop_line')">
+                            <field name="activity_ids" readonly="state == 'done'">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="holder_model"/>
+                                    <field name="holder_id"/>
+                                    <field name="driver_id"/>
+                                    <field name="quantity"/>
+                                    <field name="side" column_invisible="parent.decision_type == 'special_order'"/>
+                                    <field name="rate_value"/>
+                                    <field name="amount"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Products" name="mix" invisible="decision_type != 'mix'">
+                            <field name="mix_line_ids" readonly="state == 'done'">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="product_id"/>
+                                    <field name="price_unit"/>
+                                    <field name="variable_unit"/>
+                                    <field name="material_unit"/>
+                                    <field name="resource_per_unit"/>
+                                    <field name="max_demand"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Mix Results" name="mix_results" invisible="decision_type != 'mix' or state == 'draft'">
+                            <field name="mix_result_ids">
+                                <list>
+                                    <field name="rank"/>
+                                    <field name="mix_line_id"/>
+                                    <field name="mc_unit"/>
+                                    <field name="mc_per_resource"/>
+                                    <field name="throughput_per_resource"/>
+                                    <field name="planned_qty"/>
+                                    <field name="resource_used"/>
+                                    <field name="contribution"/>
+                                    <field name="throughput"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Cash Flows" name="cash_flows" invisible="decision_type != 'investment'">
+                            <field name="cash_flow_ids" readonly="state == 'done'">
+                                <list editable="bottom">
+                                    <field name="year"/>
+                                    <field name="amount"/>
+                                    <field name="taxable"/>
+                                    <field name="depreciation"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Cash Flow Table" name="cash_flow_results" invisible="decision_type != 'investment' or state == 'draft'">
+                            <field name="cash_flow_result_ids">
+                                <list>
+                                    <field name="year"/>
+                                    <field name="amount"/>
+                                    <field name="tax"/>
+                                    <field name="net_flow"/>
+                                    <field name="discount_factor"/>
+                                    <field name="present_value"/>
+                                    <field name="cumulative_flow"/>
+                                    <field name="cumulative_pv"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_decision" model="ir.actions.act_window">
+        <field name="name">Decisions</field>
+        <field name="res_model">cmc.decision</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_cmc_decision" name="Decisions"
+              parent="menu_cmc_sec_direct"
+              action="action_cmc_decision" sequence="25"/>
+</odoo>

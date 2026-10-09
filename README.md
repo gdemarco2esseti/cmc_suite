@@ -8,7 +8,7 @@ accounting, timesheets and manufacturing.
 |---|---|
 | `cmc_base` | cost taxonomy, cost centers, Cost Entries, closing runs, capacity, cockpit, run lifecycle (`cmc.run.mixin`) |
 | `cmc_full_costing` | full cost per product (single/multiple base), figurative costs |
-| `cmc_direct_costing` | contribution margin, CVR / break-even, differential analysis |
+| `cmc_direct_costing` | contribution margin, CVR / break-even, decisions |
 | `cmc_account` | classification rules, manual overrides, Unclassified queue, bridge profiles hook |
 | `cmc_hr_timesheet` | timesheet hours as direct labour (MOD) |
 | `cmc_mrp` | manufacturing materials (MP) and labour; labour twin exclusion |

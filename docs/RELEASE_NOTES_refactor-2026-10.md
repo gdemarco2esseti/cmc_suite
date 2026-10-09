@@ -126,6 +126,10 @@ the runs of that period afterwards.
 - Master data used by computed results (products, partners, TDABC activities and resources, cost
   centers of a closing) cannot be deleted while those results exist.
 - Italian translations regenerated.
+- Record rules are no longer `noupdate`: a pre-migrate in each module clears the flag on
+  installed databases, so future fixes to a rule's domain reach them.
+- MRP labour twins rebuilt by core (repost, reversal) are no longer stored as manual
+  classifications.
 
 ## 9. Upgrade procedure
 

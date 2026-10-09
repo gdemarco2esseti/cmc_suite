@@ -14,6 +14,13 @@ CONTRACT
   sets nor clears it: ``create`` / ``write`` carrying ``cmc_is_relocation`` outside the run sentinel
   (``cmc_run_state`` = ``CMC_RUN_STATE``) -> UserError (AccessError included), whoever the caller
   (admin, CMC manager, ``sudo()``: same "no su bypass" rule as the allocation lock).
+- RN-001 (ronin, CB-4 review) invariant "link => flag": a line carrying a run link (``cmc_allocation_id``; in
+  cmc_profitability also ``cmc_transfer_charge_id``) ALWAYS has ``cmc_is_relocation`` True. Enforced twice:
+  (i) a DB CHECK constraint (``models.Constraint``, cmc_base for ``cmc_allocation_id``, cmc_profitability for
+  ``cmc_transfer_charge_id``): raw SQL breaking the invariant -> CheckViolation; (ii) ``create`` / ``write``
+  carrying a link field outside the run sentinel -> UserError, whoever the caller (admin, manager, ``sudo()``).
+  So an ordinary (user) line can never be linked to a run, and a run reset (which deletes its linked lines)
+  can never delete a user's line.
 - ``account.analytic.line._cmc_relocation_domain(include=True|False)`` (api.model) -> ``odoo.fields.Domain``:
   ``include=True`` selects the relocation lines, ``include=False`` the other ones. It is THE predicate:
   every consumer below composes it, none re-tests ``cmc_allocation_id`` / ``cmc_transfer_charge_id``.
@@ -25,8 +32,10 @@ CONTRACT
   4. cmc_account ``_cmc_auto_classify`` / ``_cmc_classification_gate`` / manual marking at create: skip
      relocation lines (they keep the classification posted by their run, ``cmc_classified_manually`` False);
   5. ``cmc.allocation._cmc_allocated_share``: the overhead base excludes relocation lines;
-  6. cmc_profitability ``cmc.transfer.charge._cmc_primary_cost``: the provider cost read excludes relocation
-     lines via the shared helper (RN-002 generalised: no chargeback reads any other run's relocation).
+  6. cmc_profitability ``cmc.transfer.charge._cmc_primary_cost``: (ronin RN-002, CB-4 review) the provider cost
+     read excludes ONLY chargeback postings (``cmc_transfer_charge_id`` set), NOT allocation postings: an
+     allocation charged INTO the provider is part of what it charges out (step-down), and a provider with
+     OUTGOING allocation postings in the span -> UserError (double relief). See the cmc_profitability file.
 Chargeback-side regressions: cmc_profitability/tests/test_cb4_chargeback_relocation.py.
 
 Fixture: source 1000 primary cost, allocation 1000 split 3:1 -> A -750, B -250, source +1000 (3 lines,
@@ -35,9 +44,12 @@ all relocation); the primary cost line is not.
 
 from datetime import date
 
+from psycopg2.errors import CheckViolation
+
 from odoo.exceptions import UserError
 from odoo.fields import Domain
 from odoo.tests.common import TransactionCase, new_test_user, tagged
+from odoo.tools import mute_logger
 
 DAY = date(2031, 3, 15)
 
@@ -155,3 +167,52 @@ class TestRelocationPredicate(TransactionCase):
         Line = self.AL.sudo()
         moved = dict(Line._read_group(self._scope() & Line._cmc_relocation_domain(include=True), ["account_id"], ["amount:sum"]))
         self.assertEqual(moved, {self.source: 1000.0, self.target_a: -750.0, self.target_b: -250.0})
+
+    # ---- RN-001: link => flag ---------------------------------------------------------
+
+    def _raw_sql_violates_check(self, query, params):
+        self.env.flush_all()
+        with self.assertRaises(CheckViolation), mute_logger("odoo.sql_db"), self.env.cr.savepoint():
+            self.env.cr.execute(query, params)
+
+    def test_rn001_db_check_link_implies_flag(self):
+        # RN-001: the DB itself refuses an allocation-linked line without the relocation flag
+        line = self.allocation.posted_line_ids[:1]
+        self._raw_sql_violates_check("UPDATE account_analytic_line SET cmc_is_relocation = false WHERE id = %s", [line.id])
+        self._raw_sql_violates_check("UPDATE account_analytic_line SET cmc_allocation_id = %s WHERE id = %s",
+                                     [self.allocation.id, self.primary.id])
+        self.env.invalidate_all()
+        self.assertTrue(line.cmc_is_relocation)
+        self.assertFalse(self.primary.cmc_allocation_id)
+
+    def test_rn001_create_with_allocation_link_refused(self):
+        # RN-001: only the allocation engine (sentinel) posts allocation-linked lines, no su bypass
+        vals = {"name": "fake", "account_id": self.target_a.id, "amount": -5.0, "date": DAY, "cmc_allocation_id": self.allocation.id}
+        with self.assertRaises(UserError):
+            self.AL.with_user(self.manager).create(dict(vals))
+        with self.assertRaises(UserError):
+            self.AL.create(dict(vals))
+        with self.assertRaises(UserError):
+            self.AL.sudo().create(dict(vals))
+        self.assertEqual(self.AL.search([("cmc_allocation_id", "=", self.allocation.id)]), self.allocation.posted_line_ids)
+
+    def test_rn001_link_ordinary_line_refused(self):
+        # RN-001: an ordinary line cannot be linked to a run (admin, sudo, manager)
+        mine = self.AL.with_user(self.manager).create({"name": "mine", "account_id": self.target_a.id, "amount": -5.0, "date": DAY})
+        with self.assertRaises(UserError):
+            mine.write({"cmc_allocation_id": self.allocation.id})
+        with self.assertRaises(UserError):
+            self.primary.write({"cmc_allocation_id": self.allocation.id})
+        with self.assertRaises(UserError):
+            self.primary.sudo().write({"cmc_allocation_id": self.allocation.id})
+        self.assertFalse((mine | self.primary).cmc_allocation_id)
+
+    def test_rn001_reset_never_deletes_user_line(self):
+        # RN-001: after a refused link attempt the reset deletes only the run postings, the user's cost survives
+        with self.assertRaises(UserError):
+            self.primary.sudo().write({"cmc_allocation_id": self.allocation.id})
+        posted = self.allocation.posted_line_ids
+        self.allocation.action_reset_to_draft()
+        self.assertFalse(posted.exists())
+        self.assertTrue(self.primary.exists())
+        self.assertAlmostEqual(self.primary.amount, -1000.0)

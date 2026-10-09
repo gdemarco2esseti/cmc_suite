@@ -5,3 +5,9 @@ from . import test_job_wip
 from . import test_job_security
 from . import test_job_report
 from . import test_job_performance
+from . import test_evm_estimate
+from . import test_evm_baseline
+from . import test_evm_change
+from . import test_evm_run
+from . import test_evm_security
+from . import test_evm_performance

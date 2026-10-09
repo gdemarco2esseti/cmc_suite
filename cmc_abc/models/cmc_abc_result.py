@@ -33,6 +33,15 @@ class CmcAbcActivityCost(models.Model):
     variable_rate = fields.Float(digits=(16, 6))
     charged_cost = fields.Monetary(help="Rate x used quantity: what the consumers are charged.")
     unused_cost = fields.Monetary(help="Unused practical capacity x fixed rate: reported, never charged.")
+    period = fields.Date(related="run_id.date_from", store=True, string="Period")
+    # snapshots of the activity attributes, frozen at compute (AD-106 inv.3)
+    va_class_value_id = fields.Many2one("cmc.attribute.value", string="Value-Added Class", index=True)
+    coq_value_id = fields.Many2one("cmc.attribute.value", string="Cost of Quality", index=True)
+    efficiency_value_id = fields.Many2one("cmc.attribute.value", string="Efficiency")
+    pareto_rank = fields.Integer(help="1 = costliest activity of the run (stage-1 cost).")
+    cost_share = fields.Float(digits=(16, 4), help="% of the total activity cost.")
+    cumulative_share = fields.Float(digits=(16, 4), help="% of the total activity cost up to this rank.")
+    pareto_class = fields.Selection([("A", "A (up to 80%)"), ("B", "B (up to 95%)"), ("C", "C")])
 
 
 class CmcAbcFlow(models.Model):
@@ -58,6 +67,7 @@ class CmcAbcFlow(models.Model):
         ],
         required=True, index=True,
     )
+    center_id = fields.Many2one("account.analytic.account", string="Center", index=True, help="Center the cost came from.")
     source_resource_id = fields.Many2one("cmc.abc.resource")
     cost_element_id = fields.Many2one("cmc.cost.element")
     source_activity_id = fields.Many2one("cmc.abc.activity", index=True)

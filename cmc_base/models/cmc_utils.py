@@ -1,4 +1,5 @@
 import calendar
+import math
 from datetime import timedelta
 
 from odoo.tools import float_round
@@ -163,3 +164,129 @@ def indifference_qty(fixed_a, var_a, fixed_b, var_b):
     if var_a == var_b:
         return None
     return (fixed_b - fixed_a) / (var_a - var_b)
+
+
+def equivalent_units(method, completed, ending_units, ending_pct, beginning_units=0.0, beginning_pct=0.0, spoiled_units=0.0, spoiled_pct=100.0):
+    """Equivalent units of ONE cost element (percentages 0..100). Weighted average merges the beginning WIP;
+    FIFO subtracts the work it already carries (V = P + alpha Rsf - beta Rsi)."""
+    if method not in ("weighted_average", "fifo"):
+        raise ValueError("unknown method %s" % method)
+    units = completed + ending_units * ending_pct / 100.0 + spoiled_units * spoiled_pct / 100.0
+    return units - beginning_units * beginning_pct / 100.0 if method == "fifo" else units
+
+
+def spoilage_split(spoiled_units, good_units, normal_pct):
+    """(normal, abnormal) spoiled units: normal up to `normal_pct` % of the good units."""
+    normal = min(spoiled_units, good_units * normal_pct / 100.0)
+    return normal, spoiled_units - normal
+
+
+def process_cost_report(method, units, elements, rounding=None):
+    """Cost of production report of one department: equivalent units, cost per EU (full precision) and
+    assignment per cost element. The spoiled units are inspected at the end of the process (100 %)."""
+    spoiled = units["normal_spoiled"] + units["abnormal_spoiled"]
+    accounted = units["completed"] + units["ending"] + spoiled
+    if abs(units["beginning"] + units["started"] - accounted) > 1e-6:
+        raise ValueError("units to account for differ from units accounted for")
+    result = {"elements": {}, "cost_to_account": 0.0, "transferred": 0.0, "ending": 0.0, "abnormal": 0.0, "normal_spoilage": 0.0}
+    for key, element in elements.items():
+        eu = equivalent_units(
+            method, units["completed"], units["ending"], element["ending_pct"], units["beginning"], element["beginning_pct"], spoiled
+        )
+        to_account = element["beginning_cost"] + element["period_cost"]
+        basis = to_account if method == "weighted_average" else element["period_cost"]
+        if abs(eu) < 1e-9:
+            if abs(basis) > 1e-9:
+                raise ValueError("element %s has cost but no equivalent units" % key)
+            cost_per_eu = 0.0
+        else:
+            cost_per_eu = basis / eu
+        ending = units["ending"] * element["ending_pct"] / 100.0 * cost_per_eu
+        abnormal = units["abnormal_spoiled"] * cost_per_eu
+        normal = units["normal_spoiled"] * cost_per_eu
+        parts = {"transferred": to_account - ending - abnormal, "ending": ending, "abnormal": abnormal}
+        if rounding:
+            to_account = float_round(to_account, precision_rounding=rounding)
+            parts = largest_remainder(to_account, parts, rounding)
+            normal = float_round(normal, precision_rounding=rounding)
+        result["elements"][key] = {"eu": eu, "cost_per_eu": cost_per_eu, "cost_to_account": to_account, "normal_spoilage": normal, **parts}
+        for name in ("cost_to_account", "normal_spoilage", *parts):
+            result[name] += result["elements"][key][name]
+    return result
+
+
+def simple_payback(one_time_cost, annual_saving):
+    """Years to recover the investment; 0.0 when there is no saving to recover it with."""
+    return one_time_cost / annual_saving if annual_saving > 0 else 0.0
+
+
+def _check_three_points(o, m, p):
+    if not o <= m <= p:
+        raise ValueError("Three-point estimate needs optimistic <= most likely <= pessimistic")
+
+
+def pert_estimate(o, m, p):
+    """(expected, sigma) of the PERT beta approximation."""
+    _check_three_points(o, m, p)
+    return (o + 4 * m + p) / 6.0, (p - o) / 6.0
+
+
+def triangular_estimate(o, m, p):
+    _check_three_points(o, m, p)
+    return (o + m + p) / 3.0
+
+
+def pert_total(estimates, z=2.0):
+    """(expected, sigma, low, high) of independent (o, m, p) estimates: sigma = root sum of squares."""
+    pairs = [pert_estimate(*e) for e in estimates]
+    expected = sum(e for e, _s in pairs)
+    sigma = math.sqrt(sum(s * s for _e, s in pairs))
+    return expected, sigma, expected - z * sigma, expected + z * sigma
+
+
+def emv(probability, impact):
+    """Expected monetary value; `probability` is a fraction, a negative impact is an opportunity."""
+    if not 0 <= probability <= 1:
+        raise ValueError("A probability lies between 0 and 1")
+    return probability * impact
+
+
+def contingency_reserve(risks):
+    return sum(emv(probability, impact) for probability, impact in risks)
+
+
+def evm_indices(bac, pv, ev, ac):
+    """Earned value indices and EAC variants; an undefined ratio, and everything built on it, is None."""
+    cpi = ev / ac if ac else None
+    spi = ev / pv if pv else None
+    eac = bac / cpi if cpi else None
+    combined = cpi * spi if cpi and spi else None
+    return {
+        "cv": ev - ac,
+        "sv": ev - pv,
+        "cpi": cpi,
+        "spi": spi,
+        "eac": eac,
+        "eac_atypical": ac + (bac - ev),
+        "eac_composite": ac + (bac - ev) / combined if combined else None,
+        "etc": eac - ac if eac is not None else None,
+        "vac": bac - eac if eac is not None else None,
+        "tcpi": (bac - ev) / (bac - ac) if bac != ac else None,
+    }
+
+
+def control_breaches(values, lower, upper):
+    """Indexes of the values strictly outside [lower, upper]."""
+    return [i for i, value in enumerate(values) if value < lower or value > upper]
+
+
+def rule_of_seven(values, center=0.0, run=7):
+    """True when `run` consecutive values sit strictly on the same side of `center`."""
+    streak, side = 0, 0
+    for value in values:
+        current = (value > center) - (value < center)
+        streak = streak + 1 if current and current == side else (1 if current else 0)
+        side = current
+        if streak >= run:
+            return True
+    return False

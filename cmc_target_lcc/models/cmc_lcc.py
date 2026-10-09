@@ -57,8 +57,7 @@ class CmcLccModel(models.Model):
     residual_unit_cost = fields.Float(readonly=True, copy=False, digits=(16, 4))
     incremental_npv = fields.Monetary(readonly=True, copy=False)
 
-    _cmc_input_fields = (
-        "name", "company_id", "product_id", "partner_id", "start_year", "horizon_years", "discount_rate", "inflation_rate",
+    _cmc_input_fields = ( "company_id", "product_id", "partner_id", "start_year", "horizon_years", "discount_rate", "inflation_rate",
         "rate_basis", "flows_basis", "rate_date", "previous_id", "baseline_id", "year_ids", "cost_line_ids",
     )
     _cmc_result_fields = ("year_result_ids", "phase_result_ids")

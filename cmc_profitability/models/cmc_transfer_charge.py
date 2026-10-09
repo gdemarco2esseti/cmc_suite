@@ -98,23 +98,34 @@ class CmcTransferCharge(models.Model):
 
     def _cmc_primary_cost(self, variable_only=False):
         self.ensure_one()
-        Line = self.env["account.analytic.line"]
-        # the shared helper reads the certified (sudo) company scope; relocation lines are never primary cost
+        # the shared helper reads the certified (sudo) company scope; chargeback lines never count, allocations
+        # received do (step-down: they are charged out too)
         costs = self.provider_id._cmc_cost_groups(
             self.date_from, self.date_to, behavior="variable" if variable_only else False, company=self.company_id,
-            extra_domain=Line._cmc_relocation_domain(include=False),
+            extra_domain=Domain("cmc_transfer_charge_id", "=", False),
         )
         return costs.get(self.provider_id.id, 0.0)
 
+    def _cmc_check_no_outgoing_allocation(self):
+        provider = self.provider_id
+        # why sudo: certified company scope, whatever the caller's line rules show
+        outgoing = self.env["account.analytic.line"].sudo().search_count([
+            (provider.plan_id._column_name(), "=", provider.id), ("cmc_allocation_id", "!=", False), ("amount", ">", 0),
+            ("company_id", "in", [False, self.company_id.id]), ("date", ">=", self.date_from), ("date", "<=", self.date_to),
+        ], limit=1)
+        if outgoing:
+            raise UserError(self.env._("The provider already allocated its cost in the period: charging it back again would relieve it twice."))
+
     def _cmc_compute(self):
         self.ensure_one()
+        self._cmc_check_no_outgoing_allocation()
         lines = self.line_ids
         units = sum(lines.mapped("quantity"))
         if units <= 0:
             raise UserError(self.env._("The receivers consume no service unit: there is nothing to charge."))
         company, rounding = self.company_id, self.currency_id.rounding
         provider = self.provider_id
-        # RN-002: primary cost only, an earlier chargeback of the same span must not relieve the provider twice
+        # RN-002: an earlier chargeback of the same span must not relieve the provider twice
         total, variable = (float_round(self._cmc_primary_cost(variable_only), precision_rounding=rounding) for variable_only in (False, True))
         if total <= 0:
             raise UserError(self.env._("The provider has no cost in the period: there is nothing to charge."))

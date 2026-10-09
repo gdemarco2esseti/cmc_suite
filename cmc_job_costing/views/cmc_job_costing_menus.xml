@@ -19,4 +19,24 @@
               parent="menu_cmc_sec_job_costing"
               action="action_cmc_job_rate"
               sequence="30"/>
+    <menuitem id="menu_cmc_evm_baseline"
+              name="Baselines"
+              parent="menu_cmc_sec_job_costing"
+              action="action_cmc_evm_baseline"
+              sequence="40"/>
+    <menuitem id="menu_cmc_evm_change_request"
+              name="Change Requests"
+              parent="menu_cmc_sec_job_costing"
+              action="action_cmc_evm_change_request"
+              sequence="50"/>
+    <menuitem id="menu_cmc_evm_run"
+              name="EVM Status Reports"
+              parent="menu_cmc_sec_job_costing"
+              action="action_cmc_evm_run"
+              sequence="60"/>
+    <menuitem id="menu_cmc_evm_curve"
+              name="S-Curve"
+              parent="menu_cmc_sec_job_costing"
+              action="action_cmc_evm_curve_run"
+              sequence="70"/>
 </odoo>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_process_run_list" model="ir.ui.view">
+        <field name="name">cmc.process.run.list</field>
+        <field name="model">cmc.process.run</field>
+        <field name="arch" type="xml">
+            <list string="Process Runs">
+                <field name="name"/>
+                <field name="center_id"/>
+                <field name="product_id"/>
+                <field name="date_from"/>
+                <field name="method" optional="show"/>
+                <field name="cost_to_account" optional="show"/>
+                <field name="transferred_out_cost" optional="show"/>
+                <field name="ending_wip_cost" optional="show"/>
+                <field name="abnormal_loss" optional="show"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_process_run_form" model="ir.ui.view">
+        <field name="name">cmc.process.run.form</field>
+        <field name="model">cmc.process.run</field>
+        <field name="arch" type="xml">
+            <form string="Process Run">
+                <header>
+                    <button name="action_cmc_prefill" type="object" string="Prefill from MRP" invisible="state == 'done'"/>
+                    <button name="action_compute" type="object" string="Compute" class="oe_highlight" invisible="state == 'done'"/>
+                    <button name="action_reset_to_draft" type="object" string="Reset to Draft" invisible="state != 'done'"
+                            confirm="Resetting deletes the computed results. Continue?"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" readonly="state == 'done'"/></h1>
+                    </div>
+                    <group>
+                        <group string="Department and period">
+                            <field name="center_id" readonly="state == 'done'"/>
+                            <field name="product_id" readonly="state == 'done'"/>
+                            <field name="date_from" readonly="state == 'done'"/>
+                            <field name="date_to" readonly="state == 'done'"/>
+                            <field name="method" readonly="state == 'done'"/>
+                            <field name="company_id" readonly="state == 'done'" groups="base.group_multi_company"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group string="Chaining">
+                            <field name="previous_run_id" readonly="state == 'done'"/>
+                            <field name="previous_dept_run_id" readonly="state == 'done'"/>
+                            <field name="closing_run_id" readonly="state == 'done'"/>
+                            <field name="normal_spoilage_pct" readonly="state == 'done'"/>
+                        </group>
+                    </group>
+                    <group string="Quantity schedule">
+                        <group string="Units to account for">
+                            <field name="beginning_units" readonly="state == 'done'"/>
+                            <field name="units_started" readonly="state == 'done'"/>
+                        </group>
+                        <group string="Units accounted for">
+                            <field name="units_completed" readonly="state == 'done'"/>
+                            <field name="units_spoiled" readonly="state == 'done'"/>
+                            <field name="ending_units" readonly="state == 'done'"/>
+                            <field name="units_normal_spoiled" invisible="state != 'done'"/>
+                            <field name="units_abnormal_spoiled" invisible="state != 'done'"/>
+                        </group>
+                    </group>
+                    <group string="Work in progress">
+                        <group string="Beginning">
+                            <field name="beginning_pct_materials" readonly="state == 'done'"/>
+                            <field name="beginning_pct_conversion" readonly="state == 'done'"/>
+                            <field name="beginning_cost_transferred_in" readonly="state == 'done'"/>
+                            <field name="beginning_cost_materials" readonly="state == 'done'"/>
+                            <field name="beginning_cost_conversion" readonly="state == 'done'"/>
+                        </group>
+                        <group string="Ending">
+                            <field name="ending_pct_materials" readonly="state == 'done'"/>
+                            <field name="ending_pct_conversion" readonly="state == 'done'"/>
+                        </group>
+                    </group>
+                    <group string="Cost assignment" invisible="state != 'done'">
+                        <group>
+                            <field name="cost_to_account"/>
+                            <field name="transferred_out_cost"/>
+                            <field name="normal_spoilage_cost"/>
+                            <field name="unit_cost_transferred"/>
+                        </group>
+                        <group>
+                            <field name="ending_wip_cost"/>
+                            <field name="abnormal_loss"/>
+                            <field name="control_difference"/>
+                        </group>
+                    </group>
+                    <field name="line_ids" readonly="1" invisible="state != 'done'">
+                        <list create="false" edit="false">
+                            <field name="element"/>
+                            <field name="beginning_cost" sum="Beginning"/>
+                            <field name="period_cost" sum="Period"/>
+                            <field name="cost_to_account" sum="To account for"/>
+                            <field name="equivalent_units"/>
+                            <field name="cost_per_eu"/>
+                            <field name="transferred_cost" sum="Transferred"/>
+                            <field name="ending_cost" sum="Ending WIP"/>
+                            <field name="abnormal_cost" sum="Abnormal"/>
+                            <field name="normal_spoilage_cost" optional="hide"/>
+                            <field name="currency_id" column_invisible="1"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_process_run" model="ir.actions.act_window">
+        <field name="name">Process Runs</field>
+        <field name="res_model">cmc.process.run</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a process run</p>
+            <p>Cost of production of a department and month: equivalent units, cost per equivalent unit, transferred-out cost and ending WIP.</p>
+        </field>
+    </record>
+</odoo>

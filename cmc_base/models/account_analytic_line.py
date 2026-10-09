@@ -120,6 +120,11 @@ class AccountAnalyticLine(models.Model):
         "passed via the 'cmc_cost_object' context key.",
     )
 
+    _cmc_allocation_requires_relocation = models.Constraint(
+        "CHECK(cmc_allocation_id IS NULL OR cmc_is_relocation IS TRUE)",
+        "A line linked to an allocation run must be a relocation posting.",
+    )
+
     @api.depends("amount")
     def _compute_cmc_cost_amount(self):
         for line in self:
@@ -303,6 +308,11 @@ class AccountAnalyticLine(models.Model):
             self.env.add_to_compute(rows._fields[fname], rows)
 
     @api.model
+    def _cmc_relocation_link_fields(self):
+        # why a hook: modules posting relocations extend the run-link fields the lock refuses
+        return ("cmc_allocation_id",)
+
+    @api.model
     def _cmc_relocation_domain(self, include=True):
         return Domain("cmc_is_relocation", "=", include)
 
@@ -311,7 +321,8 @@ class AccountAnalyticLine(models.Model):
         # only compute/reset (the sentinel) may touch it or set the flag, whoever calls
         if self.env.context.get("cmc_run_state") is CMC_RUN_STATE:
             return
-        if any("cmc_is_relocation" in vals for vals in vals_list) or self.filtered("cmc_is_relocation"):
+        guarded = {"cmc_is_relocation", *self._cmc_relocation_link_fields()}
+        if any(guarded & vals.keys() for vals in vals_list) or self.filtered("cmc_is_relocation"):
             raise UserError(self.env._("Lines posted by a run change only by computing or resetting it."))
 
     @api.model_create_multi

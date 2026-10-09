@@ -98,8 +98,7 @@ class CmcDecision(models.Model):
     roi = fields.Float(readonly=True, copy=False, digits=(16, 6))
     cbr = fields.Float(readonly=True, copy=False, digits=(16, 4))
 
-    _cmc_input_fields = (
-        "name", "company_id", "date", "decision_type", "line_ids", "activity_ids", "mix_line_ids", "cash_flow_ids",
+    _cmc_input_fields = ( "company_id", "date", "decision_type", "line_ids", "activity_ids", "mix_line_ids", "cash_flow_ids",
         "volume", "buy_price_unit", "opportunity_cost", "quote_price", "target_margin_pct", "capital_charge",
         "include_idle", "include_sustaining", "idle_burden_pct", "sustaining_burden_pct", "resource_available",
         "fixed_cost", "mix_ranking", "discount_rate", "inflation_rate", "tax_rate", "rate_basis", "flows_basis",

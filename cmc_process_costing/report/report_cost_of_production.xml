@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_cost_of_production" model="ir.actions.report">
+        <field name="name">Cost of Production Report</field>
+        <field name="model">cmc.process.run</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">cmc_process_costing.report_cost_of_production</field>
+        <field name="report_file">cmc_process_costing.report_cost_of_production</field>
+        <field name="print_report_name">'Cost of production - %s' % object.name</field>
+        <field name="binding_model_id" ref="model_cmc_process_run"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_cost_of_production">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="run">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Cost of Production Report</h2>
+                        <p>
+                            <strong><span t-field="run.center_id"/></strong> - <span t-field="run.product_id"/>
+                            (<span t-field="run.date_from"/> - <span t-field="run.date_to"/>, <span t-field="run.method"/>)
+                        </p>
+                        <h4>Quantity schedule</h4>
+                        <table class="table table-sm">
+                            <tbody>
+                                <tr><td>Beginning WIP</td><td class="text-end"><span t-field="run.beginning_units"/></td></tr>
+                                <tr><td>Started / transferred in</td><td class="text-end"><span t-field="run.units_started"/></td></tr>
+                                <tr><td>Completed and transferred out</td><td class="text-end"><span t-field="run.units_completed"/></td></tr>
+                                <tr><td>Normal spoilage</td><td class="text-end"><span t-field="run.units_normal_spoiled"/></td></tr>
+                                <tr><td>Abnormal spoilage</td><td class="text-end"><span t-field="run.units_abnormal_spoiled"/></td></tr>
+                                <tr><td>Ending WIP</td><td class="text-end"><span t-field="run.ending_units"/></td></tr>
+                            </tbody>
+                        </table>
+                        <h4>Equivalent units and cost per equivalent unit</h4>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Element</th><th class="text-end">Beginning cost</th><th class="text-end">Period cost</th>
+                                    <th class="text-end">Equivalent units</th><th class="text-end">Cost per EU</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="run.line_ids" t-as="line">
+                                    <td><span t-field="line.element"/></td>
+                                    <td class="text-end"><span t-field="line.beginning_cost"/></td>
+                                    <td class="text-end"><span t-field="line.period_cost"/></td>
+                                    <td class="text-end"><span t-field="line.equivalent_units"/></td>
+                                    <td class="text-end"><span t-esc="'%.4f' % line.cost_per_eu"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h4>Cost assignment</h4>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Element</th><th class="text-end">To account for</th><th class="text-end">Transferred out</th>
+                                    <th class="text-end">Ending WIP</th><th class="text-end">Abnormal loss</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="run.line_ids" t-as="line">
+                                    <td><span t-field="line.element"/></td>
+                                    <td class="text-end"><span t-field="line.cost_to_account"/></td>
+                                    <td class="text-end"><span t-field="line.transferred_cost"/></td>
+                                    <td class="text-end"><span t-field="line.ending_cost"/></td>
+                                    <td class="text-end"><span t-field="line.abnormal_cost"/></td>
+                                </tr>
+                                <tr class="fw-bold">
+                                    <td>Total</td>
+                                    <td class="text-end"><span t-field="run.cost_to_account"/></td>
+                                    <td class="text-end"><span t-field="run.transferred_out_cost"/></td>
+                                    <td class="text-end"><span t-field="run.ending_wip_cost"/></td>
+                                    <td class="text-end"><span t-field="run.abnormal_loss"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>
+                            Normal spoilage included in the transferred-out cost: <span t-field="run.normal_spoilage_cost"/>.
+                            Unit cost transferred: <span t-esc="'%.4f' % run.unit_cost_transferred"/>.
+                            Control total (to account for - accounted for): <span t-field="run.control_difference"/>.
+                        </p>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

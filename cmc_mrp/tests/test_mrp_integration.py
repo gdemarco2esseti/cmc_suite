@@ -113,7 +113,8 @@ class TestMrpBridgeIntegration(TransactionCase):
         categ = self._category("DATE")
         mo = self._mo("date", categ)
         mo.action_confirm()
-        last_month = fields.Datetime.now() - relativedelta(months=1)
+        # why noon: near midnight the UTC date and the user-tz date of the order differ by a day
+        last_month = (fields.Datetime.now() - relativedelta(months=1)).replace(hour=12, minute=0, second=0)
         # date_start too: date_finished is a stored compute keyed on date_start,
         # and mrp recomputes it while the order is still not 'done'.
         mo.write({"date_start": last_month, "date_finished": last_month})

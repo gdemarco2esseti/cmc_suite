@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_evm_status" model="ir.actions.report">
+        <field name="name">EVM Status Report</field>
+        <field name="model">cmc.evm.run</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">cmc_job_costing.report_evm_status</field>
+        <field name="report_file">cmc_job_costing.report_evm_status</field>
+        <field name="print_report_name">'EVM status - %s' % object.name</field>
+        <field name="binding_model_id" ref="model_cmc_evm_run"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_evm_status">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="run">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2 t-field="run.name"/>
+                        <p class="text-muted">
+                            <span t-field="run.project_id"/> - <span t-field="run.baseline_id"/> - <span t-field="run.status_date"/>
+                        </p>
+                        <table class="table table-sm">
+                            <thead><tr><th>Index</th><th class="text-end">Value</th><th>Forecast</th><th class="text-end">Value</th></tr></thead>
+                            <tbody>
+                                <tr><td>BAC</td><td class="text-end"><span t-field="run.bac"/></td><td>EAC (BAC / CPI)</td><td class="text-end"><span t-field="run.eac"/></td></tr>
+                                <tr><td>PV</td><td class="text-end"><span t-field="run.pv"/></td><td>EAC (atypical)</td><td class="text-end"><span t-field="run.eac_atypical"/></td></tr>
+                                <tr><td>EV</td><td class="text-end"><span t-field="run.ev"/></td><td>EAC (composite)</td><td class="text-end"><span t-field="run.eac_composite"/></td></tr>
+                                <tr><td>AC</td><td class="text-end"><span t-field="run.ac"/></td><td>ETC</td><td class="text-end"><span t-field="run.etc"/></td></tr>
+                                <tr><td>CV</td><td class="text-end"><span t-field="run.cv"/></td><td>VAC</td><td class="text-end"><span t-field="run.vac"/></td></tr>
+                                <tr><td>SV</td><td class="text-end"><span t-field="run.sv"/></td><td>TCPI</td><td class="text-end"><span t-field="run.tcpi"/></td></tr>
+                                <tr><td>CPI</td><td class="text-end"><span t-field="run.cpi"/></td><td>Out of control months</td><td class="text-end"><span t-field="run.out_of_control_count"/></td></tr>
+                                <tr><td>SPI</td><td class="text-end"><span t-field="run.spi"/></td><td>Rule of seven</td><td class="text-end"><span t-field="run.rule_of_seven"/></td></tr>
+                            </tbody>
+                        </table>
+                        <h4>Monthly curve</h4>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Month</th>
+                                    <th class="text-end">PV</th><th class="text-end">EV</th><th class="text-end">AC</th><th class="text-end">CV</th>
+                                    <th class="text-end">PV cum.</th><th class="text-end">EV cum.</th><th class="text-end">AC cum.</th>
+                                    <th>Flag</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="run.curve_ids" t-as="row" t-att-class="'text-muted' if row.is_forecast else ''">
+                                    <td><span t-field="row.date" t-options='{"format": "MMM yyyy"}'/></td>
+                                    <td class="text-end"><span t-field="row.pv"/></td>
+                                    <td class="text-end"><span t-field="row.ev"/></td>
+                                    <td class="text-end"><span t-field="row.ac"/></td>
+                                    <td class="text-end"><span t-field="row.cv"/></td>
+                                    <td class="text-end"><span t-field="row.pv_cumulative"/></td>
+                                    <td class="text-end"><span t-field="row.ev_cumulative"/></td>
+                                    <td class="text-end"><span t-field="row.ac_cumulative"/></td>
+                                    <td><t t-if="row.out_of_control">Out of control</t><t t-elif="row.is_forecast">Forecast</t></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

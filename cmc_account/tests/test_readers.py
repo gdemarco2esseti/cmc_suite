@@ -30,6 +30,11 @@ class TestCmcReaders(AccountTestInvoicingCommon):
     """AD-111: revenue = -balance of posted income items; the GL is the truth."""
 
     @classmethod
+    def get_default_groups(cls):
+        # why: AccountTestInvoicingCommon runs as `accountman`; the readers/feeders are CMC-gated
+        return super().get_default_groups() | cls.env.ref("cmc_base.group_cmc_manager")
+
+    @classmethod
     def setUpClass(cls):
         super().setUpClass()
         cls.AML = cls.env["account.move.line"]

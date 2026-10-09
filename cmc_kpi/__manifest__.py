@@ -8,7 +8,16 @@
     "author": "EsseTech by DueEsseTi Srl",
     # why stock: the KPI-02 feeders (scrap, on-time delivery) read stock.scrap / stock.picking
     "depends": ["cmc_budget", "cmc_fin_analysis", "stock"],
-    "data": [],
+    "data": [
+        "security/cmc_kpi_security.xml",
+        "security/ir.model.access.csv",
+        "data/cmc_kpi_data.xml",
+        "views/cmc_kpi_views.xml",
+        "views/cmc_kpi_scorecard_views.xml",
+        "views/cmc_kpi_run_views.xml",
+        "report/cmc_kpi_pack_report.xml",
+        "views/cmc_kpi_menus.xml",
+    ],
     "installable": True,
     "auto_install": False,
 }

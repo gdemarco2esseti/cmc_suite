@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Values: traffic lights and trend -->
+    <record id="view_cmc_kpi_value_list" model="ir.ui.view">
+        <field name="name">cmc.kpi.value.list</field>
+        <field name="model">cmc.kpi.value</field>
+        <field name="arch" type="xml">
+            <list create="false" edit="false" delete="false" decoration-muted="not computable">
+                <field name="run_id" optional="hide"/>
+                <field name="date"/>
+                <field name="perspective" optional="show"/>
+                <field name="name"/>
+                <field name="value" invisible="not computable"/>
+                <field name="target"/>
+                <field name="gap_pct" invisible="not computable"/>
+                <field name="status" widget="badge"
+                       decoration-success="status == 'green'" decoration-warning="status == 'amber'"
+                       decoration-danger="status == 'red'" decoration-muted="status == 'none'"/>
+                <field name="score" invisible="not computable" optional="show"/>
+                <field name="trend" widget="badge"
+                       decoration-success="trend == 'improving'" decoration-danger="trend == 'worsening'"
+                       decoration-muted="trend in ('stable', 'none')"/>
+                <field name="previous_value" invisible="trend == 'none'" optional="hide"/>
+                <field name="responsibility_id" optional="hide"/>
+                <field name="computable" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_kpi_value_graph" model="ir.ui.view">
+        <field name="name">cmc.kpi.value.graph</field>
+        <field name="model">cmc.kpi.value</field>
+        <field name="arch" type="xml">
+            <graph type="line">
+                <field name="date" interval="month"/>
+                <field name="kpi_id"/>
+                <field name="value" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_cmc_kpi_value_pivot" model="ir.ui.view">
+        <field name="name">cmc.kpi.value.pivot</field>
+        <field name="model">cmc.kpi.value</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="perspective" type="row"/>
+                <field name="kpi_id" type="row"/>
+                <field name="date" interval="month" type="col"/>
+                <field name="value" type="measure"/>
+                <field name="score" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_cmc_kpi_value_search" model="ir.ui.view">
+        <field name="name">cmc.kpi.value.search</field>
+        <field name="model">cmc.kpi.value</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="run_id"/>
+                <field name="kpi_id"/>
+                <field name="responsibility_id"/>
+                <filter name="red" string="Off target" domain="[('status', '=', 'red')]"/>
+                <filter name="amber" string="Attention" domain="[('status', '=', 'amber')]"/>
+                <filter name="not_computable" string="Not computable" domain="[('computable', '=', False)]"/>
+                <group>
+                    <filter name="group_perspective" string="Perspective" context="{'group_by': 'perspective'}"/>
+                    <filter name="group_status" string="Status" context="{'group_by': 'status'}"/>
+                    <filter name="group_kpi" string="KPI" context="{'group_by': 'kpi_id'}"/>
+                    <filter name="group_month" string="Month" context="{'group_by': 'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cmc_kpi_value" model="ir.actions.act_window">
+        <field name="name">KPI Measurements</field>
+        <field name="res_model">cmc.kpi.value</field>
+        <field name="view_mode">list,graph,pivot</field>
+    </record>
+
+    <!-- Runs -->
+    <record id="view_cmc_kpi_run_list" model="ir.ui.view">
+        <field name="name">cmc.kpi.run.list</field>
+        <field name="model">cmc.kpi.run</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="version_id" optional="show"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_kpi_run_form" model="ir.ui.view">
+        <field name="name">cmc.kpi.run.form</field>
+        <field name="model">cmc.kpi.run</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_compute" string="Compute" type="object" class="oe_highlight" invisible="state == 'done'"/>
+                    <button name="action_reset_to_draft" string="Reset to Draft" type="object" invisible="state != 'done'"
+                            confirm="Resetting deletes the computed results. Continue?"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box" invisible="state != 'done'">
+                        <button name="%(action_cmc_kpi_value)d" type="action" class="oe_stat_button" icon="fa-tachometer"
+                                string="Measurements" context="{'search_default_run_id': id}"/>
+                        <button name="%(action_cmc_kpi_scorecard_result)d" type="action" class="oe_stat_button" icon="fa-balance-scale"
+                                string="Scorecards" context="{'search_default_run_id': id}"/>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date_from" readonly="state == 'done'"/>
+                            <field name="date_to" readonly="state == 'done'"/>
+                            <field name="version_id" readonly="state == 'done'" domain="[('company_id', '=', company_id)]"/>
+                        </group>
+                        <group>
+                            <field name="fin_analysis_id" readonly="state == 'done'" domain="[('company_id', '=', company_id), ('state', '=', 'done')]"/>
+                            <field name="bva_version_id" readonly="state == 'done'"/>
+                            <field name="company_id" readonly="state == 'done'" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="scope" string="Scope">
+                            <group>
+                                <field name="kpi_ids" widget="many2many_tags" readonly="state == 'done'"/>
+                                <field name="scorecard_ids" widget="many2many_tags" readonly="state == 'done'"/>
+                            </group>
+                        </page>
+                        <page name="values" string="Measurements" invisible="state != 'done'">
+                            <field name="value_ids" mode="list">
+                                <list decoration-muted="not computable">
+                                    <field name="date"/>
+                                    <field name="perspective"/>
+                                    <field name="name"/>
+                                    <field name="value" invisible="not computable"/>
+                                    <field name="target"/>
+                                    <field name="status" widget="badge"
+                                           decoration-success="status == 'green'" decoration-warning="status == 'amber'"
+                                           decoration-danger="status == 'red'" decoration-muted="status == 'none'"/>
+                                    <field name="trend" widget="badge"
+                                           decoration-success="trend == 'improving'" decoration-danger="trend == 'worsening'"
+                                           decoration-muted="trend in ('stable', 'none')"/>
+                                    <field name="computable" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cmc_kpi_run_search" model="ir.ui.view">
+        <field name="name">cmc.kpi.run.search</field>
+        <field name="model">cmc.kpi.run</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <filter name="computed" string="Computed" domain="[('state', '=', 'done')]"/>
+                <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cmc_kpi_run" model="ir.actions.act_window">
+        <field name="name">KPI Runs</field>
+        <field name="res_model">cmc.kpi.run</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

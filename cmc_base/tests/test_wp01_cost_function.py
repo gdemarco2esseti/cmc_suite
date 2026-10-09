@@ -25,7 +25,9 @@ CONTRACT
 - ``action_estimate()``: monthly history over [date_from, date_to]: cost per month = cost base of the
   center (only ``element_id`` when set) read grouped by ``date:month`` (``_cmc_cost_read_group``),
   quantity per month = ACTUAL facts (``version_id`` empty) of ``driver_id`` with ``center_id`` = center,
-  company of the function. Only months having BOTH a cost and a quantity are used. ``high_low`` /
+  company of the function. Only months having BOTH a cost and a quantity are used. RN-003 (ronin): the
+  history EXCLUDES lines posted by an allocation (``cmc_allocation_id`` set): K/v describe the primary cost
+  of the center, a center whose cost is allocated away each month still estimates from it. ``high_low`` /
   ``ols`` write ``fixed_amount``, ``variable_rate`` (and ``r2`` for ols). UserError when ``method`` is
   ``manual`` or fewer than 2 usable months. Requires group_cmc_manager (AccessError otherwise).
 
@@ -126,6 +128,22 @@ class TestCostFunction(TransactionCase):
         self.assertAlmostEqual(fn.variable_rate, 4.6)
         self.assertAlmostEqual(fn.fixed_amount, 620.0)
         self.assertAlmostEqual(fn.r2, 0.970642, places=5)
+
+    def test_estimate_ignores_allocation_postings(self):
+        # RN-003: the monthly cost is fully allocated away, the estimate still reads the primary cost
+        target = self.AA.create({"name": "WP01 CF target", "plan_id": self.plan.id, "cmc_center_type": "final",
+                                 "company_id": self.company.id})
+        alloc_driver = self.env["cmc.cost.driver"].create({"name": "WP01 CF alloc", "code": "WP01CF_AL"})
+        for month, _qty, cost in HISTORY:
+            self.env["cmc.allocation"].create({
+                "name": f"WP01 CF out {month}", "source_account_id": self.center.id, "driver_id": alloc_driver.id,
+                "amount": cost, "date": date(2031, month, 20), "element_id": self.element.id,
+                "line_ids": [(0, 0, {"target_account_id": target.id, "quantity": 1})],
+            }).action_compute()
+        fn = self._function(method="high_low")
+        fn.with_user(self.manager).action_estimate()
+        self.assertAlmostEqual(fn.variable_rate, 5.0)
+        self.assertAlmostEqual(fn.fixed_amount, 500.0)
 
     def test_estimate_needs_two_months(self):
         # CLS-02: one usable month cannot be split -> fail loud

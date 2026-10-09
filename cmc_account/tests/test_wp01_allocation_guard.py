@@ -68,7 +68,7 @@ class TestAllocationClassificationGuard(TransactionCase):
         ordinary = self.AL.create({"name": "ordinary", "account_id": self.target.id, "amount": -5.0, "date": DAY})
         self.assertEqual(ordinary.cmc_behavior, "variable")
         self.assertRecordValues(posted, [
-            {"cmc_cost_element_id": self.alloc_element.id, "cmc_behavior": False, "cmc_directness": "indirect",
+            {"cmc_cost_element_id": self.alloc_element.id, "cmc_behavior": "fixed", "cmc_directness": "indirect",
              "cmc_classified_manually": False, "cmc_bridge_source": False},
         ] * 2)
 
@@ -77,7 +77,7 @@ class TestAllocationClassificationGuard(TransactionCase):
         alloc = self._allocation()
         alloc.action_compute()
         self.assertRecordValues(alloc.posted_line_ids, [
-            {"cmc_cost_element_id": False, "cmc_behavior": False, "cmc_classified_manually": False,
+            {"cmc_cost_element_id": False, "cmc_behavior": "fixed", "cmc_classified_manually": False,
              "cmc_bridge_source": False},
         ] * 2)
 
@@ -87,12 +87,12 @@ class TestAllocationClassificationGuard(TransactionCase):
         alloc.action_compute()
         line = alloc.posted_line_ids.filtered(lambda posted: posted.account_id == self.target)
         with self.assertRaises(UserError) as caught:
-            line.with_user(self.cmc_user).write({"cmc_behavior": "fixed"})
+            line.with_user(self.cmc_user).write({"cmc_behavior": "variable"})
         self.assertNotIsInstance(caught.exception, AccessError, "the allocation lock, not an ACL refusal")
         with self.assertRaises(UserError) as caught:
             line.with_user(self.cmc_user).write({"cmc_cost_element_id": self.rule_element.id})
         self.assertNotIsInstance(caught.exception, AccessError)
-        self.assertRecordValues(line, [{"cmc_behavior": False, "cmc_cost_element_id": self.alloc_element.id,
+        self.assertRecordValues(line, [{"cmc_behavior": "fixed", "cmc_cost_element_id": self.alloc_element.id,
                                         "cmc_classified_manually": False}])
 
     def test_allocation_line_create_not_marked_manual(self):

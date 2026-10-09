@@ -90,7 +90,7 @@ class CmcCostingRun(models.Model):
 
     # ---- constraints ----------------------------------------------------
 
-    @api.constrains("date_from", "date_to", "closing_run_id")
+    @api.constrains("date_from", "date_to", "closing_run_id", "prime_cost_source", "produced_measure_id")
     def _check_period_within_closing(self):
         """The costing window must sit inside the closing run window: a Q1
         closing must not be combined with Q3 period costs."""
@@ -111,6 +111,19 @@ class CmcCostingRun(models.Model):
                         "The costing period of %(name)s ends after its closing "
                         "run period (%(end)s).",
                         name=run.name,
+                        end=closing.date_to,
+                    )
+                )
+            # why: actual lines / produced quantity of a part-period against a whole-closing residual double count
+            if (run.prime_cost_source == "actual" or run.produced_measure_id) and (
+                run.date_from != closing.date_from or run.date_to != closing.date_to
+            ):
+                raise ValidationError(
+                    self.env._(
+                        "Costing run %(name)s uses actual direct cost or a produced quantity: its period must equal "
+                        "the closing run period (%(start)s - %(end)s).",
+                        name=run.name,
+                        start=closing.date_from,
                         end=closing.date_to,
                     )
                 )
@@ -157,19 +170,6 @@ class CmcCostingRun(models.Model):
         return self._reclass_payload(self.env._("Full cost per configuration"), cols, rows)
 
     # ---- engine ----------------------------------------------------------
-
-    def _final_center_totals(self):
-        self.ensure_one()
-        lines = self.closing_run_id.line_ids.filtered(
-            lambda l: l.center_type == "final"
-        )
-        return {l.center_id.id: l.cost_residual for l in lines}
-
-    def _direct_cost(self, products):
-        """Primo cost per product (direct materials + direct labor). Uses the
-        product standard cost in the run company."""
-        priced = products.with_company(self.company_id)
-        return {p.id: p.standard_price for p in priced}
 
     def _cmc_lock_rows(self):
         # closing rows first, then the costing rows: the order a closing reset
@@ -297,6 +297,8 @@ class CmcCostingRun(models.Model):
                     name=self.closing_run_id.display_name,
                 )
             )
+        # why sudo: feeders write engine facts of the run company; the user need not own them
+        self.env["cmc.measure.quantity"].sudo()._cmc_refresh_feeders(self.date_from, self.date_to, company=self.company_id)
         totals = self._final_center_totals()
         direct = self._direct_costs(list(totals)) if self.prime_cost_source == "actual" else {}
         stamped = self._cmc_object_products(obj for _c, obj, _b in direct)
@@ -336,7 +338,9 @@ class CmcCostingRun(models.Model):
         """{product id: (prime cost, variable part, origin)}."""
         standard = self._direct_cost(products)
         if self.prime_cost_source != "actual":
-            return {p: (price, price, "standard") for p, price in standard.items()}
+            # with a produced quantity the standard prime is a total, all variable
+            qty = (lambda p: produced.get(p, 0.0)) if self.produced_measure_id else (lambda _p: 1.0)
+            return {p: (price * qty(p), price * qty(p), "standard") for p, price in standard.items()}
         total, variable = defaultdict(float), defaultdict(float)
         for (_center, obj, behavior), cost in direct.items():
             total[stamped[obj]] += cost
@@ -400,7 +404,17 @@ class CmcCostingRun(models.Model):
                     )
                 )
             practical = found[center].capacity_practical
-            used = sum(pq.values())
+            driver = found[center].driver_id
+            lines = self.line_ids.filtered(lambda ln, c=center, d=driver: ln.center_id.id == c and ln.driver_id == d)
+            if not driver or not lines:
+                raise ValidationError(
+                    self.env._(
+                        "Cost center %(name)s has no driver line on its capacity unit: the practical capacity "
+                        "cannot be matched to the driver used.",
+                        name=found[center].center_id.display_name,
+                    )
+                )
+            used = sum(lines.mapped("driver_qty"))
             if fixed and practical <= 0:
                 raise ValidationError(
                     self.env._(

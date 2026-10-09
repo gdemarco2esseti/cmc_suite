@@ -13,6 +13,7 @@ CONTRACT
   charged as prime cost (each cost counted once: Σ industrial cost = cost booked on the final centers).
 - ``standard_price_ref`` keeps the standard price as reference in both modes; the prime-cost config
   row's ``source`` is ``direct_lines`` in ``actual`` mode (``standard_price`` in ``standard`` mode).
+  Standard mode WITH a produced measure (RN-001: total = standard x qty) is in test_wp04_ronin_regressions.
 - ``cmc.costing.result.prime_cost_origin`` Selection ``standard`` / ``actual`` / ``standard_fallback``
   (ruling 5): ``standard`` mode -> ``standard`` on every result; ``actual`` mode -> ``actual`` for a
   product with stamped direct lines; a product in scope WITHOUT stamped direct lines falls back to
@@ -82,7 +83,7 @@ class TestWp04ActualPrimeCost(Wp04Case):
 
     def test_fc04_standard_option_keeps_standard_price(self):
         # FC-04: standard_price stays available as the fallback option
-        run = self._run_a(prime_cost_source="standard")
+        run = self._run_a(prime_cost_source="standard", produced_measure_id=False)
         self.assertRecordValues(
             self._res(run, self.p1) | self._res(run, self.p2),
             [{"cost_primo": 50.0}, {"cost_primo": 80.0}],
@@ -95,7 +96,7 @@ class TestWp04ActualPrimeCost(Wp04Case):
             self.closing.line_ids.filtered(lambda l: l.center_type == "final").mapped("cost_residual")
         )
         self.assertAlmostEqual(residual, 2370.0, places=2)  # Z 1200 + 570 direct + W 600
-        run = self._run_a(prime_cost_source="standard")
+        run = self._run_a(prime_cost_source="standard", produced_measure_id=False)
         self.assertAlmostEqual(sum(run.result_ids.mapped("cost_indiretto")), residual, places=2)
         self.assertRecordValues(
             self._res(run, self.p1) | self._res(run, self.p2),

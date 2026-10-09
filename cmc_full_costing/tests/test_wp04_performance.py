@@ -44,8 +44,8 @@ class TestWp04Performance(Wp04Case):
              "cost_object_id": o.id, "quantity": 10.0}
             for o in objects
         ])
-        self._capacity(env, z, company, theoretical=4 * n, practical=3 * n, actual=2 * n)
-        self._capacity(env, w, company, theoretical=n, practical=n, actual=n)
+        self._capacity(env, z, company, theoretical=4 * n, practical=3 * n, actual=2 * n, driver=hours)
+        self._capacity(env, w, company, theoretical=n, practical=n, actual=n, driver=hours)
         lines = [(0, 0, {"center_id": z.id, "product_id": p.id, "driver_id": hours.id, "driver_qty": 2}) for p in products]
         lines += [(0, 0, {"center_id": w.id, "product_id": p.id, "driver_id": hours.id, "driver_qty": 1}) for p in products]
         return env["cmc.costing.run"].create({

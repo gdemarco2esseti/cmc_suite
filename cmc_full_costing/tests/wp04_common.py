@@ -26,6 +26,20 @@ CONTRACT (whole WP-04; each test file repeats the part it covers)
 - Compute records ``cmc.run.usage`` (consumer = costing run, origin = closing run) and publishes
   ``cmc.rate`` rows (holder = product cost object, driver = produced measure, month of the run) that the
   mixin reset/unlink removes.
+- Ronin review of WP-04 (accepted; ``test_wp04_ronin_regressions``):
+  RN-001 ``standard`` mode WITH ``produced_measure_id``: ``cost_primo`` is a TOTAL = ``standard_price x
+  produced_qty`` (origin ``standard``, primo config ``source = 'standard_price'``), so unit costs, rates and
+  ``price_cost_plus`` are consistent (``unit_cost_primo`` = ``standard_price``); the standard prime is all
+  variable and the indirect pool is unchanged (ruling 1). ``standard`` WITHOUT produced measure keeps v1
+  (per-unit ``cost_primo``, no produced qty, no unit costs, no rates).
+  RN-002 ``capacity_basis = 'practical'``: ``capacity_used`` / the fixed charge count ONLY the driver lines
+  of the center whose ``driver_id`` = the ``driver_id`` of its ``cmc.capacity.analysis``; a costed center
+  with no line on that driver (or an analysis without driver) -> ValidationError naming the center.
+  RN-003 when ``prime_cost_source = 'actual'`` or ``produced_measure_id`` is set the run period must EQUAL
+  the closing period (ValidationError on create/write); a standard v1 run without produced measure may
+  still sit inside a longer closing.
+  RN-004 ``action_compute`` first calls ``cmc.measure.quantity._cmc_refresh_feeders(date_from, date_to,
+  company=<run company>)`` for the run period, then reads the produced facts.
 
 Fixture (company A, March 2026, closing "direct", two final centers, no period pool, no figurative):
   Z: fixed indirect 1000, variable indirect 200; direct lines on Z: P1 MP 300 (raw material RM on the
@@ -33,7 +47,7 @@ Fixture (company A, March 2026, closing "direct", two final centers, no period p
   W: fixed indirect 600.
   Driver lines (hours): Z P1 60 / P2 40 ; W P1 30 / P2 30.
   Produced facts (statistical measure): P1 60 (center Z) + 40 (center W) = 100 ; P2 50.
-  Capacity analyses (March): Z practical 125 h (theoretical 150), W practical 60 h.
+  Capacity analyses (March, capacity unit = the hours driver): Z practical 125 h (theoretical 150), W practical 60 h.
   standard_price: P1 50, P2 80, RM 7.
 Company B: one final center ZB fixed 100, P1 MP 777 stamped with P1's company-B object, P1 produced 10.
 """
@@ -99,8 +113,8 @@ class Wp04Case(TransactionCase):
             {"name": "WP04 budget", "date_from": date(2026, 1, 1), "date_to": date(2026, 12, 31), "company_id": cls.company_a.id}
         )
         cls._fact(env, cls.produced, cls.obj_p1, 999, version=version)
-        cls.cap_z = cls._capacity(env, cls.z, cls.company_a, theoretical=150, practical=125, actual=100)
-        cls.cap_w = cls._capacity(env, cls.w, cls.company_a, theoretical=60, practical=60, actual=60)
+        cls.cap_z = cls._capacity(env, cls.z, cls.company_a, theoretical=150, practical=125, actual=100, driver=cls.hours)
+        cls.cap_w = cls._capacity(env, cls.w, cls.company_a, theoretical=60, practical=60, actual=60, driver=cls.hours)
         # ---- company B (same products, own cost objects)
         env = cls.env_b
         cls.hours_b = env["cmc.cost.driver"].create({"name": "WP04 hours B", "code": "WP04H", "company_id": cls.company_b.id})
@@ -173,9 +187,11 @@ class Wp04Case(TransactionCase):
         )
 
     @classmethod
-    def _capacity(cls, env, center, company, theoretical, practical, actual):
+    def _capacity(cls, env, center, company, theoretical, practical, actual, driver=None):
+        # RN-002: the capacity unit (driver_id) decides which driver lines use the capacity
         return env["cmc.capacity.analysis"].create(
             {"center_id": center.id, "company_id": company.id, "date_from": D_FROM, "date_to": D_TO,
+             "driver_id": driver.id if driver else False,
              "capacity_theoretical": theoretical, "capacity_practical": practical, "capacity_actual": actual}
         )
 

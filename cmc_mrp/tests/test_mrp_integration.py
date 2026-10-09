@@ -189,50 +189,12 @@ class TestMrpBridgeIntegration(TransactionCase):
     # ------------------------------------------------------------------
     # item 8 — la manodopera non si conta due volte
     # ------------------------------------------------------------------
-
-    def test_labour_journal_twin_is_not_classified(self):
-        """_post_labour registra le ore anche in prima nota. Se quel conto ha una
-        distribuzione analitica nasce una SECONDA riga analitica per le stesse
-        ore: deve restare fuori dalla base di costo."""
-        account = self.env["account.account"].create({
-            "name": "Costi di produzione", "code": "690900",
-            "account_type": "expense",
-        })
-        self.env["cmc.classification.rule"].create({
-            "name": "produzione", "general_account_id": account.id,
-            "cmc_behavior": "fixed",
-        })
-        journal = self.env["account.journal"].search(
-            [("type", "=", "general"), ("company_id", "=", self.env.company.id)],
-            limit=1,
-        )
-        entry = self.env["account.move"].create({
-            "move_type": "entry", "journal_id": journal.id,
-            "line_ids": [
-                (0, 0, {"name": "labour", "account_id": account.id, "balance": 100.0}),
-                (0, 0, {"name": "labour", "account_id": account.id, "balance": -100.0}),
-            ],
-        })
-        move_line = entry.line_ids[0]
-        workcenter = self.env["mrp.workcenter"].create(
-            {"name": "WC test", "costs_hour": 30.0}
-        )
-        self.env["mrp.workcenter.productivity"].create({
-            "workcenter_id": workcenter.id,
-            "loss_id": self.env.ref("mrp.block_reason7").id,
-            "date_start": fields.Datetime.now(),
-            "date_end": fields.Datetime.now(),
-            "account_move_line_id": move_line.id,
-        })
-        twin = self.AL.create({
-            "name": "labour twin", "account_id": self.center.id,
-            "general_account_id": account.id, "move_line_id": move_line.id,
-            "amount": -100.0,
-        })
-        self.assertFalse(
-            twin.cmc_behavior,
-            "the labour journal twin must not enter the cost base",
-        )
+    # Coperto da test_mrp_labour_twin.py sul FLUSSO REALE (button_mark_done ->
+    # _post_labour). La versione precedente costruiva a mano la productivity
+    # PRIMA della riga analitica, ordine inverso al core (che posta la scrittura
+    # e crea le righe analitiche prima di scrivere time_ids.account_move_line_id,
+    # mrp_account/models/mrp_production.py:136-139): per questo restava verde
+    # pur col difetto presente.
 
     # ------------------------------------------------------------------
     # item 6 — limite noto: nessuno storno (documentato nel README)

@@ -62,6 +62,26 @@ class MrpProduction(models.Model):
         self.filtered(lambda mo: mo.state == "done")._cmc_create_material_lines()
         return res
 
+    def _post_labour(self):
+        res = super()._post_labour()
+        # why sudo: the shop-floor user closing the order has no CMC/analytic
+        # rights; only CMC metadata is written. Core posts the entry (creating
+        # its analytic lines, auto-classified on the way) and links the times
+        # only afterwards, so the twin is flagged here, entry-wide (expense AND
+        # WIP side), and the classification already applied is wiped.
+        twins = (
+            self.sudo()
+            .workorder_ids.time_ids.account_move_line_id.move_id.line_ids.analytic_line_ids
+        )
+        if twins:
+            twins.with_context(cmc_auto_classify=True).write({
+                "cmc_excluded": True,
+                "cmc_behavior": False,
+                "cmc_cost_element_id": False,
+                "cmc_directness": "indirect",
+            })
+        return res
+
     def _cmc_create_material_lines(self):
         """Book the direct material (MP) cost of the consumed moves on the MO
         cost center, valued at the move's real SVL value.

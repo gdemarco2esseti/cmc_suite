@@ -21,33 +21,6 @@ class AccountAnalyticLine(models.Model):
     def _cmc_classify_trigger_fields(self):
         return super()._cmc_classify_trigger_fields() | {"category"}
 
-    def _cmc_mrp_labour_duplicates(self):
-        """Analytic lines that would count manufacturing labor TWICE.
-
-        ``mrp_account`` books workcenter time twice on purpose: once as an
-        analytic line on the workorder (mrp_workorder.py:55) and once as a
-        journal entry on the production-cost account (_post_labour,
-        mrp_account/models/mrp_production.py:125-137). If that account carries
-        an analytic distribution, posting the entry creates a SECOND analytic
-        line -- same hours, same money -- which our rules would happily
-        classify as a cost. The journal-entry side is identifiable because
-        _post_labour stamps its journal items onto mrp.workcenter.productivity
-        records, so those lines are excluded from classification and never
-        enter the cost base.
-        """
-        move_lines = self.move_line_id
-        if not move_lines:
-            return self.browse()
-        # why sudo: read-only duplicate detection; mrp.workcenter.productivity
-        # is not readable by a controller, and a shop-floor user posting the
-        # entry has no rights on CMC data either.
-        duplicated = set(
-            self.env["mrp.workcenter.productivity"].sudo().search(
-                [("account_move_line_id", "in", move_lines.ids)]
-            ).account_move_line_id.ids
-        )
-        return self.filtered(lambda line: line.move_line_id.id in duplicated)
-
     def _cmc_is_mrp_labour(self):
         """A native manufacturing-order LABOR line.
 
@@ -79,7 +52,11 @@ class AccountAnalyticLine(models.Model):
         mod = self._cmc_element_ref(MOD_XMLID)
         vals_by_line = []
         for line in self:
-            if line.cmc_classified_manually or not line._cmc_is_mrp_labour():
+            if (
+                line.cmc_classified_manually
+                or line.cmc_excluded
+                or not line._cmc_is_mrp_labour()
+            ):
                 continue
             vals = {}
             if mod and not line.cmc_cost_element_id:
@@ -91,7 +68,4 @@ class AccountAnalyticLine(models.Model):
             if vals:
                 vals_by_line.append((line.id, vals))
         self._cmc_write_batched(vals_by_line)
-        # the labour journal-entry twins never reach the rule engine
-        return super(
-            AccountAnalyticLine, self - self._cmc_mrp_labour_duplicates()
-        )._cmc_auto_classify()
+        return super()._cmc_auto_classify()

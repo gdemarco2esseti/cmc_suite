@@ -55,7 +55,7 @@ class AccountAnalyticAccount(models.Model):
         column (not necessarily the default one). Returns {account_id: amount}
         or {(account_id, element_id): amount} when by_element."""
         Line = self.env["account.analytic.line"]
-        base = []
+        base = [("cmc_excluded", "=", False)]
         if company:
             base.append(("company_id", "in", [False] + company.ids))
         if date_from:

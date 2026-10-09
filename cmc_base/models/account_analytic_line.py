@@ -43,6 +43,14 @@ class AccountAnalyticLine(models.Model):
         help="Convenience field: routes the cost to a cost center regardless of "
         "the analytic plan it lives on.",
     )
+    cmc_excluded = fields.Boolean(
+        string="Excluded from Cost Base",
+        index=True,
+        copy=False,
+        readonly=True,
+        help="Excluded from the cost base: a system twin of a cost already "
+        "counted elsewhere.",
+    )
     cmc_relevance_min = fields.Float(string="Relevant Range Min")
     cmc_relevance_max = fields.Float(string="Relevant Range Max")
     cmc_directness = fields.Selection(
@@ -180,7 +188,9 @@ class AccountAnalyticLine(models.Model):
         derived figures in sync.
         """
         CA = self.env["cmc.capacity.analysis"]
-        fixed = self.filtered(lambda line: line.cmc_behavior == "fixed" and line.date)
+        fixed = self.filtered(
+            lambda line: line.cmc_behavior == "fixed" and line.date and not line.cmc_excluded
+        )
         if not fixed:
             return CA.sudo()
         # plan-aware: the center may live on any analytic plan, not just the
@@ -228,7 +238,25 @@ class AccountAnalyticLine(models.Model):
         return lines
 
     def write(self, vals):
-        watched = {"amount", "date", "cmc_behavior"} | set(self._get_plan_fnames())
+        # a twin cannot be forced back into the cost base by hand; system
+        # writes (cmc_auto_classify) stay allowed
+        if (
+            not self.env.context.get("cmc_auto_classify")
+            and any(
+                vals.get(fname)
+                for fname in (
+                    "cmc_cost_element_id",
+                    "cmc_behavior",
+                    "cmc_directness",
+                    "cmc_classified_manually",
+                )
+            )
+            and any(self.mapped("cmc_excluded"))
+        ):
+            raise UserError(
+                self.env._("An excluded cost line cannot be classified: it is a twin of a cost already counted elsewhere.")
+            )
+        watched = {"amount", "date", "cmc_behavior", "cmc_excluded"} | set(self._get_plan_fnames())
         if not (vals.keys() & watched):
             return super().write(vals)
         rows_before = self._cmc_capacity_rows()

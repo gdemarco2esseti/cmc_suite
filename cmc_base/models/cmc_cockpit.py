@@ -92,7 +92,7 @@ class CmcCockpit(models.TransientModel):
 
         # total booked cost (classified lines), as a magnitude
         cost_groups = AL._read_group(
-            [("cmc_behavior", "!=", False)] + company_domain, aggregates=["amount:sum"]
+            [("cmc_behavior", "!=", False), ("cmc_excluded", "=", False)] + company_domain, aggregates=["amount:sum"]
         )
         total_cost = abs((cost_groups[0][0] or 0.0) if cost_groups else 0.0)
 
@@ -117,7 +117,7 @@ class CmcCockpit(models.TransientModel):
 
         # cost-by-element chart (stored FK -> _read_group is fine)
         el_groups = AL._read_group(
-            [("cmc_cost_element_id", "!=", False)] + company_domain,
+            [("cmc_cost_element_id", "!=", False), ("cmc_excluded", "=", False)] + company_domain,
             groupby=["cmc_cost_element_id"], aggregates=["amount:sum"],
         )
         chart = {

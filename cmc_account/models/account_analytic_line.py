@@ -146,6 +146,7 @@ class AccountAnalyticLine(models.Model):
         on the journal item, then derive the element from the financial account
         mapping and apply the first matching rule. Never touches manually
         classified lines; never creates new lines."""
+        self = self.filtered(lambda line: not line.cmc_excluded)
         if not self:
             return True
         Rule = self.env["cmc.classification.rule"]

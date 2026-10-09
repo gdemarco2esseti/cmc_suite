@@ -7,3 +7,4 @@ from . import test_ux_plan_aware
 from . import test_reclass_mixin
 from . import test_security
 from . import test_closing_period
+from . import test_closing_migration

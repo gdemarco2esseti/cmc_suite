@@ -17,7 +17,7 @@ class TestClosing(TransactionCase):
         cls.plan = cls.env["account.analytic.plan"].search([("parent_id", "=", False)]).filtered(lambda p: p._column_name() == "account_id")[:1]
         cls.driver = cls.env["cmc.cost.driver"].create({"name": "Ore", "code": "H"})
         # closing runs always carry a period: the whole current year covers
-        # the analytic lines below (dated today by default)
+        # the analytic lines below (explicitly dated mid-year)
         cls.period = {"date_from": date(date.today().year, 1, 1), "date_to": date(date.today().year, 12, 31)}
 
     @classmethod
@@ -29,7 +29,7 @@ class TestClosing(TransactionCase):
     def _cost(self, center, amount):
         # cost pool localized on a center (positive magnitude for the test)
         self.AL.create(
-            {"name": "cost", "account_id": center.id, "amount": amount}
+            {"name": "cost", "account_id": center.id, "amount": amount, "date": date(date.today().year, 6, 15)}
         )
 
     def _service(self, provider, receiver, qty):

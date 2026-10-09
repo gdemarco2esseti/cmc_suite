@@ -57,7 +57,7 @@ class TestFullCostingSecurity(TransactionCase):
         env["account.analytic.line"].create(
             {"name": "ind", "account_id": center.id, "amount": pool,
              "company_id": company.id, "cmc_behavior": "fixed",
-             "cmc_directness": "indirect"}
+             "cmc_directness": "indirect", "date": date(date.today().year, 6, 15)}
         )
         driver = env["cmc.cost.driver"].create(
             {"name": "H %s" % company.name, "code": "H", "company_id": company.id}

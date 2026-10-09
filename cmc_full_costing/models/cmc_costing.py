@@ -86,10 +86,9 @@ class CmcCostingRun(models.Model):
     def _onchange_closing_run_id(self):
         """Default the costing window from the closing run it reads from."""
         for run in self:
-            if run.closing_run_id.date_from and not run.date_from:
-                run.date_from = run.closing_run_id.date_from
-            if run.closing_run_id.date_to and not run.date_to:
-                run.date_to = run.closing_run_id.date_to
+            if run.closing_run_id:
+                run.date_from = run.date_from or run.closing_run_id.date_from
+                run.date_to = run.date_to or run.closing_run_id.date_to
 
     # ---- reclassified (transposed) report --------------------------------
 

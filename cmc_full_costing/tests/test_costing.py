@@ -44,7 +44,7 @@ class TestCosting(TransactionCase):
     def _cost(cls, center, amount):
         cls.AL.create(
             {"name": "ind", "account_id": center.id, "amount": amount,
-             "cmc_behavior": "fixed", "cmc_directness": "indirect"}
+             "cmc_behavior": "fixed", "cmc_directness": "indirect", "date": date(date.today().year, 6, 15)}
         )
 
     def _run(self, base, lines, single_driver=False):

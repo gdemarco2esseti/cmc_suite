@@ -23,7 +23,8 @@ class TestFullCostingExtra(TransactionCase):
     def _make_cost(self, center, amount, behavior="fixed"):
         col = center.plan_id._column_name()
         return self.AL.create(
-            {"name": "c", col: center.id, "amount": amount, "cmc_behavior": behavior}
+            {"name": "c", col: center.id, "amount": amount, "cmc_behavior": behavior,
+             "date": date(date.today().year, 6, 15)}
         )
 
     # period pool reads a period center on a non-default plan

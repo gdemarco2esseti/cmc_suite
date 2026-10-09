@@ -19,8 +19,8 @@
                         <h2>Cost Closing — <span t-field="o.name"/></h2>
                         <p>
                             <strong>Method:</strong> <span t-field="o.method"/>
-                            <span t-if="o.date_from"> · <strong>From:</strong> <span t-field="o.date_from"/></span>
-                            <span t-if="o.date_to"> · <strong>To:</strong> <span t-field="o.date_to"/></span>
+                            <span> · <strong>From:</strong> <span t-field="o.date_from"/></span>
+                            <span> · <strong>To:</strong> <span t-field="o.date_to"/></span>
                         </p>
                         <table class="table table-sm o_main_table">
                             <thead>

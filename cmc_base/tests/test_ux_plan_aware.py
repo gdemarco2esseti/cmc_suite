@@ -22,7 +22,7 @@ class TestPlanAware(TransactionCase):
 
     def _make_cost(self, center, amount, behavior="fixed", element=False):
         col = center.plan_id._column_name()
-        vals = {"name": "c", col: center.id, "amount": amount, "cmc_behavior": behavior}
+        vals = {"name": "c", col: center.id, "amount": amount, "cmc_behavior": behavior, "date": date(date.today().year, 6, 15)}
         if element:
             vals["cmc_cost_element_id"] = element.id
         return self.AL.create(vals)

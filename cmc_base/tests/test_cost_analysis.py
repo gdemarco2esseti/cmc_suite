@@ -43,7 +43,8 @@ class TestCostAnalysis(TransactionCase):
     def _cost(cls, center, amount, element):
         cls.AL.create(
             {"name": "c", "account_id": center.id, "amount": amount,
-             "cmc_behavior": "fixed", "cmc_cost_element_id": element.id}
+             "cmc_behavior": "fixed", "cmc_cost_element_id": element.id,
+             "date": date(date.today().year, 6, 15)}
         )
 
     @classmethod

@@ -28,7 +28,7 @@ class TestFullCostingConservation(TransactionCase):
         )
         self.AL.create(
             {"name": "c", "account_id": center.id, "amount": amount,
-             "cmc_behavior": "fixed"}
+             "cmc_behavior": "fixed", "date": date(self.year, 6, 15)}
         )
         return center
 

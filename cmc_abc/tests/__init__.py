@@ -17,3 +17,4 @@ from . import test_abm_benchmark
 from . import test_abm_coq
 from . import test_abm_security
 from . import test_abm_performance
+from . import test_abm_two_plans

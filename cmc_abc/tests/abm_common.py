@@ -87,6 +87,22 @@ COQ-01 cost of quality
 - Run input ``defect_measure_id`` (statistical measure, in ``_cmc_input_fields``); results ``defect_qty`` (Σ
   actual facts of the span per cost object) and ``copq_amount`` = defect_qty x unit_cost; run
   ``copq_total`` = Σ copq_amount (reset to 0 by reset to draft).
+RONIN OBJECTIONS ON WP-08 (accepted, regression tests)
+- RN-001 benchmark = cross-company document: ``cmc.abm.benchmark.company_ids`` M2m res.company stored computed =
+  ``run_ids.company_id``; record rule on the benchmark AND its lines: readable only when EVERY company of the
+  benchmark is among the user's active companies (a user of A never reads a benchmark spanning A and B, nor any
+  ``best_unit_cost`` of it). ``action_compute()`` raises UserError BEFORE touching the lines when a run belongs
+  to a company outside ``env.companies`` (no silent filtering, no deletion of other companies' lines) and when
+  the selected runs have different currencies.
+- RN-002 dependents: ``cmc.abc.run.action_reset_to_draft()`` raises UserError when the run is the
+  ``baseline_run_id`` / ``review_run_id`` of an initiative or a run of a benchmark (``_cmc_check_no_dependents``,
+  seen whole whatever the user's rules); without dependents the reset works as before. A typed
+  ``expected_annual_saving`` (at create or later) is never overwritten by a recompute (reduction or baseline
+  change): the reduction only defaults it while it is empty (0).
+- RN-003 two-plan companies: the center of ``tag`` / ``trace`` flows is the CMC center of the ledger line (the
+  account with ``cmc_center_type`` / ``cmc_is_period`` on its own plan column, cf. ``cmc_center_id``), never a
+  non-center ``account_id`` (a project); the activity x center matrix therefore has center columns only and
+  each column = what that center fed in (test_abm_two_plans).
 Pure helper (AD-119, cmc_base/models/cmc_utils.py): ``simple_payback(one_time_cost, annual_saving)``.
 
 ABM FIXTURE (on top of the WP-07 main fixture of abc2_common, March 2027, stage-1 costs:

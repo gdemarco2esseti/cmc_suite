@@ -11,11 +11,14 @@ one-time 6000 -> payback 0.5 y = 6 months. Kaplan Ch.8: 583300 / 808291 = 0.7216
 Review run (R1 SETUP 30 / MACH 58 / QC 12, QC inspections P1 2 / P2 1): QC 1200 + tag 500 = 1700, used 3 ->
 realised (2500 - 1700) x 12 = 9600 = 80 %, freed 2 inspections x baseline rate 500 = 1000 -> partial.
 Frost St.8: usage down (freed 2) but same spending 2500 -> realised 0 -> not_realized.
+RN-002: a run referenced as baseline or review of an initiative cannot be reset (UserError, dependents check:
+the initiative figures would silently become 0). A TYPED ``expected_annual_saving`` is never overwritten by a
+later recompute (reduction, baseline change): the reduction only DEFAULTS the saving while it is empty (0).
 """
 
 from odoo.addons.cmc_base.models import cmc_utils
 from odoo.exceptions import UserError, ValidationError
-from odoo.tests.common import tagged
+from odoo.tests.common import new_test_user, tagged
 
 from .abm_common import AbmCase
 
@@ -112,3 +115,62 @@ class TestAbmInitiatives(AbmCase):
                 "name": "cross", "company_id": company_b.id, "activity_id": self.qc.id,
                 "baseline_run_id": self.baseline.id,
             })
+
+    # ---- RN-002: initiatives depend on their runs; typed savings are kept ---------
+
+    def test_rn002_reset_of_baseline_run_refused(self):
+        # RN-002 / AD-002: resetting the baseline would zero the business case of the initiative
+        self._initiative()
+        with self.assertRaises(UserError):
+            self.baseline.action_reset_to_draft()
+
+    def test_rn002_reset_of_review_run_refused(self):
+        # RN-002 / AD-002: resetting the review would turn a verified benefit back into "pending"-like zeros
+        review = self._review()
+        self._initiative(review_run_id=review.id)
+        with self.assertRaises(UserError):
+            review.action_reset_to_draft()
+
+    def test_rn002_reset_refused_for_the_cmc_manager_too(self):
+        # RN-002: the dependents check is not an ACL: the manager who may reset runs is stopped as well
+        manager = new_test_user(self.env, login="wp08_init_manager", groups="base.group_user,cmc_base.group_cmc_manager",
+                                company_id=self.company_a.id, company_ids=[(6, 0, self.company_a.ids)])
+        self._initiative()
+        with self.assertRaises(UserError):
+            self.baseline.with_user(manager).with_context(allowed_company_ids=self.company_a.ids).action_reset_to_draft()
+
+    def test_rn002_reset_allowed_once_the_initiative_is_gone(self):
+        # RN-002: without dependents the run resets as before
+        self._initiative().unlink()
+        self.baseline.action_reset_to_draft()
+        self.assertEqual(self.baseline.state, "draft")
+
+    def test_rn002_typed_saving_survives_a_reduction_change(self):
+        # RN-002: an outside estimate typed by the team is not replaced when the reduction is edited
+        initiative = self._initiative(one_time_cost=583300.0)
+        initiative.expected_annual_saving = 808291.0
+        initiative.expected_driver_reduction = 50.0
+        self.assertEqual(initiative.expected_annual_saving, 808291.0)
+        self.assertAlmostEqual(initiative.payback_years, 0.72165, places=4)
+
+    def test_rn002_typed_saving_survives_a_baseline_change(self):
+        # RN-002: changing the baseline run recomputes the annual cost, never the typed saving
+        initiative = self._initiative()
+        initiative.expected_annual_saving = 5000.0
+        april = self._april_run()
+        initiative.baseline_run_id = april
+        self.assertAlmostEqual(initiative.baseline_annual_cost, 9999.0 * 12, places=2)  # April QC total 9999
+        self.assertEqual(initiative.expected_annual_saving, 5000.0)
+
+    def test_rn002_saving_typed_at_creation_is_kept(self):
+        # RN-002: a saving given at creation wins over the reduction default
+        initiative = self._initiative(expected_annual_saving=5000.0)
+        initiative.expected_driver_reduction = 60.0
+        self.assertEqual(initiative.expected_annual_saving, 5000.0)
+
+    def test_rn002_empty_saving_is_defaulted_from_the_reduction(self):
+        # RN-002: while the saving is empty (0) the reduction keeps defaulting it
+        initiative = self._initiative(expected_driver_reduction=0.0)
+        self.assertEqual(initiative.expected_annual_saving, 0.0)
+        initiative.expected_driver_reduction = 40.0
+        self.assertAlmostEqual(initiative.expected_annual_saving, 12000.0, places=2)

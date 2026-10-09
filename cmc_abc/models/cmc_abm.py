@@ -108,6 +108,24 @@ class CmcAbcRun(models.Model):
         if self.defect_measure_id.filtered(lambda driver: driver.measure_kind != "statistical"):
             raise ValidationError(self.env._("The defect measure must be a statistical measure."))
 
+    def _cmc_check_no_dependents(self):
+        """AD-002: initiatives and benchmarks read the results of their runs: reset/delete those first."""
+        super()._cmc_check_no_dependents()
+        if not self.ids:
+            return
+        # why sudo: the dependency must be seen whole whatever the user's rules; only names are reported
+        initiatives = self.env["cmc.abm.initiative"].sudo().search(
+            ["|", ("baseline_run_id", "in", self.ids), ("review_run_id", "in", self.ids)]
+        )
+        benchmarks = self.env["cmc.abm.benchmark"].sudo().search([("run_ids", "in", self.ids)])
+        if initiatives or benchmarks:
+            raise UserError(
+                self.env._(
+                    "These runs are read by other documents: %(names)s. Delete or change them first.",
+                    names=", ".join(initiatives.mapped("display_name") + benchmarks.mapped("display_name")),
+                )
+            )
+
     def _cmc_span_months(self):
         return len(month_range(self.date_from, self.date_to)) if self.date_from and self.date_to else 1
 
@@ -342,7 +360,9 @@ class CmcAbmInitiative(models.Model):
     @api.depends("baseline_annual_cost", "expected_driver_reduction")
     def _compute_expected_annual_saving(self):
         for initiative in self:
-            initiative.expected_annual_saving = initiative.baseline_annual_cost * initiative.expected_driver_reduction / 100.0
+            # a typed (non-empty) saving is never overwritten: the reduction only defaults it
+            if not initiative.expected_annual_saving:
+                initiative.expected_annual_saving = initiative.baseline_annual_cost * initiative.expected_driver_reduction / 100.0
 
     @api.depends("one_time_cost", "expected_annual_saving")
     def _compute_payback(self):
@@ -385,9 +405,27 @@ class CmcAbmBenchmark(models.Model):
     # optional: a benchmark may compare several companies
     company_id = fields.Many2one("res.company", index=True)
     run_ids = fields.Many2many("cmc.abc.run", string="Runs", domain="[('state', '=', 'done')]")
+    company_ids = fields.Many2many(
+        "res.company", string="Companies", compute="_compute_company_ids", store=True,
+        help="Companies of the runs: the record rule shows the benchmark only to users who see all of them.",
+    )
     line_ids = fields.One2many("cmc.abm.benchmark.line", "benchmark_id", string="Lines")
 
+    @api.depends("run_ids.company_id")
+    def _compute_company_ids(self):
+        for bench in self:
+            bench.company_ids = bench.run_ids.company_id
+
+    def _cmc_check_scope(self):
+        """No silent filtering: runs outside the active companies, or in mixed currencies, refuse the compute."""
+        for bench in self:
+            if bench.run_ids.company_id - self.env.companies:
+                raise UserError(self.env._("%s: some runs belong to companies that are not active.", bench.display_name))
+            if len(bench.run_ids.currency_id) > 1:
+                raise UserError(self.env._("%s: the runs have different currencies, unit costs are not comparable.", bench.display_name))
+
     def action_compute(self):
+        self._cmc_check_scope()
         for bench in self:
             if bench.run_ids.filtered(lambda run: run.state != "done"):
                 raise UserError(self.env._("Only computed runs can be benchmarked."))

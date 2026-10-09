@@ -164,8 +164,8 @@ class CmcAbcRun(models.Model):
             return {}, []
         base, stamped = self._cmc_ledger_domains()
         by_center = defaultdict(_pair)
-        groups = self.env["account.analytic.line"].sudo()._cmc_cost_read_group(
-            base & Domain("cmc_activity_id", "=", False) & stamped, ["cmc_cost_object_id", "account_id", "cmc_behavior"]
+        groups = self.env["account.analytic.line"].sudo()._cmc_cost_by_center(
+            base & Domain("cmc_activity_id", "=", False) & stamped, ["cmc_cost_object_id", "cmc_center_id", "cmc_behavior"]
         )
         for obj, center, behavior, cost in groups:
             by_center[(obj.id, center.id)][behavior == "variable"] += cost

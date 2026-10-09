@@ -1,0 +1,1555 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* cmc_profitability
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 23:35+0000\n"
+"PO-Revision-Date: 2026-10-09 23:35+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: cmc_profitability
+#. odoo-python
+#: code:addons/cmc_profitability/models/cmc_profit_engine.py:0
+msgid "%(run)s - by %(dimension)s"
+msgstr "%(run)s - per %(dimension)s"
+
+#. module: cmc_profitability
+#. odoo-python
+#: code:addons/cmc_profitability/models/cmc_profit_engine.py:0
+msgid "%s is not computed: a computed run reads certified sources only."
+msgstr ""
+"%s non è calcolata: un'esecuzione calcolata legge solo fonti certificate."
+
+#. module: cmc_profitability
+#. odoo-python
+#: code:addons/cmc_profitability/models/cmc_transfer_charge.py:0
+msgid "A center cannot charge itself."
+msgstr "Un centro non può addebitare a se stesso."
+
+#. module: cmc_profitability
+#. odoo-python
+#: code:addons/cmc_profitability/models/cmc_transfer_charge.py:0
+msgid "A computed chargeback cannot be deleted: reset it to draft first."
+msgstr ""
+"Un riaddebito calcolato non può essere eliminato: riportarlo prima in bozza."
+
+#. module: cmc_profitability
+#: model:ir.model.constraint,message:cmc_profitability.constraint_account_analytic_line_cmc_transfer_charge_requires_relocation
+msgid "A line linked to a chargeback run must be a relocation posting."
+msgstr ""
+"Una riga collegata a un'esecuzione di riaddebito deve essere una "
+"registrazione di riallocazione."
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__abc_activity_id
+msgid "ABC Activity"
+msgstr "Attività ABC"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__abc_run_id
+msgid "ABC Run"
+msgstr "Esecuzione ABC"
+
+#. module: cmc_profitability
+#: model:ir.model.fields.selection,name:cmc_profitability.selection__cmc_transfer_charge__criterion__abc
+msgid "ABC activity rate"
+msgstr "Tariffa dell'attività ABC"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_price_element__account_ids
+msgid "Accounts"
+msgstr "Conti"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_supplier__activity_cost
+msgid "Activity Cost"
+msgstr "Costo dell'attività"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_supplier_list
+msgid "Activity cost"
+msgstr "Costo dell'attività"
+
+#. module: cmc_profitability
+#: model:ir.model.fields.selection,name:cmc_profitability.selection__cmc_profit_customer__quadrant__aggressive
+msgid "Aggressive (low margin, high cost-to-serve)"
+msgstr "Aggressivo (margine basso, costo di servizio al cliente alto)"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_waterfall__amount
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_waterfall_list
+msgid "Amount"
+msgstr "Importo"
+
+#. module: cmc_profitability
+#. odoo-python
+#: code:addons/cmc_profitability/models/cmc_profit_config.py:0
+msgid ""
+"An income account is already part of the revenue: it cannot be a price "
+"element."
+msgstr ""
+"Un conto di ricavo è già parte del fatturato: non può essere un elemento di "
+"prezzo."
+
+#. module: cmc_profitability
+#: model:ir.model,name:cmc_profitability.model_account_analytic_line
+msgid "Analytic Line"
+msgstr "Riga analitica"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,help:cmc_profitability.field_cmc_profit_run__ledger_cost
+msgid "Analytic cost base of the span."
+msgstr "Base di costo analitica dell'arco temporale."
+
+#. module: cmc_profitability
+#: model:ir.model.fields,help:cmc_profitability.field_cmc_profit_run__cost_version_id
+msgid ""
+"Approved version whose unit costs price the products; empty = the most "
+"recent actual rates."
+msgstr ""
+"Versione approvata i cui costi unitari valorizzano i prodotti; vuoto = le "
+"tariffe effettive più recenti."
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__assigned_cost
+msgid "Assigned Cost"
+msgstr "Costo assegnato"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_product__avg_price
+msgid "Avg Price"
+msgstr "Prezzo medio"
+
+#. module: cmc_profitability
+#: model:ir.model.fields.selection,name:cmc_profitability.selection__cmc_profit_customer__quadrant__bargain
+msgid "Bargain basement (low margin, low cost-to-serve)"
+msgstr "Svendita (margine basso, costo di servizio al cliente basso)"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_fact_search
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_product_search
+msgid "Below cost"
+msgstr "Sotto costo"
+
+#. module: cmc_profitability
+#: model:ir.model.fields.selection,name:cmc_profitability.selection__cmc_profit_fact__floor_status__below_full
+#: model:ir.model.fields.selection,name:cmc_profitability.selection__cmc_profit_product__floor_status__below_full
+msgid "Below full cost"
+msgstr "Sotto il costo pieno"
+
+#. module: cmc_profitability
+#: model:ir.model.fields.selection,name:cmc_profitability.selection__cmc_profit_fact__floor_status__below_variable
+#: model:ir.model.fields.selection,name:cmc_profitability.selection__cmc_profit_product__floor_status__below_variable
+msgid "Below variable cost"
+msgstr "Sotto il costo variabile"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__business_sustaining_cost
+msgid "Business Sustaining Cost"
+msgstr "Costo di sostegno all'azienda"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu__coin_close
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu_input__coin_close
+msgid "COIN closing"
+msgstr "Chiusura COIN"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu__coin_open
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu_input__coin_open
+msgid "COIN opening"
+msgstr "Apertura COIN"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__capital_charge
+msgid "Capital Charge"
+msgstr "Onere del capitale"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__capital_charge_total
+msgid "Capital Charge Total"
+msgstr "Onere del capitale totale"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu_input__capital_key
+msgid "Capital Key %"
+msgstr "Chiave del capitale %"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__capital_rate
+msgid "Capital Rate %"
+msgstr "Tasso del capitale %"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_customer_list
+msgid "Capital charge"
+msgstr "Onere del capitale"
+
+#. module: cmc_profitability
+#: model:ir.model.fields.selection,name:cmc_profitability.selection__cmc_profit_customer__quadrant__carriage
+msgid "Carriage trade (high margin, high cost-to-serve)"
+msgstr ""
+"Clientela di prestigio (margine alto, costo di servizio al cliente alto)"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_channel__channel_value_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__channel_value_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__channel_value_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__channel_ids
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_customer_search
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_fact_search
+msgid "Channel"
+msgstr "Canale"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_channel__channel_cost
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__channel_cost
+msgid "Channel Cost"
+msgstr "Costo del canale"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__channel_cost_total
+msgid "Channel Cost Total"
+msgstr "Costo del canale totale"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_channel__channel_margin
+msgid "Channel Margin"
+msgstr "Margine del canale"
+
+#. module: cmc_profitability
+#: model:ir.ui.menu,name:cmc_profitability.menu_cmc_profit_channel
+msgid "Channel Margins"
+msgstr "Margini dei canali"
+
+#. module: cmc_profitability
+#: model:ir.actions.act_window,name:cmc_profitability.action_cmc_profit_channel
+#: model:ir.model,name:cmc_profitability.model_cmc_profit_channel
+msgid "Channel Profitability"
+msgstr "Redditività dei canali"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_channel_list
+msgid "Channel cost"
+msgstr "Costo del canale"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_channel_list
+msgid "Channel margin"
+msgstr "Margine del canale"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_run_form
+msgid "Channels"
+msgstr "Canali"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge_line__charge_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge_result__charge_id
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_transfer_charge_form
+msgid "Charge"
+msgstr "Addebito"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge_result__charge_amount
+msgid "Charge Amount"
+msgstr "Importo addebitato"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_account_analytic_line__cmc_transfer_charge_id
+msgid "Chargeback"
+msgstr "Riaddebito"
+
+#. module: cmc_profitability
+#: model:ir.model,name:cmc_profitability.model_cmc_transfer_charge_line
+msgid "Chargeback Receiver"
+msgstr "Ricevente del riaddebito"
+
+#. module: cmc_profitability
+#: model:ir.model,name:cmc_profitability.model_cmc_transfer_charge_result
+msgid "Chargeback Result"
+msgstr "Risultato del riaddebito"
+
+#. module: cmc_profitability
+#: model:ir.actions.act_window,name:cmc_profitability.action_cmc_transfer_charge
+#: model:ir.ui.menu,name:cmc_profitability.menu_cmc_transfer_charge
+msgid "Chargeback Runs"
+msgstr "Esecuzioni di riaddebito"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,help:cmc_profitability.field_account_analytic_line__cmc_transfer_charge_id
+msgid "Chargeback run that posted this system line."
+msgstr "Esecuzione di riaddebito che ha registrato questa riga di sistema."
+
+#. module: cmc_profitability
+#: model:ir.model.fields,help:cmc_profitability.field_cmc_profit_sbu__equity
+msgid "Closing COIN less net financial position."
+msgstr "COIN di chiusura meno posizione finanziaria netta."
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_price_element__code
+msgid "Code"
+msgstr "Codice"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_channel__company_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__company_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__company_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_price_element__company_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_product__company_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_result__company_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__company_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu__company_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu_input__company_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_supplier__company_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_waterfall__company_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__company_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge_line__company_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge_result__company_id
+msgid "Company"
+msgstr "Azienda"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_transfer_charge_form
+msgid "Compute"
+msgstr "Calcola"
+
+#. module: cmc_profitability
+#. odoo-python
+#: code:addons/cmc_profitability/models/cmc_profit_engine.py:0
+msgid "Compute the run before generating a direct costing statement."
+msgstr ""
+"Calcolare l'esecuzione prima di generare un prospetto di direct costing."
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_fact_list
+msgid "Contribution"
+msgstr "Contributo"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__contribution_margin
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_product__contribution_margin
+msgid "Contribution Margin"
+msgstr "Margine di contribuzione"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__contribution_total
+msgid "Contribution Total"
+msgstr "Contributo totale"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_transfer_charge_form
+msgid "Cost"
+msgstr "Costo"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge_result__cost_amount
+msgid "Cost Amount"
+msgstr "Importo del costo"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__element_id
+msgid "Cost Element"
+msgstr "Elemento di costo"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__cost_object_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_product__cost_object_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_supplier__cost_object_id
+msgid "Cost Object"
+msgstr "Oggetto di costo"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__cost_to_serve
+msgid "Cost To Serve"
+msgstr "Costo di servizio al cliente"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__cost_to_serve_pct
+msgid "Cost To Serve Pct"
+msgstr "Costo di servizio al cliente %"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__cost_to_serve_total
+msgid "Cost To Serve Total"
+msgstr "Costo di servizio al cliente totale"
+
+#. module: cmc_profitability
+#: model:ir.model.fields.selection,name:cmc_profitability.selection__cmc_transfer_charge__criterion__cost_plus
+msgid "Cost plus"
+msgstr "Costo maggiorato (cost plus)"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_channel__create_uid
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__create_uid
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__create_uid
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_price_element__create_uid
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_product__create_uid
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__create_uid
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu__create_uid
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu_input__create_uid
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_supplier__create_uid
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_waterfall__create_uid
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__create_uid
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge_line__create_uid
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge_result__create_uid
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_channel__create_date
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__create_date
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__create_date
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_price_element__create_date
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_product__create_date
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__create_date
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu__create_date
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu_input__create_date
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_supplier__create_date
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_waterfall__create_date
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__create_date
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge_line__create_date
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge_result__create_date
+msgid "Created on"
+msgstr "Data creazione"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__criterion
+msgid "Criterion"
+msgstr "Criterio"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__cumulative_profit
+msgid "Cumulative Profit"
+msgstr "Utile cumulato"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__cumulative_profit_pct
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_product__cumulative_profit_pct
+msgid "Cumulative Profit Pct"
+msgstr "Utile cumulato %"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_channel__currency_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__currency_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__currency_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_product__currency_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_result__currency_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__currency_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu__currency_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu_input__currency_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_supplier__currency_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_waterfall__currency_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__currency_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge_result__currency_id
+msgid "Currency"
+msgstr "Valuta"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__partner_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__partner_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__customer_ids
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_waterfall__partner_id
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_fact_search
+msgid "Customer"
+msgstr "Cliente"
+
+#. module: cmc_profitability
+#: model:ir.ui.menu,name:cmc_profitability.menu_cmc_profit_customer
+msgid "Customer Margins"
+msgstr "Margini dei clienti"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__customer_object_id
+msgid "Customer Object"
+msgstr "Oggetto cliente"
+
+#. module: cmc_profitability
+#: model:ir.actions.act_window,name:cmc_profitability.action_cmc_profit_customer
+#: model:ir.model,name:cmc_profitability.model_cmc_profit_customer
+msgid "Customer Profitability"
+msgstr "Redditività dei clienti"
+
+#. module: cmc_profitability
+#: model:ir.actions.act_window,name:cmc_profitability.action_cmc_profit_quadrant
+msgid "Customer Quadrants"
+msgstr "Quadranti dei clienti"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_run_form
+msgid "Customers"
+msgstr "Clienti"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__date
+msgid "Date"
+msgstr "Data"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__date_from
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__date_from
+msgid "Date From"
+msgstr "Data da"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__date_to
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__date_to
+msgid "Date To"
+msgstr "Data a"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_run_form
+msgid "Direct costing by customer"
+msgstr "Direct costing per cliente"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_run_form
+msgid "Direct costing by product"
+msgstr "Direct costing per prodotto"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_run_form
+msgid "Direct costing by segment"
+msgstr "Direct costing per segmento"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_fact_list
+msgid "Discount"
+msgstr "Sconto"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__discount_amount
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__discount_amount
+msgid "Discount Amount"
+msgstr "Importo dello sconto"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_account_analytic_line__display_name
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_channel__display_name
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__display_name
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__display_name
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_price_element__display_name
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_product__display_name
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_result__display_name
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__display_name
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu__display_name
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu_input__display_name
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_supplier__display_name
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_waterfall__display_name
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__display_name
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge_line__display_name
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge_result__display_name
+msgid "Display Name"
+msgstr "Nome visualizzato"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__economic_profit
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__economic_profit
+msgid "Economic Profit"
+msgstr "Profitto economico"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_customer_list
+msgid "Economic profit"
+msgstr "Profitto economico"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_waterfall__element_id
+msgid "Element"
+msgstr "Elemento"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu__cash_flow
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_sbu_list
+msgid "FCN"
+msgstr "FCN"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__fact_ids
+msgid "Fact"
+msgstr "Fatto"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__fin_analysis_id
+msgid "Financial Analysis"
+msgstr "Analisi finanziaria"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,help:cmc_profitability.field_cmc_profit_fact__date
+msgid "First day of the month."
+msgstr "Primo giorno del mese."
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__floor_status
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_product__floor_status
+msgid "Floor Status"
+msgstr "Stato del prezzo minimo"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__full_unit_cost
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_product__full_unit_cost
+msgid "Full Unit Cost"
+msgstr "Costo unitario pieno"
+
+#. module: cmc_profitability
+#: model:ir.model.fields.selection,name:cmc_profitability.selection__cmc_transfer_charge__criterion__full
+msgid "Full cost"
+msgstr "Costo pieno"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__gl_revenue
+msgid "Gl Revenue"
+msgstr "Ricavi da contabilità generale"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_account_analytic_line__id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_channel__id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_price_element__id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_product__id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_result__id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu__id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu_input__id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_supplier__id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_waterfall__id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge_line__id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge_result__id
+msgid "ID"
+msgstr "ID"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge_result__internal_margin
+msgid "Internal Margin"
+msgstr "Margine interno"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__internal_margin_total
+msgid "Internal Margin Total"
+msgstr "Margine interno totale"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_transfer_charge_form
+msgid "Internal margin"
+msgstr "Margine interno"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_customer_waterfall_list
+msgid "Invoice price"
+msgstr "Prezzo di fattura"
+
+#. module: cmc_profitability
+#. odoo-python
+#: code:addons/cmc_profitability/models/cmc_profit_result.py:0
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_fact_list
+msgid "Journal items"
+msgstr "Movimenti contabili"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_channel__write_uid
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__write_uid
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__write_uid
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_price_element__write_uid
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_product__write_uid
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__write_uid
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu__write_uid
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu_input__write_uid
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_supplier__write_uid
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_waterfall__write_uid
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__write_uid
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge_line__write_uid
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge_result__write_uid
+msgid "Last Updated by"
+msgstr "Ultimo aggiornamento di"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_channel__write_date
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__write_date
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__write_date
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_price_element__write_date
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_product__write_date
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__write_date
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu__write_date
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu_input__write_date
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_supplier__write_date
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_waterfall__write_date
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__write_date
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge_line__write_date
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge_result__write_date
+msgid "Last Updated on"
+msgstr "Ultimo aggiornamento il"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_run_form
+msgid "Layered statement"
+msgstr "Prospetto a strati"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_customer_form
+msgid "Layers"
+msgstr "Strati"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__ledger_cost
+msgid "Ledger Cost"
+msgstr "Costo contabile"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_customer_waterfall_list
+msgid "List"
+msgstr "Listino"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__list_amount
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__list_amount
+msgid "List Amount"
+msgstr "Importo di listino"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_customer_search
+msgid "Loss-making"
+msgstr "In perdita"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_customer_list
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_product_list
+msgid "M1"
+msgstr "M1"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__contribution_margin
+msgid "M1 Contribution"
+msgstr "Contributo M1"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_customer_list
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_product_list
+msgid "M2"
+msgstr "M2"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__product_margin
+msgid "M2 Product Margin"
+msgstr "Margine di prodotto M2"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_channel_list
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_customer_list
+msgid "M3"
+msgstr "M3"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__served_margin
+msgid "M3 Served Margin"
+msgstr "Margine servito M3"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_customer_list
+msgid "M4"
+msgstr "M4"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__customer_profit
+msgid "M4 Customer Profit"
+msgstr "Utile del cliente M4"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu__mslc
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_sbu_list
+msgid "MSLC"
+msgstr "MSLC"
+
+#. module: cmc_profitability
+#: model:ir.model.fields.selection,name:cmc_profitability.selection__cmc_transfer_charge__criterion__marginal
+msgid "Marginal cost"
+msgstr "Costo marginale"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__market_price
+msgid "Market Price"
+msgstr "Prezzo di mercato"
+
+#. module: cmc_profitability
+#: model:ir.model.fields.selection,name:cmc_profitability.selection__cmc_transfer_charge__criterion__market
+msgid "Market price"
+msgstr "Prezzo di mercato"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__markup_percent
+msgid "Markup Percent"
+msgstr "Percentuale di ricarico"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_fact_search
+msgid "Month"
+msgstr "Mese"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_price_element__name
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__name
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__name
+msgid "Name"
+msgstr "Nome"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__negotiated_price
+msgid "Negotiated Price"
+msgstr "Prezzo negoziato"
+
+#. module: cmc_profitability
+#: model:ir.model.fields.selection,name:cmc_profitability.selection__cmc_transfer_charge__criterion__negotiated
+msgid "Negotiated price"
+msgstr "Prezzo negoziato"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__net_margin_pct
+msgid "Net Margin Pct"
+msgstr "Margine netto %"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,help:cmc_profitability.field_cmc_profit_sbu__cash_flow
+msgid "Net cash flow: MSLC less the COIN growth."
+msgstr "Flusso di cassa netto: MSLC meno la crescita del COIN."
+
+#. module: cmc_profitability
+#. odoo-python
+#: code:addons/cmc_profitability/models/cmc_transfer_charge.py:0
+msgid "No ABC rate is published for the activity and the service unit."
+msgstr ""
+"Per l'attività e l'unità di servizio non è pubblicata alcuna tariffa ABC."
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu__equity
+msgid "Notional equity"
+msgstr "Capitale figurativo"
+
+#. module: cmc_profitability
+#: model:ir.model.fields.selection,name:cmc_profitability.selection__cmc_profit_fact__floor_status__ok
+#: model:ir.model.fields.selection,name:cmc_profitability.selection__cmc_profit_product__floor_status__ok
+msgid "OK"
+msgstr "OK"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__off_invoice_amount
+msgid "Off Invoice Amount"
+msgstr "Importo fuori fattura"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_customer_waterfall_list
+msgid "Off-invoice"
+msgstr "Fuori fattura"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,help:cmc_profitability.field_cmc_profit_price_element__account_ids
+msgid ""
+"Off-invoice items (freight, rebates, bonuses) between the invoice price and "
+"the pocket price."
+msgstr ""
+"Voci fuori fattura (trasporto, sconti a fine anno, premi) tra il prezzo di "
+"fattura e il prezzo effettivo (pocket price)."
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_customer_waterfall_list
+msgid "On-invoice discount"
+msgstr "Sconto in fattura"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__operating_profit
+msgid "Operating Profit"
+msgstr "Utile operativo"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__order_count
+msgid "Order Count"
+msgstr "Numero ordini"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_transfer_charge_form
+msgid "Outcome"
+msgstr "Esito"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu__pfn
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu_input__pfn
+msgid "PFN"
+msgstr "PFN"
+
+#. module: cmc_profitability
+#: model:ir.model.fields.selection,name:cmc_profitability.selection__cmc_profit_customer__quadrant__passive
+msgid "Passive (high margin, low cost-to-serve)"
+msgstr "Passivo (margine alto, costo di servizio al cliente basso)"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__pocket_amount
+msgid "Pocket Amount"
+msgstr "Importo effettivo (pocket)"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_customer_waterfall_list
+msgid "Pocket price"
+msgstr "Prezzo effettivo (pocket price)"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__posted_line_ids
+msgid "Posted Lines"
+msgstr "Righe registrate"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_transfer_charge_form
+msgid "Posted lines"
+msgstr "Righe registrate"
+
+#. module: cmc_profitability
+#: model:ir.actions.act_window,name:cmc_profitability.action_cmc_profit_waterfall_customer
+#: model:ir.ui.menu,name:cmc_profitability.menu_cmc_profit_waterfall
+msgid "Price Waterfall"
+msgstr "Cascata dei prezzi (price waterfall)"
+
+#. module: cmc_profitability
+#: model:ir.model,name:cmc_profitability.model_cmc_profit_price_element
+msgid "Price Waterfall Element"
+msgstr "Elemento della cascata dei prezzi"
+
+#. module: cmc_profitability
+#: model:ir.model,name:cmc_profitability.model_cmc_profit_waterfall
+msgid "Price Waterfall Element Amount"
+msgstr "Importo dell'elemento della cascata dei prezzi"
+
+#. module: cmc_profitability
+#: model:ir.actions.act_window,name:cmc_profitability.action_cmc_profit_price_element
+#: model:ir.ui.menu,name:cmc_profitability.menu_cmc_profit_price_element
+msgid "Price Waterfall Elements"
+msgstr "Elementi della cascata dei prezzi"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_run_form
+msgid "Price elements"
+msgstr "Elementi di prezzo"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_product_search
+msgid "Price floor"
+msgstr "Prezzo minimo"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_customer_form
+msgid "Price waterfall and capital"
+msgstr "Cascata dei prezzi e capitale"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__product_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_product__product_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__product_ids
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_fact_search
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_product__product_margin
+msgid "Product Margin"
+msgstr "Margine di prodotto"
+
+#. module: cmc_profitability
+#: model:ir.ui.menu,name:cmc_profitability.menu_cmc_profit_product
+msgid "Product Margins"
+msgstr "Margini di prodotto"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__product_object_id
+msgid "Product Object"
+msgstr "Oggetto prodotto"
+
+#. module: cmc_profitability
+#: model:ir.actions.act_window,name:cmc_profitability.action_cmc_profit_product
+#: model:ir.model,name:cmc_profitability.model_cmc_profit_product
+msgid "Product Profitability"
+msgstr "Redditività dei prodotti"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__product_sustaining_cost
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__product_sustaining_cost
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_product__product_sustaining_cost
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu__product_sustaining_cost
+msgid "Product Sustaining Cost"
+msgstr "Costo di sostegno del prodotto"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__product_sustaining_total
+msgid "Product Sustaining Total"
+msgstr "Costo di sostegno del prodotto totale"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_fact_list
+msgid "Product-sustaining"
+msgstr "Di sostegno al prodotto"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_run_form
+msgid "Products"
+msgstr "Prodotti"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__missing_cost_product_ids
+msgid "Products Without Unit Cost"
+msgstr "Prodotti senza costo unitario"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_run_form
+msgid "Products without unit cost"
+msgstr "Prodotti senza costo unitario"
+
+#. module: cmc_profitability
+#: model:ir.model,name:cmc_profitability.model_cmc_profit_fact
+msgid "Profit Fact (product x customer x salesperson x month)"
+msgstr "Fatto di profitto (prodotto x cliente x venditore x mese)"
+
+#. module: cmc_profitability
+#: model:ir.actions.act_window,name:cmc_profitability.action_cmc_profit_fact
+#: model:ir.ui.menu,name:cmc_profitability.menu_cmc_profit_fact
+msgid "Profit Facts"
+msgstr "Fatti di profitto"
+
+#. module: cmc_profitability
+#. odoo-python
+#: code:addons/cmc_profitability/models/cmc_profit_run.py:0
+#: model:ir.ui.menu,name:cmc_profitability.menu_cmc_cfg_profitability
+#: model:ir.ui.menu,name:cmc_profitability.menu_cmc_sec_profitability
+msgid "Profitability"
+msgstr "Redditività"
+
+#. module: cmc_profitability
+#: model:ir.model,name:cmc_profitability.model_cmc_profit_run
+msgid "Profitability Run"
+msgstr "Esecuzione di redditività"
+
+#. module: cmc_profitability
+#: model:ir.model,name:cmc_profitability.model_cmc_profit_sbu_input
+msgid "Profitability Run SBU Capital"
+msgstr "Capitale SBU dell'esecuzione di redditività"
+
+#. module: cmc_profitability
+#: model:ir.actions.act_window,name:cmc_profitability.action_cmc_profit_run
+#: model:ir.ui.menu,name:cmc_profitability.menu_cmc_profit_run
+msgid "Profitability Runs"
+msgstr "Esecuzioni di redditività"
+
+#. module: cmc_profitability
+#: model:ir.model,name:cmc_profitability.model_cmc_profit_result
+msgid "Profitability result row"
+msgstr "Riga di risultato di redditività"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__provider_id
+msgid "Provider Center"
+msgstr "Centro fornitore"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__provider_cost
+msgid "Provider Cost"
+msgstr "Costo del fornitore"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__provider_variable_cost
+msgid "Provider Variable Cost"
+msgstr "Costo variabile del fornitore"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_supplier__purchase_amount
+msgid "Purchase Amount"
+msgstr "Importo di acquisto"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_supplier_list
+msgid "Purchases"
+msgstr "Acquisti"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__quadrant
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_customer_search
+msgid "Quadrant"
+msgstr "Quadrante"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__quadrant_cost_threshold
+msgid "Quadrant Cost Threshold"
+msgstr "Soglia di costo dei quadranti"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__quadrant_margin_threshold
+msgid "Quadrant Margin Threshold"
+msgstr "Soglia di margine dei quadranti"
+
+#. module: cmc_profitability
+#: model:ir.ui.menu,name:cmc_profitability.menu_cmc_profit_quadrant
+msgid "Quadrants"
+msgstr "Quadranti"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__quantity
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_product__quantity
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_fact_list
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_product_list
+msgid "Quantity"
+msgstr "Quantità"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu__roce
+msgid "ROCE %"
+msgstr "ROCE %"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__rank
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_product__rank
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_supplier__rank
+msgid "Rank"
+msgstr "Posizione"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__receivable_balance
+msgid "Receivable Balance"
+msgstr "Saldo crediti"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge_line__receiver_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge_result__receiver_id
+msgid "Receiver Center"
+msgstr "Centro ricevente"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__line_ids
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_transfer_charge_form
+msgid "Receivers"
+msgstr "Riceventi"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_run_form
+msgid "Reconciliation"
+msgstr "Riconciliazione"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,help:cmc_profitability.field_cmc_profit_run__unassigned_cost
+msgid "Reported, never charged to a customer or a product."
+msgstr "Rendicontato, mai addebitato a un cliente o a un prodotto."
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_transfer_charge_form
+msgid "Reset to Draft"
+msgstr "Reimposta a bozza"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_run_form
+msgid "Resetting deletes the computed results. Continue?"
+msgstr "Azzerare elimina i risultati calcolati. Continuare?"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_transfer_charge_form
+msgid "Resetting deletes the posted chargeback lines. Continue?"
+msgstr "Azzerare elimina le righe di riaddebito registrate. Continuare?"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__result_ids
+msgid "Result"
+msgstr "Risultato"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_transfer_charge_form
+msgid "Results"
+msgstr "Risultati"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_channel__revenue
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__revenue
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__revenue
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_product__revenue
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu__revenue
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_channel_list
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_customer_list
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_fact_list
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_product_list
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_run_list
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_sbu_list
+msgid "Revenue"
+msgstr "Ricavi"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__revenue_total
+msgid "Revenue Total"
+msgstr "Ricavi totali"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,help:cmc_profitability.field_cmc_profit_run__gl_revenue
+msgid "Revenue the general ledger had when the run was computed."
+msgstr ""
+"Ricavi che la contabilità generale aveva quando l'esecuzione è stata "
+"calcolata."
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_channel__run_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__run_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__run_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_product__run_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_result__run_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu__run_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu_input__run_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_supplier__run_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_waterfall__run_id
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_customer_search
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_fact_search
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_product_search
+msgid "Run"
+msgstr "Esecuzione"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__sbu_value_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_product__sbu_value_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu__sbu_value_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu_input__sbu_value_id
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_product_search
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_run_form
+msgid "SBU"
+msgstr "SBU"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__sbu_line_ids
+msgid "SBU Capital"
+msgstr "Capitale SBU"
+
+#. module: cmc_profitability
+#: model:ir.model,name:cmc_profitability.model_cmc_profit_sbu
+msgid "SBU Margin and Cash Flow"
+msgstr "Margine e flusso di cassa SBU"
+
+#. module: cmc_profitability
+#: model:ir.actions.act_window,name:cmc_profitability.action_cmc_profit_sbu
+#: model:ir.ui.menu,name:cmc_profitability.menu_cmc_profit_sbu
+msgid "SBU Report"
+msgstr "Report SBU"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_run_form
+msgid "SBU capital"
+msgstr "Capitale SBU"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__salesperson_id
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_fact_search
+msgid "Salesperson"
+msgstr "Addetto vendite"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__sbu_ids
+msgid "Sbu"
+msgstr "SBU"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__segment_value_id
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__segment_value_id
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_customer_search
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_fact_search
+msgid "Segment"
+msgstr "Segmento"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,help:cmc_profitability.field_cmc_profit_sbu__mslc
+msgid ""
+"Semi-gross contribution margin: revenue + variable + product-sustaining "
+"cost."
+msgstr ""
+"Margine di contribuzione semi-lordo: ricavi + costi variabili + costi di "
+"sostegno del prodotto."
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_price_element__sequence
+msgid "Sequence"
+msgstr "Sequenza"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_channel__served_margin
+msgid "Served Margin"
+msgstr "Margine servito"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_transfer_charge_form
+msgid "Service"
+msgstr "Servizio"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__driver_id
+msgid "Service Unit"
+msgstr "Unità di servizio"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__service_units
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge_line__quantity
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge_result__quantity
+msgid "Service Units"
+msgstr "Unità di servizio"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,help:cmc_profitability.field_cmc_profit_sbu_input__capital_key
+msgid "Share of the financial analysis capital that the SBU holds."
+msgstr "Quota del capitale dell'analisi finanziaria detenuta dalla SBU."
+
+#. module: cmc_profitability
+#: model:ir.model.fields,help:cmc_profitability.field_cmc_profit_run__fin_analysis_id
+msgid "Source of COIN and PFN of the SBU margin statement."
+msgstr "Fonte di COIN e PFN del prospetto di margine SBU."
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_run_form
+msgid "Span and sources"
+msgstr "Arco temporale e fonti"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__state
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__state
+msgid "State"
+msgstr "Stato"
+
+#. module: cmc_profitability
+#: model:cmc.attribute,name:cmc_profitability.cmc_attribute_sbu
+msgid "Strategic business unit"
+msgstr "Unità di business strategica"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__supplier_ids
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_supplier__partner_id
+msgid "Supplier"
+msgstr "Fornitore"
+
+#. module: cmc_profitability
+#: model:ir.actions.act_window,name:cmc_profitability.action_cmc_profit_supplier
+#: model:ir.ui.menu,name:cmc_profitability.menu_cmc_profit_supplier
+msgid "Supplier TCO"
+msgstr "TCO del fornitore"
+
+#. module: cmc_profitability
+#: model:ir.model,name:cmc_profitability.model_cmc_profit_supplier
+msgid "Supplier Total Cost of Ownership"
+msgstr "Costo totale di proprietà del fornitore"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_run_form
+msgid "Suppliers"
+msgstr "Fornitori"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu__sustainable
+msgid "Sustainable"
+msgstr "Sostenibile"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_supplier_list
+msgid "TCO"
+msgstr "TCO"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_supplier__tco_index
+msgid "Tco Index"
+msgstr "Indice TCO"
+
+#. module: cmc_profitability
+#. odoo-python
+#: code:addons/cmc_profitability/models/cmc_transfer_charge.py:0
+msgid "The %s price must be positive."
+msgstr "Il prezzo %s deve essere positivo."
+
+#. module: cmc_profitability
+#. odoo-python
+#: code:addons/cmc_profitability/models/cmc_profit_engine.py:0
+msgid "The ABC run %s must lie inside the span of the run."
+msgstr ""
+"L'esecuzione ABC %s deve rientrare nell'arco temporale dell'esecuzione."
+
+#. module: cmc_profitability
+#. odoo-python
+#: code:addons/cmc_profitability/models/cmc_profit_engine.py:0
+msgid ""
+"The cost assigned by the ABC run (%(assigned)s) exceeds the analytic cost "
+"base of the span (%(ledger)s): recompute the ABC run."
+msgstr ""
+"Il costo assegnato dall'esecuzione ABC (%(assigned)s) supera la base di "
+"costo analitica dell'arco temporale (%(ledger)s): ricalcolare l'esecuzione "
+"ABC."
+
+#. module: cmc_profitability
+#: model:ir.model.constraint,message:cmc_profitability.constraint_cmc_profit_price_element_code_company_uniq
+msgid "The element code must be unique per company."
+msgstr "Il codice dell'elemento deve essere univoco per azienda."
+
+#. module: cmc_profitability
+#. odoo-python
+#: code:addons/cmc_profitability/models/cmc_profit_run.py:0
+#: code:addons/cmc_profitability/models/cmc_transfer_charge.py:0
+msgid "The end date cannot precede the start date."
+msgstr "La data di fine non può precedere la data di inizio."
+
+#. module: cmc_profitability
+#. odoo-python
+#: code:addons/cmc_profitability/models/cmc_transfer_charge.py:0
+msgid ""
+"The provider already allocated its cost in the period: charging it back "
+"again would relieve it twice."
+msgstr ""
+"Il fornitore ha già allocato il suo costo nel periodo: riaddebitarlo di "
+"nuovo lo scaricherebbe due volte."
+
+#. module: cmc_profitability
+#. odoo-python
+#: code:addons/cmc_profitability/models/cmc_transfer_charge.py:0
+msgid "The provider has no cost in the period: there is nothing to charge."
+msgstr "Il fornitore non ha costi nel periodo: non c'è nulla da addebitare."
+
+#. module: cmc_profitability
+#. odoo-python
+#: code:addons/cmc_profitability/models/cmc_transfer_charge.py:0
+msgid "The receivers consume no service unit: there is nothing to charge."
+msgstr ""
+"I riceventi non consumano alcuna unità di servizio: non c'è nulla da "
+"addebitare."
+
+#. module: cmc_profitability
+#. odoo-python
+#: code:addons/cmc_profitability/models/cmc_transfer_charge.py:0
+msgid "The service units of a receiver must be positive."
+msgstr "Le unità di servizio di un ricevente devono essere positive."
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_supplier__tco
+msgid "Total Cost of Ownership"
+msgstr "Costo totale di proprietà"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__transfer_price
+msgid "Transfer Price"
+msgstr "Prezzo di trasferimento"
+
+#. module: cmc_profitability
+#: model:ir.model,name:cmc_profitability.model_cmc_transfer_charge
+msgid "Transfer Price Chargeback"
+msgstr "Riaddebito a prezzo di trasferimento"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_transfer_charge_form
+msgid "Transfer price"
+msgstr "Prezzo di trasferimento"
+
+#. module: cmc_profitability
+#. odoo-python
+#: code:addons/cmc_profitability/models/cmc_profit_engine.py:0
+msgid "Unassigned"
+msgstr "Non assegnati"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__unassigned_cost
+msgid "Unassigned Cost"
+msgstr "Costo non assegnato"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__unit_cost
+msgid "Unit Cost"
+msgstr "Costo unitario"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__unit_cost_driver_id
+msgid "Unit Cost Driver"
+msgstr "Driver del costo unitario"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__cost_version_id
+msgid "Unit Cost Version"
+msgstr "Versione del costo unitario"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__unit_price
+msgid "Unit Price"
+msgstr "Prezzo unitario"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__unit_variable_cost
+msgid "Unit Variable Cost"
+msgstr "Costo variabile unitario"
+
+#. module: cmc_profitability
+#. odoo-python
+#: code:addons/cmc_profitability/models/cmc_profit_engine.py:0
+msgid "Unknown dimension %s."
+msgstr "Dimensione %s sconosciuta."
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__variable_cost
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__variable_cost
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_product__variable_cost
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu__variable_cost
+msgid "Variable Cost"
+msgstr "Costo variabile"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__variable_cost_total
+msgid "Variable Cost Total"
+msgstr "Costo variabile totale"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__variable_unit_cost
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_product__variable_unit_cost
+msgid "Variable Unit Cost"
+msgstr "Costo unitario variabile"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_fact_list
+msgid "Variable cost"
+msgstr "Costo variabile"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__waterfall_ids
+msgid "Waterfall"
+msgstr "Cascata"
+
+#. module: cmc_profitability
+#: model:ir.actions.act_window,name:cmc_profitability.action_cmc_profit_whale
+#: model:ir.ui.menu,name:cmc_profitability.menu_cmc_profit_whale
+msgid "Whale Curve"
+msgstr "Curva della balena (whale curve)"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__whale_peak
+msgid "Whale Peak"
+msgstr "Picco della curva della balena"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__whale_total
+msgid "Whale Total"
+msgstr "Totale della curva della balena"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_run__whale_unrealized
+msgid "Whale Unrealized"
+msgstr "Valore non realizzato della curva della balena"
+
+#. module: cmc_profitability
+#: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_run_form
+msgid "Whale curve and quadrants"
+msgstr "Curva della balena e quadranti"
+
+#. module: cmc_profitability
+#: model:ir.model.fields,help:cmc_profitability.field_cmc_profit_run__capital_rate
+msgid "Yearly cost of the capital tied up in receivables."
+msgstr "Costo annuo del capitale immobilizzato nei crediti."
+
+#. module: cmc_profitability
+#: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu__growth
+msgid "g %"
+msgstr "g %"

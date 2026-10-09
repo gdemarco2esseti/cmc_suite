@@ -1,0 +1,693 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* cmc_process_costing
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 23:35+0000\n"
+"PO-Revision-Date: 2026-10-09 23:35+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: cmc_process_costing
+#. odoo-python
+#: code:addons/cmc_process_costing/models/cmc_process_run.py:0
+msgid "%(run)s is not computed: a computed run is the only source."
+msgstr ""
+"%(run)s non è calcolata: solo un'esecuzione calcolata è una fonte valida."
+
+#. module: cmc_process_costing
+#: model:ir.actions.report,print_report_name:cmc_process_costing.action_report_cost_of_production
+msgid "'Cost of production - %s' % object.name"
+msgstr "'Costo di produzione - %s' % object.name"
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.report_cost_of_production
+msgid ""
+".\n"
+"                            Control total (to account for - accounted for):"
+msgstr ""
+".\n"
+"                            Totale di controllo (da contabilizzare - contabilizzato):"
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.report_cost_of_production
+msgid ""
+".\n"
+"                            Unit cost transferred:"
+msgstr ""
+".\n"
+"                            Costo unitario trasferito:"
+
+#. module: cmc_process_costing
+#. odoo-python
+#: code:addons/cmc_process_costing/models/cmc_process_run.py:0
+msgid "A process run covers exactly one calendar month."
+msgstr "Un'esecuzione di processo copre esattamente un mese solare."
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.view_cmc_process_run_form
+msgid "Abnormal"
+msgstr "Anomalo"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run_line__abnormal_cost
+msgid "Abnormal Cost"
+msgstr "Costo anomalo"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__abnormal_loss
+msgid "Abnormal Loss"
+msgstr "Perdita anomala"
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.report_cost_of_production
+msgid "Abnormal loss"
+msgstr "Perdita anomala"
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.report_cost_of_production
+msgid "Abnormal spoilage"
+msgstr "Scarti anomali"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,help:cmc_process_costing.field_cmc_process_run__closing_run_id
+msgid ""
+"Adds the overhead received from the service centers to the conversion cost."
+msgstr ""
+"Aggiunge al costo di conversione i costi generali ricevuti dai centri di "
+"servizio."
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,help:cmc_process_costing.field_cmc_process_run__previous_dept_run_id
+msgid ""
+"Another department, same month: source of the transferred-in units and cost."
+msgstr ""
+"Altro reparto, stesso mese: fonte delle unità e del costo trasferiti in "
+"entrata."
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.view_cmc_process_run_form
+msgid "Beginning"
+msgstr "Iniziale"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__beginning_pct_conversion
+msgid "Beginning % Conversion"
+msgstr "Conversione iniziale %"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__beginning_pct_materials
+msgid "Beginning % Materials"
+msgstr "Materiali iniziali %"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run_line__beginning_cost
+msgid "Beginning Cost"
+msgstr "Costo iniziale"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__beginning_cost_conversion
+msgid "Beginning Cost Conversion"
+msgstr "Costo iniziale di conversione"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__beginning_cost_materials
+msgid "Beginning Cost Materials"
+msgstr "Costo iniziale dei materiali"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__beginning_cost_transferred_in
+msgid "Beginning Cost Transferred In"
+msgstr "Costo iniziale trasferito in entrata"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run_line__beginning_pct
+msgid "Beginning Pct"
+msgstr "Percentuale iniziale"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__beginning_units
+msgid "Beginning Units"
+msgstr "Unità iniziali"
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.report_cost_of_production
+msgid "Beginning WIP"
+msgstr "Semilavorati iniziali (WIP)"
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.report_cost_of_production
+msgid "Beginning cost"
+msgstr "Costo iniziale"
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.view_cmc_process_run_form
+msgid "Chaining"
+msgstr "Concatenamento"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__closing_run_id
+msgid "Closing Run"
+msgstr "Esecuzione di chiusura"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__company_id
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run_line__company_id
+msgid "Company"
+msgstr "Azienda"
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.report_cost_of_production
+msgid "Completed and transferred out"
+msgstr "Completate e trasferite in uscita"
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.view_cmc_process_run_form
+msgid "Compute"
+msgstr "Calcola"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__control_difference
+msgid "Control Difference"
+msgstr "Differenza di controllo"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields.selection,name:cmc_process_costing.selection__cmc_process_run_line__element__conversion
+msgid "Conversion"
+msgstr "Conversione"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run_line__cost_per_eu
+msgid "Cost Per Eu"
+msgstr "Costo per unità equivalente"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__cost_to_account
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run_line__cost_to_account
+msgid "Cost To Account"
+msgstr "Costo da contabilizzare"
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.report_cost_of_production
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.view_cmc_process_run_form
+msgid "Cost assignment"
+msgstr "Assegnazione dei costi"
+
+#. module: cmc_process_costing
+#: model:ir.actions.report,name:cmc_process_costing.action_report_cost_of_production
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.report_cost_of_production
+msgid "Cost of Production Report"
+msgstr "Rapporto del costo di produzione"
+
+#. module: cmc_process_costing
+#: model_terms:ir.actions.act_window,help:cmc_process_costing.action_cmc_process_run
+msgid ""
+"Cost of production of a department and month: equivalent units, cost per "
+"equivalent unit, transferred-out cost and ending WIP."
+msgstr ""
+"Costo di produzione di un reparto e di un mese: unità equivalenti, costo per"
+" unità equivalente, costo trasferito in uscita e semilavorati finali."
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.report_cost_of_production
+msgid "Cost per EU"
+msgstr "Costo per unità equivalente"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,help:cmc_process_costing.field_cmc_process_run__control_difference
+msgid "Costs to account for minus costs accounted for: always zero."
+msgstr "Costi da contabilizzare meno costi contabilizzati: sempre zero."
+
+#. module: cmc_process_costing
+#: model_terms:ir.actions.act_window,help:cmc_process_costing.action_cmc_process_run
+msgid "Create a process run"
+msgstr "Crea un'esecuzione di processo"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__create_uid
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run_line__create_uid
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__create_date
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run_line__create_date
+msgid "Created on"
+msgstr "Data creazione"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__currency_id
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run_line__currency_id
+msgid "Currency"
+msgstr "Valuta"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__date_from
+msgid "Date From"
+msgstr "Data da"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__date_to
+msgid "Date To"
+msgstr "Data a"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__center_id
+msgid "Department"
+msgstr "Ufficio"
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.view_cmc_process_run_form
+msgid "Department and period"
+msgstr "Reparto e periodo"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__display_name
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run_line__display_name
+msgid "Display Name"
+msgstr "Nome visualizzato"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run_line__element
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.report_cost_of_production
+msgid "Element"
+msgstr "Elemento"
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.view_cmc_process_run_form
+msgid "Ending"
+msgstr "Finale"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__ending_pct_conversion
+msgid "Ending % Conversion"
+msgstr "Conversione finale %"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__ending_pct_materials
+msgid "Ending % Materials"
+msgstr "Materiali finali %"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run_line__ending_cost
+msgid "Ending Cost"
+msgstr "Costo finale"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run_line__ending_pct
+msgid "Ending Pct"
+msgstr "Percentuale finale"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__ending_units
+msgid "Ending Units"
+msgstr "Unità finali"
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.report_cost_of_production
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.view_cmc_process_run_form
+msgid "Ending WIP"
+msgstr "Semilavorati finali (WIP)"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__ending_wip_cost
+msgid "Ending Wip Cost"
+msgstr "Costo dei semilavorati finali"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run_line__equivalent_units
+msgid "Equivalent Units"
+msgstr "Unità equivalenti"
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.report_cost_of_production
+msgid "Equivalent units"
+msgstr "Unità equivalenti"
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.report_cost_of_production
+msgid "Equivalent units and cost per equivalent unit"
+msgstr "Unità equivalenti e costo per unità equivalente"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields.selection,name:cmc_process_costing.selection__cmc_process_run__method__fifo
+msgid "FIFO"
+msgstr "FIFO"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,help:cmc_process_costing.field_cmc_process_run_line__cost_per_eu
+msgid "Full precision, never rounded."
+msgstr "Precisione piena, mai arrotondato."
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,help:cmc_process_costing.field_cmc_process_run__units_completed
+msgid "Good units completed and transferred out."
+msgstr "Unità buone completate e trasferite in uscita."
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__id
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run_line__id
+msgid "ID"
+msgstr "ID"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,help:cmc_process_costing.field_cmc_process_run__transferred_out_cost
+msgid "Includes the normal spoilage."
+msgstr "Include gli scarti normali."
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__write_uid
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run_line__write_uid
+msgid "Last Updated by"
+msgstr "Ultimo aggiornamento di"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__write_date
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run_line__write_date
+msgid "Last Updated on"
+msgstr "Ultimo aggiornamento il"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__line_ids
+msgid "Line"
+msgstr "Riga"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields.selection,name:cmc_process_costing.selection__cmc_process_run_line__element__materials
+msgid "Materials"
+msgstr "Materiali"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__method
+msgid "Method"
+msgstr "Metodo"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__name
+msgid "Name"
+msgstr "Nome"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__normal_spoilage_pct
+msgid "Normal Spoilage %"
+msgstr "Scarti normali %"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__normal_spoilage_cost
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run_line__normal_spoilage_cost
+msgid "Normal Spoilage Cost"
+msgstr "Costo degli scarti normali"
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.report_cost_of_production
+msgid "Normal spoilage"
+msgstr "Scarti normali"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,help:cmc_process_costing.field_cmc_process_run__normal_spoilage_pct
+msgid "Normal spoilage as % of the good units completed."
+msgstr "Scarti normali in % delle unità buone completate."
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.report_cost_of_production
+msgid "Normal spoilage included in the transferred-out cost:"
+msgstr "Scarti normali inclusi nel costo trasferito in uscita:"
+
+#. module: cmc_process_costing
+#. odoo-python
+#: code:addons/cmc_process_costing/models/cmc_process_run.py:0
+msgid "Percentages must be between 0 and 100."
+msgstr "Le percentuali devono essere comprese tra 0 e 100."
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.view_cmc_process_run_form
+msgid "Period"
+msgstr "Periodo"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run_line__period_cost
+msgid "Period Cost"
+msgstr "Costo del periodo"
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.report_cost_of_production
+msgid "Period cost"
+msgstr "Costo del periodo"
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.view_cmc_process_run_form
+msgid "Prefill from MRP"
+msgstr "Precompila da MRP"
+
+#. module: cmc_process_costing
+#. odoo-python
+#: code:addons/cmc_process_costing/models/cmc_process_run.py:0
+msgid "Prefill works on draft runs only."
+msgstr "La precompilazione funziona solo su esecuzioni in bozza."
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__previous_run_id
+msgid "Previous Month Run"
+msgstr "Esecuzione del mese precedente"
+
+#. module: cmc_process_costing
+#: model:ir.ui.menu,name:cmc_process_costing.menu_cmc_sec_process_costing
+msgid "Process Costing"
+msgstr "Costo per processo (process costing)"
+
+#. module: cmc_process_costing
+#: model:ir.model,name:cmc_process_costing.model_cmc_process_run
+msgid "Process Costing Run"
+msgstr "Esecuzione di costo per processo"
+
+#. module: cmc_process_costing
+#: model:ir.model,name:cmc_process_costing.model_cmc_process_run_line
+msgid "Process Costing Run Line"
+msgstr "Riga di esecuzione di costo per processo"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__product_id
+msgid "Process Output"
+msgstr "Output del processo"
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.view_cmc_process_run_form
+msgid "Process Run"
+msgstr "Esecuzione di processo"
+
+#. module: cmc_process_costing
+#: model:ir.actions.act_window,name:cmc_process_costing.action_cmc_process_run
+#: model:ir.ui.menu,name:cmc_process_costing.menu_cmc_process_run
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.view_cmc_process_run_list
+msgid "Process Runs"
+msgstr "Esecuzioni di processo"
+
+#. module: cmc_process_costing
+#. odoo-python
+#: code:addons/cmc_process_costing/models/cmc_process_run.py:0
+msgid "Process costing"
+msgstr "Costo per processo (process costing)"
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.report_cost_of_production
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.view_cmc_process_run_form
+msgid "Quantity schedule"
+msgstr "Prospetto delle quantità"
+
+#. module: cmc_process_costing
+#. odoo-python
+#: code:addons/cmc_process_costing/models/cmc_process_run.py:0
+msgid "Reset a computed run to draft before deleting it."
+msgstr "Riportare in bozza un'esecuzione calcolata prima di eliminarla."
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.view_cmc_process_run_form
+msgid "Reset to Draft"
+msgstr "Reimposta a bozza"
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.view_cmc_process_run_form
+msgid "Resetting deletes the computed results. Continue?"
+msgstr "Azzerare elimina i risultati calcolati. Continuare?"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run_line__run_id
+msgid "Run"
+msgstr "Esecuzione"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,help:cmc_process_costing.field_cmc_process_run__previous_run_id
+msgid ""
+"Same department and product, an earlier month: source of the beginning WIP."
+msgstr ""
+"Stesso reparto e prodotto, un mese precedente: fonte dei semilavorati "
+"iniziali."
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.report_cost_of_production
+msgid "Started / transferred in"
+msgstr "Avviate / trasferite in entrata"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,help:cmc_process_costing.field_cmc_process_run__units_started
+msgid "Started in the department or transferred in."
+msgstr "Avviate nel reparto o trasferite in entrata."
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__state
+msgid "State"
+msgstr "Stato"
+
+#. module: cmc_process_costing
+#. odoo-python
+#: code:addons/cmc_process_costing/models/cmc_process_run.py:0
+msgid ""
+"The closing run must be of the same company and of the same period as the "
+"run."
+msgstr ""
+"L'esecuzione di chiusura deve essere della stessa azienda e dello stesso "
+"periodo dell'esecuzione."
+
+#. module: cmc_process_costing
+#. odoo-python
+#: code:addons/cmc_process_costing/models/cmc_process_run.py:0
+msgid "The control total of the cost of production does not close."
+msgstr "Il totale di controllo del costo di produzione non quadra."
+
+#. module: cmc_process_costing
+#. odoo-python
+#: code:addons/cmc_process_costing/models/cmc_process_run.py:0
+msgid "The cost of production cannot be computed: %s"
+msgstr "Il costo di produzione non può essere calcolato: %s"
+
+#. module: cmc_process_costing
+#. odoo-python
+#: code:addons/cmc_process_costing/models/cmc_process_run.py:0
+msgid ""
+"The previous month run must be of the same department and product, in an "
+"earlier month."
+msgstr ""
+"L'esecuzione del mese precedente deve essere dello stesso reparto e "
+"prodotto, in un mese precedente."
+
+#. module: cmc_process_costing
+#. odoo-python
+#: code:addons/cmc_process_costing/models/cmc_process_run.py:0
+msgid "The upstream run must be of another department, in the same month."
+msgstr ""
+"L'esecuzione a monte deve essere di un altro reparto, nello stesso mese."
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.report_cost_of_production
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.view_cmc_process_run_form
+msgid "To account for"
+msgstr "Da contabilizzare"
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.report_cost_of_production
+msgid "Total"
+msgstr "Totale"
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.view_cmc_process_run_form
+msgid "Transferred"
+msgstr "Trasferito"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run_line__transferred_cost
+msgid "Transferred Cost"
+msgstr "Costo trasferito"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields.selection,name:cmc_process_costing.selection__cmc_process_run_line__element__transferred_in
+msgid "Transferred In"
+msgstr "Trasferito in entrata"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__transferred_out_cost
+msgid "Transferred Out Cost"
+msgstr "Costo trasferito in uscita"
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.report_cost_of_production
+msgid "Transferred out"
+msgstr "Trasferito in uscita"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__unit_cost_transferred
+msgid "Unit Cost Transferred"
+msgstr "Costo unitario trasferito"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__units_abnormal_spoiled
+msgid "Units Abnormal Spoiled"
+msgstr "Unità con scarto anomalo"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__units_completed
+msgid "Units Completed"
+msgstr "Unità completate"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__units_normal_spoiled
+msgid "Units Normal Spoiled"
+msgstr "Unità con scarto normale"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__units_spoiled
+msgid "Units Spoiled"
+msgstr "Unità scartate"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__units_started
+msgid "Units Started"
+msgstr "Unità avviate"
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.view_cmc_process_run_form
+msgid "Units accounted for"
+msgstr "Unità contabilizzate"
+
+#. module: cmc_process_costing
+#. odoo-python
+#: code:addons/cmc_process_costing/models/cmc_process_run.py:0
+msgid "Units cannot be negative."
+msgstr "Le unità non possono essere negative."
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.view_cmc_process_run_form
+msgid "Units to account for"
+msgstr "Unità da contabilizzare"
+
+#. module: cmc_process_costing
+#. odoo-python
+#: code:addons/cmc_process_costing/models/cmc_process_run.py:0
+msgid ""
+"Units to account for (%(to_account)s) differ from units accounted for "
+"(%(accounted)s)."
+msgstr ""
+"Le unità da contabilizzare (%(to_account)s) differiscono dalle unità "
+"contabilizzate (%(accounted)s)."
+
+#. module: cmc_process_costing
+#: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__previous_dept_run_id
+msgid "Upstream Department Run"
+msgstr "Esecuzione del reparto a monte"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields.selection,name:cmc_process_costing.selection__cmc_process_run__method__weighted_average
+msgid "Weighted Average"
+msgstr "Media ponderata"
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.view_cmc_process_run_form
+msgid "Work in progress"
+msgstr "Lavori in corso"

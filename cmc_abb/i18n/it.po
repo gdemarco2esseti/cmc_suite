@@ -1,0 +1,1523 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* cmc_abb
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 23:35+0000\n"
+"PO-Revision-Date: 2026-10-09 23:35+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_abb_engine.py:0
+msgid "%(version)s has no planned quantity of %(measure)s."
+msgstr "%(version)s non ha una quantità pianificata di %(measure)s."
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_abb_run.py:0
+msgid "%s (what-if)"
+msgstr "%s (what-if)"
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_abb_engine.py:0
+msgid "%s already holds a computed ABB run: reset it first."
+msgstr "%s contiene già un'esecuzione ABB calcolata: azzerarla prima."
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_abb_engine.py:0
+msgid "%s is approved: the budget lines go into a draft version."
+msgstr "%s è approvata: le righe di budget vanno in una versione in bozza."
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_abb_engine.py:0
+msgid "%s must cover the same span as %s."
+msgstr "%s deve coprire lo stesso arco temporale di %s."
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_abc_resource.py:0
+msgid "%s: the unit size must be greater than zero."
+msgstr "%s: la dimensione dell'unità deve essere maggiore di zero."
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_abc_resource.py:0
+msgid "%s: unit cost and committed units cannot be negative."
+msgstr ""
+"%s: il costo unitario e le unità impegnate non possono essere negativi."
+
+#. module: cmc_abb
+#: model:ir.model.constraint,message:cmc_abb.constraint_cmc_abb_bill_line_bill_uniq
+msgid "A cost object consumes an activity once per run."
+msgstr ""
+"Un oggetto di costo consuma un'attività una sola volta per esecuzione."
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_abb_run.py:0
+msgid "A non-productive time must be greater than zero."
+msgstr "Un tempo non produttivo deve essere maggiore di zero."
+
+#. module: cmc_abb
+#: model:ir.model,name:cmc_abb.model_cmc_abb_activity_result
+msgid "ABB Activity Demand and Rate"
+msgstr "Domanda e tariffa delle attività ABB"
+
+#. module: cmc_abb
+#: model:ir.model,name:cmc_abb.model_cmc_abb_driver_override
+msgid "ABB Activity Driver Override"
+msgstr "Sostituzione del driver di attività ABB"
+
+#. module: cmc_abb
+#: model:ir.model,name:cmc_abb.model_cmc_abb_bill_line
+msgid "ABB Bill of Activities Line"
+msgstr "Riga della distinta delle attività ABB"
+
+#. module: cmc_abb
+#: model:ir.model,name:cmc_abb.model_cmc_abb_capacity_state
+msgid "ABB Capacity Time State"
+msgstr "Stato del tempo di capacità ABB"
+
+#. module: cmc_abb
+#: model:ir.model,name:cmc_abb.model_cmc_abb_object_result
+msgid "ABB Cost Object Pro-forma"
+msgstr "Pro-forma dell'oggetto di costo ABB"
+
+#. module: cmc_abb
+#: model:ir.model,name:cmc_abb.model_cmc_abb_warning
+msgid "ABB Extrapolation Warning"
+msgstr "Avviso di estrapolazione ABB"
+
+#. module: cmc_abb
+#: model:ir.model,name:cmc_abb.model_cmc_abb_time_state
+msgid "ABB Non-productive Time"
+msgstr "Tempo non produttivo ABB"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_budget_line__abb_resource_id
+msgid "ABB Resource"
+msgstr "Risorsa ABB"
+
+#. module: cmc_abb
+#: model:ir.model,name:cmc_abb.model_cmc_abb_resource_result
+msgid "ABB Resource Supply"
+msgstr "Fornitura di risorsa ABB"
+
+#. module: cmc_abb
+#: model:ir.model,name:cmc_abb.model_cmc_abb_usage_line
+msgid "ABB Resource Usage Line"
+msgstr "Riga di utilizzo risorsa ABB"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_run__abb_run_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_budget_line__abb_run_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_rate__abb_run_id
+msgid "ABB Run"
+msgstr "Esecuzione ABB"
+
+#. module: cmc_abb
+#: model:ir.model,name:cmc_abb.model_cmc_abb_result
+msgid "ABB result row"
+msgstr "Riga di risultato ABB"
+
+#. module: cmc_abb
+#: model:ir.model,name:cmc_abb.model_cmc_abb_input
+msgid "ABB run input line"
+msgstr "Riga di input dell'esecuzione ABB"
+
+#. module: cmc_abb
+#: model:ir.model,name:cmc_abb.model_cmc_abc_resource
+msgid "ABC Resource"
+msgstr "Risorsa ABC"
+
+#. module: cmc_abb
+#: model:ir.actions.act_window,name:cmc_abb.action_cmc_abb_variance_line
+msgid "ABC Variance Analysis"
+msgstr "Analisi degli scostamenti ABC"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_line_list
+msgid "ABC Variance Lines"
+msgstr "Righe di scostamento ABC"
+
+#. module: cmc_abb
+#: model:ir.model,name:cmc_abb.model_cmc_abb_variance_run
+msgid "ABC Variance Run"
+msgstr "Esecuzione di scostamento ABC"
+
+#. module: cmc_abb
+#: model:ir.model,name:cmc_abb.model_cmc_abb_variance_line
+msgid "ABC Variance by Resource"
+msgstr "Scostamento ABC per risorsa"
+
+#. module: cmc_abb
+#: model:ir.actions.act_window,name:cmc_abb.action_cmc_abb_variance_run
+#: model:ir.ui.menu,name:cmc_abb.menu_cmc_abb_variance_run
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_run_list
+msgid "ABC Variances"
+msgstr "Scostamenti ABC"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_line_list
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_run_form
+msgid "ABC variance"
+msgstr "Scostamento ABC"
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_abb_variance.py:0
+msgid "ABC variances"
+msgstr "Scostamenti ABC"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_line__abc_variance
+msgid "Abc Variance"
+msgstr "Scostamento ABC"
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_abb_engine.py:0
+msgid "Activities %s have demand but no resource usage line."
+msgstr "Le attività %s hanno domanda ma nessuna riga di utilizzo risorsa."
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_abb_engine.py:0
+msgid "Activities %s have no activity driver."
+msgstr "Le attività %s non hanno un driver di attività."
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_activity_result__activity_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_bill_line__activity_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_driver_override__activity_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_usage_line__activity_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_warning__activity_id
+msgid "Activity"
+msgstr "Attività"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__activity_result_ids
+msgid "Activity Result"
+msgstr "Risultato dell'attività"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_bill_line__qty_per_unit
+msgid "Activity Units per Output Unit"
+msgstr "Unità di attività per unità di output"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+msgid "Activity driver overrides"
+msgstr "Sostituzioni dei driver di attività"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+msgid "Activity-Based Budget"
+msgstr "Budget per attività"
+
+#. module: cmc_abb
+#: model:ir.model,name:cmc_abb.model_cmc_abb_run
+msgid "Activity-Based Budget Run"
+msgstr "Esecuzione del budget per attività"
+
+#. module: cmc_abb
+#: model:ir.ui.menu,name:cmc_abb.menu_cmc_sec_abb
+msgid "Activity-Based Budgeting"
+msgstr "Budgeting basato sulle attività (ABB)"
+
+#. module: cmc_abb
+#: model:ir.actions.act_window,name:cmc_abb.action_cmc_abb_run
+#: model:ir.ui.menu,name:cmc_abb.menu_cmc_abb_run
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_list
+msgid "Activity-Based Budgets"
+msgstr "Budget per attività"
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_abb_run.py:0
+msgid "Activity-based budget"
+msgstr "Budget per attività"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_line_list
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_run_form
+msgid "Actual"
+msgstr "Effettiva"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_line_pivot
+msgid "Actual / ABC / ABB by center"
+msgstr "Effettivo / ABC / ABB per centro"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_line__actual_cost
+msgid "Actual Cost"
+msgstr "Costo effettivo"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_line__actual_demand_qty
+msgid "Actual Demand Qty"
+msgstr "Quantità di domanda effettiva"
+
+#. module: cmc_abb
+#: model:ir.model.fields,help:cmc_abb.field_cmc_abb_variance_line__assigned_cost
+msgid "Actual activity x standard rate."
+msgstr "Attività effettiva x tariffa standard."
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_object_result__amount
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+msgid "Amount"
+msgstr "Importo"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+msgid ""
+"An activity driver quantity is overridden: the cost object results are not "
+"reconciled to the activity demand."
+msgstr ""
+"Una quantità del driver di attività è sostituita: i risultati degli oggetti "
+"di costo non sono riconciliati con la domanda delle attività."
+
+#. module: cmc_abb
+#: model:ir.model.constraint,message:cmc_abb.constraint_cmc_abb_driver_override_override_uniq
+msgid "An activity has one driver override per run."
+msgstr "Un'attività ha una sola sostituzione del driver per esecuzione."
+
+#. module: cmc_abb
+#: model:ir.model.constraint,message:cmc_abb.constraint_cmc_abb_usage_line_usage_uniq
+msgid "An activity uses a resource once per run."
+msgstr "Un'attività usa una risorsa una sola volta per esecuzione."
+
+#. module: cmc_abb
+#: model:ir.model.fields,help:cmc_abb.field_cmc_abb_run__source_version_id
+msgid "Approved version holding the planned volumes."
+msgstr "Versione approvata che contiene i volumi pianificati."
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_activity_result_list
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_list
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_line_list
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_run_form
+msgid "Assigned"
+msgstr "Assegnato"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_activity_result__assigned_cost
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__assigned_cost
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_line__assigned_cost
+msgid "Assigned Cost"
+msgstr "Costo assegnato"
+
+#. module: cmc_abb
+#: model:ir.model.fields,help:cmc_abb.field_cmc_abb_variance_line__abc_variance
+msgid "Assigned minus actual."
+msgstr "Assegnato meno effettivo."
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__baseline_run_id
+msgid "Baseline"
+msgstr "Base"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__bill_line_ids
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_whatif_form
+msgid "Bill of Activities"
+msgstr "Distinta delle attività"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__bottleneck_resource_id
+msgid "Bottleneck Resource"
+msgstr "Risorsa collo di bottiglia"
+
+#. module: cmc_abb
+#: model:ir.actions.act_window,name:cmc_abb.action_cmc_abb_bottleneck
+#: model:ir.ui.menu,name:cmc_abb.menu_cmc_abb_bottleneck
+msgid "Bottlenecks"
+msgstr "Colli di bottiglia"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_line_list
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_run_form
+msgid "Budget"
+msgstr "Budget"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_run_form
+msgid "Budget = assigned + unused + unexpected utilisation"
+msgstr "Budget = assegnato + inutilizzato + utilizzo imprevisto"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_line__budget_cost
+msgid "Budget Cost"
+msgstr "Costo a budget"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_line__budget_demand_qty
+msgid "Budget Demand Qty"
+msgstr "Quantità di domanda a budget"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abc_resource__budget_element_id
+msgid "Budget Element"
+msgstr "Elemento di budget"
+
+#. module: cmc_abb
+#: model:ir.model,name:cmc_abb.model_cmc_budget_line
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__budget_line_ids
+msgid "Budget Line"
+msgstr "Riga di budget"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+msgid "Budget Lines"
+msgstr "Righe di budget"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__target_version_id
+msgid "Budget Version"
+msgstr "Versione del budget"
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_budget_line.py:0
+msgid "Budget lines written by an ABB run change only by resetting that run."
+msgstr ""
+"Le righe di budget scritte da un'esecuzione ABB cambiano solo azzerando "
+"quell'esecuzione."
+
+#. module: cmc_abb
+#: model:ir.model.fields,help:cmc_abb.field_cmc_abb_variance_line__spending_variance
+#: model:ir.model.fields,help:cmc_abb.field_cmc_abb_variance_run__total_spending_variance
+msgid "Budget minus actual: positive is favourable."
+msgstr "Budget meno effettivo: il positivo è favorevole."
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_list
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_whatif_form
+msgid "Budgeted"
+msgstr "A budget"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__budgeted_cost
+msgid "Budgeted Cost"
+msgstr "Costo a budget"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_line__budgeted_unused_cost
+msgid "Budgeted Unused Cost"
+msgstr "Costo inutilizzato a budget"
+
+#. module: cmc_abb
+#: model:ir.model.fields,help:cmc_abb.field_cmc_abb_run__delta_cost
+msgid "Budgeted cost minus the baseline's."
+msgstr "Costo a budget meno quello di base."
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_line_list
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_run_form
+msgid "Budgeted unused"
+msgstr "Inutilizzato a budget"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_activity_result__calibration_qty
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_warning__calibration_qty
+msgid "Calibration Qty"
+msgstr "Quantità di calibrazione"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__calibration_run_id
+msgid "Calibration Run"
+msgstr "Esecuzione di calibrazione"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__calibration_tolerance
+msgid "Calibration Tolerance"
+msgstr "Tolleranza di calibrazione"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_activity_result__capacity_qty
+msgid "Capacity Qty"
+msgstr "Quantità di capacità"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__capacity_state_ids
+msgid "Capacity State"
+msgstr "Stato della capacità"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_capacity_state_list
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+msgid "Capacity States"
+msgstr "Stati della capacità"
+
+#. module: cmc_abb
+#: model:ir.actions.act_window,name:cmc_abb.action_cmc_abb_capacity_state
+#: model:ir.ui.menu,name:cmc_abb.menu_cmc_abb_capacity_state
+msgid "Capacity Time States"
+msgstr "Stati del tempo di capacità"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_whatif_form
+msgid ""
+"Change a driver quantity, a usage or a non-productive time and compute: the "
+"scenario never writes budget lines nor rates."
+msgstr ""
+"Modificare una quantità del driver, un utilizzo o un tempo non produttivo e "
+"calcolare: lo scenario non scrive mai righe di budget né tariffe."
+
+#. module: cmc_abb
+#: model:ir.model.fields.selection,name:cmc_abb.selection__cmc_abb_capacity_state__mode__changeover
+#: model:ir.model.fields.selection,name:cmc_abb.selection__cmc_abb_time_state__mode__changeover
+msgid "Changeover"
+msgstr "Cambio attrezzaggio"
+
+#. module: cmc_abb
+#: model:ir.model.fields.selection,name:cmc_abb.selection__cmc_abb_resource_result__spending_profile__committed_fixed
+#: model:ir.model.fields.selection,name:cmc_abb.selection__cmc_abb_variance_line__spending_profile__committed_fixed
+#: model:ir.model.fields.selection,name:cmc_abb.selection__cmc_abc_resource__spending_profile__committed_fixed
+msgid "Committed - fixed"
+msgstr "Impegnato - fisso"
+
+#. module: cmc_abb
+#: model:ir.model.fields.selection,name:cmc_abb.selection__cmc_abb_resource_result__spending_profile__committed_step
+#: model:ir.model.fields.selection,name:cmc_abb.selection__cmc_abb_variance_line__spending_profile__committed_step
+#: model:ir.model.fields.selection,name:cmc_abb.selection__cmc_abc_resource__spending_profile__committed_step
+msgid "Committed - step"
+msgstr "Impegnato - a gradini"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__committed_units
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abc_resource__committed_units
+msgid "Committed Units"
+msgstr "Unità impegnate"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_activity_result__company_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_bill_line__company_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_capacity_state__company_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_driver_override__company_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_input__company_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_object_result__company_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__company_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_result__company_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__company_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_time_state__company_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_usage_line__company_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_line__company_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_run__company_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_warning__company_id
+msgid "Company"
+msgstr "Azienda"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_whatif_form
+msgid "Compute"
+msgstr "Calcola"
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_abb_run.py:0
+msgid "Compute the run first: a scenario is compared with computed figures."
+msgstr ""
+"Calcolare prima l'esecuzione: uno scenario si confronta con valori "
+"calcolati."
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_search
+msgid "Computed"
+msgstr "Calcolato"
+
+#. module: cmc_abb
+#: model:ir.model.fields,help:cmc_abb.field_cmc_abb_run__calibration_run_id
+msgid ""
+"Computed ABC run the bill of activities and the extrapolation warnings come "
+"from."
+msgstr ""
+"Esecuzione ABC calcolata da cui provengono la distinta delle attività e gli "
+"avvisi di estrapolazione."
+
+#. module: cmc_abb
+#: model:ir.model.fields,help:cmc_abb.field_cmc_abb_variance_run__abb_run_id
+msgid "Computed activity-based budget the period is measured against."
+msgstr "Budget per attività calcolato rispetto al quale si misura il periodo."
+
+#. module: cmc_abb
+#: model:ir.model.fields,help:cmc_abb.field_cmc_abb_run__baseline_run_id
+msgid "Computed run a what-if scenario is compared with."
+msgstr "Esecuzione calcolata con cui si confronta uno scenario what-if."
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_activity_result__constraining_resource_id
+msgid "Constraining Resource"
+msgstr "Risorsa vincolante"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_activity_result_list
+msgid "Constraining Resources"
+msgstr "Risorse vincolanti"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_capacity_state__cost
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_capacity_state_list
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+msgid "Cost"
+msgstr "Costo"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__center_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_line__center_id
+msgid "Cost Center"
+msgstr "Centro di costo"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__element_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_line__element_id
+msgid "Cost Element"
+msgstr "Elemento di costo"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_bill_line__cost_object_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_object_result__cost_object_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_warning__cost_object_id
+msgid "Cost Object"
+msgstr "Oggetto di costo"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+msgid "Cost Objects"
+msgstr "Oggetti di costo"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_line_search
+msgid "Cost center"
+msgstr "Centro di costo"
+
+#. module: cmc_abb
+#: model:ir.model.fields,help:cmc_abb.field_cmc_abc_resource__budget_element_id
+msgid ""
+"Cost element of the budget lines. Empty: the single cost element of the "
+"resource."
+msgstr ""
+"Elemento di costo delle righe di budget. Vuoto: l'unico elemento di costo "
+"della risorsa."
+
+#. module: cmc_abb
+#: model:ir.model.fields,help:cmc_abb.field_cmc_abc_resource__unit_cost
+msgid "Cost of one supply unit. Committed profiles: per year."
+msgstr "Costo di un'unità di fornitura. Profili impegnati: all'anno."
+
+#. module: cmc_abb
+#: model_terms:ir.actions.act_window,help:cmc_abb.action_cmc_abb_variance_run
+msgid "Create an ABC variance run"
+msgstr "Crea un'esecuzione di scostamento ABC"
+
+#. module: cmc_abb
+#: model_terms:ir.actions.act_window,help:cmc_abb.action_cmc_abb_run
+msgid "Create an activity-based budget"
+msgstr "Crea un budget per attività"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_activity_result__create_uid
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_bill_line__create_uid
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_capacity_state__create_uid
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_driver_override__create_uid
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_object_result__create_uid
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__create_uid
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__create_uid
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_time_state__create_uid
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_usage_line__create_uid
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_line__create_uid
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_run__create_uid
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_warning__create_uid
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_activity_result__create_date
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_bill_line__create_date
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_capacity_state__create_date
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_driver_override__create_date
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_object_result__create_date
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__create_date
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__create_date
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_time_state__create_date
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_usage_line__create_date
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_line__create_date
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_run__create_date
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_warning__create_date
+msgid "Created on"
+msgstr "Data creazione"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_activity_result__currency_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_capacity_state__currency_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_object_result__currency_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__currency_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_result__currency_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__currency_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_line__currency_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_run__currency_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_warning__currency_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abc_resource__currency_id
+msgid "Currency"
+msgstr "Valuta"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_line__date_from
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_run__date_from
+msgid "Date From"
+msgstr "Data da"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_run__date_to
+msgid "Date To"
+msgstr "Data a"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_whatif_form
+msgid "Delta"
+msgstr "Delta"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__delta_cost
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__delta_cost
+msgid "Delta Cost"
+msgstr "Costo delta"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__delta_supply_units
+msgid "Delta Supply Units"
+msgstr "Unità di fornitura delta"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_activity_result__demand_qty
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__demand_qty
+msgid "Demand Qty"
+msgstr "Quantità di domanda"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+msgid "Demand by Activity"
+msgstr "Domanda per attività"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_activity_result__deviation_percent
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_warning__deviation_percent
+msgid "Deviation Percent"
+msgstr "Percentuale di scostamento"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_activity_result__display_name
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_bill_line__display_name
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_capacity_state__display_name
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_driver_override__display_name
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_input__display_name
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_object_result__display_name
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__display_name
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_result__display_name
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__display_name
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_time_state__display_name
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_usage_line__display_name
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_line__display_name
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_run__display_name
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_warning__display_name
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abc_resource__display_name
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_budget_line__display_name
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_rate__display_name
+msgid "Display Name"
+msgstr "Nome visualizzato"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_search
+msgid "Draft"
+msgstr "Bozza"
+
+#. module: cmc_abb
+#: model:ir.model.fields,help:cmc_abb.field_cmc_abb_run__target_version_id
+msgid ""
+"Draft version receiving the budget lines and the prospective rates. Empty: "
+"analysis only."
+msgstr ""
+"Versione in bozza che riceve le righe di budget e le tariffe prospettiche. "
+"Vuoto: solo analisi."
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_activity_result__driver_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__driver_id
+msgid "Driver"
+msgstr "Driver"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__driver_override_ids
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_whatif_form
+msgid "Driver Overrides"
+msgstr "Sostituzioni dei driver"
+
+#. module: cmc_abb
+#: model:ir.model.fields,help:cmc_abb.field_cmc_abb_activity_result__capacity_qty
+msgid ""
+"Driver units the activity can still supply before its first constraining "
+"resource binds."
+msgstr ""
+"Unità di driver che l'attività può ancora fornire prima che si saturi la "
+"prima risorsa vincolante."
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__excess_units
+msgid "Excess Units"
+msgstr "Unità in eccesso"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__extrapolation_warning
+msgid "Extrapolation Warning"
+msgstr "Avviso di estrapolazione"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_search
+msgid "Extrapolation warning"
+msgstr "Avviso di estrapolazione"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_activity_result__fixed_rate
+msgid "Fixed Rate"
+msgstr "Tariffa fissa"
+
+#. module: cmc_abb
+#: model:ir.model.fields.selection,name:cmc_abb.selection__cmc_abb_resource_result__spending_profile__flexible
+#: model:ir.model.fields.selection,name:cmc_abb.selection__cmc_abb_variance_line__spending_profile__flexible
+#: model:ir.model.fields.selection,name:cmc_abb.selection__cmc_abc_resource__spending_profile__flexible
+msgid "Flexible"
+msgstr "Flessibile"
+
+#. module: cmc_abb
+#: model:ir.model.fields,help:cmc_abb.field_cmc_abc_resource__spending_profile
+msgid ""
+"Flexible: bought as used. Committed fixed: the capacity on hand. Committed "
+"step: bought in lumps."
+msgstr ""
+"Flessibile: acquistata a consumo. Impegnata fissa: la capacità disponibile. "
+"Impegnata a gradini: acquistata a blocchi."
+
+#. module: cmc_abb
+#: model:ir.model.fields,help:cmc_abb.field_cmc_abb_run__predicted_cost
+msgid "Forecast driver quantity x the baseline rates."
+msgstr "Quantità prevista del driver x tariffe di base."
+
+#. module: cmc_abb
+#: model:ir.model.fields,help:cmc_abb.field_cmc_abb_run__mix_capacity_factor
+msgid "How far the planned mix can scale before the first resource binds."
+msgstr ""
+"Di quanto può scalare il mix pianificato prima che si saturi la prima "
+"risorsa."
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_activity_result__id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_bill_line__id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_capacity_state__id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_driver_override__id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_input__id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_object_result__id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_result__id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_time_state__id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_usage_line__id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_line__id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_run__id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_warning__id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abc_resource__id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_budget_line__id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_rate__id
+msgid "ID"
+msgstr "ID"
+
+#. module: cmc_abb
+#: model:ir.model.fields.selection,name:cmc_abb.selection__cmc_abb_capacity_state__state__idle
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_capacity_state_search
+msgid "Idle"
+msgstr "Inattivo"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abc_resource__idle_responsibility_id
+msgid "Idle Capacity Owner"
+msgstr "Titolare della capacità inutilizzata"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_line_graph
+msgid "Idle capacity trend"
+msgstr "Andamento della capacità inutilizzata"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_activity_result__write_uid
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_bill_line__write_uid
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_capacity_state__write_uid
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_driver_override__write_uid
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_object_result__write_uid
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__write_uid
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__write_uid
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_time_state__write_uid
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_usage_line__write_uid
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_line__write_uid
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_run__write_uid
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_warning__write_uid
+msgid "Last Updated by"
+msgstr "Ultimo aggiornamento di"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_activity_result__write_date
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_bill_line__write_date
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_capacity_state__write_date
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_driver_override__write_date
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_object_result__write_date
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__write_date
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__write_date
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_time_state__write_date
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_usage_line__write_date
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_line__write_date
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_run__write_date
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_warning__write_date
+msgid "Last Updated on"
+msgstr "Ultimo aggiornamento il"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_run__line_ids
+msgid "Line"
+msgstr "Riga"
+
+#. module: cmc_abb
+#: model:ir.model.fields.selection,name:cmc_abb.selection__cmc_abb_capacity_state__mode__maintenance
+#: model:ir.model.fields.selection,name:cmc_abb.selection__cmc_abb_time_state__mode__maintenance
+msgid "Maintenance"
+msgstr "Manutenzione"
+
+#. module: cmc_abb
+#: model:ir.model.fields.selection,name:cmc_abb.selection__cmc_abb_warning__warning_type__mix
+msgid "Mix"
+msgstr "Mix"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__mix_capacity_factor
+msgid "Mix Capacity Factor"
+msgstr "Fattore di capacità del mix"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_capacity_state__mode
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_time_state__mode
+msgid "Mode"
+msgstr "Modalità"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_line_search
+msgid "Month"
+msgstr "Mese"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__name
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_run__name
+msgid "Name"
+msgstr "Nome"
+
+#. module: cmc_abb
+#: model:ir.model.fields,help:cmc_abb.field_cmc_abb_variance_line__utilisation_variance
+#: model:ir.model.fields,help:cmc_abb.field_cmc_abb_variance_run__total_utilisation_variance
+msgid "Negative: capacity planned for use left idle."
+msgstr "Negativo: capacità pianificata per l'uso rimasta inutilizzata."
+
+#. module: cmc_abb
+#: model:ir.model.fields.selection,name:cmc_abb.selection__cmc_abb_capacity_state__state__nonproductive
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_capacity_state_search
+msgid "Non-productive"
+msgstr "Non produttivo"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__time_state_ids
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_whatif_form
+msgid "Non-productive Time"
+msgstr "Tempo non produttivo"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abc_resource__nonproductive_responsibility_id
+msgid "Non-productive Time Owner"
+msgstr "Titolare del tempo non produttivo"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+msgid "Non-productive time"
+msgstr "Tempo non produttivo"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__nonproductive_qty
+msgid "Nonproductive Qty"
+msgstr "Quantità non produttiva"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__object_result_ids
+msgid "Object Result"
+msgstr "Risultato dell'oggetto"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+msgid "Output"
+msgstr "Uscita"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__output_measure_id
+msgid "Output Measure"
+msgstr "Misura di output"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+msgid "Overrides and Time"
+msgstr "Sostituzioni e tempo"
+
+#. module: cmc_abb
+#: model:ir.model.fields,help:cmc_abb.field_cmc_abb_time_state__responsibility_id
+msgid "Owner of this time. Empty: the non-productive owner of the resource."
+msgstr ""
+"Titolare di questo tempo. Vuoto: il titolare del tempo non produttivo della "
+"risorsa."
+
+#. module: cmc_abb
+#: model:ir.model.fields,help:cmc_abb.field_cmc_abb_run__calibration_tolerance
+msgid "Percent deviation from the calibration that raises a warning."
+msgstr "Scostamento percentuale dalla calibrazione che genera un avviso."
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_abb_run.py:0
+msgid ""
+"Pick a calibration run on a draft run to prefill the bill of activities."
+msgstr ""
+"Scegliere un'esecuzione di calibrazione su un'esecuzione in bozza per "
+"precompilare la distinta delle attività."
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_driver_override__quantity
+msgid "Planned Driver Quantity"
+msgstr "Quantità del driver pianificata"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_object_result__planned_qty
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_warning__planned_qty
+msgid "Planned Qty"
+msgstr "Quantità pianificata"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__predicted_cost
+msgid "Predicted Cost"
+msgstr "Costo previsto"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+msgid "Prefill Bill from Calibration"
+msgstr "Precompila la distinta dalla calibrazione"
+
+#. module: cmc_abb
+#: model:ir.model.fields.selection,name:cmc_abb.selection__cmc_abb_capacity_state__state__productive
+msgid "Productive"
+msgstr "Produttiva"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+msgid "Prospective Rates"
+msgstr "Tariffe prospettiche"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_capacity_state__quantity
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_capacity_state_list
+msgid "Quantity"
+msgstr "Quantità"
+
+#. module: cmc_abb
+#: model:ir.model,name:cmc_abb.model_cmc_rate
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_activity_result__rate
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__rate
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_line__rate
+msgid "Rate"
+msgstr "Tariffa"
+
+#. module: cmc_abb
+#: model:ir.model.fields,help:cmc_abb.field_cmc_abb_driver_override__quantity
+msgid "Replaces the demand computed from the planned volume."
+msgstr "Sostituisce la domanda calcolata dal volume pianificato."
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+msgid "Required (FTE)"
+msgstr "Richiesto (FTE)"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__required_units
+msgid "Required Units"
+msgstr "Unità richieste"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_whatif_form
+msgid "Reset to Draft"
+msgstr "Reimposta a bozza"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_run_form
+msgid "Resetting deletes the computed results. Continue?"
+msgstr "Azzerare elimina i risultati calcolati. Continuare?"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+msgid ""
+"Resetting deletes the results, the budget lines and the prospective rates of"
+" this run. Continue?"
+msgstr ""
+"Azzerare elimina i risultati, le righe di budget e le tariffe prospettiche "
+"di questa esecuzione. Continuare?"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_capacity_state__resource_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__resource_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_time_state__resource_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_usage_line__resource_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_line__resource_id
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_capacity_state_search
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_line_search
+msgid "Resource"
+msgstr "Risorsa"
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_abb_engine.py:0
+msgid "Resource %s has no budget cost element: set one to write budget lines."
+msgstr ""
+"La risorsa %s non ha un elemento di costo di budget: impostarne uno per "
+"scrivere le righe di budget."
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_abb_engine.py:0
+msgid "Resource %s has no unit (driver): there is no rate without it."
+msgstr "La risorsa %s non ha un'unità (driver): senza non c'è tariffa."
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__resource_result_ids
+msgid "Resource Result"
+msgstr "Risultato della risorsa"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_whatif_form
+msgid "Resource Supply"
+msgstr "Fornitura di risorsa"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_time_state__quantity
+msgid "Resource Units"
+msgstr "Unità di risorsa"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_usage_line__usage_per_unit
+msgid "Resource Units per Activity Unit"
+msgstr "Unità di risorsa per unità di attività"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__usage_line_ids
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_whatif_form
+msgid "Resource Usage"
+msgstr "Utilizzo della risorsa"
+
+#. module: cmc_abb
+#: model:ir.model.fields,help:cmc_abb.field_cmc_abc_resource__unit_size
+msgid ""
+"Resource-driver units one supply unit provides (1,600 h per FTE, 800 "
+"shipments per truck). Committed profiles: per year."
+msgstr ""
+"Unità di driver di risorsa fornite da un'unità di fornitura (1.600 h per "
+"FTE, 800 spedizioni per camion). Profili impegnati: all'anno."
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_capacity_state__responsibility_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_time_state__responsibility_id
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_capacity_state_search
+msgid "Responsibility"
+msgstr "Responsabilità"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_activity_result__run_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_bill_line__run_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_capacity_state__run_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_driver_override__run_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_input__run_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_object_result__run_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__run_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_result__run_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_time_state__run_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_usage_line__run_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_line__run_id
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_warning__run_id
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_capacity_state_search
+msgid "Run"
+msgstr "Esecuzione"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__shortage_units
+msgid "Shortage Units"
+msgstr "Unità mancanti"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+msgid "Sources"
+msgstr "Fonti"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_line_list
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_run_form
+msgid "Spending"
+msgstr "Spesa"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__spending_profile
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_line__spending_profile
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abc_resource__spending_profile
+msgid "Spending Profile"
+msgstr "Profilo di spesa"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_line__spending_variance
+msgid "Spending Variance"
+msgstr "Scostamento di spesa"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abc_resource_form_abb
+msgid "Spending profile (Activity-Based Budgeting)"
+msgstr "Profilo di spesa (Activity-Based Budgeting)"
+
+#. module: cmc_abb
+#: model_terms:ir.actions.act_window,help:cmc_abb.action_cmc_abb_variance_run
+msgid ""
+"Split the gap between the activity-based budget and the actual cost into "
+"spending, unexpected utilisation and unused capacity."
+msgstr ""
+"Scompone la differenza tra il budget per attività e il costo effettivo in "
+"spesa, utilizzo imprevisto e capacità inutilizzata."
+
+#. module: cmc_abb
+#: model:ir.model.fields.selection,name:cmc_abb.selection__cmc_abb_capacity_state__mode__standby
+#: model:ir.model.fields.selection,name:cmc_abb.selection__cmc_abb_time_state__mode__standby
+msgid "Standby"
+msgstr "In standby"
+
+#. module: cmc_abb
+#: model_terms:ir.actions.act_window,help:cmc_abb.action_cmc_abb_run
+msgid ""
+"Start from the approved volume forecast, the bill of activities and the resource usage: the run sizes the\n"
+"               resources, writes the budget lines and publishes the prospective rates."
+msgstr ""
+"Partire dalla previsione dei volumi approvata, dalla distinta delle attività e dall'utilizzo delle risorse: l'esecuzione dimensiona le\n"
+"               risorse, scrive le righe di budget e pubblica le tariffe prospettiche."
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_capacity_state__state
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__state
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_run__state
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_capacity_state_search
+msgid "State"
+msgstr "Stato"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_line__static_budget_cost
+msgid "Static Budget Cost"
+msgstr "Costo del budget statico"
+
+#. module: cmc_abb
+#: model:ir.model.fields,help:cmc_abb.field_cmc_abb_variance_line__budget_cost
+msgid "Static budget; a flexible resource is budgeted at the actual activity."
+msgstr ""
+"Budget statico; una risorsa flessibile è a budget all'attività effettiva."
+
+#. module: cmc_abb
+#: model:ir.model.fields,help:cmc_abb.field_cmc_abb_run__output_measure_id
+msgid "Statistical measure of the planned volume of each cost object."
+msgstr "Misura statistica del volume pianificato di ogni oggetto di costo."
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__supply_qty
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_line__supply_qty
+msgid "Supply Qty"
+msgstr "Quantità di fornitura"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__supply_units
+msgid "Supply Units"
+msgstr "Unità di fornitura"
+
+#. module: cmc_abb
+#: model:ir.model.fields,help:cmc_abb.field_cmc_abc_resource__committed_units
+msgid "Supply units on hand today (FTE on payroll, trucks owned)."
+msgstr ""
+"Unità di fornitura disponibili oggi (FTE a libro paga, camion posseduti)."
+
+#. module: cmc_abb
+#: model:ir.model.fields,help:cmc_abb.field_cmc_abb_resource_result__required_units
+msgid "Supply units the need calls for (FTE for people)."
+msgstr "Unità di fornitura richieste dal fabbisogno (FTE per le persone)."
+
+#. module: cmc_abb
+#: model:ir.model.fields,help:cmc_abb.field_cmc_abb_variance_line__static_budget_cost
+msgid "The ABB cost of the resource, pro-rated to the period."
+msgstr "Il costo ABB della risorsa, rapportato al periodo."
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_abb_run.py:0
+msgid "The activity quantity per output unit must be greater than zero."
+msgstr ""
+"La quantità di attività per unità di output deve essere maggiore di zero."
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_abb_engine.py:0
+msgid ""
+"The budget version cannot be the version that holds the planned volumes."
+msgstr ""
+"La versione di budget non può essere quella che contiene i volumi "
+"pianificati."
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_abb_run.py:0
+msgid "The calibration tolerance cannot be negative."
+msgstr "La tolleranza di calibrazione non può essere negativa."
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_abb_engine.py:0
+msgid "The capacity states of the run do not add up to its budgeted cost."
+msgstr ""
+"Gli stati di capacità dell'esecuzione non sommano al suo costo a budget."
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_abb_variance.py:0
+msgid "The end date cannot precede the start date."
+msgstr "La data di fine non può precedere la data di inizio."
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_abb_variance.py:0
+msgid "The period must lie inside the span of %s."
+msgstr "Il periodo deve rientrare nell'arco temporale di %s."
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_abb_variance.py:0
+msgid "The period must run from the first to the last day of a month."
+msgstr "Il periodo deve andare dal primo all'ultimo giorno di un mese."
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_abb_run.py:0
+msgid "The planned driver quantity cannot be negative."
+msgstr "La quantità del driver pianificata non può essere negativa."
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+msgid ""
+"The planned volume or mix lies outside the range the rates were calibrated "
+"on: see the Warnings tab."
+msgstr ""
+"Il volume o il mix pianificato è fuori dall'intervallo su cui sono state "
+"calibrate le tariffe: vedere la scheda Avvisi."
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_abb_run.py:0
+msgid "The resource quantity per activity unit must be greater than zero."
+msgstr ""
+"La quantità di risorsa per unità di attività deve essere maggiore di zero."
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_abb_variance.py:0
+msgid "The variances of resource %s do not reconcile to its budget."
+msgstr ""
+"Gli scostamenti della risorsa %s non si riconciliano con il suo budget."
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+msgid "Total"
+msgstr "Totale"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_run__total_actual_cost
+msgid "Total Actual Cost"
+msgstr "Costo effettivo totale"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__total_assigned_cost
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_run__total_assigned_cost
+msgid "Total Assigned Cost"
+msgstr "Costo assegnato totale"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_run__total_budget_cost
+msgid "Total Budget Cost"
+msgstr "Costo di budget totale"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__total_budgeted_cost
+msgid "Total Budgeted Cost"
+msgstr "Costo a budget totale"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_run__total_budgeted_unused_cost
+msgid "Total Budgeted Unused Cost"
+msgstr "Costo inutilizzato a budget totale"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_run__total_spending_variance
+msgid "Total Spending Variance"
+msgstr "Scostamento di spesa totale"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__total_unused_cost
+msgid "Total Unused Cost"
+msgstr "Costo inutilizzato totale"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_run__total_utilisation_variance
+msgid "Total Utilisation Variance"
+msgstr "Scostamento di utilizzo totale"
+
+#. module: cmc_abb
+#: model:ir.model.fields.selection,name:cmc_abb.selection__cmc_abb_capacity_state__mode__training
+#: model:ir.model.fields.selection,name:cmc_abb.selection__cmc_abb_time_state__mode__training
+msgid "Training"
+msgstr "Formazione"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_object_result__unit_cost
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abc_resource__unit_cost
+msgid "Unit Cost"
+msgstr "Costo unitario"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abc_resource__unit_size
+msgid "Unit Size"
+msgstr "Dimensione dell'unità"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_list
+msgid "Unused"
+msgstr "Inutilizzato"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_capacity_state_pivot
+msgid "Unused Capacity by Owner"
+msgstr "Capacità inutilizzata per titolare"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__unused_cost
+msgid "Unused Cost"
+msgstr "Costo inutilizzato"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__unused_qty
+msgid "Unused Qty"
+msgstr "Quantità inutilizzata"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_capacity_state_search
+msgid "Unused capacity"
+msgstr "Capacità inutilizzata"
+
+#. module: cmc_abb
+#: model:ir.model.fields,help:cmc_abb.field_cmc_abb_activity_result__calibration_qty
+msgid ""
+"Used quantity of the calibration run, scaled to the months of the span."
+msgstr ""
+"Quantità utilizzata dell'esecuzione di calibrazione, riportata ai mesi "
+"dell'arco temporale."
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_line_list
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_run_form
+msgid "Utilisation"
+msgstr "Utilizzo"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_variance_line__utilisation_variance
+msgid "Utilisation Variance"
+msgstr "Scostamento di utilizzo"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_activity_result__variable_rate
+msgid "Variable Rate"
+msgstr "Tariffa variabile"
+
+#. module: cmc_abb
+#: model:ir.ui.menu,name:cmc_abb.menu_cmc_abb_variance_line
+msgid "Variance Analysis"
+msgstr "Analisi degli scostamenti"
+
+#. module: cmc_abb
+#: model:ir.model.fields.selection,name:cmc_abb.selection__cmc_abb_warning__warning_type__volume
+msgid "Volume"
+msgstr "Volume"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__source_version_id
+msgid "Volume Version"
+msgstr "Versione dei volumi"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_run__warning_ids
+msgid "Warning"
+msgstr "Avviso"
+
+#. module: cmc_abb
+#: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_warning__warning_type
+msgid "Warning Type"
+msgstr "Tipo di avviso"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+msgid "Warnings"
+msgstr "Avvisi"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_search
+msgid "What-if"
+msgstr "What-if"
+
+#. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_whatif_form
+msgid "What-if Scenario"
+msgstr "Scenario what-if"
+
+#. module: cmc_abb
+#: model:ir.actions.act_window,name:cmc_abb.action_cmc_abb_whatif
+#: model:ir.ui.menu,name:cmc_abb.menu_cmc_abb_whatif
+msgid "What-if Scenarios"
+msgstr "Scenari what-if"

@@ -1,0 +1,1504 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* cmc_target_lcc
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 23:35+0000\n"
+"PO-Revision-Date: 2026-10-09 23:35+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_lcc_year__year
+msgid "0 = first year of the model."
+msgstr "0 = primo anno del modello."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_feature_result__rank
+msgid "1 = cheapest."
+msgstr "1 = il più economico."
+
+#. module: cmc_target_lcc
+#. odoo-python
+#: code:addons/cmc_target_lcc/models/cmc_lcc.py:0
+msgid "A driver-based cost line needs the holder of the rate."
+msgstr ""
+"Una riga di costo basata sul driver richiede il titolare della tariffa."
+
+#. module: cmc_target_lcc
+#. odoo-python
+#: code:addons/cmc_target_lcc/models/cmc_lcc.py:0
+msgid "A life-cycle model needs a product or a customer."
+msgstr "Un modello del ciclo di vita richiede un prodotto o un cliente."
+
+#. module: cmc_target_lcc
+#: model:ir.model.constraint,message:cmc_target_lcc.constraint_cmc_lcc_year_year_uniq
+msgid "A model has one volume line per year."
+msgstr "Un modello ha una sola riga di volume per anno."
+
+#. module: cmc_target_lcc
+#. odoo-python
+#: code:addons/cmc_target_lcc/models/cmc_kaizen.py:0
+msgid ""
+"A unit kaizen needs a product, a unit driver, the base month and the tracked"
+" months."
+msgstr ""
+"Un kaizen unitario richiede un prodotto, un driver unitario, il mese base e "
+"i mesi monitorati."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__absorbed_to_date
+msgid "Absorbed To Date"
+msgstr "Assorbito a oggi"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target__achieved_pct
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target_line__achieved_pct
+msgid "Achieved %"
+msgstr "Raggiunto %"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_design_guideline__active
+msgid "Active"
+msgstr "Attivo"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year__is_actual
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year_result__is_actual
+msgid "Actual"
+msgstr "Effettiva"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_cost_line__actual_amount
+msgid "Actual Amount"
+msgstr "Importo effettivo"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target__actual_cost
+msgid "Actual Cost"
+msgstr "Costo effettivo"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target_line__actual_unit_cost
+msgid "Actual Unit Cost"
+msgstr "Costo unitario effettivo"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_result__allowable_cost
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost__allowable_cost
+msgid "Allowable Cost"
+msgstr "Costo ammissibile"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_target_cost__deployable_cost
+msgid "Allowable cost - assembly cost."
+msgstr "Costo ammissibile - costo di assemblaggio."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_result__alternative_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_variable__alternative_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_violation__alternative_id
+msgid "Alternative"
+msgstr "Alternativa"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_costing__alternative_ids
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_feature_costing_form
+msgid "Alternatives"
+msgstr "Alternative"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_variable__amount
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_cost_line__amount
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_phase_result__amount
+msgid "Amount"
+msgstr "Importo"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost__assembly_cost
+msgid "Assembly Cost"
+msgstr "Costo di assemblaggio"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target__base_date
+msgid "Base Date"
+msgstr "Data base"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target__base_unit_cost
+msgid "Base Unit Cost"
+msgstr "Costo unitario base"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__baseline_id
+msgid "Baseline"
+msgstr "Base"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target__basis
+msgid "Basis"
+msgstr "Base"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_lcc_cost_line__probability_pct
+msgid "Below 100: a contingent liability weighs its expected value."
+msgstr "Sotto 100: una passività potenziale pesa per il suo valore atteso."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_costing__best_alternative_id
+msgid "Best Alternative"
+msgstr "Alternativa migliore"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__breakeven_year
+msgid "Breakeven Year"
+msgstr "Anno di pareggio"
+
+#. module: cmc_target_lcc
+#: model:ir.model,name:cmc_target_lcc.model_cmc_tlc_run_mixin
+msgid "CMC target / life-cycle run"
+msgstr "Esecuzione CMC di costo obiettivo / ciclo di vita"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year_result__calendar_year
+msgid "Calendar Year"
+msgstr "Anno solare"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__year_result_ids
+msgid "Cash View"
+msgstr "Vista di cassa"
+
+#. module: cmc_target_lcc
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_lcc_model_form
+msgid "Cash View (years)"
+msgstr "Vista di cassa (anni)"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_cost_line__category
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_phase_result__category
+msgid "Category"
+msgstr "Categoria"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_cost_line__commit_year
+msgid "Commit Year"
+msgstr "Anno di impegno"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year_result__committed_cost
+msgid "Committed Cost"
+msgstr "Costo impegnato"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_design_guideline__company_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_alternative__company_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_costing__company_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_result__company_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_variable__company_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_violation__company_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target__company_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target_line__company_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_cost_line__company_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__company_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_phase_result__company_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year__company_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year_result__company_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost__company_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_component__company_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_function__company_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_matrix__company_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_result__company_id
+msgid "Company"
+msgstr "Azienda"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_matrix__component_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_result__component_id
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_target_cost_result__line_type__component
+msgid "Component"
+msgstr "Componente"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost__component_ids
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_target_cost_form
+msgid "Components"
+msgstr "Componenti"
+
+#. module: cmc_target_lcc
+#. odoo-python
+#: code:addons/cmc_target_lcc/models/cmc_target_cost.py:0
+msgid "Components priced from the registry need a product: %(names)s"
+msgstr ""
+"I componenti valorizzati dall'anagrafica richiedono un prodotto: %(names)s"
+
+#. module: cmc_target_lcc
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_feature_costing_form
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_kaizen_form
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_lcc_model_form
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_target_cost_form
+msgid "Compute"
+msgstr "Calcola"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_lcc_model__baseline_id
+msgid "Computed alternative / do-nothing model."
+msgstr "Alternativa calcolata / modello \"non fare nulla\"."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_lcc_model__previous_id
+msgid "Computed model whose unit cost was in force."
+msgstr "Modello calcolato il cui costo unitario era in vigore."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_feature_costing__target_cost_id
+msgid "Computed sheet whose allowable cost is the bar."
+msgstr "Scheda calcolata il cui costo ammissibile è il riferimento."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_cost_line__actual_zero
+msgid "Confirmed Zero"
+msgstr "Zero confermato"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year_result__cost
+msgid "Cost"
+msgstr "Costo"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_result__cost_pct
+msgid "Cost %"
+msgstr "Costo %"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost__cost_gap
+msgid "Cost Gap"
+msgstr "Scostamento di costo"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost__cost_object_id
+msgid "Cost Object"
+msgstr "Oggetto di costo"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_component__cost_source
+msgid "Cost Source"
+msgstr "Origine del costo"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__phase_result_ids
+msgid "Cost View"
+msgstr "Vista dei costi"
+
+#. module: cmc_target_lcc
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_lcc_model_form
+msgid "Cost View (phase x category)"
+msgstr "Vista dei costi (fase x categoria)"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_design_guideline__relative_factor
+msgid ""
+"Cost of the method relative to the base one (SMT 1.0x, robot 3x, hand 6x)."
+msgstr ""
+"Costo del metodo rispetto a quello base (SMT 1,0x, robot 3x, a mano 6x)."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_alternative__costing_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_result__costing_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_variable__costing_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_violation__costing_id
+msgid "Costing"
+msgstr "Costing"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__cost_line_ids
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_lcc_model_form
+msgid "Costs"
+msgstr "Costi"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_design_guideline__create_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_alternative__create_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_costing__create_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_result__create_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_variable__create_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_violation__create_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target__create_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target_line__create_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_cost_line__create_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__create_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_phase_result__create_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year__create_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year_result__create_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost__create_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_component__create_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_function__create_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_matrix__create_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_result__create_uid
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_design_guideline__create_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_alternative__create_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_costing__create_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_result__create_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_variable__create_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_violation__create_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target__create_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target_line__create_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_cost_line__create_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__create_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_phase_result__create_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year__create_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year_result__create_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost__create_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_component__create_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_function__create_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_matrix__create_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_result__create_date
+msgid "Created on"
+msgstr "Data creazione"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year_result__cumulative_committed_pct
+msgid "Cumulative Committed %"
+msgstr "Impegnato cumulato %"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year_result__cumulative_incurred_pct
+msgid "Cumulative Incurred %"
+msgstr "Sostenuto cumulato %"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year_result__cumulative_net
+msgid "Cumulative Net"
+msgstr "Netto cumulato"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year_result__cumulative_pv
+msgid "Cumulative Pv"
+msgstr "VA cumulato"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_costing__currency_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_result__currency_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_variable__currency_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target__currency_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target_line__currency_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_cost_line__currency_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__currency_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_phase_result__currency_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year__currency_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year_result__currency_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost__currency_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_component__currency_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_result__currency_id
+msgid "Currency"
+msgstr "Valuta"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_target_cost__cost_gap
+msgid "Current - allowable."
+msgstr "Attuale - ammissibile."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost__current_cost
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_component__current_cost
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_result__current_cost
+msgid "Current Cost"
+msgstr "Costo attuale"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__partner_id
+msgid "Customer"
+msgstr "Cliente"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_target_cost_function__importance_pct
+msgid "Customer weight."
+msgstr "Peso del cliente."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_costing__date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target_line__date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost__date
+msgid "Date"
+msgstr "Data"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target__date_from
+msgid "Date From"
+msgstr "Data da"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target__date_to
+msgid "Date To"
+msgstr "Data a"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost__deployable_cost
+msgid "Deployable Cost"
+msgstr "Costo distribuibile"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost__result_ids
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_target_cost_form
+msgid "Deployment"
+msgstr "Dispiegamento"
+
+#. module: cmc_target_lcc
+#: model:ir.model,name:cmc_target_lcc.model_cmc_feature_alternative
+msgid "Design Alternative"
+msgstr "Alternativa di progettazione"
+
+#. module: cmc_target_lcc
+#: model:ir.model,name:cmc_target_lcc.model_cmc_design_guideline
+msgid "Design Cost Guideline"
+msgstr "Linea guida di costo di progettazione"
+
+#. module: cmc_target_lcc
+#: model:ir.model,name:cmc_target_lcc.model_cmc_feature_violation
+msgid "Design Guideline Violation"
+msgstr "Violazione della linea guida di progettazione"
+
+#. module: cmc_target_lcc
+#: model:ir.actions.act_window,name:cmc_target_lcc.action_cmc_design_guideline
+#: model:ir.ui.menu,name:cmc_target_lcc.menu_cmc_design_guideline
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_design_guideline_list
+msgid "Design Guidelines"
+msgstr "Linee guida di progettazione"
+
+#. module: cmc_target_lcc
+#: model:ir.model,name:cmc_target_lcc.model_cmc_feature_variable
+msgid "Design Variable"
+msgstr "Variabile di progettazione"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_costing__variable_ids
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_feature_costing_form
+msgid "Design Variables"
+msgstr "Variabili di progettazione"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year_result__discount_factor
+msgid "Discount Factor"
+msgstr "Fattore di sconto"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__discount_rate
+msgid "Discount Rate %"
+msgstr "Tasso di sconto %"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_design_guideline__display_name
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_alternative__display_name
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_costing__display_name
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_result__display_name
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_variable__display_name
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_violation__display_name
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target__display_name
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target_line__display_name
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_cost_line__display_name
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__display_name
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_phase_result__display_name
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year__display_name
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year_result__display_name
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost__display_name
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_component__display_name
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_function__display_name
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_matrix__display_name
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_result__display_name
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_tlc_run_mixin__display_name
+msgid "Display Name"
+msgstr "Nome visualizzato"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_lcc_cost_line__phase__distribution
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_lcc_phase_result__phase__distribution
+msgid "Distribution"
+msgstr "Distribuzione"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost__non_mfg_cost
+msgid "Distribution / Non-Mfg Cost"
+msgstr "Costi di distribuzione / non di produzione"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_design_guideline__driver_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_variable__driver_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_cost_line__driver_id
+msgid "Driver"
+msgstr "Driver"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__effective_rate
+msgid "Effective Rate %"
+msgstr "Tasso effettivo %"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_lcc_cost_line__amount
+msgid "Estimate; for a driver line the snapshot of quantity x rate."
+msgstr ""
+"Stima; per una riga basata sul driver è l'istantanea di quantità x tariffa."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_feature_result__gap
+msgid "Estimated - allowable."
+msgstr "Stimato - ammissibile."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_result__estimated_cost
+msgid "Estimated Cost"
+msgstr "Costo stimato"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_violation__excess
+msgid "Excess"
+msgstr "Eccesso"
+
+#. module: cmc_target_lcc
+#: model:ir.actions.act_window,name:cmc_target_lcc.action_cmc_feature_costing
+#: model:ir.model,name:cmc_target_lcc.model_cmc_feature_costing
+#: model:ir.ui.menu,name:cmc_target_lcc.menu_cmc_feature_costing
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_feature_costing_form
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_feature_costing_list
+msgid "Feature Costing"
+msgstr "Costing per caratteristica"
+
+#. module: cmc_target_lcc
+#: model:ir.model,name:cmc_target_lcc.model_cmc_feature_result
+msgid "Feature Costing Result"
+msgstr "Risultato del costing per caratteristica"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_kaizen_target__date_from
+msgid "First month tracked."
+msgstr "Primo mese monitorato."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target__fixed_budget
+msgid "Fixed Budget"
+msgstr "Budget fisso"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_kaizen_target__basis__flexible
+msgid "Flexible budget"
+msgstr "Budget flessibile"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_kaizen_target__variable_budget
+msgid "Flexible variable budget at the actual mix."
+msgstr "Budget variabile flessibile al mix effettivo."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__flows_basis
+msgid "Flows Basis"
+msgstr "Base dei flussi"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_matrix__function_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_result__function_id
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_target_cost_result__line_type__function
+msgid "Function"
+msgstr "Funzione"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost__matrix_ids
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_target_cost_form
+msgid "Function-Cost Matrix"
+msgstr "Matrice funzione-costo"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost__function_ids
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_target_cost_form
+msgid "Functions"
+msgstr "Funzioni"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_result__gap
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_result__gap
+msgid "Gap"
+msgstr "Gap"
+
+#. module: cmc_target_lcc
+#. odoo-python
+#: code:addons/cmc_target_lcc/models/cmc_lcc.py:0
+msgid "Give the rate month: the model has driver-based cost lines."
+msgstr ""
+"Indicare il mese delle tariffe: il modello ha righe di costo basate sul "
+"driver."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_variable__guideline_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_violation__guideline_id
+msgid "Guideline"
+msgstr "Linea guida"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_costing__violation_ids
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_feature_costing_form
+msgid "Guideline Violations"
+msgstr "Violazioni delle linee guida"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__has_actuals
+msgid "Has Actuals"
+msgstr "Ha consuntivi"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__has_breakeven
+msgid "Has Breakeven"
+msgstr "Ha pareggio"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_lcc_cost_line__category__hidden
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_lcc_phase_result__category__hidden
+msgid "Hidden"
+msgstr "Nascosto"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_variable__holder_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_cost_line__holder_id
+msgid "Holder"
+msgstr "Titolare"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_variable__holder_model
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_cost_line__holder_model
+msgid "Holder Model"
+msgstr "Modello del titolare"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__horizon_years
+msgid "Horizon Years"
+msgstr "Anni di orizzonte"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_design_guideline__id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_alternative__id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_costing__id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_result__id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_variable__id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_violation__id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target__id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target_line__id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_cost_line__id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_phase_result__id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year__id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year_result__id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost__id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_component__id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_function__id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_matrix__id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_result__id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_tlc_run_mixin__id
+msgid "ID"
+msgstr "ID"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_function__importance_pct
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_result__importance_pct
+msgid "Importance %"
+msgstr "Importanza %"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_target_cost_result__value_index
+msgid "Importance % / cost %: above 1 the function is cheap for its worth."
+msgstr ""
+"Importanza % / costo %: sopra 1 la funzione è economica rispetto al suo "
+"valore."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year_result__incremental_flow
+msgid "Incremental Flow"
+msgstr "Flusso incrementale"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__incremental_npv
+msgid "Incremental Npv"
+msgstr "NPV incrementale"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__inflation_rate
+msgid "Inflation %"
+msgstr "Inflazione %"
+
+#. module: cmc_target_lcc
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_feature_costing_form
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_kaizen_form
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_lcc_model_form
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_target_cost_form
+msgid "Inputs"
+msgstr "Input"
+
+#. module: cmc_target_lcc
+#: model:ir.model,name:cmc_target_lcc.model_cmc_kaizen_target
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_kaizen_form
+msgid "Kaizen Target"
+msgstr "Obiettivo kaizen"
+
+#. module: cmc_target_lcc
+#: model:ir.actions.act_window,name:cmc_target_lcc.action_cmc_kaizen
+#: model:ir.ui.menu,name:cmc_target_lcc.menu_cmc_kaizen
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_kaizen_list
+msgid "Kaizen Targets"
+msgstr "Obiettivi kaizen"
+
+#. module: cmc_target_lcc
+#: model:ir.model,name:cmc_target_lcc.model_cmc_kaizen_target_line
+msgid "Kaizen Tracking Month"
+msgstr "Mese di monitoraggio kaizen"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__lc_cost
+msgid "LC Cost"
+msgstr "Costo LC"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__lc_cost_npv
+msgid "LC Cost (NPV)"
+msgstr "Costo LC (NPV)"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__lc_profit
+msgid "LC Profit"
+msgstr "Utile LC"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__lc_profit_npv
+msgid "LC Profit (NPV)"
+msgstr "Utile LC (NPV)"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__lc_revenue
+msgid "LC Revenue"
+msgstr "Ricavi LC"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__lc_unit_cost
+msgid "LC Unit Cost"
+msgstr "Costo unitario LC"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_design_guideline__write_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_alternative__write_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_costing__write_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_result__write_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_variable__write_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_violation__write_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target__write_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target_line__write_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_cost_line__write_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__write_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_phase_result__write_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year__write_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year_result__write_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost__write_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_component__write_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_function__write_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_matrix__write_uid
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_result__write_uid
+msgid "Last Updated by"
+msgstr "Ultimo aggiornamento di"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_design_guideline__write_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_alternative__write_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_costing__write_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_result__write_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_variable__write_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_violation__write_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target__write_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target_line__write_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_cost_line__write_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__write_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_phase_result__write_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year__write_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year_result__write_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost__write_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_component__write_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_function__write_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_matrix__write_date
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_result__write_date
+msgid "Last Updated on"
+msgstr "Ultimo aggiornamento il"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_kaizen_target__date_to
+msgid "Last month tracked."
+msgstr "Ultimo mese monitorato."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_lcc_cost_line__category__less_tangible
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_lcc_phase_result__category__less_tangible
+msgid "Less tangible"
+msgstr "Meno tangibile"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_lcc_cost_line__category__liability
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_lcc_phase_result__category__liability
+msgid "Liability"
+msgstr "Passività"
+
+#. module: cmc_target_lcc
+#: model:ir.model,name:cmc_target_lcc.model_cmc_lcc_cost_line
+msgid "Life-Cycle Cost Line"
+msgstr "Riga di costo del ciclo di vita"
+
+#. module: cmc_target_lcc
+#: model:ir.model,name:cmc_target_lcc.model_cmc_lcc_model
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_lcc_model_form
+msgid "Life-Cycle Cost Model"
+msgstr "Modello di costo del ciclo di vita"
+
+#. module: cmc_target_lcc
+#: model:ir.actions.act_window,name:cmc_target_lcc.action_cmc_lcc_model
+#: model:ir.ui.menu,name:cmc_target_lcc.menu_cmc_lcc_model
+msgid "Life-Cycle Costing"
+msgstr "Costo del ciclo di vita (LCC)"
+
+#. module: cmc_target_lcc
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_lcc_model_list
+msgid "Life-Cycle Models"
+msgstr "Modelli del ciclo di vita"
+
+#. module: cmc_target_lcc
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_lcc_model_form
+msgid "Life-Cycle Outcome"
+msgstr "Esito del ciclo di vita"
+
+#. module: cmc_target_lcc
+#: model:ir.model,name:cmc_target_lcc.model_cmc_lcc_phase_result
+msgid "Life-Cycle Phase Result"
+msgstr "Risultato di fase del ciclo di vita"
+
+#. module: cmc_target_lcc
+#: model:ir.model,name:cmc_target_lcc.model_cmc_lcc_year
+msgid "Life-Cycle Year"
+msgstr "Anno del ciclo di vita"
+
+#. module: cmc_target_lcc
+#: model:ir.model,name:cmc_target_lcc.model_cmc_lcc_year_result
+msgid "Life-Cycle Year Result"
+msgstr "Risultato annuale del ciclo di vita"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__lifetime_volume
+msgid "Lifetime Volume"
+msgstr "Volume nel ciclo di vita"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_result__line_type
+msgid "Line Type"
+msgstr "Tipo di riga"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_target_cost_component__cost_source__manual
+msgid "Manual"
+msgstr "Manuale"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_design_guideline__max_quantity
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_violation__max_quantity
+msgid "Max Quantity"
+msgstr "Quantità max"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_result__meets_target
+msgid "Meets Target"
+msgstr "Rispetta l'obiettivo"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target_line__met
+msgid "Met"
+msgstr "Raggiunto"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_cost_line__model_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_phase_result__model_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year__model_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year_result__model_id
+msgid "Model"
+msgstr "Modello"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_kaizen_target__base_date
+msgid "Month of the baseline actual unit cost."
+msgstr "Mese del costo unitario effettivo di base."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_target_cost__date
+msgid "Month of the current cost."
+msgstr "Mese del costo attuale."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_lcc_model__rate_date
+msgid "Month of the driver rates."
+msgstr "Mese delle tariffe dei driver."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_feature_costing__date
+msgid "Month of the rates."
+msgstr "Mese delle tariffe."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_design_guideline__max_quantity
+msgid "Most the design may use of the driver; 0 = no limit."
+msgstr "Massimo che il progetto può usare del driver; 0 = nessun limite."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_design_guideline__name
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_alternative__name
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_costing__name
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_variable__name
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target__name
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_cost_line__name
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__name
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost__name
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_component__name
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_function__name
+msgid "Name"
+msgstr "Nome"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year_result__net_flow
+msgid "Net Flow"
+msgstr "Flusso netto"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_lcc_year_result__incremental_flow
+msgid "Net flow - baseline net flow of the same year."
+msgstr "Flusso netto - flusso netto di base dello stesso anno."
+
+#. module: cmc_target_lcc
+#. odoo-python
+#: code:addons/cmc_target_lcc/models/cmc_kaizen.py:0
+msgid "No actual unit cost published for %(product)s in %(month)s."
+msgstr ""
+"Nessun costo unitario effettivo pubblicato per %(product)s in %(month)s."
+
+#. module: cmc_target_lcc
+#. odoo-python
+#: code:addons/cmc_target_lcc/models/cmc_target_cost.py:0
+msgid "No cost is assigned to the functions: %(names)s"
+msgstr "Nessun costo è assegnato alle funzioni: %(names)s"
+
+#. module: cmc_target_lcc
+#. odoo-python
+#: code:addons/cmc_target_lcc/models/cmc_feature_costing.py:0
+#: code:addons/cmc_target_lcc/models/cmc_lcc.py:0
+msgid "No rate published for: %(lines)s"
+msgstr "Nessuna tariffa pubblicata per: %(lines)s"
+
+#. module: cmc_target_lcc
+#. odoo-python
+#: code:addons/cmc_target_lcc/models/cmc_target_cost.py:0
+msgid "No unit cost published for %(product)s in %(month)s."
+msgstr "Nessun costo unitario pubblicato per %(product)s in %(month)s."
+
+#. module: cmc_target_lcc
+#. odoo-python
+#: code:addons/cmc_target_lcc/models/cmc_target_cost.py:0
+msgid "No unit cost published for the components: %(names)s"
+msgstr "Nessun costo unitario pubblicato per i componenti: %(names)s"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_lcc_model__flows_basis__nominal
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_lcc_model__rate_basis__nominal
+msgid "Nominal"
+msgstr "Nominale"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__non_recurring_cost
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year_result__non_recurring_cost
+msgid "Non Recurring Cost"
+msgstr "Costo non ricorrente"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_lcc_cost_line__recurrence__non_recurring
+msgid "Non-recurring"
+msgstr "Non ricorrente"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_design_guideline__note
+msgid "Note"
+msgstr "Nota"
+
+#. module: cmc_target_lcc
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_feature_costing_form
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_kaizen_form
+msgid "Outcome"
+msgstr "Esito"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_target_cost__unit_driver_id
+msgid "Output measure the unit cost is published per."
+msgstr "Misura di output per cui è pubblicato il costo unitario."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_target_cost__assembly_cost
+msgid "Part of the allowable cost kept at product level, not deployed."
+msgstr ""
+"Parte del costo ammissibile mantenuta a livello di prodotto, non dispiegata."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_target_cost__non_mfg_cost
+msgid "Per unit."
+msgstr "Per unità."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_cost_line__phase
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_phase_result__phase
+msgid "Phase"
+msgstr "Fase"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__previous_id
+msgid "Previous Model"
+msgstr "Modello precedente"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year__price_unit
+msgid "Price Unit"
+msgstr "Unità di prezzo"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_target_cost__allowable_cost
+msgid "Price x (1 - margin) - non-manufacturing cost."
+msgstr "Prezzo x (1 - margine) - costo non di produzione."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_cost_line__probability_pct
+msgid "Probability %"
+msgstr "Probabilità %"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target__product_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__product_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost__product_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_component__product_id
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_lcc_cost_line__phase__production
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_lcc_phase_result__phase__production
+msgid "Production"
+msgstr "Produzione"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_component__purchased
+msgid "Purchased"
+msgstr "Acquistato"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_phase_result__pv_amount
+msgid "Pv Amount"
+msgstr "Importo VA"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year_result__pv_cost
+msgid "Pv Cost"
+msgstr "Costo VA"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year_result__pv_net
+msgid "Pv Net"
+msgstr "Netto VA"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_variable__quantity
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_violation__quantity
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_cost_line__quantity
+msgid "Quantity"
+msgstr "Quantità"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_lcc_cost_line__phase__rd
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_lcc_phase_result__phase__rd
+msgid "R&D"
+msgstr "R&S"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_result__rank
+msgid "Rank"
+msgstr "Posizione"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__rate_basis
+msgid "Rate Basis"
+msgstr "Base della tariffa"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__rate_date
+msgid "Rate Date"
+msgstr "Data della tariffa"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_variable__rate_value
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_cost_line__rate_value
+msgid "Rate Value"
+msgstr "Valore della tariffa"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_lcc_model__flows_basis__real
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_lcc_model__rate_basis__real
+msgid "Real"
+msgstr "Reale"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_cost_line__recurrence
+msgid "Recurrence"
+msgstr "Ricorrenza"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_lcc_cost_line__recurrence__recurring
+msgid "Recurring"
+msgstr "Ricorrente"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__recurring_cost
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year_result__recurring_cost
+msgid "Recurring Cost"
+msgstr "Costo ricorrente"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target__reduction_pct
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost__reduction_pct
+msgid "Reduction %"
+msgstr "Riduzione %"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_target_cost_component__cost_source__registry
+msgid "Registry"
+msgstr "Anagrafica"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_design_guideline__relative_factor
+msgid "Relative Factor"
+msgstr "Fattore relativo"
+
+#. module: cmc_target_lcc
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_feature_costing_form
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_kaizen_form
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_lcc_model_form
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_target_cost_form
+msgid "Reset to Draft"
+msgstr "Reimposta a bozza"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__residual_cost
+msgid "Residual Cost"
+msgstr "Costo residuo"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__residual_unit_cost
+msgid "Residual Unit Cost"
+msgstr "Costo unitario residuo"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__residual_volume
+msgid "Residual Volume"
+msgstr "Volume residuo"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_costing__result_ids
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_feature_costing_form
+msgid "Results"
+msgstr "Risultati"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year_result__revenue
+msgid "Revenue"
+msgstr "Ricavi"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_component__sequence
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_function__sequence
+msgid "Sequence"
+msgstr "Sequenza"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_phase_result__share_pct
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_matrix__share_pct
+msgid "Share %"
+msgstr "Quota %"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_target_cost_matrix__share_pct
+msgid "Share of the component cost serving the function."
+msgstr "Quota del costo del componente al servizio della funzione."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__start_year
+msgid "Start Year"
+msgstr "Anno di inizio"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_costing__state
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target__state
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__state
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost__state
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_tlc_run_mixin__state
+msgid "State"
+msgstr "Stato"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_component__partner_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_result__partner_id
+msgid "Supplier"
+msgstr "Fornitore"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_result__supplier_target_price
+msgid "Supplier Target Price"
+msgstr "Prezzo obiettivo del fornitore"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_lcc_cost_line__phase__take_back
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_lcc_phase_result__phase__take_back
+msgid "Take-back / Disposal"
+msgstr "Ritiro / smaltimento"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target_line__target_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_component__target_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_function__target_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_matrix__target_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_result__target_id
+msgid "Target"
+msgstr "Obiettivi"
+
+#. module: cmc_target_lcc
+#: model:ir.ui.menu,name:cmc_target_lcc.menu_cmc_sec_target_lcc
+msgid "Target & Life-Cycle Costing"
+msgstr "Costo obiettivo e costo del ciclo di vita"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_kaizen_target__variance
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_kaizen_target_line__variance
+msgid "Target - actual: positive is favourable."
+msgstr "Obiettivo - effettivo: il positivo è favorevole."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_result__target_cost
+msgid "Target Cost"
+msgstr "Costo obiettivo"
+
+#. module: cmc_target_lcc
+#: model:ir.model,name:cmc_target_lcc.model_cmc_target_cost_component
+msgid "Target Cost Component"
+msgstr "Componente del costo obiettivo"
+
+#. module: cmc_target_lcc
+#: model:ir.model,name:cmc_target_lcc.model_cmc_target_cost_result
+msgid "Target Cost Deployment"
+msgstr "Dispiegamento del costo obiettivo"
+
+#. module: cmc_target_lcc
+#: model:ir.model,name:cmc_target_lcc.model_cmc_target_cost_function
+msgid "Target Cost Function"
+msgstr "Funzione del costo obiettivo"
+
+#. module: cmc_target_lcc
+#: model:ir.model,name:cmc_target_lcc.model_cmc_target_cost_matrix
+msgid "Target Cost Function-Cost Matrix"
+msgstr "Matrice funzione-costo del costo obiettivo"
+
+#. module: cmc_target_lcc
+#: model:ir.actions.act_window,name:cmc_target_lcc.action_cmc_target_cost
+#: model:ir.ui.menu,name:cmc_target_lcc.menu_cmc_target_cost
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_target_cost_list
+msgid "Target Costing"
+msgstr "Costo obiettivo (target costing)"
+
+#. module: cmc_target_lcc
+#: model:ir.model,name:cmc_target_lcc.model_cmc_target_cost
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_target_cost_form
+msgid "Target Costing Sheet"
+msgstr "Scheda di costo obiettivo"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost__target_margin_pct
+msgid "Target Margin %"
+msgstr "Margine obiettivo %"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target__target_met
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost__target_met
+msgid "Target Met"
+msgstr "Obiettivo raggiunto"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost__target_price
+msgid "Target Price"
+msgstr "Prezzo obiettivo"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_costing__target_cost_id
+msgid "Target Sheet"
+msgstr "Scheda obiettivo"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target__target_total
+msgid "Target Total"
+msgstr "Totale obiettivo"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target__target_unit_cost
+msgid "Target Unit Cost"
+msgstr "Costo unitario obiettivo"
+
+#. module: cmc_target_lcc
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_target_cost_form
+msgid "Target vs Current"
+msgstr "Obiettivo vs attuale"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_lcc_cost_line__actual_zero
+msgid "The actual is a confirmed zero: the estimated cost did not happen."
+msgstr ""
+"Il consuntivo è uno zero confermato: il costo stimato non si è verificato."
+
+#. module: cmc_target_lcc
+#. odoo-python
+#: code:addons/cmc_target_lcc/models/cmc_lcc.py:0
+msgid "The horizon must be at least one year."
+msgstr "L'orizzonte deve essere di almeno un anno."
+
+#. module: cmc_target_lcc
+#. odoo-python
+#: code:addons/cmc_target_lcc/models/cmc_target_cost.py:0
+msgid "The importance of the functions must sum to 100%."
+msgstr "L'importanza delle funzioni deve sommare a 100%."
+
+#. module: cmc_target_lcc
+#. odoo-python
+#: code:addons/cmc_target_lcc/models/cmc_kaizen.py:0
+msgid "The last tracked month is before the first."
+msgstr "L'ultimo mese monitorato precede il primo."
+
+#. module: cmc_target_lcc
+#. odoo-python
+#: code:addons/cmc_target_lcc/models/cmc_target_cost.py:0
+msgid ""
+"The shares of a component across the functions must sum to 100%%: %(names)s"
+msgstr ""
+"Le quote di un componente tra le funzioni devono sommare a 100%%: %(names)s"
+
+#. module: cmc_target_lcc
+#. odoo-python
+#: code:addons/cmc_target_lcc/models/cmc_target_cost.py:0
+msgid "The target margin must be at least 0% and below 100%."
+msgstr "Il margine obiettivo deve essere almeno 0% e inferiore a 100%."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target__line_ids
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_kaizen_form
+msgid "Tracking"
+msgstr "Monitoraggio"
+
+#. module: cmc_target_lcc
+#. odoo-python
+#: code:addons/cmc_target_lcc/models/cmc_lcc.py:0
+msgid ""
+"Type the actual (or confirm it is zero) in an actual year for: %(lines)s"
+msgstr ""
+"Inserire il consuntivo (o confermare che è zero) in un anno effettivo per: "
+"%(lines)s"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target__unit_driver_id
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost__unit_driver_id
+msgid "Unit Driver"
+msgstr "Driver unitario"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_kaizen_target__basis__unit
+msgid "Unit cost"
+msgstr "Costo unitario"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_target_cost__current_cost
+msgid "Unit cost of the product in the registry."
+msgstr "Costo unitario del prodotto in anagrafica."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_lcc_cost_line__phase__use
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_lcc_phase_result__phase__use
+msgid "Use / Service"
+msgstr "Uso / servizio"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_lcc_cost_line__category__usual
+#: model:ir.model.fields.selection,name:cmc_target_lcc.selection__cmc_lcc_phase_result__category__usual
+msgid "Usual"
+msgstr "Abituale"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_target_cost_result__value_index
+msgid "Value Index"
+msgstr "Indice di valore"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target__variable_budget
+msgid "Variable Budget"
+msgstr "Budget variabile"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target__variance
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_kaizen_target_line__variance
+msgid "Variance"
+msgstr "Scostamento"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_feature_result__violation_count
+msgid "Violation Count"
+msgstr "Numero di violazioni"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year__volume
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year_result__volume
+msgid "Volume"
+msgstr "Volume"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_lcc_cost_line__actual_amount
+msgid "What happened, used in an actual year."
+msgstr "Che cosa è accaduto, usato in un anno effettivo."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_cost_line__year
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year__year
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_year_result__year
+msgid "Year"
+msgstr "Anno"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,help:cmc_target_lcc.field_cmc_lcc_cost_line__commit_year
+msgid "Year the cost is committed."
+msgstr "Anno in cui il costo è impegnato."
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__year_ids
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_lcc_model_form
+msgid "Years"
+msgstr "Anni"
+
+#. module: cmc_target_lcc
+#. odoo-python
+#: code:addons/cmc_target_lcc/models/cmc_lcc.py:0
+msgid ""
+"Years and costs must fall inside the horizon (0 to %(last)s): %(items)s"
+msgstr ""
+"Anni e costi devono rientrare nell'orizzonte (da 0 a %(last)s): %(items)s"

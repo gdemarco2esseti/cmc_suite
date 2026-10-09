@@ -66,7 +66,7 @@ class TestAbc2RatesLifecycle(Abc2Case):
     def test_results_written_by_compute_only(self):
         # AD-001: a flow typed by hand would be certified next to the engine's rows
         run = self._main_run()
-        with self.assertRaises((UserError, AccessError)):
+        with self.assertRaises(UserError):
             self.env_a["cmc.abc.flow"].create({"run_id": run.id, "stage": "trace", "amount": 1.0})
         with self.assertRaises(UserError):
             run.activity_cost_ids[0].total_cost = 1.0

@@ -66,7 +66,7 @@ class TestAbc2Security(Abc2Case):
     def test_cmc_user_cannot_write_results(self):
         # AD-115: results are read-only for users
         run = self._main_run(env=self._env(self.user_a))
-        with self.assertRaises((AccessError, UserError)):
+        with self.assertRaises(UserError):
             run.flow_ids[0].amount = 1.0
 
     def test_outsider_has_no_access(self):

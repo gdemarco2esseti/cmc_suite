@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- The shipped classification attributes also describe activities (AD-109). A plain write, not a record
+         override: the cmc_base xmlids are noupdate, so an upgraded database would skip a <record>. (4, ...) is idempotent. -->
+    <function model="cmc.attribute" name="write"
+              eval="[[ref('cmc_base.cmc_attribute_value_added'), ref('cmc_base.cmc_attribute_cost_of_quality'), ref('cmc_base.cmc_attribute_efficiency')],
+                     {'target_model_ids': [(4, ref('model_cmc_abc_activity'))]}]"/>
+</odoo>

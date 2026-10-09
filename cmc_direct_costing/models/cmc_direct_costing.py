@@ -84,9 +84,7 @@ class CmcDirectCosting(models.Model):
             {"label": self.env._("Operating result"), "kind": "result",
              "values": None, "total": self.operating_result},
         ]
-        return {"title": self.env._("Contribution margin income statement"),
-                "subtitle": "%s · %s" % (self.name, self._reclass_period()),
-                "currency": self._reclass_ccy(), "columns": cols, "rows": rows}
+        return self._reclass_payload(self.env._("Contribution margin income statement"), cols, rows)
 
 
 

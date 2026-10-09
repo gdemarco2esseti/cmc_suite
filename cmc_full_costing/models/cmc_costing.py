@@ -122,9 +122,7 @@ class CmcCostingRun(models.Model):
              "values": vals("cost_economico_tecnico"),
              "total": tot("cost_economico_tecnico")},
         ]
-        return {"title": self.env._("Full cost per configuration"),
-                "subtitle": "%s · %s" % (self.name, self._reclass_period()),
-                "currency": self._reclass_ccy(), "columns": cols, "rows": rows}
+        return self._reclass_payload(self.env._("Full cost per configuration"), cols, rows)
 
     # ---- engine ----------------------------------------------------------
 

@@ -178,9 +178,7 @@ class CmcAbcRun(models.Model):
                 ),
                 "kind": "plain", "values": dict(zero), "total": ares.amount,
             })
-        return {"title": self.env._("Cost per activity (ABC)"),
-                "subtitle": "%s · %s" % (self.name, self._reclass_period()),
-                "currency": self._reclass_ccy(), "columns": cols, "rows": rows}
+        return self._reclass_payload(self.env._("Cost per activity (ABC)"), cols, rows)
 
 
 class CmcAbcLine(models.Model):

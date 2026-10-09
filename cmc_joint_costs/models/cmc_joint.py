@@ -85,21 +85,10 @@ class CmcJointRun(models.Model):
         method = self.method
         if method == "constant_gm":
             return self._allocate_constant_gm(net_joint, mains, rounding)
-        base_rounding = rounding
-        if method == "physical":
-            weights = {line: line.quantity for line in mains}
-            # why: the physical base is a quantity, not an amount, so it is
-            # tested against the quantity precision
-            base_rounding = qty_rounding(self.env)
-        elif method == "sales_value":
-            weights = {line: line.quantity * line.unit_sales_value for line in mains}
-        else:  # nrv: clamp per-line NRV at 0 (consistent with by-product NRV)
-            weights = {
-                line: max(
-                    line.quantity * line.unit_sales_value - line.separable_cost, 0.0
-                )
-                for line in mains
-            }
+        weights = self._weights(mains)
+        # why: the physical base is a quantity, not an amount, so it is tested
+        # against the quantity precision
+        base_rounding = qty_rounding(self.env) if method == "physical" else rounding
         base = sum(weights.values())
         if float_compare(base, 0.0, precision_rounding=base_rounding) <= 0:
             if float_is_zero(net_joint, precision_rounding=rounding):
@@ -109,6 +98,19 @@ class CmcJointRun(models.Model):
                 "cannot be split.", method,
             ))
         return spread(net_joint, weights, rounding)
+
+    def _weights(self, mains):
+        """{line: allocation weight} of the main products for the run method
+        (physical, sales value or NRV)."""
+        if self.method == "physical":
+            return {line: line.quantity for line in mains}
+        if self.method == "sales_value":
+            return {line: line.quantity * line.unit_sales_value for line in mains}
+        # nrv: clamp per-line NRV at 0 (consistent with by-product NRV)
+        return {
+            line: max(line.quantity * line.unit_sales_value - line.separable_cost, 0.0)
+            for line in mains
+        }
 
     def _allocate_constant_gm(self, net_joint, mains, rounding):
         """Each product keeps the same gross-margin %; the joint cost assigned is

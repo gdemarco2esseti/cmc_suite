@@ -347,8 +347,16 @@ class CmcTdabcRun(models.Model):
         Σ cost_absorbed + unused_cost == resource.cost always holds (no ±rounding
         drift from rounding the two parts independently)."""
         self.ensure_one()
-        rounding = self.company_id.currency_id.rounding
         unit_times, warnings = self._unit_times(scenario, hours, derived_volumes)
+        absorbed = self._absorbed_time(unit_times, derived_volumes)
+        result_vals = self._result_rows(scenario, absorbed)
+        cap_vals = self._capacity_rows(scenario, absorbed["resources"], absorbed["required"])
+        return result_vals, cap_vals, warnings
+
+    def _absorbed_time(self, unit_times, derived_volumes):
+        """Time and raw cost absorbed per (resource, cost object, activity) by
+        the lines in the scenario (``unit_times``). Fails loud on a resource
+        without practical capacity."""
         raw_cost = defaultdict(float)     # key -> cost
         time_by_key = defaultdict(float)  # key -> minutes (accumulated, mirrors raw_cost)
         obj_meta = {}                     # key -> run line (for metadata)
@@ -374,12 +382,21 @@ class CmcTdabcRun(models.Model):
             time_by_key[key] += time_absorbed
             required[res.id] += time_absorbed
             obj_meta[key] = line
-        resources = self.env["cmc.tdabc.resource"].browse(list(resource_ids))
+        return {
+            "resources": self.env["cmc.tdabc.resource"].browse(list(resource_ids)),
+            "raw_cost": raw_cost, "time_by_key": time_by_key,
+            "obj_meta": obj_meta, "required": required,
+        }
+
+    def _result_rows(self, scenario, absorbed):
+        """Result rows: each resource's absorbed cost conserved to the cent."""
+        rounding = self.company_id.currency_id.rounding
+        required, obj_meta, time_by_key = absorbed["required"], absorbed["obj_meta"], absorbed["time_by_key"]
         by_res = defaultdict(dict)
-        for key, cost in raw_cost.items():
+        for key, cost in absorbed["raw_cost"].items():
             by_res[key[0]][key] = cost
         result_vals = []
-        for res in resources:
+        for res in absorbed["resources"]:
             target = float_round(
                 required[res.id] * res.rate, precision_rounding=rounding
             )
@@ -401,6 +418,11 @@ class CmcTdabcRun(models.Model):
                     ),
                     "cost_absorbed": cost,
                 })
+        return result_vals
+
+    def _capacity_rows(self, scenario, resources, required):
+        """Capacity rows: unused cost is the exact residual of the absorbed."""
+        rounding = self.company_id.currency_id.rounding
         cap_vals = []
         for res in resources:
             req = required[res.id]
@@ -421,7 +443,7 @@ class CmcTdabcRun(models.Model):
                 ) else (req / practical * 100.0),
                 "over_capacity": req > practical,
             })
-        return result_vals, cap_vals, warnings
+        return cap_vals
 
     def _cmc_reclass(self):
         self.ensure_one()
@@ -447,34 +469,25 @@ class CmcTdabcRun(models.Model):
 
         labelmap = {"manual": self.env._("estimate"),
                     "timesheet": self.env._("actual")}
-        scenarios = [s for s in ("manual", "timesheet")
-                     if res.filtered(lambda x: x.scenario == s)]
-        rows = []
-        for s in scenarios:
-            sres = res.filtered(lambda x: x.scenario == s)
-            values = {}
-            for r in sres:
-                values[okey(r)] = values.get(okey(r), 0.0) + r.cost_absorbed
-            rows.append({"label": self.env._("Absorbed cost · %(scenario)s",
-                                             scenario=labelmap[s]),
-                         "kind": "plain", "values": values,
-                         "total": sum(sres.mapped("cost_absorbed"))})
+        by_scenario = defaultdict(lambda: defaultdict(float))
+        total_values = defaultdict(float)
+        for r in res:
+            by_scenario[r.scenario][okey(r)] += r.cost_absorbed
+            total_values[okey(r)] += r.cost_absorbed
+        unused = defaultdict(float)
+        for cres in self.capacity_result_ids:
+            unused[cres.scenario] += cres.unused_cost
+        scenarios = [s for s in ("manual", "timesheet") if s in by_scenario]
+        rows = [{"label": self.env._("Absorbed cost · %(scenario)s", scenario=labelmap[s]),
+                 "kind": "plain", "values": dict(by_scenario[s]),
+                 "total": sum(by_scenario[s].values())} for s in scenarios]
         if len(scenarios) > 1:
-            tvalues = {}
-            for r in res:
-                tvalues[okey(r)] = tvalues.get(okey(r), 0.0) + r.cost_absorbed
             rows.append({"label": self.env._("Total absorbed cost"),
-                         "kind": "subtotal", "values": tvalues,
-                         "total": sum(res.mapped("cost_absorbed"))})
-        for s in scenarios:
-            cres = self.capacity_result_ids.filtered(lambda x: x.scenario == s)
-            rows.append({"label": self.env._("Unused capacity · %(scenario)s",
-                                             scenario=labelmap[s]),
-                         "kind": "subtract", "values": None,
-                         "total": sum(cres.mapped("unused_cost"))})
-        return {"title": self.env._("TDABC absorbed cost (estimate vs actual)"),
-                "subtitle": "%s · %s" % (self.name, self._reclass_period()),
-                "currency": self._reclass_ccy(), "columns": cols, "rows": rows}
+                         "kind": "subtotal", "values": dict(total_values),
+                         "total": sum(total_values.values())})
+        rows += [{"label": self.env._("Unused capacity · %(scenario)s", scenario=labelmap[s]),
+                  "kind": "subtract", "values": None, "total": unused[s]} for s in scenarios]
+        return self._reclass_payload(self.env._("TDABC absorbed cost (estimate vs actual)"), cols, rows)
 
 
 class CmcTdabcRunLine(models.Model):

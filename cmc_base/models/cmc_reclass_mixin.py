@@ -31,6 +31,14 @@ class CmcReclassMixin(models.AbstractModel):
             "Every CMC run must implement _cmc_reclass()")
 
     # ---- shared helpers ----
+    def _reclass_payload(self, title, columns, rows):
+        """The _cmc_reclass() dict: title, '<name> · <period>' subtitle,
+        currency symbol, columns and rows."""
+        self.ensure_one()
+        return {"title": title,
+                "subtitle": "%s · %s" % (self.name, self._reclass_period()),
+                "currency": self._reclass_ccy(), "columns": columns, "rows": rows}
+
     def _reclass_ccy(self):
         self.ensure_one()
         if "currency_id" in self._fields and self.currency_id:

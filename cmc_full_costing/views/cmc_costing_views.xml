@@ -22,6 +22,8 @@
                 <header>
                     <button name="action_compute" type="object" string="Compute"
                             class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_cmc_prefill_lines" type="object" string="Prefill Lines"
+                            invisible="state != 'draft'"/>
                     <button name="action_reset_to_draft" type="object"
                             string="Reset to Draft" invisible="state != 'done'"
                             confirm="Resetting deletes the computed results. Continue?"/>
@@ -34,22 +36,28 @@
                     </div>
                     <group>
                         <group>
-                            <field name="closing_run_id" readonly="state == 'done'"/>
-                            <field name="base" readonly="state == 'done'"/>
-                            <field name="single_driver_id" readonly="state == 'done'"
+                            <field name="closing_run_id" readonly="state != 'draft'"/>
+                            <field name="base" readonly="state != 'draft'"/>
+                            <field name="single_driver_id" readonly="state != 'draft'"
                                    invisible="base != 'single'"
                                    required="base == 'single'"/>
+                            <field name="prime_cost_source" readonly="state != 'draft'"/>
+                            <field name="capacity_basis" readonly="state != 'draft'"/>
+                            <field name="unabsorbed_cost" invisible="capacity_basis != 'practical'"/>
                         </group>
                         <group>
-                            <field name="date_from" readonly="state == 'done'"/>
-                            <field name="date_to" readonly="state == 'done'"/>
-                            <field name="company_id" readonly="state == 'done'" groups="base.group_multi_company"/>
+                            <field name="date_from" readonly="state != 'draft'"/>
+                            <field name="date_to" readonly="state != 'draft'"/>
+                            <field name="company_id" readonly="state != 'draft'" groups="base.group_multi_company"/>
+                            <field name="produced_measure_id" readonly="state != 'draft'"/>
+                            <field name="markup_percent" readonly="state != 'draft'"/>
+                            <field name="currency_id" invisible="1"/>
                         </group>
                     </group>
-                    <field name="product_ids" readonly="state == 'done'" widget="many2many_tags"/>
+                    <field name="product_ids" readonly="state != 'draft'" widget="many2many_tags"/>
                     <notebook>
                         <page string="Driver Consumption" name="lines">
-                            <field name="line_ids" readonly="state == 'done'">
+                            <field name="line_ids" readonly="state != 'draft'">
                                 <list editable="bottom">
                                     <field name="center_id"/>
                                     <field name="product_id"/>
@@ -62,7 +70,11 @@
                             <field name="result_ids" readonly="1">
                                 <list create="false" edit="false">
                                     <field name="product_id"/>
+                                    <field name="produced_qty" column_invisible="not parent.produced_measure_id"/>
                                     <field name="cost_primo" sum="Prime"/>
+                                    <field name="prime_cost_origin" widget="badge" optional="hide"
+                                           decoration-info="prime_cost_origin == 'actual'"
+                                           decoration-warning="prime_cost_origin == 'standard_fallback'"/>
                                     <field name="cost_indiretto" sum="Overhead"/>
                                     <field name="cost_industriale" sum="Industrial"/>
                                     <field name="cost_comm_admin" sum="Comm/Admin" optional="show"/>
@@ -70,9 +82,19 @@
                                     <field name="cost_figurativo" sum="Figurative" optional="hide"/>
                                     <field name="cost_economico_tecnico" sum="Economic-Technical"/>
                                     <field name="std_price_delta" optional="hide"/>
+                                    <field name="unit_cost_primo" column_invisible="not parent.produced_measure_id" optional="hide"/>
+                                    <field name="unit_cost_industriale" column_invisible="not parent.produced_measure_id" optional="hide"/>
+                                    <field name="unit_cost_variable" column_invisible="not parent.produced_measure_id"/>
+                                    <field name="unit_cost_complessivo" column_invisible="not parent.produced_measure_id"/>
+                                    <field name="price_cost_plus" column_invisible="not parent.produced_measure_id"/>
                                     <field name="currency_id" column_invisible="1"/>
                                 </list>
                             </field>
+                        </page>
+                        <page string="Capacity" name="capacity"
+                              invisible="capacity_basis != 'practical' and not capacity_ids">
+                            <field name="capacity_ids" readonly="1"
+                                   context="{'list_view_ref': 'cmc_full_costing.view_cmc_costing_capacity_list'}"/>
                         </page>
                         <page string="Reclassified" name="reclass">
                             <field name="cmc_reclass_json" widget="cmc_reclass" nolabel="1"/>
@@ -88,6 +110,10 @@
         <field name="model">cmc.costing.result</field>
         <field name="arch" type="xml">
             <form string="Product Full Cost">
+                <header>
+                    <button name="cmc_full_costing.action_cmc_costing_simulate" type="action" string="Simulate"
+                            context="{'default_result_id': id}"/>
+                </header>
                 <sheet>
                     <group>
                         <group string="Cost Configurations">
@@ -106,6 +132,23 @@
                             <field name="currency_id" invisible="1"/>
                         </group>
                     </group>
+                    <group string="Per Unit" invisible="not produced_qty">
+                        <group>
+                            <field name="prime_cost_origin"/>
+                            <field name="produced_qty"/>
+                            <field name="unit_cost_primo"/>
+                            <field name="unit_cost_industriale"/>
+                            <field name="unit_cost_complessivo"/>
+                            <field name="unit_cost_economico_tecnico"/>
+                        </group>
+                        <group>
+                            <field name="cost_variable"/>
+                            <field name="cost_fixed"/>
+                            <field name="unit_cost_variable"/>
+                            <field name="unit_cost_fixed"/>
+                            <field name="price_cost_plus"/>
+                        </group>
+                    </group>
                     <notebook>
                         <page string="Levels" name="levels">
                             <field name="config_ids">
@@ -114,6 +157,7 @@
                                     <field name="level"/>
                                     <field name="increment"/>
                                     <field name="amount"/>
+                                    <field name="unit_amount" optional="show"/>
                                     <field name="source"/>
                                     <field name="currency_id" column_invisible="1"/>
                                 </list>
@@ -126,6 +170,8 @@
                             <field name="coefficient"/>
                             <field name="driver_qty"/>
                             <field name="amount" sum="Total"/>
+                            <field name="amount_fixed" optional="hide"/>
+                            <field name="amount_variable" optional="hide"/>
                             <field name="currency_id" column_invisible="1"/>
                         </list>
                     </field>

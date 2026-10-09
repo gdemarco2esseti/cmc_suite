@@ -73,7 +73,9 @@
                                     <field name="labour_cost" sum="Labour"/>
                                     <field name="overhead_applied" sum="Overhead"/>
                                     <field name="job_cost" sum="Job cost"/>
+                                    <field name="period_job_cost" sum="Period cost"/>
                                     <field name="revenue" sum="Revenue"/>
+                                    <field name="period_revenue" optional="hide" sum="Period revenue"/>
                                     <field name="margin" sum="Margin"/>
                                     <field name="margin_percent"/>
                                     <field name="job_status" widget="badge"/>
@@ -124,7 +126,9 @@
                 <field name="labour_cost" sum="Labour"/>
                 <field name="overhead_applied" sum="Overhead"/>
                 <field name="job_cost" sum="Job cost"/>
+                <field name="period_job_cost" sum="Period cost"/>
                 <field name="revenue" sum="Revenue"/>
+                <field name="period_revenue" optional="hide" sum="Period revenue"/>
                 <field name="margin" sum="Margin"/>
                 <field name="margin_percent"/>
                 <field name="job_status" widget="badge"/>
@@ -147,6 +151,16 @@
                             <field name="close_date" invisible="not close_date"/>
                             <field name="hours"/>
                         </group>
+                        <group string="Period">
+                            <field name="period_hours"/>
+                            <field name="period_direct_cost"/>
+                            <field name="period_labour_cost"/>
+                            <field name="period_overhead_applied"/>
+                            <field name="period_job_cost"/>
+                            <field name="period_revenue"/>
+                        </group>
+                    </group>
+                    <group string="Job to date">
                         <group>
                             <field name="direct_material_cost"/>
                             <field name="other_direct_cost"/>

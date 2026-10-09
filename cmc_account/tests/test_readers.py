@@ -14,6 +14,12 @@ CONTRACT (one reader per source, on ``account.move.line``, all ``api.model``):
 - Perimeter (AD-115): the readers aggregate in sudo; the caller must belong to
   ``cmc_base.group_cmc_user`` and ``company`` must be in ``env.companies``, else ``AccessError``.
   Aggregated with ``_read_group`` (AD-114): query count independent of the number of journal items.
+- ``_cmc_revenue_by_analytic(company, date_from, date_to, analytic_accounts)`` (AD-111 placement, moved here
+  from ``cmc_job_costing``): ``analytic_accounts`` = ``account.analytic.account`` recordset -> ``{analytic
+  account id: revenue}``. Same source rules as ``_cmc_revenue_read_group`` (posted, company, income types,
+  ``-balance``, credit notes net) restricted to the items whose ``analytic_distribution`` holds the account
+  (any key, including a combined ``"id1,id2"`` key), each weighted by its percentage (40% -> 40% of the line).
+  Accounts without revenue are absent (or 0); an empty recordset -> ``{}``. Same CMC gate (AccessError).
 """
 
 from datetime import date
@@ -215,3 +221,118 @@ class TestCmcReaders(AccountTestInvoicingCommon):
         balances = self.AML._cmc_gl_balances_at(self.company, date(2026, 3, 31))
         self.assertFalse(balances.get(self.revenue))
         self.assertNotIn(self.company_data_b["default_account_revenue"], balances)
+
+
+@tagged("post_install", "-at_install")
+class TestCmcRevenueByAnalytic(AccountTestInvoicingCommon):
+    """AD-111: the GL revenue of an analytic account, weighted by the distribution, is a cmc_account reader."""
+
+    @classmethod
+    def get_default_groups(cls):
+        # why: AccountTestInvoicingCommon runs as `accountman`; the readers are CMC-gated
+        return super().get_default_groups() | cls.env.ref("cmc_base.group_cmc_manager")
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.company = cls.company_data["company"]
+        cls.company_data_b = cls.setup_other_company(name="CMC analytic revenue B")
+        cls.company_b = cls.company_data_b["company"]
+        plan = cls.env["account.analytic.plan"].create({"name": "CMC revenue jobs"})
+        AA = cls.env["account.analytic.account"]
+        cls.aa1 = AA.create({"name": "Rev AA1", "plan_id": plan.id, "company_id": cls.company.id})
+        cls.aa2 = AA.create({"name": "Rev AA2", "plan_id": plan.id, "company_id": cls.company.id})
+        cls.aa_b = AA.create({"name": "Rev AAB", "plan_id": plan.id, "company_id": cls.company_b.id})
+        cls.cmc_user = new_test_user(
+            cls.env, login="cmc_rev_aa_user", groups="base.group_user,cmc_base.group_cmc_user",
+            company_id=cls.company.id, company_ids=[Command.set(cls.company.ids)],
+        )
+        cls.outsider = new_test_user(
+            cls.env, login="cmc_rev_aa_outsider", groups="base.group_user",
+            company_id=cls.company.id, company_ids=[Command.set(cls.company.ids)],
+        )
+
+    @classmethod
+    def _invoice(cls, lines, day, move_type="out_invoice", data=None, post=True, account=None):
+        data = data or cls.company_data
+        move = cls.env["account.move"].with_company(data["company"]).create({
+            "move_type": move_type,
+            "partner_id": cls.partner_a.id,
+            "invoice_date": day,
+            "date": day,
+            "journal_id": data["default_journal_sale"].id,
+            "invoice_line_ids": [
+                Command.create({
+                    "name": "job revenue",
+                    "quantity": 1.0,
+                    "price_unit": amount,
+                    "account_id": (account or data["default_account_revenue"]).id,
+                    "tax_ids": [Command.clear()],
+                    "analytic_distribution": distribution,
+                })
+                for amount, distribution in lines
+            ],
+        })
+        if post:
+            move.action_post()
+        return move
+
+    def _by_analytic(self, accounts, env=None, company=None, date_from=date(2026, 3, 1), date_to=date(2026, 3, 31)):
+        rows = (env or self.env)["account.move.line"]._cmc_revenue_by_analytic(
+            company or self.company, date_from, date_to, accounts
+        )
+        return {key: round(value, 2) for key, value in rows.items() if value}
+
+    def test_reader_lives_in_cmc_account(self):
+        # AD-111: GL readers belong to cmc_account, not to the consumer engine (cmc_job_costing)
+        from odoo.addons.cmc_account.models.account_move_line import AccountMoveLine
+
+        self.assertIn("_cmc_revenue_by_analytic", vars(AccountMoveLine))
+
+    def test_weighted_by_distribution_percentage(self):
+        # AD-111: a line split 40/60 gives 40% to one account and 60% to the other
+        self._invoice([(1000.0, {str(self.aa1.id): 40, str(self.aa2.id): 60})], date(2026, 3, 12))
+        self._invoice([(500.0, {str(self.aa2.id): 100})], date(2026, 3, 13))
+        self.assertEqual(self._by_analytic(self.aa1 | self.aa2), {self.aa1.id: 400.0, self.aa2.id: 1100.0})
+
+    def test_combined_distribution_key(self):
+        # AD-111: a multi-plan key "id1,id2" credits each account of the key with the percentage
+        other_plan = self.env["account.analytic.plan"].create({"name": "CMC revenue centers"})
+        center = self.env["account.analytic.account"].create(
+            {"name": "Rev center", "plan_id": other_plan.id, "company_id": self.company.id}
+        )
+        self._invoice([(1000.0, {"%s,%s" % (self.aa1.id, center.id): 100})], date(2026, 3, 12))
+        self.assertEqual(self._by_analytic(self.aa1), {self.aa1.id: 1000.0})
+
+    def test_credit_note_nets_and_draft_ignored(self):
+        # AD-111 inv.(2): credit notes net by sign; drafts, other periods and non-income items are no revenue
+        self._invoice([(5000.0, {str(self.aa1.id): 100})], date(2026, 3, 10))
+        self._invoice([(500.0, {str(self.aa1.id): 100})], date(2026, 3, 20), move_type="out_refund")
+        self._invoice([(9999.0, {str(self.aa1.id): 100})], date(2026, 3, 21), post=False)
+        self._invoice([(3000.0, {str(self.aa1.id): 100})], date(2026, 4, 3))
+        self._invoice([(70.0, {str(self.aa1.id): 100})], date(2026, 3, 22),
+                      account=self.company_data["default_account_expense"])
+        self.assertEqual(self._by_analytic(self.aa1), {self.aa1.id: 4500.0})
+
+    def test_unrelated_analytic_not_returned(self):
+        # AD-111: only the requested accounts are read
+        self._invoice([(1000.0, {str(self.aa2.id): 100})], date(2026, 3, 12))
+        self.assertEqual(self._by_analytic(self.aa1), {})
+        self.assertEqual(self._by_analytic(self.env["account.analytic.account"]), {})
+
+    def test_cmc_user_reads_without_accounting_rights(self):
+        # AD-115: aggregated in sudo for a CMC user of the company
+        self._invoice([(1000.0, {str(self.aa1.id): 100})], date(2026, 3, 12))
+        self.assertEqual(self._by_analytic(self.aa1, env=self.env(user=self.cmc_user)), {self.aa1.id: 1000.0})
+
+    def test_gate_refuses_non_cmc_user(self):
+        # AD-115: the sudo aggregate is a CMC capability, not a back door to the GL
+        self._invoice([(1000.0, {str(self.aa1.id): 100})], date(2026, 3, 12))
+        with self.assertRaises(AccessError):
+            self._by_analytic(self.aa1, env=self.env(user=self.outsider))
+
+    def test_gate_refuses_foreign_company(self):
+        # AD-115: a CMC user of company A cannot read company B revenue
+        self._invoice([(4000.0, {str(self.aa_b.id): 100})], date(2026, 3, 12), data=self.company_data_b)
+        with self.assertRaises(AccessError):
+            self._by_analytic(self.aa_b, env=self.env(user=self.cmc_user), company=self.company_b)

@@ -40,6 +40,13 @@ class TestJobSheet(JobCase):
             "revenue": 4900.0,
             "margin": 1525.0,
             "job_status": "wip",
+            # RN-002: all of J1 is in March, the period part equals the job-to-date amounts
+            "period_hours": 35.0,
+            "period_direct_cost": 1200.0,
+            "period_labour_cost": 1650.0,
+            "period_overhead_applied": 525.0,
+            "period_job_cost": 3375.0,
+            "period_revenue": 4900.0,
         }])
         self.assertAlmostEqual(self._sheet(run, self.j1).margin_percent, 31.12, places=2)
 

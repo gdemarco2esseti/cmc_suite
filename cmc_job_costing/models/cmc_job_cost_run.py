@@ -27,7 +27,7 @@ class CmcJobCostRun(models.Model):
     date_to = fields.Date(required=True)
     project_ids = fields.Many2many(
         "project.project", check_company=True, string="Jobs",
-        help="Empty = every job of the company with cost lines or timesheets in the period.",
+        help="Empty = every job of the company with cost lines or timesheets in the period, plus the jobs still open at the end date.",
     )
     labour_rate_source = fields.Selection([("table", "Rate table"), ("registry", "Rate registry")], default="table", required=True)
     labour_driver_id = fields.Many2one(
@@ -81,16 +81,20 @@ class CmcJobCostRun(models.Model):
         # why sudo: lines, timesheets, employees, rates and projects are read inside the run company whoever presses Compute (AD-115);
         # results are written by the engine, the user's ACL on them is read-only
         engine = self.sudo()
-        direct, hours, projects, objects = engine._cmc_read_lines()
-        labour, published, read_rates = engine._cmc_labour(hours)
-        overhead, overhead_rates = engine._cmc_registry_overhead(hours)
+        direct, period_direct, hours, period_hours, projects, objects = engine._cmc_read_lines()
+        labour, period_labour, published, read_rates = engine._cmc_labour(hours, period_hours)
+        overhead, period_overhead, overhead_rates = engine._cmc_registry_overhead(hours, period_hours)
         for model, rates in (read_rates | overhead_rates).grouped("origin_model").items():
             self._cmc_record_usage(engine.env[model].browse(set(rates.mapped("origin_id"))))
         if published:
             self.env["cmc.rate"].sudo()._cmc_publish(self, published)
-        sheets = engine._cmc_create_sheets(projects, objects, direct, labour, overhead)
-        actual = engine._cmc_overhead_actual()
-        applied = sum(sheets.mapped("overhead_applied"))
+        parts = (
+            {"direct": direct, "labour": labour, "overhead": overhead},
+            {"direct": period_direct, "labour": period_labour, "overhead": period_overhead},
+        )
+        sheets = engine._cmc_create_sheets(projects, objects, *parts)
+        actual = engine._cmc_overhead_actual(projects)
+        applied = sum(sheets.mapped("period_overhead_applied"))
         wip = sheets.filtered(lambda s: s.job_status == "wip")
         done = sheets - wip
         self.write({
@@ -102,47 +106,77 @@ class CmcJobCostRun(models.Model):
         })
 
     def _cmc_read_lines(self):
-        """Direct costs {object: (material, other)} and hours rows at job x employee x month x center grain."""
+        """Direct costs {object: (material, other)} and hour rows at job x employee x month x center grain,
+        job-to-date and of the period; plus the jobs in scope."""
         Line = self.env["account.analytic.line"]
-        base = Domain([
-            ("company_id", "=", self.company_id.id), ("date", ">=", self.date_from), ("date", "<=", self.date_to),
-            ("cmc_excluded", "=", False),
+        to_date = Domain([
+            ("company_id", "=", self.company_id.id), ("date", "<=", self.date_to), ("cmc_excluded", "=", False),
         ])
         Object = self.env["cmc.cost.object"]
         if self.project_ids:
             objects = Object._cmc_ensure_objects(self.project_ids, company=self.company_id, object_type="project")
-            base &= Domain("cmc_cost_object_id", "in", objects.ids)
+            to_date &= Domain("cmc_cost_object_id", "in", objects.ids)
         else:
-            base &= Domain("cmc_cost_object_id.object_type", "=", "project")
-        # timesheet lines carry the project: their hours are valued at the resource rate, never at the employee cost
-        costs = Line._cmc_cost_read_group(base & Domain("project_id", "=", False), ["cmc_cost_object_id", "cmc_cost_element_id"])
+            to_date &= Domain("cmc_cost_object_id.object_type", "=", "project")
+        period = to_date & Domain("date", ">=", self.date_from)
         plan_fields = Line._get_plan_fnames()
-        hours = Line._read_group(
-            base & Domain("project_id", "!=", False), ["cmc_cost_object_id", "employee_id", "date:month", *plan_fields], ["unit_amount:sum"]
-        )
+        reads = []
+        for domain in (to_date, period):
+            # timesheet lines carry the project: their hours are valued at the resource rate, never at the employee cost
+            costs = Line._cmc_cost_read_group(domain & Domain("project_id", "=", False), ["cmc_cost_object_id", "cmc_cost_element_id"])
+            hours = Line._read_group(
+                domain & Domain("project_id", "!=", False), ["cmc_cost_object_id", "employee_id", "date:month", *plan_fields], ["unit_amount:sum"]
+            )
+            reads.append((costs, hours))
+        (costs, hours), (period_costs, period_hours) = reads
         if not self.project_ids:
             objects = Object.browse(list({row[0].id for row in costs} | {row[0].id for row in hours}))
-        projects = self.env["project.project"].browse(objects.mapped("res_id")).exists() if not self.project_ids else self.project_ids
+            objects = objects.browse(self._cmc_scope_object_ids(objects, period_costs, period_hours))
+        projects = self.project_ids or self.env["project.project"].browse(objects.mapped("res_id")).exists()
+        keep = set(objects.ids)
         mp = self.env.ref("cmc_base.cmc_element_mp")
-        direct = defaultdict(lambda: [0.0, 0.0])
-        for obj, element, cost in costs:
-            direct[obj.id][0 if element == mp else 1] += cost
+        direct_parts = []
+        for rows in (costs, period_costs):
+            direct = defaultdict(lambda: [0.0, 0.0])
+            for obj, element, cost in rows:
+                if obj.id in keep:
+                    direct[obj.id][0 if element == mp else 1] += cost
+            direct_parts.append(direct)
         accounts = self.env["account.analytic.account"].browse(
             list({acc.id for row in hours for acc in row[3:-1] if acc})
         )
         accounts.mapped("cmc_center_type")  # one prefetch for the whole set
-        rows = []
-        for obj, employee, month, *rest in hours:
-            qty, cols = rest[-1], rest[:-1]
-            centers = [acc for acc in cols if acc and (acc.cmc_center_type or acc.cmc_is_period)]
-            if not centers:
-                raise UserError(self.env._("Hours of %(job)s have no cost center.", job=obj.display_name))
-            rows.append((obj.id, employee, month, centers[0], qty))
-        return direct, rows, projects, {o.res_id: o for o in objects}
+        hour_parts = []
+        for rows in (hours, period_hours):
+            out = []
+            for obj, employee, month, *rest in rows:
+                if obj.id not in keep:
+                    continue
+                qty, cols = rest[-1], rest[:-1]
+                centers = [acc for acc in cols if acc and (acc.cmc_center_type or acc.cmc_is_period)]
+                if not centers:
+                    raise UserError(self.env._("Hours of %(job)s have no cost center.", job=obj.display_name))
+                out.append((obj.id, employee, month, centers[0], qty))
+            hour_parts.append(out)
+        return *direct_parts, *hour_parts, projects, {o.res_id: o for o in objects}
 
-    def _cmc_labour(self, hours):
-        """({object id: {(center, category, month, origin): [hours, rate]}}, rates to publish, registry rates read)."""
-        labour = defaultdict(dict)
+    def _cmc_scope_object_ids(self, objects, period_costs, period_hours):
+        """Empty scope (RN-002): jobs with activity in the period plus the jobs still open at the end of it;
+        a job closed before the period is out."""
+        active = {row[0].id for row in period_costs} | {row[0].id for row in period_hours}
+        scope = []
+        for obj, project in zip(objects, self.env["project.project"].browse(objects.mapped("res_id")), strict=True):
+            closed_on = project.cmc_job_closed and project.cmc_job_close_date
+            if closed_on and closed_on < self.date_from:
+                continue
+            if obj.id in active or not (closed_on and closed_on <= self.date_to):
+                scope.append(obj.id)
+        return scope
+
+    def _cmc_labour(self, hours, period_hours):
+        """(labour, period labour: {object id: {(center, category, month, origin): [hours, rate]}},
+        rates to publish, registry rates read); the rate of each (employee, center, month) is resolved once."""
+        labour, period_labour = defaultdict(dict), defaultdict(dict)
         published, read_rates = {}, self.env["cmc.rate"]
         registry = self.labour_rate_source == "registry"
         if registry:
@@ -150,19 +184,22 @@ class CmcJobCostRun(models.Model):
         else:
             rates = self._cmc_table_rates(hours)
             self.env["hr.employee"].browse([r[1].id for r in hours if r[1]]).mapped("category_ids")  # one prefetch
-        for obj_id, employee, month, center, qty in hours:
-            if registry:
-                rate = lookup[(center.id, month)]
-                key, value = (center, self.env["hr.employee.category"], month, "registry"), rate.value
-                read_rates |= rate
-            else:
-                row = self._cmc_pick_table_rate(rates, employee, center, month)
-                key, value = (center, row.category_id, month, "table"), row.hourly_rate
-                if not row.category_id and self.labour_driver_id:
-                    published[(center.id, month)] = {"holder": center, "driver": self.labour_driver_id, "date": month, "value": row.hourly_rate}
-            slot = labour[obj_id].setdefault(key, [0.0, value])
-            slot[0] += qty
-        return labour, list(published.values()), read_rates
+        resolved = {}
+        for slots, rows in ((labour, hours), (period_labour, period_hours)):
+            for obj_id, employee, month, center, qty in rows:
+                if (employee.id, center.id, month) not in resolved:
+                    if registry:
+                        rate = lookup[(center.id, month)]
+                        read_rates |= rate
+                        resolved[(employee.id, center.id, month)] = (self.env["hr.employee.category"], "registry", rate.value)
+                    else:
+                        row = self._cmc_pick_table_rate(rates, employee, center, month)
+                        resolved[(employee.id, center.id, month)] = (row.category_id, "table", row.hourly_rate)
+                        if not row.category_id and self.labour_driver_id:
+                            published[(center.id, month)] = {"holder": center, "driver": self.labour_driver_id, "date": month, "value": row.hourly_rate}
+                category, origin, value = resolved[(employee.id, center.id, month)]
+                slots[obj_id].setdefault((center, category, month, origin), [0.0, value])[0] += qty
+        return labour, period_labour, list(published.values()), read_rates
 
     def _cmc_table_rates(self, hours):
         rates = self.env["cmc.job.rate"].search([
@@ -198,49 +235,64 @@ class CmcJobCostRun(models.Model):
             found[(center.id, month)] = rate
         return found
 
-    def _cmc_registry_overhead(self, hours):
-        """({object id: overhead}, registry rates read); manual overhead is computed on the sheet."""
+    def _cmc_registry_overhead(self, hours, period_hours):
+        """({object id: overhead} job-to-date, same for the period, registry rates read); manual overhead is computed on the sheet."""
         if self.overhead_source != "registry":
-            return {}, self.env["cmc.rate"]
+            return {}, {}, self.env["cmc.rate"]
         lookup = self._cmc_registry_rates(hours, self.overhead_driver_id)
-        overhead = defaultdict(float)
-        for obj_id, _employee, month, center, qty in hours:
-            overhead[obj_id] += qty * lookup[(center.id, month)].value
-        return overhead, self.env["cmc.rate"].union(*lookup.values())
+        parts = []
+        for rows in (hours, period_hours):
+            overhead = defaultdict(float)
+            for obj_id, _employee, month, center, qty in rows:
+                overhead[obj_id] += qty * lookup[(center.id, month)].value
+            parts.append(overhead)
+        return *parts, self.env["cmc.rate"].union(*lookup.values())
 
-    def _cmc_create_sheets(self, projects, objects, direct, labour, registry_overhead):
+    def _cmc_measures(self, part, obj_id):
+        """Sheet measures of one object for the job-to-date or the period `part`."""
         currency = self.company_id.currency_id
-        revenue = self.env["account.move.line"]._cmc_revenue_by_analytic(
-            self.company_id, self.date_from, self.date_to, projects.account_id.ids
-        )
+        rows = part["labour"].get(obj_id, {})
+        hours = sum(slot[0] for slot in rows.values())
+        material, other = part["direct"].get(obj_id, (0.0, 0.0))
+        labour_cost = sum(currency.round(slot[0] * slot[1]) for slot in rows.values())
+        prime = material + other + labour_cost
+        if self.overhead_source == "registry":
+            base_qty, applied = hours, currency.round(part["overhead"].get(obj_id, 0.0))
+        else:
+            base_qty = hours if self.overhead_base == "hours" else prime
+            applied = currency.round(self.overhead_rate * base_qty)
+        return {
+            "hours": hours, "material": material, "other": other, "labour": labour_cost, "prime": prime,
+            "base_qty": base_qty, "applied": applied, "job_cost": prime + applied,
+        }
+
+    def _cmc_create_sheets(self, projects, objects, job_to_date, period):
+        currency = self.company_id.currency_id
+        Move = self.env["account.move.line"]
+        revenue = Move._cmc_revenue_by_analytic(self.company_id, False, self.date_to, projects.account_id)
+        period_revenue = Move._cmc_revenue_by_analytic(self.company_id, self.date_from, self.date_to, projects.account_id)
         sheet_vals, labour_vals = [], []
         for project in projects.sorted("id"):
             obj = objects.get(project.id) or self.env["cmc.cost.object"]
-            rows = labour.get(obj.id, {})
-            hours = sum(slot[0] for slot in rows.values())
-            material, other = direct.get(obj.id, (0.0, 0.0))
-            labour_cost = sum(currency.round(slot[0] * slot[1]) for slot in rows.values())
-            prime = material + other + labour_cost
-            if self.overhead_source == "registry":
-                base_qty, applied = hours, currency.round(registry_overhead.get(obj.id, 0.0))
-            else:
-                base_qty = hours if self.overhead_base == "hours" else prime
-                applied = currency.round(self.overhead_rate * base_qty)
-            job_cost = prime + applied
+            total, part = self._cmc_measures(job_to_date, obj.id), self._cmc_measures(period, obj.id)
             sales = currency.round(revenue.get(project.account_id.id, 0.0))
             closed = project.cmc_job_closed and project.cmc_job_close_date and project.cmc_job_close_date <= self.date_to
             sheet_vals.append({
-                "run_id": self.id, "project_id": project.id, "cost_object_id": obj.id, "hours": hours,
-                "direct_material_cost": material, "other_direct_cost": other, "direct_cost": material + other,
-                "labour_cost": labour_cost, "prime_cost": prime, "overhead_base_qty": base_qty, "overhead_applied": applied,
-                "job_cost": job_cost, "revenue": sales, "margin": sales - job_cost,
-                "margin_percent": (sales - job_cost) / sales * 100.0 if sales else 0.0,
+                "run_id": self.id, "project_id": project.id, "cost_object_id": obj.id, "hours": total["hours"],
+                "direct_material_cost": total["material"], "other_direct_cost": total["other"],
+                "direct_cost": total["material"] + total["other"], "labour_cost": total["labour"], "prime_cost": total["prime"],
+                "overhead_base_qty": total["base_qty"], "overhead_applied": total["applied"],
+                "job_cost": total["job_cost"], "revenue": sales, "margin": sales - total["job_cost"],
+                "margin_percent": (sales - total["job_cost"]) / sales * 100.0 if sales else 0.0,
                 "job_status": "completed" if closed else "wip", "close_date": project.cmc_job_close_date if closed else False,
+                "period_hours": part["hours"], "period_direct_cost": part["material"] + part["other"],
+                "period_labour_cost": part["labour"], "period_overhead_applied": part["applied"],
+                "period_job_cost": part["job_cost"], "period_revenue": currency.round(period_revenue.get(project.account_id.id, 0.0)),
             })
             labour_vals.append([
                 {"run_id": self.id, "center_id": center.id, "category_id": category.id, "date": month, "hours": slot[0],
                  "rate": slot[1], "amount": currency.round(slot[0] * slot[1]), "rate_origin": origin}
-                for (center, category, month, origin), slot in rows.items()
+                for (center, category, month, origin), slot in job_to_date["labour"].get(obj.id, {}).items()
             ])
         sheets = self.env["cmc.job.sheet"].create(sheet_vals)
         self.env["cmc.job.sheet.labour"].create([
@@ -248,7 +300,7 @@ class CmcJobCostRun(models.Model):
         ])
         return sheets
 
-    def _cmc_overhead_actual(self):
+    def _cmc_overhead_actual(self, projects):
         Line = self.env["account.analytic.line"]
         total = 0.0
         for plan, centers in self.overhead_center_ids.grouped("plan_id").items():
@@ -258,7 +310,7 @@ class CmcJobCostRun(models.Model):
             rows = Line._cmc_cost_read_group(Domain([
                 ("company_id", "in", [False, self.company_id.id]), ("date", ">=", self.date_from), ("date", "<=", self.date_to),
                 ("cmc_excluded", "=", False), ("cmc_directness", "=", "indirect"), (col, "in", centers.ids),
-            ]))
+            ]) & (Domain("project_id", "=", False) | Domain("project_id", "not in", projects.ids)))  # RN-003: job hours are labour
             total += rows[0][0]
         return self.company_id.currency_id.round(total)
 
@@ -287,6 +339,12 @@ class CmcJobSheet(models.Model):
     revenue = fields.Monetary()
     margin = fields.Monetary()
     margin_percent = fields.Float()
+    period_hours = fields.Float()
+    period_direct_cost = fields.Monetary()
+    period_labour_cost = fields.Monetary()
+    period_overhead_applied = fields.Monetary()
+    period_job_cost = fields.Monetary()
+    period_revenue = fields.Monetary()
     job_status = fields.Selection([("wip", "Work in Progress"), ("completed", "Completed")], required=True)
     close_date = fields.Date()
     labour_ids = fields.One2many("cmc.job.sheet.labour", "sheet_id")

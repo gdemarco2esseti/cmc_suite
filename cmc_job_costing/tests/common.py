@@ -31,7 +31,9 @@ of the month)
 Run ``cmc.job.cost.run`` (``_inherit = ["cmc.run.mixin"]``, AD-113) - one job cost sheet per project and period
 - Inputs (``_cmc_input_fields``, locked when computed): ``name``, ``company_id``, ``date_from``, ``date_to``
   (to < from -> ValidationError), ``project_ids`` M2m ``project.project`` (empty = every project of the company
-  with job activity in the period = stamped cost lines or timesheets), ``labour_rate_source`` ``table``
+  with job activity in the period = stamped cost lines or timesheets, PLUS every job still open at ``date_to``
+  with job-to-date cost (RN-002: the WIP balance carries jobs idle in the period); a job closed before
+  ``date_from`` is out of scope), ``labour_rate_source`` ``table``
   (default) / ``registry``, ``labour_driver_id`` M2o ``cmc.cost.driver`` (required for ``registry`` ->
   ValidationError), ``overhead_source`` ``manual`` (default) / ``registry``, ``overhead_base`` ``hours``
   (default) / ``direct_cost``, ``overhead_rate`` Float (manual; per hour, or per currency unit of prime cost;
@@ -39,15 +41,24 @@ Run ``cmc.job.cost.run`` (``_inherit = ["cmc.run.mixin"]``, AD-113) - one job co
   ``overhead_center_ids`` M2m ``account.analytic.account`` (the overhead pool). ``overhead_source =
   'registry'`` with ``overhead_base = 'direct_cost'`` -> ValidationError (registry rates are per center hour).
 - Results (``_cmc_result_fields`` = ``sheet_ids``, ``labour_ids``; outputs cleared on reset):
-  ``overhead_applied`` (= sum of sheets), ``overhead_actual``, ``overhead_variance`` = applied - actual
-  (> 0 over-applied, < 0 under-applied), ``wip_total`` / ``completed_total`` (sum of ``job_cost`` of the sheets
-  by status; ``wip_total + completed_total`` = sum of ``job_cost``, INT-05 conservation).
+  ``overhead_applied`` (PERIOD measure = sum of the sheets' ``period_overhead_applied``), ``overhead_actual``
+  (period), ``overhead_variance`` = applied - actual of the period (> 0 over-applied, < 0 under-applied),
+  ``wip_total`` / ``completed_total`` (JOB-TO-DATE: sum of ``job_cost`` of the sheets by status;
+  ``wip_total + completed_total`` = sum of ``job_cost``, INT-05 conservation).
+- RN-002 (job-to-date sheet): the cost fields of the sheet are CUMULATIVE from the job's first cost (no lower
+  date bound) up to ``date_to``; the ``period_*`` fields hold the part dated in [date_from, date_to].
 - ``cmc.job.sheet`` (``cmc.run.result.mixin``), one per project: ``run_id``, ``company_id``, ``project_id``,
   ``cost_object_id`` (``cmc.cost.object`` type ``project``), ``hours``, ``direct_material_cost`` (element
   ``cmc_base.cmc_element_mp``), ``other_direct_cost`` (any other element), ``direct_cost`` (= both),
   ``labour_cost``, ``prime_cost`` (= direct + labour), ``overhead_base_qty``, ``overhead_applied``,
   ``job_cost`` (= prime + overhead), ``revenue``, ``margin`` (= revenue - job_cost), ``margin_percent``
   (margin / revenue x 100, 0 without revenue), ``job_status`` ``wip`` / ``completed``, ``close_date``.
+  All of these (hours, costs, overhead, job cost, revenue, margin) are JOB-TO-DATE (RN-002). Period part:
+  ``period_hours``, ``period_direct_cost``, ``period_labour_cost``, ``period_overhead_applied``,
+  ``period_job_cost`` (= period direct + labour + overhead), ``period_revenue``.
+  Overhead applied job-to-date = the run's predetermined rate on the job-to-date base (manual), or the
+  registry rate of each month (registry, missing month -> UserError); labour of earlier months at the rate of
+  that month (missing -> UserError, as for the period). Labour rows cover every month to date.
 - ``cmc.job.sheet.labour`` (result), grain center x category x month: ``run_id``, ``sheet_id``, ``center_id``,
   ``category_id`` (the category of the table row used, False for a center-level row or a registry rate),
   ``date`` (month), ``hours``, ``rate``, ``amount``, ``rate_origin`` ``table`` / ``registry``.
@@ -64,10 +75,13 @@ Compute (one engine, set-based, AD-114):
 - Overhead applied: ``manual``: ``overhead_rate x base`` (base = hours, or prime cost); ``registry``: sum over
   center x month of hours x ``_cmc_lookup(center, overhead_driver_id, month)`` (missing -> UserError).
 - Overhead actual = cost of the INDIRECT (``cmc_directness = 'indirect'``) non-excluded analytic lines of
-  ``overhead_center_ids`` dated in the period.
-- Revenue = GL revenue of the period (AD-111 ``cmc_account`` reader rules: posted, income accounts,
-  ``-balance``, credit notes net) of the journal items whose ``analytic_distribution`` holds the project
-  analytic account (``project.account_id``), weighted by its percentage (a 40% share gives 40% of the line).
+  ``overhead_center_ids`` dated in the period, EXCLUDING timesheet lines charged to a job (``project_id`` set):
+  those hours are already job labour at the resource rate (RN-003, no double count).
+- Revenue = GL revenue (AD-111) read with ``cmc_account``'s
+  ``account.move.line._cmc_revenue_by_analytic(company, date_from, date_to, analytic_accounts)`` (moved from
+  this module to ``cmc_account``, AD-111 placement): posted, income accounts, ``-balance``, credit notes net,
+  items whose ``analytic_distribution`` holds ``project.account_id``, weighted by its percentage (a 40% share
+  gives 40% of the line); job-to-date for ``revenue``, period for ``period_revenue``.
 - Status: ``completed`` when the project is closed with ``cmc_job_close_date <= date_to`` (``close_date``
   snapshotted), else ``wip``. CMC never posts WIP/FG entries (AD-111 inv. 4, AD-118 skip).
 - Registry rates read -> ``_cmc_record_usage`` of their origins (AD-002/108): the producer cannot be reset
@@ -93,6 +107,7 @@ Fixture (company A = ``company_data``, March 2026; hand-computed numbers)
   Manual overhead 15/h on hours: J1 525 -> job cost 3375, margin 1525 (31.12%); J2 120 -> 840, margin 1260
   (60%); applied 645 vs actual 750 -> variance -105 (under-applied). On prime cost at 0.25: J1 712.50,
   J2 180 -> applied 892.50, variance +142.50 (over-applied).
+  All fixture activity is in March (April = after date_to), so job-to-date = period for J1/J2.
 Company B (``setup_other_company``): project JB (AB, center ZB), employee Carla 10/h, 3 h on ZB at rate 70
   (210), MP 90 -> job cost 300 with overhead 0.
 """

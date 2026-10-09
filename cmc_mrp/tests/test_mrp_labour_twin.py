@@ -1,6 +1,7 @@
 import ast
 
-from odoo.exceptions import UserError
+from odoo import fields
+from odoo.exceptions import AccessError, UserError
 from odoo.tests.common import TransactionCase, new_test_user, tagged
 
 LABOUR_COST = 30.0  # 60 minutes logged x 30.0 / hour
@@ -202,6 +203,7 @@ class TestMrpLabourTwin(TransactionCase):
         self.assertTrue(twins.filtered(lambda line: line.move_line_id in stamped))
         self.assertTrue(all(twins.mapped("cmc_excluded")))
         self.assertFalse(any(wc_lines.mapped("cmc_excluded")))
+        self.assertFalse(any(twins.mapped("cmc_classified_manually")))
         self.assertEqual(wc_lines.cmc_cost_element_id, self.mod)
         self.assertFalse(self._unclassified_queue() & twins)
 
@@ -240,10 +242,90 @@ class TestMrpLabourTwin(TransactionCase):
         self._assert_scenario(mo)
         twins = self._twins(mo)
         with self.assertRaises(UserError):
-            twins.write({
+            twins.with_user(self._controller()).write({
                 "cmc_classified_manually": True,
                 "cmc_cost_element_id": self.mod.id,
             })
+
+    def _controller(self):
+        return new_test_user(
+            self.env, login="cmc_twin_controller",
+            groups="base.group_user,cmc_base.group_cmc_user,"
+            "account.group_account_manager",
+        )
+
+    # ------------------------------------------------------------------
+    # AC4.5 -- the exclusion survives every way core rebuilds the analytic
+    # lines of the labour entry (the flag lives on the journal item too)
+    # ------------------------------------------------------------------
+
+    def _assert_labour_once(self, mo):
+        entry = self._labour_entry(mo)
+        lines = self.AL.search([("move_line_id", "in", entry.line_ids.ids)])
+        self.assertTrue(lines)
+        self.assertTrue(all(lines.mapped("cmc_excluded")))
+        self.assertFalse(any(lines.mapped("cmc_behavior")))
+        self.assertAlmostEqual(self._center_total(), -LABOUR_COST, places=2)
+
+    def test_ac45_twin_stays_excluded_after_draft_and_repost(self):
+        self._distribution_model(self.wip_account)
+        mo = self._complete(self._mo("ac45a"))
+        self._assert_scenario(mo)
+        entry = self._labour_entry(mo)
+        old = self._twins(mo)
+        entry.button_draft()
+        entry.action_post()
+        self.assertFalse(old.exists(), "precondition: core rebuilt the lines")
+        self._assert_labour_once(mo)
+
+    def test_ac45_twin_excluded_when_distribution_added_to_posted_line(self):
+        # no distribution model: the entry has no analytic line until the
+        # controller adds the missing analytic account to the posted entry.
+        mo = self._complete(self._mo("ac45b"))
+        entry = self._labour_entry(mo)
+        self.assertFalse(self.AL.search([("move_line_id", "in", entry.line_ids.ids)]))
+        entry.line_ids.filtered(
+            lambda line: line.account_id == self.labour_account
+        ).write({"analytic_distribution": {str(self.center.id): 100}})
+        self._assert_labour_once(mo)
+
+    def test_ac45_reversal_of_the_labour_entry_is_excluded(self):
+        self._distribution_model(self.wip_account)
+        mo = self._complete(self._mo("ac45c"))
+        entry = self._labour_entry(mo)
+        reversal = entry._reverse_moves(
+            [{"date": fields.Date.context_today(entry)}]
+        )
+        reversal._post()
+        rev_lines = self.AL.search([("move_line_id", "in", reversal.line_ids.ids)])
+        self.assertTrue(rev_lines, "precondition: the reversal has analytic lines")
+        self.assertTrue(all(rev_lines.mapped("cmc_excluded")))
+        self._assert_labour_once(mo)
+
+    # ------------------------------------------------------------------
+    # the exclusion flag is system-only, over RPC too
+    # ------------------------------------------------------------------
+
+    def test_excluded_flag_cannot_be_written_by_a_user(self):
+        line = self.AL.create({
+            "name": "costo", "account_id": self.center.id, "amount": -10.0,
+        })
+        with self.assertRaises(AccessError):
+            line.with_user(self._controller()).write({"cmc_excluded": True})
+        with self.assertRaises(AccessError):
+            self.AL.with_user(self._controller()).create({
+                "name": "costo", "account_id": self.center.id,
+                "amount": -10.0, "cmc_excluded": True,
+            })
+        self.assertFalse(line.cmc_excluded)
+
+    def test_excluded_flag_on_journal_item_is_system_only(self):
+        self._distribution_model(self.wip_account)
+        mo = self._complete(self._mo("rpc"))
+        item = self._labour_entry(mo).line_ids[:1]
+        self.assertTrue(item.cmc_excluded)
+        with self.assertRaises(AccessError):
+            item.with_user(self._controller()).write({"cmc_excluded": False})
 
     # ------------------------------------------------------------------
     # AC4.3 -- ordinary lines are not excluded

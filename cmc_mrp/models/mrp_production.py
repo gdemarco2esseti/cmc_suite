@@ -4,6 +4,8 @@ from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.tools import float_is_zero
 
+from odoo.addons.cmc_base.models.account_analytic_line import CMC_AUTO
+
 _logger = logging.getLogger(__name__)
 
 MP_XMLID = "cmc_base.cmc_element_mp"
@@ -67,18 +69,22 @@ class MrpProduction(models.Model):
         # why sudo: the shop-floor user closing the order has no CMC/analytic
         # rights; only CMC metadata is written. Core posts the entry (creating
         # its analytic lines, auto-classified on the way) and links the times
-        # only afterwards, so the twin is flagged here, entry-wide (expense AND
-        # WIP side), and the classification already applied is wiped.
-        twins = (
+        # only afterwards, so the entry is flagged here, entry-wide (expense AND
+        # WIP side): the flag on the journal items re-excludes the lines core
+        # rebuilds later, the twins already created are excluded and wiped now.
+        items = (
             self.sudo()
-            .workorder_ids.time_ids.account_move_line_id.move_id.line_ids.analytic_line_ids
+            .workorder_ids.time_ids.account_move_line_id.move_id.line_ids
         )
+        items.filtered(lambda item: not item.cmc_excluded).write({"cmc_excluded": True})
+        twins = items.analytic_line_ids.filtered(lambda line: not line.cmc_excluded)
         if twins:
-            twins.with_context(cmc_auto_classify=True).write({
+            twins.with_context(cmc_auto_classify=CMC_AUTO).write({
                 "cmc_excluded": True,
                 "cmc_behavior": False,
                 "cmc_cost_element_id": False,
                 "cmc_directness": "indirect",
+                "cmc_classified_manually": False,
             })
         return res
 
@@ -168,7 +174,7 @@ class MrpProduction(models.Model):
         if vals_list:
             # why sudo: a mrp.group_mrp_user closing an order has no create
             # rights on account.analytic.line; the lines are system-derived.
-            AL.sudo().with_context(cmc_auto_classify=True).create(vals_list)
+            AL.sudo().with_context(cmc_auto_classify=CMC_AUTO).create(vals_list)
         return True
 
     @api.model

@@ -21,8 +21,11 @@ class AccountAnalyticLine(models.Model):
             # users, and hr_timesheet (_check_can_write + record rules) refuses
             # any foreign write. Only CMC classification fields pass this gate,
             # and only on lines the user can read. sudo re-enters write(), so
-            # the manual marking in cmc_account still runs.
-            return self.sudo().write(vals)
+            # the manual marking in cmc_account still runs. Never for an
+            # excluded twin: sudo would defeat the superuser-only guard of
+            # cmc_base, which must refuse the write as the user.
+            if not any(self.mapped("cmc_excluded")):
+                return self.sudo().write(vals)
         return super().write(vals)
 
     @api.model

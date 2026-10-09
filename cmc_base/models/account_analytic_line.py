@@ -1,6 +1,11 @@
 from odoo import api, fields, models
 from odoo.fields import Domain
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import AccessError, UserError, ValidationError
+
+# why a sentinel: the context travels over RPC, so a plain True under
+# ``cmc_auto_classify`` could be forged by any client. An ``object()`` cannot be
+# serialised, hence only server code can put it there.
+CMC_AUTO = object()
 
 CAPACITY_DERIVED_FIELDS = (
     "fixed_cost",
@@ -45,7 +50,6 @@ class AccountAnalyticLine(models.Model):
     )
     cmc_excluded = fields.Boolean(
         string="Excluded from Cost Base",
-        index=True,
         copy=False,
         readonly=True,
         help="Excluded from the cost base: a system twin of a cost already "
@@ -233,15 +237,19 @@ class AccountAnalyticLine(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        if not self.env.su and any("cmc_excluded" in vals for vals in vals_list):
+            raise AccessError(self.env._("The cost base exclusion is set by the system only."))
         lines = super().create(vals_list)
         lines._cmc_touch_capacity(lines._cmc_capacity_rows())
         return lines
 
     def write(self, vals):
-        # a twin cannot be forced back into the cost base by hand; system
-        # writes (cmc_auto_classify) stay allowed
+        if "cmc_excluded" in vals and not self.env.su:
+            raise AccessError(self.env._("The cost base exclusion is set by the system only."))
+        # a twin cannot be forced back into the cost base by hand; only system
+        # (superuser) writes may touch it
         if (
-            not self.env.context.get("cmc_auto_classify")
+            not self.env.su
             and any(
                 vals.get(fname)
                 for fname in (

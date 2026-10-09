@@ -17,6 +17,28 @@ class AccountAnalyticLine(models.Model):
         "double imputation.",
     )
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        # why here: the twin must be excluded BEFORE the classification that
+        # runs at the end of create, and core rebuilds analytic lines in many
+        # places (repost, distribution edit, reversal); the journal item is the
+        # one record that survives all of them.
+        item_ids = {vals["move_line_id"] for vals in vals_list if vals.get("move_line_id")}
+        # why sudo: read of a CMC flag by whoever posts the entry
+        excluded = set(
+            self.env["account.move.line"].sudo().browse(item_ids).filtered("cmc_excluded").ids
+        )
+        if not excluded:
+            return super().create(vals_list)
+        vals_list = [
+            dict(vals, cmc_excluded=True, cmc_directness="indirect")
+            if vals.get("move_line_id") in excluded else vals
+            for vals in vals_list
+        ]
+        # why sudo: cmc_excluded is superuser-only; the value is derived from
+        # the journal item, never taken from the caller.
+        return super(AccountAnalyticLine, self.sudo()).create(vals_list).with_env(self.env)
+
     @api.model
     def _cmc_classify_trigger_fields(self):
         return super()._cmc_classify_trigger_fields() | {"category"}

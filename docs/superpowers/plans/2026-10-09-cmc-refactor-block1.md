@@ -120,7 +120,7 @@ Dispatch plan from odoo-dev-lead (inventory of every `amount` read, canonical `-
 - Tests: flip sign inside local helpers (call sites unchanged); rewrite `cmc_abc test_negative_amount_pool` as "a reversal reduces the pool"; cmc_mrp twin asserts become `+LABOUR_COST`; new red tests (a) cost field round-trip, (b) reversal reduces cost in closing/cockpit/abc, (c) migration predicate.
 - Sequence: test-writer → model-dev → view-dev → qa. ~6.5h. Plus T3 leftovers in cmc_cvr.py.
 
-## Open issues found after block 1 (to schedule)
+## Open issues found after block 1 (all closed in block 5: 5747a78 queue list view, eaff3b8 i18n, seeds patched out of repo with costing dates + CMC_SEED_DB/CMC_SEED_ADDONS overrides)
 - Unclassified queue (`cmc_account.action_cmc_unclassified_lines`) opens with the **timesheet** list view when `hr_timesheet` is installed (no `view_id` on the action → higher-priority hr_timesheet list wins: "Time Spent" column, no cost). Give the action a dedicated list view (center, description, element, `cmc_cost_amount`, date). Found while recording the block-1 video guide.
 - New field labels not yet translated (`Cost` / `cmc_cost_amount`): i18n regen in block 5.
 - Demo seed scripts (`odoo19/scripts/cmc_seed_*.py`) not plan-aware and partly broken (costing run dates): block 5.

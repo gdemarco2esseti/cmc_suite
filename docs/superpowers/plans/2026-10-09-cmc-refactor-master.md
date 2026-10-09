@@ -62,3 +62,16 @@ $PY odoo/odoo-bin -d cmc_rf_test --addons-path=odoo/addons,enterprise,$WT --http
 ```
 Baseline 2026-10-09: `0 failed, 0 error(s) of 241 tests`. `ERROR: ... viola il vincolo` lines are expected (constraint tests).
 Single module while iterating: `--test-tags=/cmc_mrp` (still `-u` the module under change).
+
+## Status (2026-10-09)
+
+| # | Commits | Gate | Notes |
+|---|---------|------|-------|
+| 1 | see block1.md | review + rōnin | closed earlier |
+| 2 | a461aa6, f70318e | review (2 HIGH) + rōnin (RN-001/002) fixed | `cmc.run.result.mixin` became a CRUD guard (no shared fields: `run_id` comodel differs per model); `cmc.run.line.mixin` added for input lines; `qty_rounding(env)` module function |
+| 3 | 9f26bf0, 34b278e | review (1 HIGH) + rōnin (RN-001) fixed | `cmc_bridge_source` = `key:fields`; gate accepts it only under CMC_AUTO; history corrected on first touch (release notes §7) |
+| 4 | f5415a1, ac5994a, 420edc3, 832c422 | review + rōnin (RN-001) fixed | result rows only under CMC_RUN_STATE; CVR rounding kept; MRP adoption via `_cmc_fill` |
+| 5 | 5747a78, eaff3b8, f1f7dfe | full regression 387/387 with EE bridge; upgrade rehearsal on a copy of cmc_all | symlinks `custom/cmc_*` pending explicit confirmation (AD-004) |
+
+Known, not changed (pre-existing): a non-zero period / figurative indirect pool with zero driver units
+is not allocated and not reported (`_spread_by_units` returns `{}`), unlike `_center_map` which fails loud.

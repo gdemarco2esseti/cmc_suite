@@ -1,0 +1,1029 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* cmc_standard_cost
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 23:35+0000\n"
+"PO-Revision-Date: 2026-10-09 23:35+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: cmc_standard_cost
+#. odoo-python
+#: code:addons/cmc_standard_cost/models/cmc_plan_version.py:0
+msgid ""
+"%(center)s has budget figures but no capacity analysis covering %(version)s."
+msgstr ""
+"%(center)s ha valori di budget ma nessuna analisi di capacità che copra "
+"%(version)s."
+
+#. module: cmc_standard_cost
+#. odoo-python
+#: code:addons/cmc_standard_cost/models/cmc_standard_variance.py:0
+msgid "%s is not a standard version."
+msgstr "%s non è una versione standard."
+
+#. module: cmc_standard_cost
+#. odoo-python
+#: code:addons/cmc_standard_cost/models/cmc_plan_version.py:0
+msgid "%s is not an approved standard version."
+msgstr "%s non è una versione standard approvata."
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,help:cmc_standard_cost.field_cmc_standard_card_line__price
+msgid "A sub-assembly is priced at its card cost at roll-up time."
+msgstr ""
+"Un semilavorato è valorizzato al costo della sua scheda al momento del roll-"
+"up."
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__absorption_ids
+msgid "Absorption"
+msgstr "Assorbimento"
+
+#. module: cmc_standard_cost
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_variance_run_form
+msgid "Actual"
+msgstr "Consuntivo"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_absorption_line__actual_amount
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__actual_amount
+msgid "Actual Amount"
+msgstr "Importo a consuntivo"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__actual_amount_total
+msgid "Actual Amount Total"
+msgstr "Totale importo a consuntivo"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_absorption_line__actual_fixed
+msgid "Actual Fixed"
+msgstr "Fisso a consuntivo"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__actual_price
+msgid "Actual Price"
+msgstr "Prezzo effettivo"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_absorption_line__actual_qty
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__actual_qty
+msgid "Actual Qty"
+msgstr "Quantità a consuntivo"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_absorption_line__actual_variable
+msgid "Actual Variable"
+msgstr "Variabile a consuntivo"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,help:cmc_standard_cost.field_cmc_standard_absorption_line__actual_qty
+msgid "Actual base (AH)."
+msgstr "Base effettiva (AH)."
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,help:cmc_standard_cost.field_cmc_standard_absorption_line__over_under_absorbed
+msgid "Actual minus applied: positive is over-absorbed."
+msgstr "Effettivo meno imputato: positivo = sovrassorbito."
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,help:cmc_standard_cost.field_cmc_standard_variance_line__total_variance
+#: model:ir.model.fields,help:cmc_standard_cost.field_cmc_standard_variance_run__variance_total
+msgid "Actual minus standard, natural sign: positive is favourable."
+msgstr "Effettivo meno standard, segno naturale: positivo = favorevole."
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card_line__amount
+msgid "Amount"
+msgstr "Importo"
+
+#. module: cmc_standard_cost
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_variance_run_form
+msgid "Applied (actual base)"
+msgstr "Imputato (base effettiva)"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_absorption_line__applied_actual
+msgid "Applied Actual"
+msgstr "Imputato effettivo"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_absorption_line__applied_standard
+msgid "Applied Standard"
+msgstr "Imputato standard"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields.selection,name:cmc_standard_cost.selection__cmc_plan_version__standard_type__attainable
+msgid "Attainable"
+msgstr "Conseguibile"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields.selection,name:cmc_standard_cost.selection__cmc_plan_version__standard_type__basic
+msgid "Basic"
+msgstr "Base"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_prefill_wizard__basis
+msgid "Basis"
+msgstr "Base"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card_line__behavior
+msgid "Behavior"
+msgstr "Comportamento"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card__bom_id
+msgid "Bom"
+msgstr "Distinta base"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_absorption_line__budget_fixed
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rate__budget_fixed
+msgid "Budget Fixed"
+msgstr "Budget fisso"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rate__budget_qty
+msgid "Budget Qty"
+msgstr "Quantità di budget"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rate__budget_variable
+msgid "Budget Variable"
+msgstr "Budget variabile"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_prefill_wizard__budget_version_id
+msgid "Budget Version"
+msgstr "Versione di budget"
+
+#. module: cmc_standard_cost
+#: model:ir.model,name:cmc_standard_cost.model_cmc_standard_line_mixin
+msgid "CMC standard version table"
+msgstr "Tabella versioni standard CMC"
+
+#. module: cmc_standard_cost
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_prefill_wizard_form
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_rollup_wizard_form
+msgid "Cancel"
+msgstr "Annulla"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rate__capacity_basis
+msgid "Capacity Basis"
+msgstr "Base di capacità"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_absorption_line__capacity_qty
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rate__capacity_qty
+msgid "Capacity Qty"
+msgstr "Quantità di capacità"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,help:cmc_standard_cost.field_cmc_standard_absorption_line__capacity_qty
+msgid "Capacity of the period (D)."
+msgstr "Capacità del periodo (D)."
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_plan_version__card_ids
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card_line__card_id
+msgid "Card"
+msgstr "Scheda"
+
+#. module: cmc_standard_cost
+#: model:ir.actions.act_window,name:cmc_standard_cost.action_cmc_standard_reconciliation
+#: model:ir.ui.menu,name:cmc_standard_cost.menu_cmc_standard_reconciliation
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_card_reconciliation
+msgid "Card vs Valuation"
+msgstr "Scheda vs valorizzazione"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rate__center_id
+msgid "Center"
+msgstr "Centro"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_absorption_line__company_id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card__company_id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card_line__company_id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_line_mixin__company_id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_price__company_id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rate__company_id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__company_id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__company_id
+msgid "Company"
+msgstr "Società"
+
+#. module: cmc_standard_cost
+#: model_terms:ir.actions.act_window,help:cmc_standard_cost.action_cmc_standard_variance_run
+msgid ""
+"Compare the manufacturing orders of a period with an approved standard "
+"version."
+msgstr ""
+"Confronta gli ordini di produzione di un periodo con una versione standard "
+"approvata."
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card_line__product_id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__component_id
+msgid "Component"
+msgstr "Componente"
+
+#. module: cmc_standard_cost
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_variance_run_form
+msgid "Compute"
+msgstr "Calcola"
+
+#. module: cmc_standard_cost
+#: model:ir.ui.menu,name:cmc_standard_cost.menu_cmc_standard_card
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_plan_version_form_standard
+msgid "Cost Cards"
+msgstr "Schede di costo"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_absorption_line__center_id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card_line__center_id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__center_id
+msgid "Cost Center"
+msgstr "Centro di costo"
+
+#. module: cmc_standard_cost
+#: model_terms:ir.actions.act_window,help:cmc_standard_cost.action_cmc_standard_variance_run
+msgid "Create a variance run"
+msgstr "Crea un'elaborazione degli scostamenti"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_absorption_line__create_uid
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card__create_uid
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card_line__create_uid
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_prefill_wizard__create_uid
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_price__create_uid
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rate__create_uid
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rollup_wizard__create_uid
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__create_uid
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__create_uid
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_absorption_line__create_date
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card__create_date
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card_line__create_date
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_prefill_wizard__create_date
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_price__create_date
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rate__create_date
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rollup_wizard__create_date
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__create_date
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__create_date
+msgid "Created on"
+msgstr "Creato il"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_absorption_line__currency_id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__currency_id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__currency_id
+msgid "Currency"
+msgstr "Valuta"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,help:cmc_standard_cost.field_cmc_standard_card__valuation_price
+msgid "Current standard_price of the product in the company."
+msgstr "standard_price corrente del prodotto nella società."
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__date_from
+msgid "Date From"
+msgstr "Data da"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__date_to
+msgid "Date To"
+msgstr "Data a"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,help:cmc_standard_cost.field_cmc_standard_card__value_difference
+msgid "Difference x quantity on hand."
+msgstr "Differenza x quantità disponibile."
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_plan_version__display_name
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_absorption_line__display_name
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card__display_name
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card_line__display_name
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_line_mixin__display_name
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_prefill_wizard__display_name
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_price__display_name
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rate__display_name
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rollup_wizard__display_name
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__display_name
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__display_name
+msgid "Display Name"
+msgstr "Nome visualizzato"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_absorption_line__driver_id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card_line__driver_id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rate__driver_id
+msgid "Driver"
+msgstr "Driver"
+
+#. module: cmc_standard_cost
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_variance_run_form
+msgid "Efficiency"
+msgstr "Efficienza"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_absorption_line__efficiency_variable
+msgid "Efficiency Variable"
+msgstr "Efficienza variabile"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__product_id
+msgid "Finished Product"
+msgstr "Prodotto finito"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields.selection,name:cmc_standard_cost.selection__cmc_standard_card_line__behavior__fixed
+msgid "Fixed"
+msgstr "Fisso"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_absorption_line__fixed_rate
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rate__fixed_rate
+msgid "Fixed Rate"
+msgstr "Tariffa fissa"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_plan_version__id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_absorption_line__id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card__id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card_line__id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_line_mixin__id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_prefill_wizard__id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_price__id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rate__id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rollup_wizard__id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__id
+msgid "ID"
+msgstr "ID"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields.selection,name:cmc_standard_cost.selection__cmc_plan_version__standard_type__ideal
+msgid "Ideal"
+msgstr "Ideale"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields.selection,name:cmc_standard_cost.selection__cmc_standard_card_line__line_type__labour
+#: model:ir.model.fields.selection,name:cmc_standard_cost.selection__cmc_standard_rate__rate_kind__labour
+#: model:ir.model.fields.selection,name:cmc_standard_cost.selection__cmc_standard_variance_line__line_type__labour
+msgid "Labour"
+msgstr "Manodopera"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_absorption_line__write_uid
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card__write_uid
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card_line__write_uid
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_prefill_wizard__write_uid
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_price__write_uid
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rate__write_uid
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rollup_wizard__write_uid
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__write_uid
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__write_uid
+msgid "Last Updated by"
+msgstr "Ultimo aggiornamento di"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_absorption_line__write_date
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card__write_date
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card_line__write_date
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_prefill_wizard__write_date
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_price__write_date
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rate__write_date
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rollup_wizard__write_date
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__write_date
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__write_date
+msgid "Last Updated on"
+msgstr "Ultimo aggiornamento il"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card__line_ids
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__line_ids
+msgid "Line"
+msgstr "Riga"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card_line__line_type
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__line_type
+msgid "Line Type"
+msgstr "Tipo di riga"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields.selection,name:cmc_standard_cost.selection__cmc_standard_rate__capacity_basis__manual
+msgid "Manual"
+msgstr "Manuale"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__production_id
+msgid "Manufacturing Order"
+msgstr "Ordine di produzione"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,help:cmc_standard_cost.field_cmc_standard_variance_run__skipped_count
+msgid "Manufacturing orders of the period whose product has no card."
+msgstr "Ordini di produzione del periodo il cui prodotto non ha scheda."
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields.selection,name:cmc_standard_cost.selection__cmc_standard_card_line__line_type__material
+#: model:ir.model.fields.selection,name:cmc_standard_cost.selection__cmc_standard_variance_line__line_type__material
+msgid "Material"
+msgstr "Materiale"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,help:cmc_standard_cost.field_cmc_standard_variance_line__price_variance
+msgid "Material price variance; for labour the rate variance."
+msgstr ""
+"Scostamento di prezzo dei materiali; per la manodopera, scostamento di "
+"tariffa."
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,help:cmc_standard_cost.field_cmc_standard_variance_line__quantity_variance
+msgid "Material usage variance; for labour the efficiency variance."
+msgstr ""
+"Scostamento di impiego dei materiali; per la manodopera, scostamento di "
+"efficienza."
+
+#. module: cmc_standard_cost
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_variance_run_form
+msgid "Mix"
+msgstr "Mix"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__mix_variance
+msgid "Mix Variance"
+msgstr "Scostamento di mix"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__name
+msgid "Name"
+msgstr "Nome"
+
+#. module: cmc_standard_cost
+#. odoo-python
+#: code:addons/cmc_standard_cost/models/cmc_standard_rollup.py:0
+msgid "No labour rate for %(center)s in %(version)s."
+msgstr "Nessuna tariffa di manodopera per %(center)s in %(version)s."
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields.selection,name:cmc_standard_cost.selection__cmc_standard_prefill_wizard__basis__normal
+#: model:ir.model.fields.selection,name:cmc_standard_cost.selection__cmc_standard_rate__capacity_basis__normal
+msgid "Normal capacity"
+msgstr "Capacità normale"
+
+#. module: cmc_standard_cost
+#: model:ir.model.constraint,message:cmc_standard_cost.constraint_cmc_standard_price_version_product_uniq
+msgid "One planned price per product in a version."
+msgstr "Un prezzo pianificato per prodotto in una versione."
+
+#. module: cmc_standard_cost
+#: model:ir.model.constraint,message:cmc_standard_cost.constraint_cmc_standard_rate_version_center_kind_uniq
+msgid "One predetermined rate per center and kind in a version."
+msgstr "Una tariffa predeterminata per centro e natura in una versione."
+
+#. module: cmc_standard_cost
+#: model:ir.model.constraint,message:cmc_standard_cost.constraint_cmc_standard_card_version_product_uniq
+msgid "One standard cost card per product in a version."
+msgstr "Una scheda di costo standard per prodotto in una versione."
+
+#. module: cmc_standard_cost
+#. odoo-python
+#: code:addons/cmc_standard_cost/models/cmc_plan_version.py:0
+msgid "Only a Controlling Manager pushes standard costs to the valuation."
+msgstr ""
+"Solo un Responsabile del controllo di gestione trasferisce i costi standard "
+"alla valorizzazione."
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__output_qty
+msgid "Output Qty"
+msgstr "Quantità prodotta"
+
+#. module: cmc_standard_cost
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_variance_run_form
+msgid "Over / under"
+msgstr "Sopra / sotto"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_absorption_line__over_under_absorbed
+msgid "Over Under Absorbed"
+msgstr "Sovra/sottoassorbito"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields.selection,name:cmc_standard_cost.selection__cmc_standard_card_line__line_type__overhead
+#: model:ir.model.fields.selection,name:cmc_standard_cost.selection__cmc_standard_rate__rate_kind__overhead
+msgid "Overhead"
+msgstr "Costi indiretti"
+
+#. module: cmc_standard_cost
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_variance_run_form
+msgid "Overhead Absorption"
+msgstr "Assorbimento dei costi indiretti"
+
+#. module: cmc_standard_cost
+#: model:ir.model,name:cmc_standard_cost.model_cmc_standard_absorption_line
+msgid "Overhead Absorption Result"
+msgstr "Risultato dell'assorbimento dei costi indiretti"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,help:cmc_standard_cost.field_cmc_standard_card_line__quantity
+msgid "Per unit of the finished product."
+msgstr "Per unità di prodotto finito."
+
+#. module: cmc_standard_cost
+#: model:ir.model,name:cmc_standard_cost.model_cmc_plan_version
+msgid "Plan Version"
+msgstr "Versione di piano"
+
+#. module: cmc_standard_cost
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_plan_version_form_standard
+msgid "Planned Purchase Prices"
+msgstr "Prezzi di acquisto pianificati"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields.selection,name:cmc_standard_cost.selection__cmc_standard_card_line__price_source__planned
+msgid "Planned price"
+msgstr "Prezzo pianificato"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,help:cmc_standard_cost.field_cmc_standard_price__price
+msgid "Planned purchase price per unit of measure of the product."
+msgstr "Prezzo di acquisto pianificato per unità di misura del prodotto."
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields.selection,name:cmc_standard_cost.selection__cmc_standard_prefill_wizard__basis__practical
+#: model:ir.model.fields.selection,name:cmc_standard_cost.selection__cmc_standard_rate__capacity_basis__practical
+msgid "Practical capacity"
+msgstr "Capacità pratica"
+
+#. module: cmc_standard_cost
+#: model:ir.model,name:cmc_standard_cost.model_cmc_standard_rate
+msgid "Predetermined Rate"
+msgstr "Tariffa predeterminata"
+
+#. module: cmc_standard_cost
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_plan_version_form_standard
+msgid "Predetermined Rates"
+msgstr "Tariffe predeterminate"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,help:cmc_standard_cost.field_cmc_standard_absorption_line__applied_actual
+msgid "Predetermined rate x actual base."
+msgstr "Tariffa predeterminata x base effettiva."
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,help:cmc_standard_cost.field_cmc_standard_absorption_line__applied_standard
+msgid "Predetermined rate x standard base."
+msgstr "Tariffa predeterminata x base standard."
+
+#. module: cmc_standard_cost
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_prefill_wizard_form
+msgid "Prefill"
+msgstr "Precompila"
+
+#. module: cmc_standard_cost
+#: model:ir.model,name:cmc_standard_cost.model_cmc_standard_prefill_wizard
+msgid "Prefill Predetermined Rates"
+msgstr "Precompila tariffe predeterminate"
+
+#. module: cmc_standard_cost
+#: model:ir.actions.act_window,name:cmc_standard_cost.action_cmc_standard_prefill_wizard
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_plan_version_form_standard
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_prefill_wizard_form
+msgid "Prefill Rates"
+msgstr "Precompila tariffe"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card_line__price
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_price__price
+msgid "Price"
+msgstr "Prezzo"
+
+#. module: cmc_standard_cost
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_variance_run_form
+msgid "Price / rate"
+msgstr "Prezzo / tariffa"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card_line__price_source
+msgid "Price Source"
+msgstr "Fonte del prezzo"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__price_variance
+msgid "Price Variance"
+msgstr "Scostamento di prezzo"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card__product_id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_price__product_id
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields.selection,name:cmc_standard_cost.selection__cmc_standard_card_line__price_source__product
+msgid "Product cost"
+msgstr "Costo del prodotto"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rollup_wizard__product_ids
+msgid "Products"
+msgstr "Prodotti"
+
+#. module: cmc_standard_cost
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_plan_version_form_standard
+msgid "Push Standard Prices"
+msgstr "Trasferisci prezzi standard"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card__qty_available
+msgid "Qty Available"
+msgstr "Quantità disponibile"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card_line__quantity
+msgid "Quantity"
+msgstr "Quantità"
+
+#. module: cmc_standard_cost
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_variance_run_form
+msgid "Quantity / efficiency"
+msgstr "Quantità / efficienza"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__quantity_variance
+msgid "Quantity Variance"
+msgstr "Scostamento di quantità"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rate__rate
+msgid "Rate"
+msgstr "Tariffa"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rate__rate_kind
+msgid "Rate Kind"
+msgstr "Natura della tariffa"
+
+#. module: cmc_standard_cost
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_variance_run_form
+msgid "Reset to Draft"
+msgstr "Riporta in bozza"
+
+#. module: cmc_standard_cost
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_variance_run_form
+msgid "Resetting deletes the computed results. Continue?"
+msgstr "Il ripristino elimina i risultati calcolati. Continuare?"
+
+#. module: cmc_standard_cost
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_rollup_wizard_form
+msgid "Roll Up"
+msgstr "Roll-up"
+
+#. module: cmc_standard_cost
+#: model:ir.actions.act_window,name:cmc_standard_cost.action_cmc_standard_rollup_wizard
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_plan_version_form_standard
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_rollup_wizard_form
+msgid "Roll Up Cards"
+msgstr "Roll-up delle schede"
+
+#. module: cmc_standard_cost
+#: model:ir.model,name:cmc_standard_cost.model_cmc_standard_rollup_wizard
+msgid "Roll Up Standard Cost Cards"
+msgstr "Roll-up delle schede di costo standard"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_absorption_line__run_id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__run_id
+msgid "Run"
+msgstr "Elaborazione"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__skipped_count
+msgid "Skipped Count"
+msgstr "Numero di saltati"
+
+#. module: cmc_standard_cost
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_variance_run_form
+msgid "Spending (fixed)"
+msgstr "Spesa (fissa)"
+
+#. module: cmc_standard_cost
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_variance_run_form
+msgid "Spending (var.)"
+msgstr "Spesa (var.)"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_absorption_line__spending_fixed
+msgid "Spending Fixed"
+msgstr "Spesa fissa"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_absorption_line__spending_variable
+msgid "Spending Variable"
+msgstr "Spesa variabile"
+
+#. module: cmc_standard_cost
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_variance_run_form
+msgid "Standard"
+msgstr "Standard"
+
+#. module: cmc_standard_cost
+#: model:ir.ui.menu,name:cmc_standard_cost.menu_cmc_sec_standard
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_plan_version_form_standard
+msgid "Standard Cost"
+msgstr "Costo standard"
+
+#. module: cmc_standard_cost
+#: model:ir.model,name:cmc_standard_cost.model_cmc_standard_card
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_card_form
+msgid "Standard Cost Card"
+msgstr "Scheda di costo standard"
+
+#. module: cmc_standard_cost
+#: model:ir.model,name:cmc_standard_cost.model_cmc_standard_card_line
+msgid "Standard Cost Card Line"
+msgstr "Riga della scheda di costo standard"
+
+#. module: cmc_standard_cost
+#: model:ir.actions.act_window,name:cmc_standard_cost.action_cmc_standard_card
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_card_list
+msgid "Standard Cost Cards"
+msgstr "Schede di costo standard"
+
+#. module: cmc_standard_cost
+#: model:ir.model,name:cmc_standard_cost.model_cmc_standard_variance_line
+msgid "Standard Cost Variance Result"
+msgstr "Risultato degli scostamenti di costo standard"
+
+#. module: cmc_standard_cost
+#: model:ir.model,name:cmc_standard_cost.model_cmc_standard_variance_run
+msgid "Standard Cost Variance Run"
+msgstr "Elaborazione degli scostamenti di costo standard"
+
+#. module: cmc_standard_cost
+#: model:ir.actions.act_window,name:cmc_standard_cost.action_cmc_standard_variance_run
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_variance_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_variance_run_list
+msgid "Standard Cost Variances"
+msgstr "Scostamenti di costo standard"
+
+#. module: cmc_standard_cost
+#: model:ir.model,name:cmc_standard_cost.model_cmc_standard_price
+msgid "Standard Purchase Price"
+msgstr "Prezzo di acquisto standard"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_absorption_line__standard_qty
+msgid "Standard Qty"
+msgstr "Quantità standard"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_plan_version__standard_type
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card__standard_type
+msgid "Standard Type"
+msgstr "Tipo di standard"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,help:cmc_standard_cost.field_cmc_standard_absorption_line__standard_qty
+msgid "Standard base for the actual output (SH)."
+msgstr "Base standard per la produzione effettiva (SH)."
+
+#. module: cmc_standard_cost
+#. odoo-python
+#: code:addons/cmc_standard_cost/models/cmc_standard_mixin.py:0
+msgid "Standard cost data live on a version of type Standard."
+msgstr "I dati di costo standard risiedono su una versione di tipo Standard."
+
+#. module: cmc_standard_cost
+#. odoo-python
+#: code:addons/cmc_standard_cost/models/cmc_standard_variance.py:0
+msgid "Standard cost variances"
+msgstr "Scostamenti di costo standard"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__state
+msgid "State"
+msgstr "Stato"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__std_amount
+msgid "Std Amount"
+msgstr "Importo standard"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__std_amount_total
+msgid "Std Amount Total"
+msgstr "Totale importo standard"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_plan_version__std_price_ids
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__std_price
+msgid "Std Price"
+msgstr "Prezzo standard"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__std_qty
+msgid "Std Qty"
+msgstr "Quantità standard"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_plan_version__std_rate_ids
+msgid "Std Rate"
+msgstr "Tariffa standard"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card_line__child_card_id
+msgid "Sub-assembly Card"
+msgstr "Scheda semilavorato"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields.selection,name:cmc_standard_cost.selection__cmc_standard_card_line__price_source__card
+msgid "Sub-assembly card"
+msgstr "Scheda semilavorato"
+
+#. module: cmc_standard_cost
+#. odoo-python
+#: code:addons/cmc_standard_cost/models/cmc_standard_rollup.py:0
+msgid "The bill of materials of %s contains itself."
+msgstr "La distinta base di %s contiene se stessa."
+
+#. module: cmc_standard_cost
+#. odoo-python
+#: code:addons/cmc_standard_cost/models/cmc_plan_version.py:0
+msgid "The capacity basis is Practical or Normal."
+msgstr "La base di capacità è Pratica o Normale."
+
+#. module: cmc_standard_cost
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_plan_version_form_standard
+msgid ""
+"The card costs overwrite the standard price of the products valued at "
+"standard cost. Continue?"
+msgstr ""
+"I costi di scheda sovrascrivono il prezzo standard dei prodotti valorizzati "
+"a costo standard. Continuare?"
+
+#. module: cmc_standard_cost
+#. odoo-python
+#: code:addons/cmc_standard_cost/models/cmc_standard_variance.py:0
+msgid "The period must be ordered and inside the span of %s."
+msgstr "Il periodo deve essere ordinato e ricadere nell'intervallo di %s."
+
+#. module: cmc_standard_cost
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_prefill_wizard_form
+msgid "The rate table of the version is replaced. Continue?"
+msgstr "La tabella delle tariffe della versione viene sostituita. Continuare?"
+
+#. module: cmc_standard_cost
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_card_form
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_card_reconciliation
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_variance_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_variance_run_list
+msgid "Total"
+msgstr "Totale"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__total_variance
+msgid "Total Variance"
+msgstr "Scostamento totale"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card__unit_cost
+msgid "Unit Cost"
+msgstr "Costo unitario"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card__unit_fixed
+msgid "Unit Fixed"
+msgstr "Fisso unitario"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card__unit_labour
+msgid "Unit Labour"
+msgstr "Manodopera unitaria"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card__unit_material
+msgid "Unit Material"
+msgstr "Materiale unitario"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card__unit_overhead
+msgid "Unit Overhead"
+msgstr "Costi indiretti unitari"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card__unit_overhead_fixed
+msgid "Unit Overhead Fixed"
+msgstr "Costi indiretti fissi unitari"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card__unit_variable
+msgid "Unit Variable"
+msgstr "Variabile unitario"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card__valuation_difference
+msgid "Valuation Difference"
+msgstr "Differenza di valorizzazione"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card__valuation_price
+msgid "Valuation Price"
+msgstr "Prezzo di valorizzazione"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,help:cmc_standard_cost.field_cmc_standard_card__valuation_difference
+msgid "Valuation price minus card unit cost."
+msgstr "Prezzo di valorizzazione meno costo unitario di scheda."
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card__value_difference
+msgid "Value Difference"
+msgstr "Differenza di valore"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields.selection,name:cmc_standard_cost.selection__cmc_standard_card_line__behavior__variable
+msgid "Variable"
+msgstr "Variabile"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_absorption_line__variable_rate
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rate__variable_rate
+msgid "Variable Rate"
+msgstr "Tariffa variabile"
+
+#. module: cmc_standard_cost
+#: model:ir.ui.menu,name:cmc_standard_cost.menu_cmc_standard_variance_run
+msgid "Variance Runs"
+msgstr "Elaborazioni scostamenti"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__variance_total
+msgid "Variance Total"
+msgstr "Totale scostamenti"
+
+#. module: cmc_standard_cost
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_variance_run_form
+msgid "Variances"
+msgstr "Scostamenti"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card__version_id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card_line__version_id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_line_mixin__version_id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_prefill_wizard__version_id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_price__version_id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rate__version_id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rollup_wizard__version_id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__version_id
+msgid "Version"
+msgstr "Versione"
+
+#. module: cmc_standard_cost
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_variance_run_form
+msgid "Volume"
+msgstr "Volume"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_absorption_line__volume_variance
+msgid "Volume Variance"
+msgstr "Scostamento di volume"
+
+#. module: cmc_standard_cost
+#. odoo-python
+#: code:addons/cmc_standard_cost/models/cmc_standard_rollup.py:0
+msgid "Work center %s has no CMC cost center in its analytic distribution."
+msgstr ""
+"Il centro di lavoro %s non ha alcun centro di costo CMC nella propria "
+"distribuzione analitica."
+
+#. module: cmc_standard_cost
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_variance_run_form
+msgid "Yield"
+msgstr "Resa"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__yield_variance
+msgid "Yield Variance"
+msgstr "Scostamento di resa"

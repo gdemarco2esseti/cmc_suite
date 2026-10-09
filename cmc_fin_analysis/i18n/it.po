@@ -1,0 +1,1751 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* cmc_fin_analysis
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 23:35+0000\n"
+"PO-Revision-Date: 2026-10-09 23:35+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: cmc_fin_analysis
+#. odoo-python
+#: code:addons/cmc_fin_analysis/models/cmc_fin_analysis.py:0
+msgid "%(label)s needs lines of schemes not selected in the run: %(names)s"
+msgstr ""
+"%(label)s richiede righe di schemi non selezionati nell'elaborazione: "
+"%(names)s"
+
+#. module: cmc_fin_analysis
+#. odoo-python
+#: code:addons/cmc_fin_analysis/models/cmc_fin_analysis.py:0
+msgid "%(label)s: unknown names in the formula: %(names)s"
+msgstr "%(label)s: nomi sconosciuti nella formula: %(names)s"
+
+#. module: cmc_fin_analysis
+#: model:ir.actions.report,print_report_name:cmc_fin_analysis.action_report_cmc_fin_analysis
+msgid "'Financial Analysis - %s' % object.name"
+msgstr "'Analisi di bilancio - %s' % object.name"
+
+#. module: cmc_fin_analysis
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.report_cmc_fin_analysis_document
+msgid ""
+"(*) Valuation criteria changed: the value and its change versus the previous"
+" year are not comparable."
+msgstr ""
+"(*) Criteri di valutazione modificati: il valore e la sua variazione "
+"rispetto all'anno precedente non sono confrontabili."
+
+#. module: cmc_fin_analysis
+#. odoo-python
+#: code:addons/cmc_fin_analysis/models/cmc_fin_data.py:0
+msgid "A choice needs a reason."
+msgstr "Una scelta richiede una motivazione."
+
+#. module: cmc_fin_analysis
+#. odoo-python
+#: code:addons/cmc_fin_analysis/models/cmc_fin_scheme.py:0
+msgid "A mapping rule needs at least one criterion."
+msgstr "Una regola di mappatura richiede almeno un criterio."
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,help:cmc_fin_analysis.field_cmc_fin_analysis_value__comparability_break
+msgid ""
+"A valuation-criteria change makes this year, and its YoY, not comparable."
+msgstr ""
+"Un cambio dei criteri di valutazione rende non confrontabili questo anno e "
+"la sua variazione annua."
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_oic_a
+msgid "A. Operating cash flow"
+msgstr "A. Flusso finanziario della gestione operativa"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_oic_a1
+msgid "A.1 Result before taxes, interest, dividends"
+msgstr "A.1 Risultato prima di imposte, interessi, dividendi"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_oic_a2
+msgid "A.2 Before changes in working capital"
+msgstr "A.2 Prima delle variazioni del capitale circolante netto"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_oic_a3
+msgid "A.3 After changes in working capital"
+msgstr "A.3 Dopo le variazioni del capitale circolante netto"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,help:cmc_fin_analysis.field_cmc_fin_analysis__reduced_mode
+msgid ""
+"Abbreviated statements: ratios needing detail are flagged not computable."
+msgstr ""
+"Bilancio abbreviato: gli indici che richiedono dettagli sono segnalati come "
+"non calcolabili."
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,help:cmc_fin_analysis.field_cmc_fin_override__amount
+msgid "Absolute part of the account balance moved; 0 moves the whole balance."
+msgstr "Parte assoluta del saldo del conto spostata; 0 sposta l'intero saldo."
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_liq_abs_debt
+msgid "Absorbed by debt service"
+msgstr "Assorbito dal servizio del debito"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_liq_abs_equity
+msgid "Absorbed by equity remuneration"
+msgstr "Assorbito dalla remunerazione del capitale proprio"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_liq_abs_op_c
+msgid "Absorbed by operating current assets"
+msgstr "Assorbito dall'attivo circolante operativo"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_liq_abs_op_nc
+msgid "Absorbed by operating non-current investments"
+msgstr "Assorbito dagli investimenti operativi immobilizzati"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_history__account_id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_mapping_rule__account_id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_override__account_id
+msgid "Account"
+msgstr "Conto"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_mapping_rule__account_code_prefix
+msgid "Account Code Prefix"
+msgstr "Prefisso del codice conto"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_mapping_rule__account_type
+msgid "Account Type"
+msgstr "Tipo di conto"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields.selection,name:cmc_fin_analysis.selection__cmc_fin_scheme_line__line_type__account
+msgid "Accounts"
+msgstr "Conti"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio__active
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme__active
+msgid "Active"
+msgstr "Attivo"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields.selection,name:cmc_fin_analysis.selection__cmc_fin_ratio_value__status__alert
+msgid "Alert"
+msgstr "Allerta"
+
+#. module: cmc_fin_analysis
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_ratio_value_search
+msgid "Alerts"
+msgstr "Allerte"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_override__amount
+#: model:ir.model.fields.selection,name:cmc_fin_analysis.selection__cmc_fin_ratio__unit__amount
+msgid "Amount"
+msgstr "Importo"
+
+#. module: cmc_fin_analysis
+#: model:ir.ui.menu,name:cmc_fin_analysis.menu_cmc_fin_analysis
+msgid "Analyses"
+msgstr "Analisi"
+
+#. module: cmc_fin_analysis
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_ratio_search
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_scheme_search
+msgid "Archived"
+msgstr "Archiviato"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio__area
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio_value__area
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_ratio_search
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_ratio_value_search
+msgid "Area"
+msgstr "Area"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis__ateco_code
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_benchmark__ateco_code
+msgid "Ateco Code"
+msgstr "Codice ATECO"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_oic_b
+msgid "B. Investing cash flow"
+msgstr "B. Flusso finanziario dell'attività di investimento"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_history__balance
+msgid "Balance"
+msgstr "Saldo"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields.selection,name:cmc_fin_analysis.selection__cmc_fin_scheme__scheme_type__balance_sheet
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_scheme_search
+msgid "Balance sheet"
+msgstr "Stato patrimoniale"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme,name:cmc_fin_analysis.scheme_bs_functional
+msgid "Balance sheet (financial and functional)"
+msgstr "Stato patrimoniale (finanziario e funzionale)"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,help:cmc_fin_analysis.field_cmc_fin_scheme_line__result_line
+msgid "Balance sheet line receiving the result not yet closed to equity."
+msgstr ""
+"Voce di stato patrimoniale che riceve il risultato non ancora chiuso a "
+"patrimonio netto."
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme__base_code
+msgid "Base Code"
+msgstr "Codice base"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio_value__benchmark
+msgid "Benchmark"
+msgstr "Benchmark"
+
+#. module: cmc_fin_analysis
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.report_cmc_fin_analysis_document
+msgid "Benchmark:"
+msgstr "Benchmark:"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_oic_c
+msgid "C. Financing cash flow"
+msgstr "C. Flusso finanziario dell'attività di finanziamento"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_cash_coverage
+msgid "Cash / revenue"
+msgstr "Cassa / ricavi"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_cash
+msgid "Cash and equivalents"
+msgstr "Disponibilità liquide"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields.selection,name:cmc_fin_analysis.selection__cmc_fin_ratio__area__cash_flow
+#: model:ir.model.fields.selection,name:cmc_fin_analysis.selection__cmc_fin_scheme__scheme_type__cash_flow
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_scheme_search
+msgid "Cash flow"
+msgstr "Flusso di cassa"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme,name:cmc_fin_analysis.scheme_cf_oic10
+msgid "Cash flow - OIC 10 indirect"
+msgstr "Rendiconto finanziario - OIC 10 metodo indiretto"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme,name:cmc_fin_analysis.scheme_cf_functional
+msgid "Cash flow - by management area"
+msgstr "Rendiconto finanziario - per area gestionale"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_cf_debt_service
+msgid "Cash flow available for debt service"
+msgstr "Flusso di cassa disponibile per il servizio del debito"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_whatif_cash_release
+msgid "Cash released by the target cycle (what-if)"
+msgstr "Cassa liberata dal ciclo obiettivo (what-if)"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_cf_cash_change
+msgid "Change in cash"
+msgstr "Variazione delle disponibilità liquide"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_oic_delta
+msgid "Change in cash (A+B+C)"
+msgstr "Variazione delle disponibilità liquide (A+B+C)"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_fg_inv_change
+msgid "Change in finished goods"
+msgstr "Variazione delle rimanenze di prodotti finiti"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_raw_inv_change
+msgid "Change in raw materials"
+msgstr "Variazione delle rimanenze di materie prime"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_mapping_rule__chart_template
+msgid "Chart Template"
+msgstr "Modello di piano dei conti"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,help:cmc_fin_analysis.field_cmc_fin_mapping_rule__chart_template
+msgid ""
+"Chart of accounts the rule applies to (company chart_template); empty = "
+"every chart."
+msgstr ""
+"Piano dei conti a cui si applica la regola (chart_template della società); "
+"vuoto = tutti i piani."
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_cf_check
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_oic_check
+msgid "Check against balance sheet cash"
+msgstr "Verifica con le disponibilità liquide di stato patrimoniale"
+
+#. module: cmc_fin_analysis
+#: model:ir.actions.act_window,name:cmc_fin_analysis.action_cmc_fin_override
+#: model:ir.ui.menu,name:cmc_fin_analysis.menu_cmc_fin_override
+msgid "Choices Register"
+msgstr "Registro delle scelte"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_mapping_rule__cmc_behavior
+msgid "Cmc Behavior"
+msgstr "Comportamento CMC"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis_value__code
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_input__code
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio__code
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio_value__code
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme__code
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme_line__code
+msgid "Code"
+msgstr "Codice"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,help:cmc_fin_analysis.field_cmc_fin_criteria_change__line_codes
+msgid ""
+"Comma-separated codes of the scheme lines whose value is not comparable."
+msgstr ""
+"Codici, separati da virgola, delle righe di schema il cui valore non è "
+"confrontabile."
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_commercial_cycle
+msgid "Commercial cycle"
+msgstr "Ciclo commerciale"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis_value__common_size_pct
+msgid "Common Size Pct"
+msgstr "% common size"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis__company_id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis_value__company_id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_benchmark__company_id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_criteria_change__company_id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_history__company_id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_input__company_id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_mapping_rule__company_id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_override__company_id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio__company_id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio_value__company_id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme__company_id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme_line__company_id
+msgid "Company"
+msgstr "Società"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis_value__comparability_break
+msgid "Comparability Break"
+msgstr "Discontinuità di comparabilità"
+
+#. module: cmc_fin_analysis
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_value_search
+msgid "Comparability breaks"
+msgstr "Discontinuità di comparabilità"
+
+#. module: cmc_fin_analysis
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_analysis_form
+msgid "Compute"
+msgstr "Calcola"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_cm_margin
+msgid "Contribution margin"
+msgstr "Margine di contribuzione"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_ke
+msgid "Cost of equity (Ke)"
+msgstr "Costo del capitale proprio (Ke)"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_cs_cogs
+msgid "Cost of goods sold"
+msgstr "Costo del venduto"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis__create_uid
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis_value__create_uid
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_benchmark__create_uid
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_criteria_change__create_uid
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_history__create_uid
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_input__create_uid
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_mapping_rule__create_uid
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_override__create_uid
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio__create_uid
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio_value__create_uid
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme__create_uid
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme_line__create_uid
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis__create_date
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis_value__create_date
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_benchmark__create_date
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_criteria_change__create_date
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_history__create_date
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_input__create_date
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_mapping_rule__create_date
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_override__create_date
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio__create_date
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio_value__create_date
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme__create_date
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme_line__create_date
+msgid "Created on"
+msgstr "Creato il"
+
+#. module: cmc_fin_analysis
+#: model:ir.actions.act_window,name:cmc_fin_analysis.action_cmc_fin_crisis
+#: model:ir.ui.menu,name:cmc_fin_analysis.menu_cmc_fin_crisis
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_analysis_form
+msgid "Crisis Panel"
+msgstr "Pannello di crisi"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields.selection,name:cmc_fin_analysis.selection__cmc_fin_ratio__area__crisis
+msgid "Crisis indicators"
+msgstr "Indicatori di crisi"
+
+#. module: cmc_fin_analysis
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.report_cmc_fin_analysis_document
+msgid "Crisis panel"
+msgstr "Pannello di crisi"
+
+#. module: cmc_fin_analysis
+#: model:ir.actions.act_window,name:cmc_fin_analysis.action_cmc_fin_criteria_change
+#: model:ir.ui.menu,name:cmc_fin_analysis.menu_cmc_fin_criteria_change
+msgid "Criteria Changes"
+msgstr "Cambi di criterio"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_assets_c
+msgid "Current assets"
+msgstr "Attivo circolante"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_fin_assets_c
+msgid "Current financial assets"
+msgstr "Attività finanziarie correnti"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_fin_debt_c
+msgid "Current financial debt"
+msgstr "Debiti finanziari correnti"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_liab_c
+msgid "Current liabilities"
+msgstr "Passività correnti"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_current_ratio
+msgid "Current ratio"
+msgstr "Indice di liquidità corrente (current ratio)"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields.selection,name:cmc_fin_analysis.selection__cmc_fin_ratio__area__data_quality
+msgid "Data quality"
+msgstr "Qualità dei dati"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields.selection,name:cmc_fin_analysis.selection__cmc_fin_ratio__unit__days
+msgid "Days"
+msgstr "Giorni"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_dio_finished
+msgid "Days inventory, finished goods"
+msgstr "Giorni di giacenza, prodotti finiti"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_dio_raw
+msgid "Days inventory, raw materials"
+msgstr "Giorni di giacenza, materie prime"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_dpo
+msgid "Days payables outstanding (DPO)"
+msgstr "Giorni di pagamento fornitori (DPO)"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_dso
+msgid "Days sales outstanding (DSO)"
+msgstr "Giorni di incasso clienti (DSO)"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_depreciation
+msgid "Depreciation"
+msgstr "Ammortamenti"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis__display_name
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis_value__display_name
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_benchmark__display_name
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_criteria_change__display_name
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_history__display_name
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_input__display_name
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_mapping_rule__display_name
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_override__display_name
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio__display_name
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio_value__display_name
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme__display_name
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme_line__display_name
+msgid "Display Name"
+msgstr "Nome visualizzato"
+
+#. module: cmc_fin_analysis
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_analysis_search
+msgid "Done"
+msgstr "Completato"
+
+#. module: cmc_fin_analysis
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_analysis_search
+msgid "Draft"
+msgstr "Bozza"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_ebit
+msgid "EBIT"
+msgstr "EBIT"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_crisis_ebit_charges
+msgid "EBIT - financial charges"
+msgstr "EBIT - oneri finanziari"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_ebitda
+msgid "EBITDA (MOL)"
+msgstr "EBITDA (MOL)"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_eva
+msgid "Economic value added (EVA)"
+msgstr "Valore economico aggiunto (EVA)"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_ev
+msgid "Enterprise value"
+msgstr "Valore d'impresa"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_equity
+msgid "Equity"
+msgstr "Patrimonio netto"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_crisis_balance
+msgid "Equity + non-current liabilities - non-current assets"
+msgstr "Patrimonio netto + passività non correnti - attivo immobilizzato"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_equity_value
+msgid "Equity value"
+msgstr "Valore del capitale proprio"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis__excluded_journal_ids
+msgid "Excluded Journal"
+msgstr "Registro escluso"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio__expression
+msgid "Expression"
+msgstr "Espressione"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,help:cmc_fin_analysis.field_cmc_fin_scheme_line__formula
+msgid ""
+"Expression over the line codes, prev_<code>, typed inputs and ratio codes."
+msgstr ""
+"Espressione sui codici di riga, prev_<codice>, input inseriti e codici degli"
+" indici."
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_external_costs
+msgid "External costs"
+msgstr "Costi esterni"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_extraordinary
+msgid "Extraordinary income"
+msgstr "Proventi straordinari"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_crisis_fco_debt
+msgid "FCO - (current debt + financial charges)"
+msgstr "FCO - (debito corrente + oneri finanziari)"
+
+#. module: cmc_fin_analysis
+#: model:ir.actions.act_window,name:cmc_fin_analysis.action_cmc_fin_analysis
+msgid "Financial Analyses"
+msgstr "Analisi di bilancio"
+
+#. module: cmc_fin_analysis
+#: model:ir.model,name:cmc_fin_analysis.model_cmc_fin_override
+msgid "Financial Analysis Choice (override)"
+msgstr "Scelta di analisi di bilancio (forzatura)"
+
+#. module: cmc_fin_analysis
+#: model:ir.model,name:cmc_fin_analysis.model_cmc_fin_history
+msgid "Financial Analysis Historical Balance"
+msgstr "Saldo storico dell'analisi di bilancio"
+
+#. module: cmc_fin_analysis
+#: model:ir.model,name:cmc_fin_analysis.model_cmc_fin_mapping_rule
+msgid "Financial Analysis Mapping Rule"
+msgstr "Regola di mappatura dell'analisi di bilancio"
+
+#. module: cmc_fin_analysis
+#: model:ir.model,name:cmc_fin_analysis.model_cmc_fin_ratio
+msgid "Financial Analysis Ratio"
+msgstr "Indice dell'analisi di bilancio"
+
+#. module: cmc_fin_analysis
+#: model:ir.model,name:cmc_fin_analysis.model_cmc_fin_ratio_value
+msgid "Financial Analysis Ratio Value"
+msgstr "Valore indice dell'analisi di bilancio"
+
+#. module: cmc_fin_analysis
+#: model:ir.model,name:cmc_fin_analysis.model_cmc_fin_input
+msgid "Financial Analysis Reference Input"
+msgstr "Input di riferimento dell'analisi di bilancio"
+
+#. module: cmc_fin_analysis
+#: model:ir.model,name:cmc_fin_analysis.model_cmc_fin_scheme
+msgid "Financial Analysis Scheme"
+msgstr "Schema di analisi di bilancio"
+
+#. module: cmc_fin_analysis
+#: model:ir.model,name:cmc_fin_analysis.model_cmc_fin_scheme_line
+msgid "Financial Analysis Scheme Line"
+msgstr "Riga di schema di analisi di bilancio"
+
+#. module: cmc_fin_analysis
+#: model:ir.model,name:cmc_fin_analysis.model_cmc_fin_benchmark
+msgid "Financial Analysis Sector Benchmark"
+msgstr "Benchmark di settore dell'analisi di bilancio"
+
+#. module: cmc_fin_analysis
+#: model:ir.model,name:cmc_fin_analysis.model_cmc_fin_criteria_change
+msgid "Financial Analysis Valuation Criteria Change"
+msgstr "Cambio dei criteri di valutazione dell'analisi di bilancio"
+
+#. module: cmc_fin_analysis
+#: model:ir.model,name:cmc_fin_analysis.model_cmc_fin_analysis_value
+msgid "Financial Analysis Value"
+msgstr "Valore dell'analisi di bilancio"
+
+#. module: cmc_fin_analysis
+#: model:ir.actions.report,name:cmc_fin_analysis.action_report_cmc_fin_analysis
+#: model:ir.model,name:cmc_fin_analysis.model_cmc_fin_analysis
+#: model:ir.ui.menu,name:cmc_fin_analysis.menu_cmc_cfg_fin_analysis
+#: model:ir.ui.menu,name:cmc_fin_analysis.menu_cmc_sec_fin_analysis
+msgid "Financial Statement Analysis"
+msgstr "Analisi di bilancio"
+
+#. module: cmc_fin_analysis
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.report_cmc_fin_analysis_document
+msgid "Financial Statement Analysis:"
+msgstr "Analisi di bilancio:"
+
+#. module: cmc_fin_analysis
+#. odoo-python
+#: code:addons/cmc_fin_analysis/models/cmc_fin_analysis.py:0
+msgid "Financial analysis"
+msgstr "Analisi di bilancio"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_fin_assets
+msgid "Financial assets"
+msgstr "Attività finanziarie"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_autonomy
+msgid "Financial autonomy"
+msgstr "Autonomia finanziaria"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_crisis_autonomy
+msgid "Financial autonomy (minimum 50%)"
+msgstr "Autonomia finanziaria (minimo 50%)"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_fin_charges
+msgid "Financial charges"
+msgstr "Oneri finanziari"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_fin_debt
+msgid "Financial debt"
+msgstr "Debiti finanziari"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_debt_coverage
+msgid "Financial debt coverage"
+msgstr "Copertura del debito finanziario"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_fin_income
+msgid "Financial income"
+msgstr "Proventi finanziari"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_financing_intensity
+msgid "Financing intensity"
+msgstr "Intensità di finanziamento"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_inv_finished
+msgid "Finished goods inventory"
+msgstr "Rimanenze di prodotti finiti"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields.selection,name:cmc_fin_analysis.selection__cmc_fin_mapping_rule__cmc_behavior__fixed
+msgid "Fixed"
+msgstr "Fisso"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_fixed_asset_coverage
+msgid "Fixed asset coverage by equity"
+msgstr "Copertura delle immobilizzazioni con il patrimonio netto"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_cm_fixed
+msgid "Fixed costs"
+msgstr "Costi fissi"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme_line__formula
+#: model:ir.model.fields.selection,name:cmc_fin_analysis.selection__cmc_fin_scheme_line__line_type__formula
+msgid "Formula"
+msgstr "Formula"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_cf_fcfe
+msgid "Free cash flow to equity (FCFE)"
+msgstr "Free cash flow to equity (FCFE)"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio__full_only
+msgid "Full Only"
+msgstr "Solo bilancio ordinario"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields.selection,name:cmc_fin_analysis.selection__cmc_fin_analysis_value__source__gl
+msgid "General ledger"
+msgstr "Contabilità generale"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_gross_cash_flow
+msgid "Gross cash flow"
+msgstr "Cash flow lordo"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_st_debt_coverage
+msgid "Gross cash flow / short-term financial debt"
+msgstr "Cash flow lordo / debiti finanziari a breve"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_cf_gross_self_financing
+msgid "Gross self-financing"
+msgstr "Autofinanziamento lordo"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio_value__has_benchmark
+msgid "Has Benchmark"
+msgstr "Ha benchmark"
+
+#. module: cmc_fin_analysis
+#: model:ir.actions.act_window,name:cmc_fin_analysis.action_cmc_fin_history
+#: model:ir.ui.menu,name:cmc_fin_analysis.menu_cmc_fin_history
+msgid "Historical Balances"
+msgstr "Saldi storici"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis__id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis_value__id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_benchmark__id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_criteria_change__id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_history__id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_input__id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_mapping_rule__id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_override__id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio__id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio_value__id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme__id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme_line__id
+msgid "ID"
+msgstr "ID"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields.selection,name:cmc_fin_analysis.selection__cmc_fin_analysis_value__source__history
+msgid "Imported history"
+msgstr "Storico importato"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields.selection,name:cmc_fin_analysis.selection__cmc_fin_scheme__scheme_type__income_statement
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_scheme_search
+msgid "Income statement"
+msgstr "Conto economico"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme,name:cmc_fin_analysis.scheme_pl_contribution
+msgid "Income statement - contribution margin"
+msgstr "Conto economico - margine di contribuzione"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme,name:cmc_fin_analysis.scheme_pl_cost_of_sales
+msgid "Income statement - cost of sales"
+msgstr "Conto economico - costo del venduto"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme,name:cmc_fin_analysis.scheme_pl_value_added
+msgid "Income statement - value added"
+msgstr "Conto economico - valore aggiunto"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_cs_industrial_margin
+msgid "Industrial margin"
+msgstr "Margine industriale"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_intangible
+msgid "Intangible assets"
+msgstr "Immobilizzazioni immateriali"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_dq_intangible_growth
+msgid "Intangible assets growth"
+msgstr "Crescita delle immobilizzazioni immateriali"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_interest_coverage
+msgid "Interest coverage"
+msgstr "Copertura degli interessi"
+
+#. module: cmc_fin_analysis
+#. odoo-python
+#: code:addons/cmc_fin_analysis/models/cmc_fin_utils.py:0
+msgid "Invalid expression for %(label)s: %(error)s"
+msgstr "Espressione non valida per %(label)s: %(error)s"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_inventory
+msgid "Inventory"
+msgstr "Rimanenze"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_dq_inventory_vs_revenue
+msgid "Inventory growth vs revenue growth"
+msgstr "Crescita delle rimanenze vs crescita dei ricavi"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,help:cmc_fin_analysis.field_cmc_fin_analysis__excluded_journal_ids
+msgid "Journals ignored by the general ledger read (e.g. year-end closing)."
+msgstr ""
+"Registri ignorati dalla lettura della contabilità generale (es. chiusura "
+"d'esercizio)."
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis__write_uid
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis_value__write_uid
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_benchmark__write_uid
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_criteria_change__write_uid
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_history__write_uid
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_input__write_uid
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_mapping_rule__write_uid
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_override__write_uid
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio__write_uid
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio_value__write_uid
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme__write_uid
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme_line__write_uid
+msgid "Last Updated by"
+msgstr "Ultimo aggiornamento di"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis__write_date
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis_value__write_date
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_benchmark__write_date
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_criteria_change__write_date
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_history__write_date
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_input__write_date
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_mapping_rule__write_date
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_override__write_date
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio__write_date
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio_value__write_date
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme__write_date
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme_line__write_date
+msgid "Last Updated on"
+msgstr "Ultimo aggiornamento il"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_lev_i
+msgid "Leverage I (tax)"
+msgstr "Leva I (fiscale)"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_lev_s
+msgid "Leverage S (non-financial items)"
+msgstr "Leva S (voci non finanziarie)"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis_value__line_id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_mapping_rule__line_id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_override__line_id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme__line_ids
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.report_cmc_fin_analysis_document
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_mapping_rule_search
+msgid "Line"
+msgstr "Riga"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_criteria_change__line_codes
+msgid "Line Codes"
+msgstr "Codici di riga"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme_line__line_type
+msgid "Line Type"
+msgstr "Tipo di riga"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,help:cmc_fin_analysis.field_cmc_fin_scheme__base_code
+msgid "Line code taken as 100% for the common-size percentages."
+msgstr "Codice di riga assunto come 100% per le percentuali common size."
+
+#. module: cmc_fin_analysis
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_scheme_form
+msgid "Lines"
+msgstr "Righe"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields.selection,name:cmc_fin_analysis.selection__cmc_fin_ratio__area__liquidity
+msgid "Liquidity"
+msgstr "Liquidità"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme,name:cmc_fin_analysis.scheme_cf_liquidity
+msgid "Liquidity dynamics"
+msgstr "Dinamica della liquidità"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_liq_generated
+msgid "Liquidity generated by operations"
+msgstr "Liquidità generata dalla gestione operativa"
+
+#. module: cmc_fin_analysis
+#: model:ir.actions.act_window,name:cmc_fin_analysis.action_cmc_fin_mapping_rule
+#: model:ir.ui.menu,name:cmc_fin_analysis.menu_cmc_fin_mapping_rule
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_scheme_form
+msgid "Mapping Rules"
+msgstr "Regole di mappatura"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_mva_cov
+msgid "Market value added (current EVA / WACC)"
+msgstr "Market value added (EVA corrente / WACC)"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_nopat
+msgid "NOPAT"
+msgstr "NOPAT"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis__name
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis_value__name
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_criteria_change__name
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio__name
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio_value__name
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme__name
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme_line__name
+msgid "Name"
+msgstr "Nome"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,help:cmc_fin_analysis.field_cmc_fin_history__balance
+msgid "Natural sign (debit positive), pre-closing trial balance of the year."
+msgstr ""
+"Segno naturale (dare positivo), bilancio di verifica ante chiusura "
+"dell'esercizio."
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,help:cmc_fin_analysis.field_cmc_fin_ratio__full_only
+msgid "Needs detail not available in the abbreviated (reduced) statements."
+msgstr "Richiede dettagli non disponibili nel bilancio abbreviato."
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_debt_equity
+msgid "Net debt / equity"
+msgstr "Debito netto / patrimonio netto"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_pfn
+msgid "Net financial position (PFN)"
+msgstr "Posizione finanziaria netta (PFN)"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_pfn_c
+msgid "Net financial position, current"
+msgstr "Posizione finanziaria netta, corrente"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_pfn_nc
+msgid "Net financial position, non-current"
+msgstr "Posizione finanziaria netta, non corrente"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_net_fixed
+msgid "Net fixed capital"
+msgstr "Capitale immobilizzato netto"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_cm_net_income
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_cs_net_income
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_net_income
+msgid "Net income"
+msgstr "Utile netto"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_cin
+msgid "Net invested capital (CIN)"
+msgstr "Capitale investito netto (CIN)"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_coin
+msgid "Net operating invested capital (COIN)"
+msgstr "Capitale operativo investito netto (COIN)"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_crisis_mon
+msgid "Net operating margin"
+msgstr "Margine operativo netto"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_mon
+msgid "Net operating margin (MON)"
+msgstr "Margine operativo netto (MON)"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_cf_net_self_financing
+msgid "Net self-financing"
+msgstr "Autofinanziamento netto"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_nwc
+msgid "Net working capital (CCN)"
+msgstr "Capitale circolante netto (CCN)"
+
+#. module: cmc_fin_analysis
+#. odoo-python
+#: code:addons/cmc_fin_analysis/models/cmc_fin_analysis.py:0
+msgid "No mapping rule of scheme %(scheme)s places the accounts: %(accounts)s"
+msgstr ""
+"Nessuna regola di mappatura dello schema %(scheme)s colloca i conti: "
+"%(accounts)s"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_non_cash
+msgid "Non-cash costs"
+msgstr "Costi non monetari"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_assets_nc
+msgid "Non-current assets"
+msgstr "Attivo immobilizzato"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_fin_assets_nc
+msgid "Non-current financial assets"
+msgstr "Immobilizzazioni finanziarie"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_fin_debt_nc
+msgid "Non-current financial debt"
+msgstr "Debiti finanziari non correnti"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_liab_nc
+msgid "Non-current liabilities"
+msgstr "Passività non correnti"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields.selection,name:cmc_fin_analysis.selection__cmc_fin_ratio_value__status__not_computable
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_ratio_value_search
+msgid "Not computable"
+msgstr "Non calcolabile"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields.selection,name:cmc_fin_analysis.selection__cmc_fin_ratio_value__status__ok
+msgid "OK"
+msgstr "OK"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.constraint,message:cmc_fin_analysis.constraint_cmc_fin_history_unique_account_year
+msgid "One balance per account and year."
+msgstr "Un saldo per conto e anno."
+
+#. module: cmc_fin_analysis
+#: model:ir.model.constraint,message:cmc_fin_analysis.constraint_cmc_fin_input_unique_code_year
+msgid "One value per code and year."
+msgstr "Un valore per codice e anno."
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_roi_op
+msgid "Operating ROI"
+msgstr "ROI operativo"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_op_turnover
+msgid "Operating capital turnover"
+msgstr "Rotazione del capitale operativo"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_cf_fcoc
+msgid "Operating cash flow before investments (FCOC)"
+msgstr "Flusso di cassa operativo prima degli investimenti (FCOC)"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_op_assets_c
+msgid "Operating current assets"
+msgstr "Attivo circolante operativo"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_op_liab_c
+msgid "Operating current liabilities"
+msgstr "Passività correnti operative"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_cf_fco
+msgid "Operating free cash flow (FCO)"
+msgstr "Free cash flow operativo (FCO)"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_cf_op_investment
+msgid "Operating investments"
+msgstr "Investimenti operativi"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_crisis_ccnop
+msgid "Operating net working capital"
+msgstr "Capitale circolante netto operativo"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_ccnop
+msgid "Operating net working capital (CCNop)"
+msgstr "Capitale circolante netto operativo (CCNop)"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_op_assets_nc
+msgid "Operating non-current assets"
+msgstr "Attivo immobilizzato operativo"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_op_liab_nc
+msgid "Operating non-current liabilities"
+msgstr "Passività non correnti operative"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_cm_operating_result
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_cs_operating_result
+msgid "Operating result"
+msgstr "Risultato operativo"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_cf_ordinary
+msgid "Ordinary cash flow"
+msgstr "Flusso di cassa ordinario"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_ordinary_result
+msgid "Ordinary result"
+msgstr "Risultato ordinario"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_other_expenses
+msgid "Other expenses"
+msgstr "Altri costi"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_cm_other
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_cs_other
+msgid "Other items"
+msgstr "Altre voci"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_other_op_c
+msgid "Other operating current assets"
+msgstr "Altre attività correnti operative"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_other_op_liab_c
+msgid "Other operating current liabilities"
+msgstr "Altre passività correnti operative"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_other_op_nc
+msgid "Other operating non-current assets"
+msgstr "Altre attività non correnti operative"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_other_revenue
+msgid "Other revenue"
+msgstr "Altri ricavi"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_cs_overheads
+msgid "Overheads"
+msgstr "Spese generali"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields.selection,name:cmc_fin_analysis.selection__cmc_fin_ratio__unit__percent
+msgid "Percent"
+msgstr "Percentuale"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_personnel
+msgid "Personnel"
+msgstr "Personale"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_pre_tax
+msgid "Pre-tax result"
+msgstr "Risultato ante imposte"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,help:cmc_fin_analysis.field_cmc_fin_scheme_line__sign
+msgid "Presentation sign: value = sign x natural balance (debit positive)."
+msgstr ""
+"Segno di presentazione: valore = segno x saldo naturale (dare positivo)."
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_production_value
+msgid "Production value"
+msgstr "Valore della produzione"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields.selection,name:cmc_fin_analysis.selection__cmc_fin_ratio__area__profitability
+msgid "Profitability"
+msgstr "Redditività"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_provisions
+msgid "Provisions"
+msgstr "Accantonamenti"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_purchases
+msgid "Purchases"
+msgstr "Acquisti"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_quick_ratio
+msgid "Quick ratio"
+msgstr "Indice di liquidità secca (quick ratio)"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_roa
+msgid "ROA"
+msgstr "ROA"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_rod
+msgid "ROD (cost of debt)"
+msgstr "ROD (costo del debito)"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_roe
+msgid "ROE"
+msgstr "ROE"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_roe_leverage
+msgid "ROE by leverage decomposition"
+msgstr "ROE per scomposizione della leva"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_roe_avg
+msgid "ROE on average equity"
+msgstr "ROE su patrimonio netto medio"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_roi
+msgid "ROI"
+msgstr "ROI"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_crisis_spread
+msgid "ROI - ROD spread"
+msgstr "Spread ROI - ROD"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_ros
+msgid "ROS"
+msgstr "ROS"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_benchmark__ratio_id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio_value__ratio_id
+#: model:ir.model.fields.selection,name:cmc_fin_analysis.selection__cmc_fin_ratio__unit__ratio
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.report_cmc_fin_analysis_document
+msgid "Ratio"
+msgstr "Indice"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis__ratio_value_ids
+msgid "Ratio Value"
+msgstr "Valore dell'indice"
+
+#. module: cmc_fin_analysis
+#: model:ir.actions.act_window,name:cmc_fin_analysis.action_cmc_fin_ratio_value
+msgid "Ratio Values"
+msgstr "Valori degli indici"
+
+#. module: cmc_fin_analysis
+#: model:ir.actions.act_window,name:cmc_fin_analysis.action_cmc_fin_ratio
+#: model:ir.ui.menu,name:cmc_fin_analysis.menu_cmc_fin_ratio
+#: model:ir.ui.menu,name:cmc_fin_analysis.menu_cmc_fin_ratio_value
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_analysis_form
+msgid "Ratios"
+msgstr "Indici"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_raw_consumption
+msgid "Raw material consumption"
+msgstr "Consumo di materie prime"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_inv_raw
+msgid "Raw materials inventory"
+msgstr "Rimanenze di materie prime"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_criteria_change__reason
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_override__reason
+msgid "Reason"
+msgstr "Motivazione"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_dq_receivables_vs_revenue
+msgid "Receivables growth vs revenue growth"
+msgstr "Crescita dei crediti vs crescita dei ricavi"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis__reduced_mode
+msgid "Reduced Mode"
+msgstr "Modalità abbreviata"
+
+#. module: cmc_fin_analysis
+#: model:ir.actions.act_window,name:cmc_fin_analysis.action_cmc_fin_input
+#: model:ir.ui.menu,name:cmc_fin_analysis.menu_cmc_fin_input
+msgid "Reference Inputs"
+msgstr "Input di riferimento"
+
+#. module: cmc_fin_analysis
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_analysis_form
+msgid "Reset to Draft"
+msgstr "Riporta in bozza"
+
+#. module: cmc_fin_analysis
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_analysis_form
+msgid "Resetting deletes the computed results. Continue?"
+msgstr "Il ripristino elimina i risultati calcolati. Continuare?"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_liq_residual
+msgid "Residual liquidity"
+msgstr "Liquidità residua"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_liq_residual_pct
+msgid "Residual liquidity on generated (%)"
+msgstr "Liquidità residua sul generato (%)"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme_line__result_line
+msgid "Result Line"
+msgstr "Riga di risultato"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_cm_revenue
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_cs_revenue
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_revenue
+msgid "Revenue"
+msgstr "Ricavi"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme__rule_ids
+msgid "Rule"
+msgstr "Regola"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis_value__run_id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio_value__run_id
+msgid "Run"
+msgstr "Elaborazione"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis__scheme_ids
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis_value__scheme_id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_mapping_rule__scheme_id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_override__scheme_id
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme_line__scheme_id
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_mapping_rule_search
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_override_search
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_value_search
+msgid "Scheme"
+msgstr "Schema"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme__scheme_type
+msgid "Scheme Type"
+msgstr "Tipo di schema"
+
+#. module: cmc_fin_analysis
+#: model:ir.actions.act_window,name:cmc_fin_analysis.action_cmc_fin_scheme
+#: model:ir.ui.menu,name:cmc_fin_analysis.menu_cmc_fin_scheme
+msgid "Schemes"
+msgstr "Schemi"
+
+#. module: cmc_fin_analysis
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_benchmark_search
+msgid "Sector (ATECO)"
+msgstr "Settore (ATECO)"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,help:cmc_fin_analysis.field_cmc_fin_analysis__ateco_code
+msgid "Sector (ATECO) of the benchmarks shown next to the ratios."
+msgstr "Settore (ATECO) dei benchmark mostrati accanto agli indici."
+
+#. module: cmc_fin_analysis
+#: model:ir.actions.act_window,name:cmc_fin_analysis.action_cmc_fin_benchmark
+#: model:ir.ui.menu,name:cmc_fin_analysis.menu_cmc_fin_benchmark
+msgid "Sector Benchmarks"
+msgstr "Benchmark di settore"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields.selection,name:cmc_fin_analysis.selection__cmc_fin_mapping_rule__cmc_behavior__semi_variable
+msgid "Semi-variable"
+msgstr "Semivariabile"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis_value__sequence
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_mapping_rule__sequence
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio__sequence
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme__sequence
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme_line__sequence
+msgid "Sequence"
+msgstr "Sequenza"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_services
+msgid "Services"
+msgstr "Servizi"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_severance
+msgid "Severance accrual"
+msgstr "Accantonamento TFR"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme_line__sign
+msgid "Sign"
+msgstr "Segno"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields.selection,name:cmc_fin_analysis.selection__cmc_fin_ratio__area__solidity
+msgid "Solidity"
+msgstr "Solidità"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis_value__source
+msgid "Source"
+msgstr "Sorgente"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis__state
+msgid "State"
+msgstr "Stato"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio_value__status
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_ratio_value_search
+msgid "Status"
+msgstr "Stato"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_structure_margin
+msgid "Structure margin"
+msgstr "Margine di struttura"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_tangible
+msgid "Tangible assets"
+msgstr "Immobilizzazioni materiali"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_whatif_cycle
+msgid "Target commercial cycle (what-if)"
+msgstr "Ciclo commerciale obiettivo (what-if)"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_taxes
+msgid "Taxes"
+msgstr "Imposte"
+
+#. module: cmc_fin_analysis
+#. odoo-python
+#: code:addons/cmc_fin_analysis/models/cmc_fin_analysis.py:0
+msgid "The balances imported for %s do not sum to zero."
+msgstr "I saldi importati per %s non sommano a zero."
+
+#. module: cmc_fin_analysis
+#. odoo-python
+#: code:addons/cmc_fin_analysis/models/cmc_fin_analysis.py:0
+msgid "The last year cannot precede the first year."
+msgstr "L'ultimo anno non può precedere il primo anno."
+
+#. module: cmc_fin_analysis
+#. odoo-python
+#: code:addons/cmc_fin_analysis/models/cmc_fin_scheme.py:0
+msgid "The line code %s must be a valid identifier."
+msgstr "Il codice di riga %s deve essere un identificatore valido."
+
+#. module: cmc_fin_analysis
+#: model:ir.model.constraint,message:cmc_fin_analysis.constraint_cmc_fin_scheme_line_unique_code
+msgid "The line code must be unique per scheme."
+msgstr "Il codice di riga deve essere univoco per schema."
+
+#. module: cmc_fin_analysis
+#. odoo-python
+#: code:addons/cmc_fin_analysis/models/cmc_fin_ratio.py:0
+msgid "The ratio code %s must be a valid identifier."
+msgstr "Il codice indice %s deve essere un identificatore valido."
+
+#. module: cmc_fin_analysis
+#: model:ir.model.constraint,message:cmc_fin_analysis.constraint_cmc_fin_ratio_unique_code
+msgid "The ratio code must be unique per company."
+msgstr "Il codice indice deve essere univoco per società."
+
+#. module: cmc_fin_analysis
+#: model:ir.model.constraint,message:cmc_fin_analysis.constraint_cmc_fin_scheme_unique_code
+msgid "The scheme code must be unique per company."
+msgstr "Il codice schema deve essere univoco per società."
+
+#. module: cmc_fin_analysis
+#: model:ir.model.constraint,message:cmc_fin_analysis.constraint_cmc_fin_scheme_line_check_sign
+msgid "The sign must be 1 or -1."
+msgstr "Il segno deve essere 1 o -1."
+
+#. module: cmc_fin_analysis
+#. odoo-python
+#: code:addons/cmc_fin_analysis/models/cmc_fin_data.py:0
+msgid "The target must be an account line of the scheme."
+msgstr "La destinazione deve essere una riga di conto dello schema."
+
+#. module: cmc_fin_analysis
+#. odoo-python
+#: code:addons/cmc_fin_analysis/models/cmc_fin_scheme.py:0
+msgid ""
+"The target of a mapping rule must be an account line of its own scheme."
+msgstr ""
+"La destinazione di una regola di mappatura deve essere una riga di conto del"
+" proprio schema."
+
+#. module: cmc_fin_analysis
+#. odoo-python
+#: code:addons/cmc_fin_analysis/models/cmc_fin_analysis.py:0
+msgid "These codes are defined more than once: %s"
+msgstr "Questi codici sono definiti più di una volta: %s"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio__threshold
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio_value__threshold
+msgid "Threshold"
+msgstr "Soglia"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio__threshold_op
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio_value__threshold_op
+msgid "Threshold Op"
+msgstr "Operatore soglia"
+
+#. module: cmc_fin_analysis
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_history_list
+msgid "Total"
+msgstr "Totale"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_total_assets
+msgid "Total assets"
+msgstr "Totale attivo"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_total_sources
+msgid "Total sources"
+msgstr "Totale fonti"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_payables
+msgid "Trade payables"
+msgstr "Debiti verso fornitori"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_receivables
+msgid "Trade receivables"
+msgstr "Crediti verso clienti"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_treasury_margin
+msgid "Treasury margin"
+msgstr "Margine di tesoreria"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio__unit
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio_value__unit
+msgid "Unit"
+msgstr "Unità"
+
+#. module: cmc_fin_analysis
+#. odoo-python
+#: code:addons/cmc_fin_analysis/models/cmc_fin_data.py:0
+msgid "Unknown scheme line codes: %s"
+msgstr "Codici di riga di schema sconosciuti: %s"
+
+#. module: cmc_fin_analysis
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.report_cmc_fin_analysis_document
+msgid "Valuation criteria change: not comparable"
+msgstr "Cambio dei criteri di valutazione: non confrontabile"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis__value_ids
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis_value__value
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_benchmark__value
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_input__value
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio_value__value
+msgid "Value"
+msgstr "Valore"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_value_added
+msgid "Value added"
+msgstr "Valore aggiunto"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_va_per_employee
+msgid "Value added per employee"
+msgstr "Valore aggiunto per dipendente"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields.selection,name:cmc_fin_analysis.selection__cmc_fin_ratio__area__value
+msgid "Value creation"
+msgstr "Creazione di valore"
+
+#. module: cmc_fin_analysis
+#: model:ir.actions.act_window,name:cmc_fin_analysis.action_cmc_fin_value
+#: model:ir.ui.menu,name:cmc_fin_analysis.menu_cmc_fin_value
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_analysis_form
+msgid "Values"
+msgstr "Valori"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields.selection,name:cmc_fin_analysis.selection__cmc_fin_mapping_rule__cmc_behavior__variable
+msgid "Variable"
+msgstr "Variabile"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_cm_variable
+msgid "Variable costs"
+msgstr "Costi variabili"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_wacc
+msgid "WACC"
+msgstr "WACC"
+
+#. module: cmc_fin_analysis
+#: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_nc_asset_weight
+msgid "Weight of non-current assets"
+msgstr "Incidenza dell'attivo immobilizzato"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis_value__year
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_benchmark__year
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_criteria_change__year
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_history__year
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_input__year
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_override__year
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio_value__year
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_benchmark_search
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_history_search
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_input_search
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_override_search
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_ratio_value_search
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_value_search
+msgid "Year"
+msgstr "Anno"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis__year_from
+msgid "Year From"
+msgstr "Anno da"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis__year_to
+msgid "Year To"
+msgstr "Anno a"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis_value__yoy_computable
+msgid "Yoy Computable"
+msgstr "Variazione annua calcolabile"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis_value__yoy_pct
+msgid "Yoy Pct"
+msgstr "Variazione annua %"
+
+#. module: cmc_fin_analysis
+#. odoo-python
+#: code:addons/cmc_fin_analysis/models/cmc_fin_utils.py:0
+msgid "empty"
+msgstr "vuoto"
+
+#. module: cmc_fin_analysis
+#: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.report_cmc_fin_analysis_document
+msgid "n.c."
+msgstr "n.c."

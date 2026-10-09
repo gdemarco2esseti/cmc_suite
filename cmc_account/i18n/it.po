@@ -6,15 +6,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-16 15:29+0000\n"
-"PO-Revision-Date: 2026-07-16 15:29+0000\n"
+"POT-Creation-Date: 2026-10-09 23:35+0000\n"
+"PO-Revision-Date: 2026-10-09 23:35+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: it_IT\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: cmc_account
 #: model:ir.model,name:cmc_account.model_account_account
@@ -37,9 +37,24 @@ msgid "Active"
 msgstr "Attivo"
 
 #. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_coge_reconciliation__coan_no_gl
+msgid "Analytic Cost without GL"
+msgstr "Costo analitico senza contabilità generale"
+
+#. module: cmc_account
 #: model:ir.model,name:cmc_account.model_account_analytic_line
 msgid "Analytic Line"
 msgstr "Riga analitica"
+
+#. module: cmc_account
+#: model_terms:ir.ui.view,arch_db:cmc_account.view_cmc_coge_reconciliation_form
+msgid ""
+"Analytic cost lines without a general ledger account and not figurative "
+"(e.g. manual Cost Entries): kept out of the Management Accounting Cost."
+msgstr ""
+"Righe di costo analitico senza conto di contabilità generale e non "
+"figurative (es. registrazioni di costo manuali): escluse dal Costo di "
+"controllo di gestione."
 
 #. module: cmc_account
 #: model_terms:ir.ui.view,arch_db:cmc_account.view_cmc_rule_form
@@ -55,6 +70,24 @@ msgstr "Regola di classificazione costi CMC"
 #: model:ir.model,name:cmc_account.model_cmc_manual_classification
 msgid "CMC Manual Classification"
 msgstr "Classificazione manuale CMC"
+
+#. module: cmc_account
+#: model:ir.actions.act_window,name:cmc_account.action_cmc_coge_reconciliation
+#: model:ir.ui.menu,name:cmc_account.menu_cmc_coge_reconciliation
+#: model_terms:ir.ui.view,arch_db:cmc_account.view_cmc_coge_reconciliation_form
+msgid "COGE - COAN Reconciliation"
+msgstr "Riconciliazione COGE - COAN"
+
+#. module: cmc_account
+#: model_terms:ir.ui.view,arch_db:cmc_account.view_cmc_coge_reconciliation_list
+#: model_terms:ir.ui.view,arch_db:cmc_account.view_cmc_coge_reconciliation_search
+msgid "COGE - COAN Reconciliations"
+msgstr "Riconciliazioni COGE - COAN"
+
+#. module: cmc_account
+#: model:ir.model,name:cmc_account.model_cmc_coge_reconciliation
+msgid "COGE - COAN reconciliation"
+msgstr "Riconciliazione COGE - COAN"
 
 #. module: cmc_account
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_manual_classification__center_id
@@ -105,9 +138,29 @@ msgstr "Direttezza"
 
 #. module: cmc_account
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__company_id
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_coge_reconciliation__company_id
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_manual_classification__company_id
 msgid "Company"
 msgstr "Azienda"
+
+#. module: cmc_account
+#: model_terms:ir.actions.act_window,help:cmc_account.action_cmc_coge_reconciliation
+msgid ""
+"Compare the general ledger cost with the management accounting cost of a "
+"period and see what is left unexplained."
+msgstr ""
+"Confronta il costo della contabilità generale con il costo della contabilità"
+" analitica di un periodo e mostra la parte non spiegata."
+
+#. module: cmc_account
+#: model_terms:ir.ui.view,arch_db:cmc_account.view_cmc_coge_reconciliation_form
+msgid "Compute"
+msgstr "Calcola"
+
+#. module: cmc_account
+#: model_terms:ir.ui.view,arch_db:cmc_account.view_cmc_coge_reconciliation_search
+msgid "Computed"
+msgstr "Calcolato"
 
 #. module: cmc_account
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_manual_classification__cmc_behavior
@@ -130,16 +183,43 @@ msgid "Cost Element (nature)"
 msgstr "Elemento di costo (natura)"
 
 #. module: cmc_account
+#: model_terms:ir.actions.act_window,help:cmc_account.action_cmc_coge_reconciliation
+msgid "Create a reconciliation run"
+msgstr "Crea un'elaborazione di riconciliazione"
+
+#. module: cmc_account
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__create_uid
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_coge_reconciliation__create_uid
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_manual_classification__create_uid
 msgid "Created by"
 msgstr "Creato da"
 
 #. module: cmc_account
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__create_date
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_coge_reconciliation__create_date
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_manual_classification__create_date
 msgid "Created on"
 msgstr "Creato il"
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_coge_reconciliation__currency_id
+msgid "Currency"
+msgstr "Valuta"
+
+#. module: cmc_account
+#: model:cmc.cost.driver,name:cmc_account.cmc_measure_customer_invoice_lines
+msgid "Customer invoice lines"
+msgstr "Righe fattura cliente"
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_coge_reconciliation__date_from
+msgid "Date From"
+msgstr "Data da"
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_coge_reconciliation__date_to
+msgid "Date To"
+msgstr "Data a"
 
 #. module: cmc_account
 #: model:ir.model.fields.selection,name:cmc_account.selection__cmc_classification_rule__cmc_directness__direct
@@ -149,10 +229,28 @@ msgstr "Diretto"
 #. module: cmc_account
 #: model:ir.model.fields,field_description:cmc_account.field_account_account__display_name
 #: model:ir.model.fields,field_description:cmc_account.field_account_analytic_line__display_name
+#: model:ir.model.fields,field_description:cmc_account.field_account_move_line__display_name
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__display_name
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_coge_reconciliation__display_name
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_manual_classification__display_name
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_measure_quantity__display_name
 msgid "Display Name"
 msgstr "Nome visualizzato"
+
+#. module: cmc_account
+#: model_terms:ir.ui.view,arch_db:cmc_account.view_cmc_coge_reconciliation_search
+msgid "Draft"
+msgstr "Bozza"
+
+#. module: cmc_account
+#: model_terms:ir.ui.view,arch_db:cmc_account.view_cmc_coge_reconciliation_search
+msgid "End Date"
+msgstr "Data di fine"
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_coge_reconciliation__figurative_amount
+msgid "Figurative Amount"
+msgstr "Importo figurativo"
 
 #. module: cmc_account
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__general_account_id
@@ -165,10 +263,38 @@ msgid "Fixed"
 msgstr "Fisso"
 
 #. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_coge_reconciliation__coge_amount
+msgid "General Ledger Cost"
+msgstr "Costo di contabilità generale"
+
+#. module: cmc_account
+#: model_terms:ir.ui.view,arch_db:cmc_account.view_cmc_coge_reconciliation_form
+msgid ""
+"General Ledger Cost - (Management Accounting Cost - Figurative + Neutral). "
+"Zero when the two ledgers are fully reconciled."
+msgstr ""
+"Costo di contabilità generale - (Costo di controllo di gestione - Figurativo"
+" + Neutro). Zero quando le due contabilità sono pienamente riconciliate."
+
+#. module: cmc_account
+#: model_terms:ir.ui.view,arch_db:cmc_account.view_cmc_coge_reconciliation_form
+msgid "General ledger expense (posted, in the period)."
+msgstr "Costi di contabilità generale (registrati, nel periodo)."
+
+#. module: cmc_account
+#: model_terms:ir.ui.view,arch_db:cmc_account.view_cmc_coge_reconciliation_form
+msgid "General ledger expense items without any analytic distribution."
+msgstr ""
+"Movimenti di costo di contabilità generale privi di distribuzione analitica."
+
+#. module: cmc_account
 #: model:ir.model.fields,field_description:cmc_account.field_account_account__id
 #: model:ir.model.fields,field_description:cmc_account.field_account_analytic_line__id
+#: model:ir.model.fields,field_description:cmc_account.field_account_move_line__id
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__id
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_coge_reconciliation__id
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_manual_classification__id
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_measure_quantity__id
 msgid "ID"
 msgstr "ID"
 
@@ -183,13 +309,20 @@ msgid "Indirect"
 msgstr "Indiretto"
 
 #. module: cmc_account
+#: model:ir.model,name:cmc_account.model_account_move_line
+msgid "Journal Item"
+msgstr "Movimento contabile"
+
+#. module: cmc_account
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__write_uid
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_coge_reconciliation__write_uid
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_manual_classification__write_uid
 msgid "Last Updated by"
 msgstr "Ultimo aggiornamento di"
 
 #. module: cmc_account
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__write_date
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_coge_reconciliation__write_date
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_manual_classification__write_date
 msgid "Last Updated on"
 msgstr "Ultimo aggiornamento il"
@@ -204,9 +337,23 @@ msgstr ""
 "               Classificale o affina le regole di classificazione."
 
 #. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_coge_reconciliation__coan_amount
+msgid "Management Accounting Cost"
+msgstr "Costo di controllo di gestione"
+
+#. module: cmc_account
 #: model_terms:ir.ui.view,arch_db:cmc_account.view_account_form_cmc
 msgid "Management Control"
 msgstr "Controllo di gestione"
+
+#. module: cmc_account
+#: model_terms:ir.ui.view,arch_db:cmc_account.view_cmc_coge_reconciliation_form
+msgid ""
+"Management accounting cost: analytic cost lines of the period, excluding "
+"excluded lines and revenue accounts."
+msgstr ""
+"Costo di controllo di gestione: righe di costo analitico del periodo, "
+"escluse le righe escluse e i conti di ricavo."
 
 #. module: cmc_account
 #: model:ir.model.fields,field_description:cmc_account.field_account_analytic_line__cmc_classified_manually
@@ -234,14 +381,25 @@ msgstr ""
 "Corrisponde se il codice del conto finanziario inizia con questo prefisso."
 
 #. module: cmc_account
+#: model:ir.model,name:cmc_account.model_cmc_measure_quantity
+msgid "Measure Quantity"
+msgstr "Quantità della misura"
+
+#. module: cmc_account
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_manual_classification__move_line_id
 msgid "Move Line"
 msgstr "Riga contabile"
 
 #. module: cmc_account
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__name
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_coge_reconciliation__name
 msgid "Name"
 msgstr "Nome"
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_coge_reconciliation__neutral_amount
+msgid "Neutral (no analytic)"
+msgstr "Neutro (senza analitica)"
 
 #. module: cmc_account
 #: model_terms:ir.actions.act_window,help:cmc_account.action_cmc_unclassified_lines
@@ -260,6 +418,15 @@ msgstr ""
 "profilo, quei campi vengono ritirati."
 
 #. module: cmc_account
+#: model_terms:ir.ui.view,arch_db:cmc_account.view_cmc_coge_reconciliation_form
+msgid ""
+"Part of the management accounting cost made of figurative cost elements (no "
+"general ledger counterpart)."
+msgstr ""
+"Parte del costo di controllo di gestione costituita da elementi di costo "
+"figurativi (senza controparte in contabilità generale)."
+
+#. module: cmc_account
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__partner_id
 msgid "Partner"
 msgstr "Partner"
@@ -273,6 +440,16 @@ msgstr "Categoria prodotto"
 #: model:ir.actions.server,name:cmc_account.action_cmc_reapply_rules
 msgid "Re-apply Classification Rules"
 msgstr "Riapplica le regole di classificazione"
+
+#. module: cmc_account
+#: model_terms:ir.ui.view,arch_db:cmc_account.view_cmc_coge_reconciliation_form
+msgid "Reset to Draft"
+msgstr "Riporta in bozza"
+
+#. module: cmc_account
+#: model_terms:ir.ui.view,arch_db:cmc_account.view_cmc_coge_reconciliation_form
+msgid "Results"
+msgstr "Risultati"
 
 #. module: cmc_account
 #: model:ir.model.fields.selection,name:cmc_account.selection__cmc_classification_rule__cmc_behavior__semi_variable
@@ -292,10 +469,26 @@ msgstr ""
 "sovrascrivono mai."
 
 #. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_coge_reconciliation__state
+msgid "State"
+msgstr "Stato"
+
+#. module: cmc_account
+#: model_terms:ir.ui.view,arch_db:cmc_account.view_cmc_coge_reconciliation_search
+msgid "Status"
+msgstr "Stato"
+
+#. module: cmc_account
 #. odoo-python
 #: code:addons/cmc_account/models/account_analytic_line.py:0
 msgid "The bridge that classified a line is recorded by the system only."
 msgstr "Il ponte che ha classificato una riga lo registra solo il sistema."
+
+#. module: cmc_account
+#. odoo-python
+#: code:addons/cmc_account/models/cmc_coge_reconciliation.py:0
+msgid "The start date must not be after the end date."
+msgstr "La data di inizio non può essere successiva alla data di fine."
 
 #. module: cmc_account
 #: model_terms:ir.ui.view,arch_db:cmc_account.view_cmc_unclassified_list
@@ -310,6 +503,31 @@ msgid "Unclassified Cost Lines"
 msgstr "Righe di costo non classificate"
 
 #. module: cmc_account
+#: model_terms:ir.ui.view,arch_db:cmc_account.view_cmc_coge_reconciliation_form
+msgid ""
+"Unexplained = General Ledger Cost - (Management Accounting Cost - Figurative"
+" + Neutral)"
+msgstr ""
+"Non spiegato = Costo di contabilità generale - (Costo di controllo di "
+"gestione - Figurativo + Neutro)"
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_coge_reconciliation__unexplained_amount
+msgid "Unexplained Amount"
+msgstr "Importo non spiegato"
+
+#. module: cmc_account
 #: model:ir.model.fields.selection,name:cmc_account.selection__cmc_classification_rule__cmc_behavior__variable
 msgid "Variable"
 msgstr "Variabile"
+
+#. module: cmc_account
+#. odoo-python
+#: code:addons/cmc_account/models/account_move_line.py:0
+msgid "You are not allowed to read the general ledger of %s."
+msgstr "Non si è autorizzati a leggere la contabilità generale di %s."
+
+#. module: cmc_account
+#: model_terms:ir.ui.view,arch_db:cmc_account.view_cmc_coge_reconciliation_form
+msgid "e.g. Q1 reconciliation"
+msgstr "es. Riconciliazione 1° trimestre"

@@ -8,7 +8,10 @@
     "author": "EsseTech by DueEsseTi Srl",
     # why both: the feeders read mrp.workorder / mrp.production (cmc_mrp) into the cmc_kpi measure catalogue
     "depends": ["cmc_kpi", "cmc_mrp"],
-    "data": [],
+    "data": [
+        "data/cmc_kpi_mrp_data.xml",
+        "views/cmc_kpi_mrp_views.xml",
+    ],
     "installable": True,
     "auto_install": True,
 }

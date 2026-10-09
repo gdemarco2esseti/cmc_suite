@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_mrp_production_form_cmc_kpi" model="ir.ui.view">
+        <field name="name">mrp.production.form.cmc.kpi</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+            <field name="bom_id" position="after">
+                <field name="cmc_is_rework"/>
+                <field name="cmc_date_released" invisible="not cmc_date_released"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_cmc_kpi_list_mrp" model="ir.ui.view">
+        <field name="name">cmc.kpi.list.mrp</field>
+        <field name="model">cmc.kpi</field>
+        <field name="inherit_id" ref="cmc_kpi.view_cmc_kpi_list"/>
+        <field name="arch" type="xml">
+            <list position="inside">
+                <header>
+                    <button name="action_cmc_load_mrp_library" type="object" string="Load manufacturing KPIs" display="always"
+                            groups="cmc_base.group_cmc_manager"/>
+                </header>
+            </list>
+        </field>
+    </record>
+</odoo>

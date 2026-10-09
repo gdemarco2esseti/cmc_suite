@@ -9,3 +9,12 @@ from . import test_abc2_drivers
 from . import test_abc2_rates_lifecycle
 from . import test_abc2_security
 from . import test_abc2_performance
+from . import test_abm_process
+from . import test_abm_attributes
+from . import test_abm_measures
+from . import test_abm_initiatives
+from . import test_abm_benchmark
+from . import test_abm_coq
+from . import test_abm_security
+from . import test_abm_performance
+from . import test_abm_two_plans

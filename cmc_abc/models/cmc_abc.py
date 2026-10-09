@@ -40,6 +40,7 @@ class CmcAbcActivity(models.Model):
         "cmc.cost.driver", string="Default Activity Driver", check_company=True,
         help="Cost driver that typically measures this activity's output.",
     )
+    measure_line_ids = fields.One2many("cmc.abc.activity.measure", "activity_id", string="Performance Measures", copy=True)
     node_type = fields.Selection(
         [("process", "Process"), ("activity", "Activity"), ("task", "Task")],
         required=True, default="activity", index=True,
@@ -131,6 +132,11 @@ class CmcAbcRun(models.Model):
         domain="[('measure_kind', '=', 'statistical')]",
         help="Statistical measure of the output units of each cost object (unit cost = cost / units).",
     )
+    defect_measure_id = fields.Many2one(
+        "cmc.cost.driver", string="Defect Measure", check_company=True,
+        domain="[('measure_kind', '=', 'statistical')]",
+        help="Statistical measure of the defective units of each cost object (cost of poor quality = defects x unit cost).",
+    )
     traditional_basis = fields.Selection(
         [("volume", "Volume driver"), ("rate", "Approved rates")], string="Compare With",
         help="Traditional costing to compare the ABC cost with.",
@@ -149,6 +155,7 @@ class CmcAbcRun(models.Model):
     result_ids = fields.One2many("cmc.abc.result", "run_id")
     activity_result_ids = fields.One2many("cmc.abc.activity.result", "run_id")
     activity_cost_ids = fields.One2many("cmc.abc.activity.cost", "run_id")
+    performance_ids = fields.One2many("cmc.abc.activity.performance", "run_id")
     flow_ids = fields.One2many("cmc.abc.flow", "run_id")
     total_resource_cost = fields.Monetary(readonly=True, copy=False, help="Resource pools and activity tags entering the model.")
     total_activity_cost = fields.Monetary(readonly=True, copy=False, help="Sum of the stage-1 cost of the activities.")
@@ -156,6 +163,7 @@ class CmcAbcRun(models.Model):
     total_object_cost = fields.Monetary(readonly=True, copy=False, help="Cost that rests on the final cost objects.")
     unused_capacity_cost = fields.Monetary(readonly=True, copy=False)
     sustaining_cost = fields.Monetary(readonly=True, copy=False)
+    copq_total = fields.Monetary(readonly=True, copy=False, string="Cost of Poor Quality", help="Defect units x ABC unit cost of the objects.")
     in_scope_cost = fields.Monetary(readonly=True, copy=False, help="Cost base of the resource centers in the period.")
     unassigned_cost = fields.Monetary(
         readonly=True, copy=False, help="In-scope cost that no resource or direct trace picked up: reported, never charged."
@@ -172,9 +180,9 @@ class CmcAbcRun(models.Model):
 
     _cmc_input_fields = (
         "company_id", "date_from", "date_to", "line_ids", "resource_line_ids", "capacity_line_ids", "trace_direct",
-        "output_measure_id", "traditional_basis", "traditional_driver_id", "traditional_version_id", "compute_burdens",
+        "output_measure_id", "defect_measure_id", "traditional_basis", "traditional_driver_id", "traditional_version_id", "compute_burdens",
     )
-    _cmc_result_fields = ("result_ids", "activity_result_ids", "activity_cost_ids", "flow_ids")
+    _cmc_result_fields = ("result_ids", "activity_result_ids", "activity_cost_ids", "flow_ids", "performance_ids")
 
     @api.depends("activity_result_ids.amount", "activity_result_ids.unallocated")
     def _compute_unallocated_amount(self):
@@ -189,7 +197,7 @@ class CmcAbcRun(models.Model):
             **dict.fromkeys(
                 (
                     "total_resource_cost", "total_activity_cost", "total_traced_cost", "total_object_cost",
-                    "unused_capacity_cost", "sustaining_cost", "in_scope_cost", "unassigned_cost",
+                    "unused_capacity_cost", "sustaining_cost", "in_scope_cost", "unassigned_cost", "copq_total",
                     "idle_burden_rate", "sustaining_burden_rate",
                 ),
                 0.0,
@@ -302,9 +310,11 @@ class CmcAbcRun(models.Model):
     def _cmc_activity_cost_by_attribute(self, attribute):
         """{attribute value id (False: none): stage-1 cost of the activities carrying it}."""
         self.ensure_one()
-        by_activity = {row.activity_id.id: row.resource_cost for row in self.activity_cost_ids}
-        groups = self.activity_cost_ids.activity_id._cmc_group_by_attribute(attribute)
-        return {value: sum(by_activity[act] for act in ids) for value, ids in groups.items()}
+        value_of = self._cmc_activity_values(attribute)
+        costs = defaultdict(float)
+        for row in self.activity_cost_ids:
+            costs[value_of.get(row.activity_id.id, False)] += row.resource_cost
+        return dict(costs)
 
     # ---- reclassified (transposed) report ---------------------------------
 
@@ -480,6 +490,9 @@ class CmcAbcResult(models.Model):
     idle_burden = fields.Monetary()
     sustaining_burden = fields.Monetary()
     full_cost = fields.Monetary(help="ABC cost + idle capacity and business-sustaining burdens.")
+    nva_cost = fields.Monetary(string="NVA Cost", help="Part of the activity cost charged by non-value-added activities (waste).")
+    defect_qty = fields.Float(help="Defective units of the period (defect measure).")
+    copq_amount = fields.Monetary(string="Cost of Poor Quality", help="Defect units x ABC unit cost.")
 
 
 class CmcAbcActivityResult(models.Model):

@@ -212,3 +212,8 @@ def process_cost_report(method, units, elements, rounding=None):
         for name in ("cost_to_account", "normal_spoilage", *parts):
             result[name] += result["elements"][key][name]
     return result
+
+
+def simple_payback(one_time_cost, annual_saving):
+    """Years to recover the investment; 0.0 when there is no saving to recover it with."""
+    return one_time_cost / annual_saving if annual_saving > 0 else 0.0

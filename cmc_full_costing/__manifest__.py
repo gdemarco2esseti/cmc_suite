@@ -9,6 +9,7 @@
     "data": [
         "security/cmc_full_costing_security.xml",
         "security/ir.model.access.csv",
+        "views/cmc_costing_simulate_views.xml",
         "views/cmc_costing_views.xml",
         "views/cmc_figurative_views.xml",
         "report/report_actions.xml",

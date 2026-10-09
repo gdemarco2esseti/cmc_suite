@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_costing_capacity_list" model="ir.ui.view">
+        <field name="name">cmc.costing.capacity.list</field>
+        <field name="model">cmc.costing.capacity</field>
+        <field name="arch" type="xml">
+            <list string="Practical Capacity" create="false" edit="false">
+                <field name="center_id"/>
+                <field name="fixed_cost" sum="Fixed"/>
+                <field name="variable_cost" sum="Variable" optional="hide"/>
+                <field name="capacity_practical"/>
+                <field name="capacity_used"/>
+                <field name="fixed_rate"/>
+                <field name="fixed_charged" sum="Charged"/>
+                <field name="unabsorbed_cost" sum="Unabsorbed" decoration-danger="unabsorbed_cost > 0"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_costing_simulate_form" model="ir.ui.view">
+        <field name="name">cmc.costing.simulate.form</field>
+        <field name="model">cmc.costing.simulate</field>
+        <field name="arch" type="xml">
+            <form string="Simulate">
+                <group>
+                    <group string="Bid">
+                        <field name="result_id" readonly="1"/>
+                        <field name="bid_price"/>
+                        <field name="currency_id" invisible="1"/>
+                    </group>
+                    <group string="Check">
+                        <field name="unit_full_cost"/>
+                        <field name="unit_variable_cost"/>
+                        <field name="margin" decoration-danger="margin &lt; 0"/>
+                        <field name="covers_full_cost"/>
+                        <field name="covers_variable_cost"/>
+                    </group>
+                </group>
+                <group string="Unit Cost Curve">
+                    <field name="volumes" placeholder="100, 500, 1000"/>
+                </group>
+                <button name="action_cmc_curve" type="object" string="Compute Curve" class="btn-secondary"/>
+                <field name="curve_line_ids" readonly="1" invisible="not curve_line_ids">
+                    <list>
+                        <field name="quantity"/>
+                        <field name="unit_variable"/>
+                        <field name="unit_fixed"/>
+                        <field name="unit_cost"/>
+                    </list>
+                </field>
+                <footer>
+                    <button string="Close" special="cancel" class="btn-primary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cmc_costing_simulate_line_graph" model="ir.ui.view">
+        <field name="name">cmc.costing.simulate.line.graph</field>
+        <field name="model">cmc.costing.simulate.line</field>
+        <field name="arch" type="xml">
+            <graph string="Unit Cost Curve" type="line">
+                <field name="quantity"/>
+                <field name="unit_cost" type="measure"/>
+                <field name="unit_variable" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="action_cmc_costing_simulate" model="ir.actions.act_window">
+        <field name="name">Simulate</field>
+        <field name="res_model">cmc.costing.simulate</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

@@ -57,6 +57,10 @@ class AccountAnalyticAccount(models.Model):
         Line = self.env["account.analytic.line"]
         base = [("cmc_excluded", "=", False)]
         if company:
+            # why sudo: a certified figure must not depend on who presses
+            # Compute (timesheet rules show a user only their own lines); the
+            # company domain below is the scope, the aggregate is read-only
+            Line = Line.sudo()
             base.append(("company_id", "in", [False] + company.ids))
         if date_from:
             base.append(("date", ">=", date_from))

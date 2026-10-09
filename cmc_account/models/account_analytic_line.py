@@ -34,7 +34,6 @@ class AccountAnalyticLine(models.Model):
         string="Classified by Bridge",
         copy=False,
         readonly=True,
-        index="btree_not_null",
         help="Operational-bridge profile that classified the line and the "
         "fields it filled ('key:field,field'). When the line stops matching "
         "it, those fields are withdrawn.",

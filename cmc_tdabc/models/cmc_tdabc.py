@@ -217,6 +217,12 @@ class CmcTdabcRun(models.Model):
     def _cmc_reset_values(self):
         return {**super()._cmc_reset_values(), "scenario_warning": False}
 
+    def write(self, vals):
+        # an engine output: only Compute and Reset (under the sentinel) write it
+        if "scenario_warning" in vals and not self._cmc_state_unlocked():
+            raise UserError(self.env._("The results of a run are written by Compute only."))
+        return super().write(vals)
+
     def _cmc_compute(self):
         self.ensure_one()
         # Aggregate analytic data ONCE and thread it through every scenario
@@ -550,12 +556,13 @@ class CmcTdabcResult(models.Model):
     company_id = fields.Many2one(related="run_id.company_id", store=True)
     currency_id = fields.Many2one(related="run_id.currency_id")
     scenario = fields.Selection(SCENARIOS, required=True)
-    activity_id = fields.Many2one("cmc.tdabc.activity")
+    # restrict: deleting master data must not blank computed results
+    activity_id = fields.Many2one("cmc.tdabc.activity", ondelete="restrict")
     cost_object_type = fields.Selection(
         [("product", "Product"), ("customer", "Customer")]
     )
-    product_id = fields.Many2one("product.product", index=True)
-    partner_id = fields.Many2one("res.partner", index=True)
+    product_id = fields.Many2one("product.product", index=True, ondelete="restrict")
+    partner_id = fields.Many2one("res.partner", index=True, ondelete="restrict")
     time_absorbed = fields.Float(string="Time Absorbed (min)")
     cost_absorbed = fields.Monetary(string="Cost Absorbed")
 
@@ -577,7 +584,7 @@ class CmcTdabcCapacityResult(models.Model):
     company_id = fields.Many2one(related="run_id.company_id", store=True)
     currency_id = fields.Many2one(related="run_id.currency_id")
     scenario = fields.Selection(SCENARIOS, required=True)
-    resource_id = fields.Many2one("cmc.tdabc.resource")
+    resource_id = fields.Many2one("cmc.tdabc.resource", ondelete="restrict")
     required_time = fields.Float(string="Required Time (min)")
     unused_time = fields.Float(string="Unused Time (min)")
     unused_cost = fields.Monetary(string="Unused Capacity Cost")

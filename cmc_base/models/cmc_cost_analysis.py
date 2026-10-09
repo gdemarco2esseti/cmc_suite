@@ -46,7 +46,12 @@ class CmcCostAnalysisLine(models.Model):
         # restrict, as on cmc.closing.line: results of a computed closing stay
         "account.analytic.account", required=True, index=True, ondelete="restrict"
     )
-    center_type = fields.Selection(related="center_id.cmc_center_type", store=True)
+    # frozen by Compute: a related field would be rewritten on the results of
+    # a computed closing when the center is reclassified
+    center_type = fields.Selection(
+        selection=lambda self: self.env["account.analytic.account"]._fields["cmc_center_type"].selection,
+        readonly=True,
+    )
     element_id = fields.Many2one(
         "cmc.cost.element", string="Cost Element", index=True, check_company=True
     )

@@ -245,7 +245,8 @@ class CmcAbcActivityResult(models.Model):
     company_id = fields.Many2one(related="run_id.company_id", store=True)
     currency_id = fields.Many2one(related="run_id.currency_id")
     activity_id = fields.Many2one("cmc.abc.activity", required=True, index=True)
-    product_id = fields.Many2one("product.product", index=True, check_company=True)
+    # restrict: deleting a product must not blank a computed result
+    product_id = fields.Many2one("product.product", index=True, check_company=True, ondelete="restrict")
     driver_qty = fields.Float(string="Driver Quantity")
     pool_amount = fields.Monetary(
         string="Activity Pool", help="Whole cost pool of the activity, as frozen "

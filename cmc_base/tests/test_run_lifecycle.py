@@ -135,3 +135,12 @@ class TestRunLifecycle(TransactionCase):
             self.env["cmc.closing.line"].with_user(self.user).create(
                 {"run_id": draft.id, "center_id": self.center.id, "cost_residual": 9000.0}
             )
+
+    def test_center_type_frozen_on_results(self):
+        run = self._computed()
+        line = run.line_ids.filtered(lambda l: l.center_id == self.center)
+        self.assertEqual(line.center_type, "final")
+        self.center.cmc_center_type = "auxiliary"
+        self.env.flush_all()
+        line.invalidate_recordset()
+        self.assertEqual(line.center_type, "final")

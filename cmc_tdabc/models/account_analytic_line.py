@@ -22,7 +22,10 @@ class AccountAnalyticLine(models.Model):
     def _cmc_tdabc_hours(self, date_from=False, date_to=False, company=False):
         """{activity_id: actual minutes} from tagged analytic lines. unit_amount
         is in hours (timesheet convention) -> *60 to minutes."""
-        groups = self._read_group(
+        # why sudo: actual hours must not depend on who presses Compute
+        # (timesheet rules hide other users' lines); the company domain is the scope
+        lines = self.sudo() if company else self
+        groups = lines._read_group(
             self._cmc_tdabc_domain(date_from, date_to, company),
             groupby=["cmc_tdabc_activity_id"], aggregates=["unit_amount:sum"],
         )

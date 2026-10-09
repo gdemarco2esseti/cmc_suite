@@ -80,7 +80,12 @@ class CmcRunMixin(models.AbstractModel):
             )
         for run in self:
             # the sentinel opens the result rows to the engine only
-            run.with_context(cmc_run_state=CMC_RUN_STATE)._cmc_compute()
+            engine = run.with_context(cmc_run_state=CMC_RUN_STATE)
+            for fname in self._cmc_result_fields:
+                # why sudo: rows left on a draft run by a pre-AD-001 reset
+                # (nothing else can write them now) must not be certified
+                engine.sudo()[fname].unlink()
+            engine._cmc_compute()
             run._cmc_set_state("done")
         return True
 

@@ -30,19 +30,29 @@ class AccountAnalyticLine(models.Model):
         )
         if not excluded:
             return super().create(vals_list)
-        vals_list = [
-            dict(vals, cmc_excluded=True, cmc_directness="indirect")
-            if vals.get("move_line_id") in excluded else vals
-            for vals in vals_list
+        twin_pos = [i for i, vals in enumerate(vals_list) if vals.get("move_line_id") in excluded]
+        plain_pos = [i for i in range(len(vals_list)) if i not in set(twin_pos)]
+        # only the twins take the superuser shortcut; the caller's other lines
+        # are created as the caller, with every check
+        plain = super().create([vals_list[i] for i in plain_pos]) if plain_pos else self.browse()
+        twin_vals = [
+            dict({k: v for k, v in vals_list[i].items() if k != "cmc_bridge_source"},
+                 cmc_excluded=True, cmc_directness="indirect")
+            for i in twin_pos
         ]
         # why sudo: cmc_excluded is superuser-only; the value is derived from
         # the journal item, never taken from the caller. The caller's own create
         # rights are checked before (ACL) and on the records created (rules):
         # the shortcut must not let a user create lines they could not create.
         self.check_access("create")
-        records = super(AccountAnalyticLine, self.sudo()).create(vals_list).with_env(self.env)
-        records.check_access("create")
-        return records
+        twins = super(AccountAnalyticLine, self.sudo()).create(twin_vals).with_env(self.env)
+        twins.check_access("create")
+        ids = [None] * len(vals_list)
+        for pos, record in zip(plain_pos, plain):
+            ids[pos] = record.id
+        for pos, record in zip(twin_pos, twins):
+            ids[pos] = record.id
+        return self.browse(ids)
 
     @api.model
     def _cmc_classify_trigger_fields(self):

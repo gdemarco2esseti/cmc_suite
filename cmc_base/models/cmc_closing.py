@@ -152,6 +152,7 @@ class CmcClosingRun(models.Model):
                 {
                     "run_id": self.id,
                     "center_id": center.id,
+                    "center_type": center.cmc_center_type,
                     "cost_initial": ini,
                     "cost_received": rec,
                     "cost_distributed": dist,
@@ -178,23 +179,24 @@ class CmcClosingRun(models.Model):
                 "cmc_base.cost_element_ribaltamento is missing: reallocated "
                 "cost will be booked without a cost element."
             )
+        type_by_id = {center.id: center.cmc_center_type for center in centers}
         vals = []
         for (cid, eid), amount in cost_by.items():
             vals.append(
-                {"run_id": self.id, "center_id": cid, "element_id": eid,
+                {"run_id": self.id, "center_id": cid, "center_type": type_by_id.get(cid), "element_id": eid,
                  "state": "pre", "amount": amount}
             )
             # post: to-close centers are emptied; others keep their own cost
             if cid not in to_close:
                 vals.append(
-                    {"run_id": self.id, "center_id": cid, "element_id": eid,
+                    {"run_id": self.id, "center_id": cid, "center_type": type_by_id.get(cid), "element_id": eid,
                      "state": "post", "amount": amount}
                 )
         # finals absorb the reallocated auxiliary/intermediate cost
         for cid, amount in received.items():
             if cid in final_ids and amount:
                 vals.append(
-                    {"run_id": self.id, "center_id": cid,
+                    {"run_id": self.id, "center_id": cid, "center_type": type_by_id.get(cid),
                      "element_id": ribalt.id if ribalt else False,
                      "state": "post", "amount": amount}
                 )
@@ -349,7 +351,12 @@ class CmcClosingLine(models.Model):
     center_id = fields.Many2one(
         "account.analytic.account", required=True, index=True, ondelete="restrict"
     )
-    center_type = fields.Selection(related="center_id.cmc_center_type", store=True)
+    # frozen by Compute: a related field would be rewritten on the results of
+    # a computed closing when the center is reclassified
+    center_type = fields.Selection(
+        selection=lambda self: self.env["account.analytic.account"]._fields["cmc_center_type"].selection,
+        readonly=True,
+    )
     cost_initial = fields.Monetary()
     cost_received = fields.Monetary()
     cost_distributed = fields.Monetary()

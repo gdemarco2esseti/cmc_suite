@@ -23,5 +23,8 @@ class AccountAnalyticLine(models.Model):
             domain.append(("date", ">=", date_from))
         if date_to:
             domain.append(("date", "<=", date_to))
-        groups = self._cmc_cost_read_group(domain, groupby=["cmc_activity_id"])
+        # why sudo: a certified pool must not depend on who presses Compute
+        # (timesheet rules hide other users' lines); the company domain is the scope
+        lines = self.sudo() if company else self
+        groups = lines._cmc_cost_read_group(domain, groupby=["cmc_activity_id"])
         return {activity.id: cost for activity, cost in groups}

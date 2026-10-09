@@ -5,6 +5,8 @@ import psycopg2
 from odoo.exceptions import UserError, ValidationError
 from odoo.tests.common import TransactionCase, new_test_user, tagged
 
+from odoo.addons.cmc_base.models.cmc_run_mixin import CMC_RUN_STATE
+
 
 @tagged("post_install", "-at_install")
 class TestTdabc(TransactionCase):
@@ -252,7 +254,9 @@ class TestTdabc(TransactionCase):
 
     def test_reset_deletes_results(self):
         run, res, act = self._simple_run()
-        run.scenario_warning = "left over"  # an engine output, cleared on reset
+        with self.assertRaises(UserError):
+            run.scenario_warning = "forged"  # an engine output, not a user field
+        run.with_context(cmc_run_state=CMC_RUN_STATE).scenario_warning = "left over"
         run.action_reset_to_draft()
         self.assertFalse(run.scenario_warning)
         self.assertEqual(run.state, "draft")

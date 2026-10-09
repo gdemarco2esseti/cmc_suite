@@ -139,10 +139,14 @@ class CmcCostingRun(models.Model):
         priced = products.with_company(self.company_id)
         return {p.id: p.standard_price for p in priced}
 
+    def _cmc_lock_rows(self):
+        # closing rows first, then the costing rows: the order a closing reset
+        # takes them (AD-002), so the two never deadlock
+        self.closing_run_id._cmc_lock_rows()
+        return super()._cmc_lock_rows()
+
     def _cmc_compute(self):
         self.ensure_one()
-        # the closing row lock pairs with the costing-row lock its reset takes
-        self.closing_run_id._cmc_lock_rows()
         if self.closing_run_id.state != "done":
             raise UserError(
                 self.env._(

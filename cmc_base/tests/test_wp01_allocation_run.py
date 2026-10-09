@@ -13,6 +13,11 @@ CONTRACT
   counter line on ``source_account_id`` with ``amount = +amount`` (the source is emptied). Sum of posted
   amounts = 0 (conservation, fail loud otherwise). The lines are part of the cost base (``cmc_excluded``
   False), so ``_cmc_cost_groups`` and the closing read them.
+- RN-001 (ronin): ``behavior`` Selection ``fixed`` / ``variable`` on ``cmc.allocation`` (required, default
+  ``fixed``, part of ``_cmc_input_fields``: locked once done). It is written as ``cmc_behavior`` on ALL posted
+  lines (target lines AND the counter line on the source), so a fixed allocation moves fixed cost: the
+  source loses it in ``_cmc_cost_groups(behavior="fixed")`` and in the capacity rows, the target gains it.
+  Invariant on every capacity row: ``fixed_cost <= total_cost``.
 - ``action_reset_to_draft()`` deletes the posted lines. Lines with ``cmc_allocation_id`` cannot be written
   or deleted outside the run sentinel (UserError). Inputs of a computed allocation are locked (UserError).
 - Compute is allowed to group_cmc_user (as the closing); a user without CMC group gets AccessError.
@@ -26,6 +31,8 @@ CONTRACT
   share = allocated / total_overhead * 100; warning = share > 10 (guardrail).
 
 Hand-computed: source 1000 split 3:1 -> A 750, B 250, source counter +1000 -> source net 0.
+RN-001: S fixed 1000, fixed allocation 1000 S->T, capacity rows theoretical/practical 100, actual 50 ->
+S fixed 0, unused 0, total 0; T fixed 1000, imputed 500, unused 500, total 1000. Variable: T variable 1000.
 Share: indirect 6000 + 4000 = 10000 (direct 5000 out); allocated driver 800 computed (+5000 draft, ignored),
 traced driver 3000 -> share 8.0 %, no warning; + 400 allocated -> 12.0 %, warning.
 """
@@ -257,3 +264,93 @@ class TestAllocationDocumentation(TransactionCase):
         share = self.Alloc._cmc_allocated_share(self.company, *SPAN)
         self.assertAlmostEqual(share["share"], 12.0)
         self.assertTrue(share["warning"])
+
+
+@tagged("post_install", "-at_install")
+class TestAllocationBehavior(TransactionCase):
+    """RN-001: an allocation moves cost of a declared behavior; the source loses it, the target gains it."""
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.AA = cls.env["account.analytic.account"]
+        cls.Alloc = cls.env["cmc.allocation"]
+        cls.company = cls.env.company
+        cls.plan = cls.env["account.analytic.plan"].search([("parent_id", "=", False)]).filtered(
+            lambda p: p._column_name() == "account_id"
+        )[:1]
+        cls.source = cls.AA.create({"name": "WP01 B source S", "plan_id": cls.plan.id, "cmc_center_type": "final",
+                                    "company_id": cls.company.id})
+        cls.target = cls.AA.create({"name": "WP01 B target T", "plan_id": cls.plan.id, "cmc_center_type": "final",
+                                    "company_id": cls.company.id})
+        cls.driver = cls.env["cmc.cost.driver"].create({"name": "WP01 B m2", "code": "WP01B_M2"})
+        cls.env["account.analytic.line"].create({"name": "rent", "account_id": cls.source.id, "amount": -1000.0,
+                                                 "date": DAY, "cmc_behavior": "fixed"})
+        cls.capacity = {
+            center: cls.env["cmc.capacity.analysis"].create({
+                "center_id": center.id, "date_from": SPAN[0], "date_to": SPAN[1], "company_id": cls.company.id,
+                "capacity_theoretical": 100.0, "capacity_practical": 100.0, "capacity_actual": 50.0,
+            })
+            for center in (cls.source, cls.target)
+        }
+
+    def _allocation(self, **kw):
+        vals = {"name": "WP01 B rent", "source_account_id": self.source.id, "driver_id": self.driver.id,
+                "amount": 1000.0, "date": DAY,
+                "line_ids": [(0, 0, {"target_account_id": self.target.id, "quantity": 1})]}
+        vals.update(kw)
+        return self.Alloc.create(vals)
+
+    def _groups(self, behavior):
+        return (self.source | self.target)._cmc_cost_groups(*SPAN, behavior=behavior, company=self.company)
+
+    def test_behavior_field_default_fixed(self):
+        # RN-001: an allocation declares the behavior of the cost it moves; fixed unless said otherwise
+        self.assertEqual(set(dict(self.Alloc._fields["behavior"].selection)), {"fixed", "variable"})
+        self.assertEqual(self._allocation().behavior, "fixed")
+
+    def test_behavior_on_all_posted_lines(self):
+        # RN-001: target lines AND the source counter line carry the behavior, else the source keeps its fixed cost
+        alloc = self._allocation()
+        alloc.action_compute()
+        self.assertEqual(set(alloc.posted_line_ids.mapped("cmc_behavior")), {"fixed"})
+        counter = alloc.posted_line_ids.filtered(lambda line: line.account_id == self.source)
+        self.assertEqual(counter.cmc_behavior, "fixed")
+
+    def test_fixed_allocation_moves_fixed_cost(self):
+        # RN-001: S fixed 1000 - 1000 allocated = 0; T fixed 1000
+        self._allocation().action_compute()
+        fixed = self._groups("fixed")
+        self.assertAlmostEqual(fixed.get(self.source.id, 0.0), 0.0)
+        self.assertAlmostEqual(fixed.get(self.target.id, 0.0), 1000.0)
+
+    def test_fixed_allocation_capacity_rows(self):
+        # RN-001: the source shows no unused-capacity cost for a cost it no longer bears; the target does
+        self._allocation().action_compute()
+        self.assertRecordValues(self.capacity[self.source], [{
+            "fixed_cost": 0.0, "imputed_fixed_cost": 0.0, "unused_capacity_cost": 0.0, "total_cost": 0.0,
+        }])
+        self.assertRecordValues(self.capacity[self.target], [{
+            "fixed_cost": 1000.0, "imputed_fixed_cost": 500.0, "unused_capacity_cost": 500.0, "total_cost": 1000.0,
+        }])
+
+    def test_capacity_fixed_not_above_total(self):
+        # RN-001: invariant fixed_cost <= total_cost on every capacity row after an allocation
+        self._allocation().action_compute()
+        for center, row in self.capacity.items():
+            self.assertLessEqual(row.fixed_cost, row.total_cost + 0.001, f"fixed > total on {center.name}")
+
+    def test_variable_allocation_lands_in_variable(self):
+        # RN-001: a variable allocation books variable cost on the target, no fixed cost moves
+        alloc = self._allocation(behavior="variable")
+        alloc.action_compute()
+        self.assertEqual(set(alloc.posted_line_ids.mapped("cmc_behavior")), {"variable"})
+        self.assertAlmostEqual(self._groups("variable").get(self.target.id, 0.0), 1000.0)
+        self.assertAlmostEqual(self._groups("fixed").get(self.target.id, 0.0), 0.0)
+
+    def test_behavior_locked_when_done(self):
+        # RN-001 / AD-001: behavior is an input of the run, locked once computed
+        alloc = self._allocation()
+        alloc.action_compute()
+        with self.assertRaises(UserError):
+            alloc.behavior = "variable"

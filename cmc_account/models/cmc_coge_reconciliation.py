@@ -4,7 +4,7 @@ from odoo.fields import Domain
 
 from .account_move_line import EXPENSE_TYPES, REVENUE_TYPES
 
-RESULT_FIELDS = ("coge_amount", "coan_amount", "figurative_amount", "neutral_amount", "unexplained_amount")
+RESULT_FIELDS = ("coge_amount", "coan_amount", "figurative_amount", "neutral_amount", "unexplained_amount", "coan_no_gl")
 
 
 class CmcCogeReconciliation(models.Model):
@@ -25,6 +25,7 @@ class CmcCogeReconciliation(models.Model):
     figurative_amount = fields.Monetary(readonly=True, copy=False)
     neutral_amount = fields.Monetary(string="Neutral (no analytic)", readonly=True, copy=False)
     unexplained_amount = fields.Monetary(readonly=True, copy=False)
+    coan_no_gl = fields.Monetary(string="Analytic Cost without GL", readonly=True, copy=False)
 
     @api.constrains("date_from", "date_to")
     def _check_dates(self):
@@ -47,18 +48,23 @@ class CmcCogeReconciliation(models.Model):
             scope = Line._cmc_reader_scope(company)
             (coge,) = scope._read_group(gl, aggregates=["balance:sum"])[0]
             (neutral_amount,) = scope._read_group(neutral, aggregates=["balance:sum"])[0]
-            coan_domain = Domain([
+            base = Domain([
                 ("company_id", "=", company.id), ("cmc_excluded", "=", False),
                 ("date", ">=", rec.date_from), ("date", "<=", rec.date_to),
             ]) & (Domain("general_account_id", "=", False) | Domain("general_account_id.account_type", "not in", REVENUE_TYPES))
+            figurative_domain = Domain("cmc_cost_element_id.cmc_kind", "=", "figurative")
+            # no-GL lines that are not figurative have no ledger counterpart: shown apart, not in COAN
+            no_gl = base & Domain("general_account_id", "=", False) & ~figurative_domain
+            coan_domain = base & ~no_gl
             # why sudo: the controller reconciles without read access to every analytic line
             analytic = AnalyticLine.sudo()
             (coan,) = analytic._cmc_cost_read_group(coan_domain)[0]
-            (figurative,) = analytic._cmc_cost_read_group(coan_domain & Domain("cmc_cost_element_id.cmc_kind", "=", "figurative"))[0]
+            (figurative,) = analytic._cmc_cost_read_group(coan_domain & figurative_domain)[0]
+            (coan_no_gl,) = analytic._cmc_cost_read_group(no_gl)[0]
             coge, neutral_amount = coge or 0.0, neutral_amount or 0.0
             rec.write({
                 "coge_amount": coge, "coan_amount": coan, "figurative_amount": figurative,
-                "neutral_amount": neutral_amount, "unexplained_amount": coge - (coan - figurative + neutral_amount),
+                "neutral_amount": neutral_amount, "coan_no_gl": coan_no_gl, "unexplained_amount": coge - (coan - figurative + neutral_amount),
             })
 
     def _cmc_reset_values(self):

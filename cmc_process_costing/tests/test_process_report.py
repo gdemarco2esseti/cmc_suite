@@ -21,7 +21,7 @@ class TestProcessReport(ProcessCase):
         # FC-07 / BB 1.3: one cost of production report per department and month
         d1 = self._d1(env=self.env(user=self.user))
         d2 = self._d2(d1, env=self.env(user=self.user))
-        content, _report_type = self.env["ir.actions.report"].with_user(self.user)._render_qweb_pdf(
+        content, _report_type = self.env["ir.actions.report"].with_user(self.user).with_context(lang="en_US")._render_qweb_pdf(  # why: number format is locale-dependent
             REPORT_XMLID, (d1 | d2).ids
         )
         html = content.decode() if isinstance(content, bytes) else str(content)

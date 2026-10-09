@@ -1,6 +1,8 @@
 from odoo import api, fields, models
 from odoo.tools import float_compare, float_is_zero
 
+from odoo.addons.cmc_base.models.cmc_utils import qty_rounding
+
 # ratio fields carry 4 decimals (see mc_ratio digits): compare them at that step,
 # never at the currency step
 RATIO_ROUNDING = 0.0001
@@ -223,14 +225,12 @@ class CmcCvrAnalysis(models.Model):
         """(Re)build the plotted points. No break-even (or a zero one, whose
         four samples would collapse on the origin) means no curve at all."""
         self.curve_ids.unlink()
-        qty_rounding = 10 ** -self.env["decimal.precision"].precision_get(
-            "Product Unit"
-        )
+        qty_step = qty_rounding(self.env)
         vals_list = []
         for rec in self:
             if rec.is_multiproduct or not rec.has_breakeven:
                 continue
-            if float_is_zero(rec.bep_qty, precision_rounding=qty_rounding):
+            if float_is_zero(rec.bep_qty, precision_rounding=qty_step):
                 continue
             p, v, cf = rec.price_unit, rec.variable_unit, rec.fixed_cost
             # why: bep_qty is stored rounded to the quantity digits, so revenue and

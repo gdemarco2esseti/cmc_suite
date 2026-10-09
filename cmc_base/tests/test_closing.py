@@ -141,6 +141,7 @@ class TestClosing(TransactionCase):
         run.action_compute()
         n1 = len(run.line_ids)
         z1 = self._line(run, z).cost_received
+        run.action_reset_to_draft()  # AD-001: recompute goes through a reset
         run.action_compute()
         self.assertEqual(len(run.line_ids), n1)
         self.assertEqual(self._line(run, z).cost_received, z1)

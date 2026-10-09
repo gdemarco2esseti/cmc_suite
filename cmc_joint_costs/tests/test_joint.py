@@ -114,6 +114,7 @@ class TestJoint(TransactionCase):
             {"product_id": self.pB.id, "quantity": 40},
         ])
         n1 = len(run.result_ids)
+        run.action_reset_to_draft()  # AD-001: recompute goes through a reset
         run.action_compute()
         self.assertEqual(len(run.result_ids), n1)
         self.assertEqual(self._res(run, self.pA).allocated_joint_cost, 600.0)
@@ -212,37 +213,54 @@ class TestJoint(TransactionCase):
 
     # editing an input after the run is done must not leave stale results
     # vouched for by a "done" badge
-    def test_line_change_invalidates_results(self):
+    def test_line_change_after_reset(self):
         run = self._run("physical", 1000, [
             {"product_id": self.pA.id, "quantity": 60},
             {"product_id": self.pB.id, "quantity": 40},
         ])
         self.assertEqual(run.state, "done")
-        run.line_ids.filtered(lambda l: l.product_id == self.pA).quantity = 90
-        self.assertEqual(run.state, "draft")
+        run.action_reset_to_draft()
         self.assertFalse(run.result_ids)
+        run.line_ids.filtered(lambda l: l.product_id == self.pA).quantity = 90
         run.action_compute()
         self.assertEqual(self._res(run, self.pA).allocated_joint_cost, 692.31)
 
-    def test_line_unlink_invalidates_results(self):
+    # AD-001: a computed run is locked (it used to reopen itself silently)
+    def test_line_unlink_locked_when_done(self):
         run = self._run("physical", 1000, [
             {"product_id": self.pA.id, "quantity": 60},
             {"product_id": self.pB.id, "quantity": 40},
         ])
-        run.line_ids.filtered(lambda l: l.product_id == self.pB).unlink()
-        self.assertEqual(run.state, "draft")
-        self.assertFalse(run.result_ids)
+        with self.assertRaises(UserError):
+            run.line_ids.filtered(lambda l: l.product_id == self.pB).unlink()
+        self.assertEqual(run.state, "done")
+        self.assertEqual(len(run.result_ids), 2)
 
-    def test_line_add_invalidates_results(self):
+    def test_line_add_locked_when_done(self):
         run = self._run("physical", 1000, [
             {"product_id": self.pA.id, "quantity": 60},
             {"product_id": self.pB.id, "quantity": 40},
         ])
-        run.write({
-            "line_ids": [(0, 0, {"product_id": self.pC.id, "quantity": 100})],
-        })
-        self.assertEqual(run.state, "draft")
-        self.assertFalse(run.result_ids)
+        with self.assertRaises(UserError):
+            run.write({
+                "line_ids": [(0, 0, {"product_id": self.pC.id, "quantity": 100})],
+            })
+        with self.assertRaises(UserError):
+            self.env["cmc.joint.line"].create(
+                {"run_id": run.id, "product_id": self.pC.id, "quantity": 100}
+            )
+        with self.assertRaises(UserError):
+            run.line_ids[:1].quantity = 10
+
+    def test_header_locked_when_done(self):
+        run = self._run("physical", 1000, [
+            {"product_id": self.pA.id, "quantity": 60},
+            {"product_id": self.pB.id, "quantity": 40},
+        ])
+        with self.assertRaises(UserError):
+            run.method = "sales_value"
+        with self.assertRaises(UserError):
+            run.joint_cost = 2000
 
     def test_action_reset_to_draft(self):
         run = self._run("physical", 1000, [

@@ -233,9 +233,32 @@ class TestTdabc(TransactionCase):
     def test_recompute_idempotent(self):
         run, res, act = self._simple_run()
         n = len(run.result_ids)
+        run.action_reset_to_draft()
         run.action_compute()
         self.assertEqual(len(run.result_ids), n)
         self.assertEqual(self._man_res(run, self.p1).cost_absorbed, 60000.0)
+
+    def test_done_run_is_locked(self):
+        # AD-001: header and input lines stay as computed until a reset
+        run, res, act = self._simple_run()
+        with self.assertRaises(UserError):
+            run.date_from = date(2026, 1, 1)
+        with self.assertRaises(UserError):
+            run.line_ids.volume = 1
+        with self.assertRaises(UserError):
+            run.line_ids.unlink()
+        with self.assertRaises(UserError):
+            run.action_compute()
+
+    def test_reset_deletes_results(self):
+        run, res, act = self._simple_run()
+        run.action_reset_to_draft()
+        self.assertEqual(run.state, "draft")
+        self.assertFalse(run.result_ids)
+        self.assertFalse(run.capacity_result_ids)
+        run.line_ids.volume = 4000
+        run.action_compute()
+        self.assertEqual(self._man_res(run, self.p1).cost_absorbed, 30000.0)
 
     def test_timesheet_flat_unit_time(self):
         center = self._center()
@@ -566,6 +589,7 @@ class TestTdabc(TransactionCase):
         run.action_compute()
         ts = run.result_ids.filtered(lambda r: r.scenario == "timesheet")
         self.assertAlmostEqual(ts.time_absorbed, 6000.0, places=2)  # 100h only
+        run.action_reset_to_draft()
         run.date_to = date(2026, 3, 31)
         run.action_compute()
         ts = run.result_ids.filtered(lambda r: r.scenario == "timesheet")

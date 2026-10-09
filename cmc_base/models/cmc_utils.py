@@ -20,3 +20,8 @@ def largest_remainder(total, raw, rounding):
             residual = float_round(residual - step, precision_rounding=rounding)
             i += 1
     return rounded
+
+
+def qty_rounding(env):
+    """Rounding step of a driver or product quantity (a quantity, never a currency)."""
+    return 10 ** -env["decimal.precision"].precision_get("Product Unit")

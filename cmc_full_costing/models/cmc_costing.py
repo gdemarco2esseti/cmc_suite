@@ -2,14 +2,14 @@ from collections import defaultdict
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools import SQL, float_is_zero, float_round
+from odoo.tools import float_is_zero, float_round
 
-from odoo.addons.cmc_base.models.cmc_utils import largest_remainder
+from odoo.addons.cmc_base.models.cmc_utils import largest_remainder, qty_rounding
 
 
 class CmcCostingRun(models.Model):
     _name = "cmc.costing.run"
-    _inherit = ["cmc.reclass.mixin"]
+    _inherit = ["cmc.run.mixin", "cmc.reclass.mixin"]
     _description = "Full Cost Run (single/multiple allocation base)"
     _order = "date_to desc, id desc"
     _check_company_auto = True
@@ -40,16 +40,17 @@ class CmcCostingRun(models.Model):
         check_company=True,
         help="Single allocation base used only with 'Single base'.",
     )
-    state = fields.Selection(
-        selection=[("draft", "Draft"), ("done", "Computed")],
-        default="draft",
-        required=True,
-    )
     product_ids = fields.Many2many(
         "product.product", string="Products in scope", check_company=True
     )
     line_ids = fields.One2many("cmc.costing.line", "run_id")
     result_ids = fields.One2many("cmc.costing.result", "run_id")
+
+    _cmc_input_fields = (
+        "company_id", "date_from", "date_to", "closing_run_id", "base",
+        "single_driver_id", "product_ids", "line_ids",
+    )
+    _cmc_result_fields = ("result_ids",)
 
     _dates_ok = models.Constraint(
         "CHECK(date_to >= date_from)", "End date must be on/after start date."
@@ -127,13 +128,6 @@ class CmcCostingRun(models.Model):
 
     # ---- engine ----------------------------------------------------------
 
-    def _qty_rounding(self):
-        """Rounding step for driver quantities (a quantity, never a currency)."""
-        digits = self.env["decimal.precision"].precision_get(
-            "Product Unit"
-        )
-        return 10 ** -digits
-
     def _final_center_totals(self):
         self.ensure_one()
         lines = self.closing_run_id.line_ids.filtered(
@@ -147,26 +141,7 @@ class CmcCostingRun(models.Model):
         priced = products.with_company(self.company_id)
         return {p.id: p.standard_price for p in priced}
 
-    def action_compute(self):
-        if self.ids:
-            # the lock reads committed rows, so push pending writes first
-            self.env.flush_all()
-            self.env.cr.execute(
-                SQL(
-                    "SELECT id FROM cmc_costing_run WHERE id IN %s FOR UPDATE",
-                    tuple(self.ids),
-                )
-            )
-        for run in self:
-            run._compute_costing()
-        return True
-
-    def action_reset_to_draft(self):
-        """Reopen a computed run so it can be recomputed deliberately."""
-        self.state = "draft"
-        return True
-
-    def _compute_costing(self):
+    def _cmc_compute(self):
         self.ensure_one()
         if self.closing_run_id.state != "done":
             raise UserError(
@@ -177,7 +152,7 @@ class CmcCostingRun(models.Model):
                 )
             )
         rounding = self.company_id.currency_id.rounding
-        qty_rounding = self._qty_rounding()
+        qty_step = qty_rounding(self.env)
         totals = self._final_center_totals()
 
         consume = defaultdict(lambda: defaultdict(float))
@@ -202,7 +177,7 @@ class CmcCostingRun(models.Model):
         for key, (total, pq) in center_map.items():
             has_cost = not float_is_zero(total, precision_rounding=rounding)
             has_base = not float_is_zero(
-                sum(pq.values()), precision_rounding=qty_rounding
+                sum(pq.values()), precision_rounding=qty_step
             )
             if has_cost and not has_base:
                 center = self.env["account.analytic.account"].browse(key)
@@ -223,7 +198,7 @@ class CmcCostingRun(models.Model):
         quotas = defaultdict(list)
         for key, (total, pq) in center_map.items():
             b = sum(pq.values())
-            if float_is_zero(b, precision_rounding=qty_rounding):
+            if float_is_zero(b, precision_rounding=qty_step):
                 # no allocation base: a non-zero cost was already rejected above
                 continue
             coeff = total / b
@@ -252,7 +227,7 @@ class CmcCostingRun(models.Model):
         period_pool = self._period_pool()
         if not float_is_zero(
             period_pool, precision_rounding=rounding
-        ) and not float_is_zero(total_units, precision_rounding=qty_rounding):
+        ) and not float_is_zero(total_units, precision_rounding=qty_step):
             raw = {p: period_pool * u / total_units for p, u in prod_units.items()}
             comm_admin = largest_remainder(
                 float_round(period_pool, precision_rounding=rounding), raw, rounding
@@ -308,7 +283,6 @@ class CmcCostingRun(models.Model):
                 }
             )
         self.env["cmc.costing.result"].sudo().create(res_vals)
-        self.state = "done"
 
     def _period_pool(self):
         """Commercial/administrative period costs: analytic lines on centers
@@ -330,7 +304,7 @@ class CmcCostingRun(models.Model):
         product, indirect ones are spread by units. Conserves the pool."""
         self.ensure_one()
         rounding = self.company_id.currency_id.rounding
-        qty_rounding = self._qty_rounding()
+        qty_step = qty_rounding(self.env)
         domain = [("company_id", "in", [False] + self.company_id.ids)]
         # only figuratives overlapping the run period (undated = always applicable)
         if self.date_from:
@@ -355,7 +329,7 @@ class CmcCostingRun(models.Model):
         total_units = sum(prod_units.values())
         if not float_is_zero(
             indirect_pool, precision_rounding=rounding
-        ) and not float_is_zero(total_units, precision_rounding=qty_rounding):
+        ) and not float_is_zero(total_units, precision_rounding=qty_step):
             raw = {p: indirect_pool * u / total_units for p, u in prod_units.items()}
             for p, amount in largest_remainder(
                 float_round(indirect_pool, precision_rounding=rounding), raw, rounding
@@ -368,19 +342,20 @@ class CmcCostingRun(models.Model):
         (Community-safe; deepens to valuation only if stock is present).
         Keeping it out of the per-product loop avoids an N+1 quant read_group."""
         self.ensure_one()
-        qty_rounding = self._qty_rounding()
+        qty_step = qty_rounding(self.env)
         priced = products.with_company(self.company_id)
         refs = {p.id: p.standard_price for p in priced}
         if "total_value" in products._fields and "qty_available" in products._fields:
             for product in priced:
                 qty = product.qty_available
-                if not float_is_zero(qty, precision_rounding=qty_rounding):
+                if not float_is_zero(qty, precision_rounding=qty_step):
                     refs[product.id] = product.total_value / qty
         return refs
 
 
 class CmcCostingLine(models.Model):
     _name = "cmc.costing.line"
+    _inherit = ["cmc.run.line.mixin"]
     _description = "Driver consumption per product per final center"
     _check_company_auto = True
 
@@ -492,3 +467,4 @@ class CmcCostingConfig(models.Model):
     amount = fields.Monetary(string="Cumulative")
     increment = fields.Monetary(string="Increment")
     source = fields.Char()
+

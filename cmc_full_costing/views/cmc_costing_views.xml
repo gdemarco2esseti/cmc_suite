@@ -23,7 +23,8 @@
                     <button name="action_compute" type="object" string="Compute"
                             class="oe_highlight" invisible="state != 'draft'"/>
                     <button name="action_reset_to_draft" type="object"
-                            string="Reset to Draft" invisible="state != 'done'"/>
+                            string="Reset to Draft" invisible="state != 'done'"
+                            confirm="Resetting deletes the computed results. Continue?"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
@@ -33,22 +34,22 @@
                     </div>
                     <group>
                         <group>
-                            <field name="closing_run_id"/>
-                            <field name="base"/>
-                            <field name="single_driver_id"
+                            <field name="closing_run_id" readonly="state == 'done'"/>
+                            <field name="base" readonly="state == 'done'"/>
+                            <field name="single_driver_id" readonly="state == 'done'"
                                    invisible="base != 'single'"
                                    required="base == 'single'"/>
                         </group>
                         <group>
-                            <field name="date_from"/>
-                            <field name="date_to"/>
-                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="date_from" readonly="state == 'done'"/>
+                            <field name="date_to" readonly="state == 'done'"/>
+                            <field name="company_id" readonly="state == 'done'" groups="base.group_multi_company"/>
                         </group>
                     </group>
-                    <field name="product_ids" widget="many2many_tags"/>
+                    <field name="product_ids" readonly="state == 'done'" widget="many2many_tags"/>
                     <notebook>
                         <page string="Driver Consumption" name="lines">
-                            <field name="line_ids">
+                            <field name="line_ids" readonly="state == 'done'">
                                 <list editable="bottom">
                                     <field name="center_id"/>
                                     <field name="product_id"/>

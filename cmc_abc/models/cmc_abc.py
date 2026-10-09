@@ -1,7 +1,6 @@
 from collections import defaultdict
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError
 from odoo.tools import float_is_zero, float_round
 
 from odoo.addons.cmc_base.models.cmc_utils import largest_remainder
@@ -39,7 +38,7 @@ class CmcAbcActivity(models.Model):
 
 class CmcAbcRun(models.Model):
     _name = "cmc.abc.run"
-    _inherit = ["cmc.reclass.mixin"]
+    _inherit = ["cmc.run.mixin", "cmc.reclass.mixin"]
     _description = "ABC Costing Run"
     _check_company_auto = True
 
@@ -53,9 +52,6 @@ class CmcAbcRun(models.Model):
     currency_id = fields.Many2one(related="company_id.currency_id")
     date_from = fields.Date()
     date_to = fields.Date()
-    state = fields.Selection(
-        [("draft", "Draft"), ("done", "Done")], default="draft", readonly=True
-    )
     line_ids = fields.One2many("cmc.abc.line", "run_id")
     result_ids = fields.One2many("cmc.abc.result", "run_id")
     activity_result_ids = fields.One2many("cmc.abc.activity.result", "run_id")
@@ -66,6 +62,9 @@ class CmcAbcRun(models.Model):
              "NOT part of the ABC cost of any object.",
     )
 
+    _cmc_input_fields = ("company_id", "date_from", "date_to", "line_ids")
+    _cmc_result_fields = ("result_ids", "activity_result_ids")
+
     @api.depends("activity_result_ids.amount", "activity_result_ids.unallocated")
     def _compute_unallocated_amount(self):
         for run in self:
@@ -73,30 +72,7 @@ class CmcAbcRun(models.Model):
                 run.activity_result_ids.filtered("unallocated").mapped("amount")
             )
 
-    def action_compute(self):
-        # Flush pending ORM writes before taking the row lock: otherwise the
-        # lock is acquired on rows that do not yet carry this cursor's changes.
-        self.env.flush_all()
-        if self.ids:
-            self.env.cr.execute(
-                "SELECT id FROM cmc_abc_run WHERE id IN %s FOR UPDATE",
-                (tuple(self.ids),),
-            )
-        for run in self:
-            run._compute_abc()
-        return True
-
-    def action_reset_to_draft(self):
-        """Explicit way back to an editable run: the stored results are dropped
-        so a computed run can never show authoritative numbers next to input
-        lines that were changed after the fact."""
-        for run in self:
-            run.result_ids.unlink()
-            run.activity_result_ids.unlink()
-            run.state = "draft"
-        return True
-
-    def _compute_abc(self):
+    def _cmc_compute(self):
         """Stage 1: activity pools from tagged analytic lines. Stage 2: allocate
         each pool to the cost objects via the activity driver quantities, with
         largest-remainder conservation so no pool leaks on rounding. Everything
@@ -154,7 +130,6 @@ class CmcAbcRun(models.Model):
             for product_id, amount in object_cost.items()
         ])
         self.env["cmc.abc.activity.result"].create(snapshot)
-        self.state = "done"
 
     def _unallocated_vals(self, activity_id, pool):
         return {
@@ -214,6 +189,7 @@ class CmcAbcRun(models.Model):
 
 class CmcAbcLine(models.Model):
     _name = "cmc.abc.line"
+    _inherit = ["cmc.run.line.mixin"]
     _description = "ABC Input Line (activity driver consumption)"
     _check_company_auto = True
 
@@ -242,35 +218,6 @@ class CmcAbcLine(models.Model):
         "Driver quantity must be greater than zero.",
     )
 
-    def _check_run_editable(self):
-        """`readonly` on the state field is a view hint only; ORM/RPC writes go
-        straight through. Without this guard a user can delete every input line
-        of a computed run while its stored results stay on screen as if they
-        were still authoritative."""
-        for line in self:
-            if line.run_id.state == "done":
-                raise UserError(self.env._(
-                    "Run %(run)s is already computed. Reset it to draft before "
-                    "changing its input lines.",
-                    run=line.run_id.display_name,
-                ))
-
-    @api.model_create_multi
-    def create(self, vals_list):
-        lines = super().create(vals_list)
-        lines._check_run_editable()
-        return lines
-
-    def write(self, vals):
-        self._check_run_editable()
-        res = super().write(vals)
-        if "run_id" in vals:
-            self._check_run_editable()
-        return res
-
-    def unlink(self):
-        self._check_run_editable()
-        return super().unlink()
 
 
 class CmcAbcResult(models.Model):

@@ -9,7 +9,8 @@
                     <button name="action_compute" string="Compute" type="object"
                             class="oe_highlight" invisible="state == 'done'"/>
                     <button name="action_reset_to_draft" string="Reset to Draft"
-                            type="object" invisible="state != 'done'"/>
+                            type="object" invisible="state != 'done'"
+                            confirm="Resetting deletes the computed results. Continue?"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
@@ -19,13 +20,13 @@
                     </div>
                     <group>
                         <group>
-                            <field name="method"/>
-                            <field name="joint_cost"/>
+                            <field name="method" readonly="state == 'done'"/>
+                            <field name="joint_cost" readonly="state == 'done'"/>
                         </group>
                         <group>
-                            <field name="date_from"/>
-                            <field name="date_to"/>
-                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="date_from" readonly="state == 'done'"/>
+                            <field name="date_to" readonly="state == 'done'"/>
+                            <field name="company_id" readonly="state == 'done'" groups="base.group_multi_company"/>
                             <field name="currency_id" invisible="1"/>
                         </group>
                     </group>

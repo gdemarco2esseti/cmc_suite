@@ -5,6 +5,8 @@ from datetime import date
 from odoo.modules import get_module_path
 from odoo.tests.common import TransactionCase, tagged
 
+from odoo.addons.cmc_base.models.cmc_run_mixin import CMC_RUN_STATE
+
 
 def _load_migrate():
     # why: the migrations folder is named after a version ("19.0.1.1.0"), not importable
@@ -79,7 +81,8 @@ class TestClosingMigration(TransactionCase):
         closing = self.env["cmc.closing.run"].create(
             {"name": "mig", "method": "direct", "company_id": self.comp_a.id, "date_from": date(2023, 1, 1), "date_to": date(2026, 12, 31)}
         )
-        closing.state = "done"
+        # a computed closing without recomputing it here
+        closing.with_context(cmc_run_state=CMC_RUN_STATE).write({"state": "done"})
         costing = self.env["cmc.costing.run"].create(
             {"name": "mig", "company_id": self.comp_a.id, "closing_run_id": closing.id, "date_from": date(2023, 1, 1), "date_to": date(2026, 12, 31)}
         )

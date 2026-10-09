@@ -3,6 +3,8 @@ from datetime import date
 from odoo.tests.common import TransactionCase, new_test_user, tagged
 from odoo.tools import formatLang
 
+from odoo.addons.cmc_base.models.cmc_run_mixin import CMC_RUN_STATE
+
 
 @tagged("post_install", "-at_install")
 class TestCockpitCompany(TransactionCase):
@@ -109,7 +111,8 @@ class TestCockpitCompany(TransactionCase):
             closing = self.env["cmc.closing.run"].create(
                 {**period, "method": "direct", "company_id": company.id}
             )
-            closing.state = "done"
+            # a computed closing without recomputing it here
+            closing.with_context(cmc_run_state=CMC_RUN_STATE).write({"state": "done"})
             run = self.env["cmc.costing.run"].create(
                 {**period, "closing_run_id": closing.id, "company_id": company.id}
             )

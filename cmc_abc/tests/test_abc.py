@@ -129,7 +129,7 @@ class TestAbc(TransactionCase):
         ])
         self.assertEqual(self._res(run, self.p1).amount, 0.0)
 
-    # recompute is idempotent (no duplicated results)
+    # recompute after a reset is idempotent (no duplicated results)
     def test_recompute_idempotent(self):
         self._pool(self.a, 1000)
         run = self._run([
@@ -137,6 +137,9 @@ class TestAbc(TransactionCase):
             {"activity_id": self.a.id, "product_id": self.p2.id, "driver_qty": 40},
         ])
         n1 = len(run.result_ids)
+        with self.assertRaises(UserError):
+            run.action_compute()  # AD-001: a computed run is reset first
+        run.action_reset_to_draft()
         run.action_compute()
         self.assertEqual(len(run.result_ids), n1)
         self.assertEqual(self._res(run, self.p1).amount, 600.0)
@@ -199,6 +202,14 @@ class TestAbc(TransactionCase):
                 "run_id": run.id, "activity_id": self.b.id,
                 "product_id": self.p1.id, "driver_qty": 1,
             })
+
+    def test_done_run_header_is_locked(self):
+        self._pool(self.a, 1000)
+        run = self._run([
+            {"activity_id": self.a.id, "product_id": self.p1.id, "driver_qty": 60},
+        ])
+        with self.assertRaises(UserError):
+            run.date_to = date(2026, 3, 31)
 
     def test_reset_to_draft(self):
         self._pool(self.a, 1000)

@@ -6,3 +6,4 @@ from . import test_fc_security
 from . import test_reclass
 from . import test_costing_period
 from . import test_costing_period_migration
+from . import test_costing_reset_migration

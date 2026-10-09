@@ -1,16 +1,13 @@
-from odoo import api, fields, models
+from odoo import fields, models
 from odoo.exceptions import UserError
-from odoo.tools import SQL, float_compare, float_is_zero, float_round
+from odoo.tools import float_compare, float_is_zero, float_round
 
-from odoo.addons.cmc_base.models.cmc_utils import largest_remainder
-
-# why: the allocation base of the physical-units method is a quantity, not an
-# amount, so it must be tested against the quantity precision.
-QTY_PRECISION_NAME = "Product Unit"
+from odoo.addons.cmc_base.models.cmc_utils import largest_remainder, qty_rounding
 
 
 class CmcJointRun(models.Model):
     _name = "cmc.joint.run"
+    _inherit = ["cmc.run.mixin"]
     _description = "Joint Cost Allocation Run"
     _check_company_auto = True
 
@@ -35,44 +32,20 @@ class CmcJointRun(models.Model):
     )
     date_from = fields.Date()
     date_to = fields.Date()
-    state = fields.Selection(
-        [("draft", "Draft"), ("done", "Done")], default="draft", readonly=True
-    )
     line_ids = fields.One2many("cmc.joint.line", "run_id")
     result_ids = fields.One2many("cmc.joint.result", "run_id")
+
+    _cmc_input_fields = (
+        "company_id", "joint_cost", "method", "date_from", "date_to", "line_ids",
+    )
+    _cmc_result_fields = ("result_ids",)
 
     _joint_cost_non_negative = models.Constraint(
         "CHECK(joint_cost >= 0)",
         "The joint cost pool cannot be negative.",
     )
 
-    def action_compute(self):
-        if self.ids:
-            # why: flush first, otherwise the row lock is taken on a state the
-            # current transaction has not written yet and a concurrent update
-            # can slip in between.
-            self.env.flush_all()
-            self.env.cr.execute(SQL(
-                "SELECT id FROM cmc_joint_run WHERE id IN %s FOR UPDATE",
-                tuple(self.ids),
-            ))
-        for run in self:
-            run._compute_joint()
-        return True
-
-    def action_reset_to_draft(self):
-        """Drop the computed results and reopen the run for editing."""
-        self.result_ids.unlink()
-        self.write({"state": "draft"})
-        return True
-
-    def _invalidate_results(self):
-        """Results no longer match their inputs: throw them away and reopen."""
-        stale = self.filtered(lambda run: run.state == "done")
-        if stale:
-            stale.action_reset_to_draft()
-
-    def _compute_joint(self):
+    def _cmc_compute(self):
         """By-products are recognised at their NRV, which reduces the joint cost
         pool; the net pool is then allocated to the main joint products by the
         chosen method, conserved to the cent."""
@@ -107,7 +80,6 @@ class CmcJointRun(models.Model):
             vals.append(self._result_vals(
                 line, byproduct_nrv[line], rounding, True))
         self.env["cmc.joint.result"].create(vals)
-        self.state = "done"
 
     def _allocate(self, net_joint, mains, rounding):
         """Return {line: allocated_joint_cost}, summing exactly to net_joint."""
@@ -117,9 +89,9 @@ class CmcJointRun(models.Model):
         base_rounding = rounding
         if method == "physical":
             weights = {line: line.quantity for line in mains}
-            base_rounding = 10 ** -self.env["decimal.precision"].precision_get(
-                QTY_PRECISION_NAME
-            )
+            # why: the physical base is a quantity, not an amount, so it is
+            # tested against the quantity precision
+            base_rounding = qty_rounding(self.env)
         elif method == "sales_value":
             weights = {line: line.quantity * line.unit_sales_value for line in mains}
         else:  # nrv: clamp per-line NRV at 0 (consistent with by-product NRV)
@@ -211,6 +183,7 @@ class CmcJointRun(models.Model):
 
 class CmcJointLine(models.Model):
     _name = "cmc.joint.line"
+    _inherit = ["cmc.run.line.mixin"]
     _description = "Joint Product Input Line"
     _check_company_auto = True
 
@@ -238,12 +211,6 @@ class CmcJointLine(models.Model):
         "instead of receiving an allocation.",
     )
 
-    # fields whose change makes an already computed result obsolete
-    _INPUT_FIELDS = frozenset({
-        "product_id", "quantity", "unit_sales_value", "separable_cost",
-        "is_byproduct",
-    })
-
     _uniq = models.Constraint(
         "UNIQUE(run_id, product_id)",
         "One line per product in a joint run.",
@@ -260,24 +227,6 @@ class CmcJointLine(models.Model):
         "CHECK(separable_cost >= 0)",
         "The separable cost cannot be negative.",
     )
-
-    @api.model_create_multi
-    def create(self, vals_list):
-        lines = super().create(vals_list)
-        lines.run_id._invalidate_results()
-        return lines
-
-    def write(self, vals):
-        res = super().write(vals)
-        if not self._INPUT_FIELDS.isdisjoint(vals):
-            self.run_id._invalidate_results()
-        return res
-
-    def unlink(self):
-        runs = self.run_id
-        res = super().unlink()
-        runs._invalidate_results()
-        return res
 
 
 class CmcJointResult(models.Model):

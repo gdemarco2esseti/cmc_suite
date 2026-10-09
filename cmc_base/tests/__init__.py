@@ -12,3 +12,4 @@ from . import test_cockpit_company
 from . import test_capacity_multi_line
 from . import test_cost_sign
 from . import test_cost_sign_migration
+from . import test_run_lifecycle

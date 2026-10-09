@@ -99,6 +99,7 @@ class TestFullCostingConservation(TransactionCase):
             len(run.result_ids.config_ids),
             sum(run.result_ids.mapped("cost_indiretto")),
         )
+        run.action_reset_to_draft()  # AD-001: recompute goes through a reset
         run.action_compute()
         second = (
             len(run.result_ids),
@@ -148,8 +149,8 @@ class TestFullCostingConservation(TransactionCase):
               "driver_id": self.driver.id, "driver_qty": 10}],
             products,
         )
-        closing.state = "draft"
-        with self.assertRaises(UserError):
+        closing.action_reset_to_draft()
+        with self.assertRaisesRegex(UserError, "not computed"):
             run.action_compute()
 
     # the costing window must sit inside the closing window: a Q1 closing must

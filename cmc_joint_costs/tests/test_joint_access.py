@@ -55,7 +55,9 @@ class TestJointAccess(TransactionCase):
             ).allocated_joint_cost,
             600.0,
         )
-        # recompute exercises the result unlink path with the same user
+        # reset + recompute exercise the result unlink path with the same user
+        run.action_reset_to_draft()
+        self.assertFalse(run.result_ids)
         run.action_compute()
         self.assertEqual(len(run.result_ids), 2)
 

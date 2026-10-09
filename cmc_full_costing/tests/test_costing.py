@@ -1,6 +1,6 @@
 from datetime import date
 
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tests.common import TransactionCase, tagged
 
 
@@ -143,3 +143,48 @@ class TestCosting(TransactionCase):
         ]  # W ha 600 di costo ma nessuna riga -> nessuna base
         with self.assertRaises(ValidationError):
             self._run("multiple", lines)
+
+    # ---- AD-001 lifecycle / AD-002 dependency on the closing ----------
+
+    def test_reset_deletes_results(self):
+        run = self._run("multiple", self._lines())
+        self.assertTrue(run.result_ids)
+        run.action_reset_to_draft()
+        self.assertEqual(run.state, "draft")
+        self.assertFalse(run.result_ids)
+
+    def test_header_and_lines_locked_when_done(self):
+        run = self._run("multiple", self._lines())
+        with self.assertRaises(UserError):
+            run.write({"base": "single"})
+        with self.assertRaises(UserError):
+            run.write({"product_ids": [(5, 0, 0)]})
+        with self.assertRaises(UserError):
+            run.line_ids[:1].write({"driver_qty": 99})
+        with self.assertRaises(UserError):
+            run.line_ids[:1].unlink()
+        with self.assertRaises(UserError):
+            self.env["cmc.costing.line"].create({
+                "run_id": run.id, "center_id": self.z.id, "product_id": self.p1.id,
+                "driver_id": self.env["cmc.cost.driver"].create({"name": "Kg", "code": "KG"}).id,
+                "driver_qty": 1,
+            })
+
+    def test_closing_reset_forbidden_while_costing_done(self):
+        costing = self._run("multiple", self._lines())
+        with self.assertRaisesRegex(UserError, "Costing"):
+            self.closing.action_reset_to_draft()
+        with self.assertRaises(UserError):
+            self.closing.unlink()
+        costing.action_reset_to_draft()
+        self.closing.action_reset_to_draft()
+        self.assertEqual(self.closing.state, "draft")
+        self.assertFalse(self.closing.line_ids)
+
+    def test_draft_costing_does_not_block_closing_reset(self):
+        self.env["cmc.costing.run"].create({
+            "name": "Draft", "closing_run_id": self.closing.id, "base": "multiple",
+            "date_from": date(date.today().year, 1, 1), "date_to": date(date.today().year, 12, 31),
+        })
+        self.closing.action_reset_to_draft()
+        self.assertEqual(self.closing.state, "draft")

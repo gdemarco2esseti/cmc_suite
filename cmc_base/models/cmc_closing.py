@@ -3,9 +3,9 @@ from collections import defaultdict
 
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
-from odoo.tools import SQL, float_compare, float_round
+from odoo.tools import float_compare, float_round
 
-from .cmc_utils import largest_remainder
+from .cmc_utils import largest_remainder, qty_rounding
 
 _logger = logging.getLogger(__name__)
 
@@ -33,6 +33,7 @@ def _solve_linear(matrix, vector):
 
 class CmcClosingRun(models.Model):
     _name = "cmc.closing.run"
+    _inherit = ["cmc.run.mixin"]
     _description = "Cost Center Closing Run"
     _order = "date_to desc, id desc"
     _check_company_auto = True
@@ -53,13 +54,11 @@ class CmcClosingRun(models.Model):
         required=True,
         default="direct",
     )
-    state = fields.Selection(
-        selection=[("draft", "Draft"), ("done", "Computed")],
-        default="draft",
-        required=True,
-    )
     line_ids = fields.One2many("cmc.closing.line", "run_id")
     cost_analysis_ids = fields.One2many("cmc.cost.analysis.line", "run_id")
+
+    _cmc_input_fields = ("company_id", "date_from", "date_to", "method")
+    _cmc_result_fields = ("line_ids", "cost_analysis_ids")
 
     # ---- data gathering -------------------------------------------------
 
@@ -89,9 +88,7 @@ class CmcClosingRun(models.Model):
                 ("company_id", "in", [False] + self.company_id.ids),
             ]
         )
-        qty_rounding = 10 ** -self.env["decimal.precision"].precision_get(
-            "Product Unit"
-        )
+        qty_step = qty_rounding(self.env)
         raw = defaultdict(lambda: defaultdict(float))
         for svc in services:
             raw[svc.provider_id.id][svc.receiver_id.id] += svc.quantity
@@ -100,7 +97,7 @@ class CmcClosingRun(models.Model):
             total = sum(weights.values())
             # a residual quantity is not an allocation base: dividing by it
             # would explode the proportions instead of reporting "no base"
-            if float_compare(total, 0.0, precision_rounding=qty_rounding) <= 0:
+            if float_compare(total, 0.0, precision_rounding=qty_step) <= 0:
                 return {}
             return {rid: q / total for rid, q in weights.items()}
 
@@ -133,22 +130,7 @@ class CmcClosingRun(models.Model):
 
     # ---- engine ---------------------------------------------------------
 
-    def action_compute(self):
-        if self.ids:
-            # serialize concurrent Compute on the same run(s); flush first so the
-            # lock sees the pending ORM writes on these rows
-            self.env.flush_all()
-            self.env.cr.execute(
-                SQL(
-                    "SELECT id FROM cmc_closing_run WHERE id IN %s FOR UPDATE",
-                    tuple(self.ids),
-                )
-            )
-        for run in self:
-            run._compute_closing()
-        return True
-
-    def _compute_closing(self):
+    def _cmc_compute(self):
         self.ensure_one()
         centers = self._centers()
         initial = self._initial_costs(centers)
@@ -183,7 +165,6 @@ class CmcClosingRun(models.Model):
             )
         self.env["cmc.closing.line"].create(vals)
         self._build_cost_analysis(centers, received)
-        self.state = "done"
 
     def _build_cost_analysis(self, centers, received):
         """Materialize the cost-analysis matrix (center x element) in both

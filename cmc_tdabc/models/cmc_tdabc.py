@@ -192,7 +192,7 @@ SCENARIOS = [("manual", "Estimate (equation)"), ("timesheet", "Actual (timesheet
 
 class CmcTdabcRun(models.Model):
     _name = "cmc.tdabc.run"
-    _inherit = ["cmc.reclass.mixin"]
+    _inherit = ["cmc.run.mixin", "cmc.reclass.mixin"]
     _description = "TDABC Costing Run"
     _check_company_auto = True
 
@@ -203,9 +203,6 @@ class CmcTdabcRun(models.Model):
     currency_id = fields.Many2one(related="company_id.currency_id")
     date_from = fields.Date()
     date_to = fields.Date()
-    state = fields.Selection(
-        [("draft", "Draft"), ("done", "Done")], default="draft", readonly=True
-    )
     line_ids = fields.One2many("cmc.tdabc.run.line", "run_id")
     result_ids = fields.One2many("cmc.tdabc.result", "run_id")
     capacity_result_ids = fields.One2many("cmc.tdabc.capacity.result", "run_id")
@@ -214,18 +211,10 @@ class CmcTdabcRun(models.Model):
         help="Activities left out of a scenario by the last computation, and why.",
     )
 
-    def action_compute(self):
-        self.env.flush_all()
-        if self.ids:
-            self.env.cr.execute(
-                "SELECT id FROM cmc_tdabc_run WHERE id IN %s FOR UPDATE",
-                (tuple(self.ids),),
-            )
-        for run in self:
-            run._compute_tdabc()
-        return True
+    _cmc_input_fields = ("company_id", "date_from", "date_to", "line_ids")
+    _cmc_result_fields = ("result_ids", "capacity_result_ids")
 
-    def _compute_tdabc(self):
+    def _cmc_compute(self):
         self.ensure_one()
         self.result_ids.unlink()
         self.capacity_result_ids.unlink()
@@ -248,7 +237,6 @@ class CmcTdabcRun(models.Model):
         self.env["cmc.tdabc.result"].create(result_vals)
         self.env["cmc.tdabc.capacity.result"].create(cap_vals)
         self.scenario_warning = "\n".join(warnings) or False
-        self.state = "done"
 
     def _unit_times(self, scenario, hours, derived_volumes):
         """({run_line_id: unit_time_minutes}, [warning]) for the scenario.
@@ -490,6 +478,7 @@ class CmcTdabcRun(models.Model):
 
 class CmcTdabcRunLine(models.Model):
     _name = "cmc.tdabc.run.line"
+    _inherit = ["cmc.run.line.mixin"]
     _description = "TDABC Input Line"
     _check_company_auto = True
 

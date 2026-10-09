@@ -119,3 +119,8 @@ Dispatch plan from odoo-dev-lead (inventory of every `amount` read, canonical `-
 - Migration `cmc_base/migrations/19.0.1.2.0/post-migrate.py` (manifest 19.0.1.2.0): flip `amount` where `amount > 0` AND CMC-classified (`cmc_behavior`/`cmc_cost_element_id`/`cmc_activity_id` if column exists) AND no source document (`general_account_id`, `move_line_id`, `project_id`, `employee_id`, `cmc_mrp_move_id` NULL when columns exist, `COALESCE(category,'other')='other'`); log count + ids; recompute stored capacity fixed costs. Release note: draft + recompute closings/costings/CVR computed on mixed data.
 - Tests: flip sign inside local helpers (call sites unchanged); rewrite `cmc_abc test_negative_amount_pool` as "a reversal reduces the pool"; cmc_mrp twin asserts become `+LABOUR_COST`; new red tests (a) cost field round-trip, (b) reversal reduces cost in closing/cockpit/abc, (c) migration predicate.
 - Sequence: test-writer → model-dev → view-dev → qa. ~6.5h. Plus T3 leftovers in cmc_cvr.py.
+
+## Open issues found after block 1 (to schedule)
+- Unclassified queue (`cmc_account.action_cmc_unclassified_lines`) opens with the **timesheet** list view when `hr_timesheet` is installed (no `view_id` on the action → higher-priority hr_timesheet list wins: "Time Spent" column, no cost). Give the action a dedicated list view (center, description, element, `cmc_cost_amount`, date). Found while recording the block-1 video guide.
+- New field labels not yet translated (`Cost` / `cmc_cost_amount`): i18n regen in block 5.
+- Demo seed scripts (`odoo19/scripts/cmc_seed_*.py`) not plan-aware and partly broken (costing run dates): block 5.

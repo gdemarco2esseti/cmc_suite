@@ -190,8 +190,12 @@ class MrpProduction(models.Model):
         # consumption whatever the account mapping or a rule may have guessed.
         if element:
             vals["cmc_cost_element_id"] = element.id
-        if not line.cmc_behavior:
-            vals["cmc_behavior"] = "variable"
-        if line.cmc_directness != "direct":
-            vals["cmc_directness"] = "direct"
+        current = {
+            "cmc_behavior": line.cmc_behavior or False,
+            "cmc_directness": line.cmc_directness or False,
+            "cmc_cost_element_id": line.cmc_cost_element_id.id,
+        }
+        filled = dict(current)
+        line._cmc_fill(filled, "variable", "direct", False)
+        vals.update({fname: value for fname, value in filled.items() if value != current[fname]})
         return vals

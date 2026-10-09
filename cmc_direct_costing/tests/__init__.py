@@ -10,3 +10,4 @@ from . import test_wp10_mix
 from . import test_wp10_investment
 from . import test_wp10_security
 from . import test_wp10_performance
+from . import test_cvr_scenario_evaluator

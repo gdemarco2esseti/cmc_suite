@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_cmc_fin_analysis" model="ir.actions.report">
+        <field name="name">Financial Statement Analysis</field>
+        <field name="model">cmc.fin.analysis</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">cmc_fin_analysis.report_cmc_fin_analysis_document</field>
+        <field name="report_file">cmc_fin_analysis.report_cmc_fin_analysis_document</field>
+        <field name="print_report_name">'Financial Analysis - %s' % object.name</field>
+        <field name="binding_model_id" ref="model_cmc_fin_analysis"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_cmc_fin_analysis_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <t t-set="data" t-value="doc._fin_report_data()"/>
+                    <t t-set="years" t-value="data['years']"/>
+                    <div class="page">
+                        <h2>Financial Statement Analysis: <span t-field="doc.name"/></h2>
+                        <p>
+                            <span t-out="years[0] if years else ''"/> -
+                            <span t-out="years[-1] if years else ''"/>
+                        </p>
+
+                        <t t-foreach="data['schemes']" t-as="block">
+                            <t t-set="scheme" t-value="block['scheme']"/>
+                            <t t-set="common" t-value="scheme.scheme_type != 'cash_flow'"/>
+                            <h3 t-out="scheme.name"/>
+                            <table class="table table-sm o_main_table">
+                                <thead>
+                                    <tr>
+                                        <th>Line</th>
+                                        <t t-foreach="years" t-as="year">
+                                            <th class="text-end"><t t-out="year"/></th>
+                                            <th t-if="common" class="text-end">%</th>
+                                        </t>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="block['lines']" t-as="line"
+                                        t-att-class="'fw-bold' if line['line_type'] == 'formula' else ''">
+                                        <td><t t-out="line['name']"/></td>
+                                        <t t-foreach="years" t-as="year">
+                                            <td class="text-end">
+                                                <t t-if="year in line['values']"
+                                                   t-out="line['values'][year]" t-options='{"widget": "float", "precision": 2}'/>
+                                                <t t-else="">n.c.</t>
+                                                <sup t-if="year in line['breaks']" class="text-danger" title="Valuation criteria change: not comparable">(*)</sup>
+                                            </td>
+                                            <td t-if="common" class="text-end">
+                                                <t t-if="year in line['common_size']"
+                                                   t-out="line['common_size'][year]" t-options='{"widget": "float", "precision": 1}'/>
+                                                <t t-else="">n.c.</t>
+                                            </td>
+                                        </t>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+                        <p t-if="data['schemes'] and any(line['breaks'] for block in data['schemes'] for line in block['lines'])"
+                           class="text-danger small">
+                            (*) Valuation criteria changed: the value and its change versus the previous year are not comparable.
+                        </p>
+
+                        <t t-foreach="data['ratios']" t-as="area">
+                            <h3 t-out="area['area_label']"/>
+                            <table class="table table-sm o_main_table">
+                                <thead>
+                                    <tr>
+                                        <th>Ratio</th>
+                                        <t t-foreach="years" t-as="year">
+                                            <th class="text-end"><t t-out="year"/></th>
+                                        </t>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="area['rows']" t-as="row">
+                                        <td><t t-out="row['name']"/></td>
+                                        <t t-foreach="years" t-as="year">
+                                            <t t-set="cell" t-value="row['values'].get(year)"/>
+                                            <td t-if="not cell or cell['status'] == 'not_computable'" class="text-end text-muted">n.c.</td>
+                                            <td t-else="" t-att-class="'text-end text-danger fw-bold' if cell['status'] == 'alert' else 'text-end'">
+                                                <t t-out="cell['value']" t-options='{"widget": "float", "precision": 2}'/>
+                                                <t t-if="cell['status'] == 'alert'"> (!)</t>
+                                                <div t-if="cell['benchmark'] is not None" class="small text-muted">
+                                                    Benchmark: <t t-out="cell['benchmark']" t-options='{"widget": "float", "precision": 2}'/>
+                                                </div>
+                                            </td>
+                                        </t>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+
+                        <t t-set="crisis" t-value="[a for a in data['ratios'] if a['area'] in ('crisis', 'data_quality')]"/>
+                        <t t-if="crisis">
+                            <h3>Crisis panel</h3>
+                            <ul>
+                                <t t-foreach="crisis" t-as="area">
+                                    <t t-foreach="area['rows']" t-as="row">
+                                        <t t-foreach="years" t-as="year">
+                                            <li t-if="row['values'].get(year, {}).get('status') == 'alert'" class="text-danger">
+                                                <t t-out="row['name']"/> - <t t-out="year"/>:
+                                                <t t-out="row['values'][year]['value']" t-options='{"widget": "float", "precision": 2}'/>
+                                            </li>
+                                        </t>
+                                    </t>
+                                </t>
+                            </ul>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

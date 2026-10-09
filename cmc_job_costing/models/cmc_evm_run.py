@@ -16,7 +16,7 @@ class CmcEvmRun(models.Model):
     _order = "status_date desc, id desc"
     _check_company_auto = True
 
-    _cmc_input_fields = ("name", "company_id", "project_id", "baseline_id", "job_run_id", "status_date", "control_limit")
+    _cmc_input_fields = ("company_id", "project_id", "baseline_id", "job_run_id", "status_date", "control_limit")
     _cmc_result_fields = ("task_line_ids", "curve_ids")
 
     name = fields.Char(required=True, default=lambda self: self.env._("EVM status"))

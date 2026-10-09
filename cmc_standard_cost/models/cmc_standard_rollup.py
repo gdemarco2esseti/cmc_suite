@@ -11,6 +11,9 @@ class CmcPlanVersion(models.Model):
         self._cmc_check_editable()
         company = self.company_id
         boms = self._cmc_std_boms(products)
+        parents = self._cmc_std_parents(self.env["product.product"].union(*boms))
+        if parents - products:
+            boms = self._cmc_std_boms(products | parents)
         planned = {price.product_id.id: price.price for price in self.std_price_ids}
         labour = {line.center_id: line for line in self.std_rate_ids if line.rate_kind == "labour"}
         overhead = {line.center_id: line for line in self.std_rate_ids if line.rate_kind == "overhead"}
@@ -57,6 +60,17 @@ class CmcPlanVersion(models.Model):
         vals_list = [{key: value for key, value in vals.items() if key != "child"} for vals in vals_list]
         self.env["cmc.standard.card.line"].create(vals_list)
         return cards
+
+    def _cmc_std_parents(self, products):
+        """Products of the version whose card uses, directly or not, a card of `products` as sub-assembly (one search per level)."""
+        parents, level = self.env["product.product"], products
+        while level:
+            lines = self.env["cmc.standard.card.line"].search_fetch(
+                [("version_id", "=", self.id), ("child_card_id.product_id", "in", level.ids)], ["card_id"]
+            )
+            level = lines.card_id.product_id - parents - products
+            parents |= level
+        return parents
 
     def _cmc_std_operation_vals(self, card, center, hours, labour, overhead):
         if center not in labour:

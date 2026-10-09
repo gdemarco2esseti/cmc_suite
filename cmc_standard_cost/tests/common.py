@@ -35,6 +35,10 @@ favourable (AD-112).
          analysis -> UserError naming the center (fail loud, no rate 0).
    - ``action_cmc_std_rollup(products)`` (draft only, else UserError): one card per product AND per sub-assembly
      met in their BoMs (any component with a BoM, recursively), replacing the existing cards of those products.
+     The roll-up also EXTENDS UPWARD (RN-002): every card of the version that uses a re-rolled card as
+     sub-assembly (``child_card_id``, recursively up to the top) is re-rolled too, so a parent never keeps a stale
+     price nor loses the link: its line ``child_card_id`` points to the NEW child card, ``price`` = the new child
+     unit_cost, and its element split (material / labour / overhead / unit_fixed) is consistent with it.
    - approval (base ``action_approve``, manager only) of a ``standard`` version also PUBLISHES ``cmc.rate`` rows
      (origin = the version, one per month of the span), replacing the version-origin rates of the same keys
      (re-approval after reset never collides with the unique index):
@@ -96,7 +100,10 @@ favourable (AD-112).
    the run is computed). Scope = done MOs of the company with ``cmc_center_id``, ``date_finished`` in the period.
    Actuals: MP = cmc_mrp analytic lines (``cmc_mrp_move_id.production_id`` = MO; qty = ``unit_amount``, amount =
    ``amount``); MOD = workcenter analytic lines of the MO work orders (hours = ``unit_amount``, amount); output =
-   done finished quantity. Snapshot: a later posting changes nothing until reset + compute.
+   done finished quantity CONVERTED TO THE PRODUCT UoM (RN-001: an MO of 1 Dozen = 12 units; cards are per 1 product
+   UoM) and NET of unbuilds (done moves of ``mrp.unbuild`` orders on the MO taking the finished product back,
+   consistent with the cmc_mrp ``mrp_produced_qty`` feeder, AD-111); standard quantities and hours = card per unit
+   x that output. Snapshot: a later posting changes nothing until reset + compute.
    ``cmc.standard.variance.line`` per MO x component (``line_type`` material) and per MO x center (labour):
    ``production_id``, ``product_id`` (finished), ``component_id``, ``center_id``, ``output_qty``, ``std_qty`` (=
    card qty x output), ``actual_qty``, ``std_price``, ``actual_price`` (= actual amount / actual qty, positive),
@@ -145,6 +152,11 @@ Fixture (company = env.company, year Y = current year, period = current month, s
   Indirect actuals on Z in the period: fixed 105, variable 40 (+ a fixed 999 one year earlier, out of period).
      Absorption Z: AH 6, SH 5, D 10, budget_fixed -100, actual -145, applied_actual -96, applied_standard -80,
      over_under -49, spending_variable -4, efficiency_variable -6, spending_fixed -5, volume -50 (sum -65).
+  RN-001 (in the test): MO of 1 Dozen of F consuming exactly A 24 / B 36, 360 min => output 12, std A 24 / B 36,
+     quantity variances 0, labour SH 6 = AH 6 (efficiency 0). Unbuild of 2 F from the MO of F => output 8.
+  RN-002 (in the test): draft version F, G, K; A planned 5 then roll-up of F alone => F material 2 x 5 + 6 = 16,
+     unit_cost 34; G re-rolled: F line 1 x 34, material 3 + 16 = 19, labour 13, overhead 8, unit_fixed 5,
+     unit_cost 40.
 """
 
 from datetime import date, timedelta
@@ -282,11 +294,15 @@ class StdCase(TransactionCase):
         })
 
     @classmethod
-    def _done_mo(cls, product, bom, qty, consumption=None, duration=None, center=None):
-        """A done MO through the real mrp / cmc_mrp path: MP and MOD analytic lines are booked by the bridge."""
+    def _done_mo(cls, product, bom, qty, consumption=None, duration=None, center=None, uom=None):
+        """A done MO through the real mrp / cmc_mrp path: MP and MOD analytic lines are booked by the bridge.
+
+        ``qty`` is in ``uom`` (the MO UoM, default the product UoM); ``consumption`` in the raw move UoM.
+        """
         consumption = consumption or {}
         mo = cls.env["mrp.production"].create({
             "product_id": product.id, "product_qty": qty, "bom_id": bom.id, "cmc_center_id": (center or cls.z).id,
+            **({"product_uom_id": uom.id} if uom else {}),
         })
         mo.action_confirm()
         if duration is not None:

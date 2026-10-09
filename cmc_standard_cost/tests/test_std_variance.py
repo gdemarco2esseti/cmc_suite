@@ -128,3 +128,36 @@ class TestStdVariance(StdCase):
         run.action_reset_to_draft()
         run.action_compute()
         self.assertEqual(len(run.line_ids.production_id), 2)
+
+    def test_rn001_output_in_product_uom(self):
+        # RN-001 / STD-04: an MO of 1 Dozen produces 12 units; the per-unit card is applied to 12, not to 1
+        version = self._std_version()
+        dozen = self.env.ref("uom.product_uom_dozen")
+        mo = self._done_mo(self.f, self.bom_f, 1.0, duration=360.0, uom=dozen)
+        self.assertEqual(sorted(mo.move_raw_ids.mapped("quantity")), [24.0, 36.0], "precondition: consumption exactly per BoM")
+        run = self._run(version)
+        material = self._vline(run, mo, "material")
+        self.assertEqual(len(material), 2)
+        for line in material:
+            self.assertAlmostEqual(line.output_qty, 12.0)
+            self.assertAlmostEqual(line.std_qty, line.actual_qty)
+            self.assertAlmostEqual(line.quantity_variance, 0.0)
+        self.assertAlmostEqual(self._vline(run, mo, "material", component=self.a).std_qty, 24.0)
+        self.assertAlmostEqual(self._vline(run, mo, "material", component=self.b).std_qty, 36.0)
+        labour = self._vline(run, mo, "labour", center=self.z)
+        self.assertRecordValues(labour, [{"output_qty": 12.0, "std_qty": 6.0, "actual_qty": 6.0, "std_amount": -120.0, "quantity_variance": 0.0}])
+        absorption = run.absorption_ids.filtered(lambda line: line.center_id == self.z)
+        self.assertAlmostEqual(absorption.standard_qty, 5.0 + 6.0, msg="SH = MO of F 5 h + dozen MO 6 h")
+
+    def test_rn001_output_net_of_unbuild(self):
+        # RN-001 / AD-111: an unbuild after a done MO reduces its output, as the cmc_mrp produced-qty feeder does
+        version = self._std_version()
+        unbuild = self.env["mrp.unbuild"].create(
+            {"mo_id": self.mo_f.id, "product_id": self.f.id, "bom_id": self.bom_f.id, "product_qty": 2.0}
+        )
+        unbuild.action_validate()
+        run = self._run(version)
+        line_a = self._vline(run, self.mo_f, "material", component=self.a)
+        self.assertRecordValues(line_a, [{"output_qty": 8.0, "std_qty": 16.0}])
+        labour = self._vline(run, self.mo_f, "labour", center=self.z)
+        self.assertRecordValues(labour, [{"output_qty": 8.0, "std_qty": 4.0}])

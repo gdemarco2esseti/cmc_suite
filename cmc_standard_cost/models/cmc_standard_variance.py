@@ -91,13 +91,18 @@ class CmcStandardVarianceRun(models.Model):
         ])
 
     def _cmc_std_output(self, mos):
-        """{mo id: done finished quantity of the MO product}."""
-        output = {}
-        for production, product, quantity in self.env["stock.move"]._read_group(
-            Domain("production_id", "in", mos.ids) & Domain("state", "=", "done"), ["production_id", "product_id"], ["quantity:sum"]
-        ):
-            if product == production.product_id:
-                output[production.id] = quantity
+        """{mo id: done finished quantity of the MO product, in the product UoM, net of unbuilds}; same population as the produced-qty feeder."""
+        output = defaultdict(float)
+        profiles = [profile for profile in self.env["cmc.measure.quantity"]._cmc_feeder_profiles() if profile["key"] == "mrp_produced_qty"]
+        for profile in profiles:
+            # the owner MO sits behind the center path: production_id.cmc_center_id / unbuild_id.mo_id.cmc_center_id
+            owner = profile["center_field"].removesuffix(".cmc_center_id")
+            head, _dot, tail = owner.partition(".")
+            domain = Domain(profile["domain"]) & Domain(owner, "in", mos.ids)
+            for record, product, uom, quantity in self.env["stock.move"]._read_group(domain, [head, "product_id", "product_uom"], ["quantity:sum"]):
+                mo = record.mapped(tail) if tail else record
+                if product == mo.product_id:
+                    output[mo.id] += profile["sign"] * uom._compute_quantity(quantity, product.uom_id, round=False)
         return output
 
     def _cmc_std_card_lines(self, version):

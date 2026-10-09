@@ -145,3 +145,20 @@ class TestStdCard(StdCase):
         version.action_cmc_std_prefill_rates(self.budget)
         version.action_cmc_std_rollup(product)
         self.assertAlmostEqual(self._card(version, product).unit_material, 1.5)
+
+    def test_rn002_rollup_of_child_rerolls_parents(self):
+        # RN-002 / STD-01: re-rolling a sub-assembly re-rolls the cards that use it; no stale price, no lost link
+        version = self._std_version(approve=False)
+        version.std_price_ids.filtered(lambda price: price.product_id == self.a).price = 5.0
+        version.action_cmc_std_rollup(self.f)
+        card_f, card_g = self._card(version, self.f), self._card(version, self.g)
+        self.assertEqual(len(card_f), 1)
+        self.assertEqual(len(card_g), 1)
+        self.assertRecordValues(card_f, [{"unit_material": 16.0, "unit_cost": 34.0}])
+        line_f = card_g.line_ids.filtered(lambda line: line.product_id == self.f)
+        self.assertRecordValues(line_f, [{"price_source": "card", "child_card_id": card_f.id, "quantity": 1.0, "price": 34.0, "amount": 34.0}])
+        self.assertRecordValues(card_g, [{
+            "unit_material": 19.0, "unit_labour": 13.0, "unit_overhead": 8.0, "unit_overhead_fixed": 5.0,
+            "unit_cost": 40.0, "unit_fixed": 5.0, "unit_variable": 35.0,
+        }])
+        self.assertAlmostEqual(self._card(version, self.k).unit_cost, 6.0, msg="a card not using F is untouched")

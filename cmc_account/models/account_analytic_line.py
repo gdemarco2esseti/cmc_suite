@@ -105,7 +105,7 @@ class AccountAnalyticLine(models.Model):
             manual_ids = [
                 line.id
                 for line, vals in zip(lines, vals_list)
-                if not line.cmc_allocation_id and any(vals.get(fname) for fname in CLASSIFICATION_FIELDS)
+                if not line.cmc_is_relocation and any(vals.get(fname) for fname in CLASSIFICATION_FIELDS)
             ]
             if manual_ids:
                 self.browse(manual_ids).write({"cmc_classified_manually": True})
@@ -134,8 +134,8 @@ class AccountAnalyticLine(models.Model):
         ):
             return False
         self.check_access("read")
-        # allocation lines keep the classification of their run (posted under its sentinel only)
-        if any(self.mapped("cmc_excluded")) or any(self.mapped("cmc_allocation_id")):
+        # relocation lines keep the classification of their run (posted under its sentinel only)
+        if any(self.mapped("cmc_excluded")) or any(self.mapped("cmc_is_relocation")):
             return False
         self.sudo().with_context(cmc_classification_gate=CMC_GATE).write(vals)
         return True
@@ -245,7 +245,7 @@ class AccountAnalyticLine(models.Model):
         element from the financial account mapping and apply the first
         matching rule. Never touches manually classified or excluded lines;
         never creates new lines. One batched write for the whole set."""
-        lines = self.filtered(lambda line: not (line.cmc_excluded or line.cmc_allocation_id))
+        lines = self.filtered(lambda line: not (line.cmc_excluded or line.cmc_is_relocation))
         if not lines:
             return True
         Rule = self.env["cmc.classification.rule"]

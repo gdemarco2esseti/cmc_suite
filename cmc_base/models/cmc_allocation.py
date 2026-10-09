@@ -91,6 +91,7 @@ class CmcAllocation(models.Model):
                 "cmc_cost_element_id": self.element_id.id,
                 "cmc_behavior": self.behavior,
                 "cmc_allocation_id": self.id,
+                "cmc_is_relocation": True,
             }
             for center, amount in postings
         ])
@@ -108,7 +109,7 @@ class CmcAllocation(models.Model):
         Line = self.env["account.analytic.line"].sudo()
         overhead = Line._cmc_cost_read_group(
             Domain("company_id", "=", company.id) & Domain("cmc_excluded", "=", False)
-            & Domain("cmc_directness", "=", "indirect") & Domain("cmc_allocation_id", "=", False)
+            & Domain("cmc_directness", "=", "indirect") & Line._cmc_relocation_domain(include=False)
             & Domain("date", ">=", date_from) & Domain("date", "<=", date_to)
         )[0][0]
         allocated = sum(

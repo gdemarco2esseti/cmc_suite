@@ -112,7 +112,7 @@ class TestAllocationClassificationGuard(TransactionCase):
         # what the run does: create under the sentinel, with classification fields set
         line = self.AL.with_context(cmc_run_state=CMC_RUN_STATE).create({
             "name": "system", "date": DAY, "account_id": self.target.id, "amount": -100.0,
-            "move_line_id": move_line.id, "cmc_allocation_id": alloc.id,
+            "move_line_id": move_line.id, "cmc_allocation_id": alloc.id, "cmc_is_relocation": True,
             "cmc_cost_element_id": self.alloc_element.id, "cmc_behavior": "fixed",
         })
         self.assertFalse(line.cmc_classified_manually)

@@ -103,6 +103,14 @@ class AccountAnalyticLine(models.Model):
         copy=False,
         help="Allocation run that posted this system line.",
     )
+    cmc_is_relocation = fields.Boolean(
+        string="Relocation Posting",
+        index="btree_not_null",
+        readonly=True,
+        copy=False,
+        help="The line only moves cost between centers (posted by an allocation or chargeback run): "
+        "never revenue, behavior evidence or classification input.",
+    )
     cmc_cost_traceability = fields.Selection(
         selection=[("special", "Special"), ("common", "Common")],
         string="Traceability",
@@ -294,17 +302,21 @@ class AccountAnalyticLine(models.Model):
         for fname in CAPACITY_DERIVED_FIELDS:
             self.env.add_to_compute(rows._fields[fname], rows)
 
-    def _cmc_check_allocation_lock(self, vals_list=()):
-        # why no env.su bypass: a posted allocation line is a result of a run;
-        # only compute/reset (the sentinel) may touch it, whoever calls
+    @api.model
+    def _cmc_relocation_domain(self, include=True):
+        return Domain("cmc_is_relocation", "=", include)
+
+    def _cmc_check_relocation_lock(self, vals_list=()):
+        # why no env.su bypass: a relocation line is a result of a run;
+        # only compute/reset (the sentinel) may touch it or set the flag, whoever calls
         if self.env.context.get("cmc_run_state") is CMC_RUN_STATE:
             return
-        if any(vals.get("cmc_allocation_id") for vals in vals_list) or self.filtered("cmc_allocation_id"):
-            raise UserError(self.env._("Lines posted by an allocation change only by computing or resetting it."))
+        if any("cmc_is_relocation" in vals for vals in vals_list) or self.filtered("cmc_is_relocation"):
+            raise UserError(self.env._("Lines posted by a run change only by computing or resetting it."))
 
     @api.model_create_multi
     def create(self, vals_list):
-        self._cmc_check_allocation_lock(vals_list)
+        self._cmc_check_relocation_lock(vals_list)
         if not self.env.su and any("cmc_excluded" in vals for vals in vals_list):
             raise AccessError(self.env._("The cost base exclusion is set by the system only."))
         for vals in vals_list:
@@ -314,7 +326,7 @@ class AccountAnalyticLine(models.Model):
         return lines
 
     def write(self, vals):
-        self._cmc_check_allocation_lock([vals])
+        self._cmc_check_relocation_lock([vals])
         self._cmc_check_one_amount(vals)
         if "cmc_excluded" in vals and not self.env.su:
             raise AccessError(self.env._("The cost base exclusion is set by the system only."))
@@ -345,7 +357,7 @@ class AccountAnalyticLine(models.Model):
         return res
 
     def unlink(self):
-        self._cmc_check_allocation_lock()
+        self._cmc_check_relocation_lock()
         rows = self._cmc_capacity_rows()
         res = super().unlink()
         self._cmc_touch_capacity(rows)

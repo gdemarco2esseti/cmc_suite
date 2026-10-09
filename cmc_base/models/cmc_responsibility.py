@@ -78,7 +78,7 @@ class CmcResponsibilityCenter(models.Model):
             Domain("cmc_excluded", "=", False) & Domain("company_id", "in", [False, company.id])
             & Domain("date", ">=", date_from) & Domain("date", "<=", date_to)
         )
-        is_cost = Domain("amount", "<", 0) | Domain("cmc_allocation_id", "!=", False)
+        is_cost = Domain("amount", "<", 0) | Line._cmc_relocation_domain()
         cost, revenue = defaultdict(float), defaultdict(float)
         for plan, accounts in centers.grouped("plan_id").items():
             if not plan:

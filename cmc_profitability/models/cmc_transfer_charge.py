@@ -98,14 +98,13 @@ class CmcTransferCharge(models.Model):
 
     def _cmc_primary_cost(self, variable_only=False):
         self.ensure_one()
-        domain = Domain([
-            ("cmc_excluded", "=", False), ("company_id", "in", [False, self.company_id.id]), ("date", ">=", self.date_from),
-            ("date", "<=", self.date_to), ("cmc_transfer_charge_id", "=", False), (self.provider_id.plan_id._column_name(), "=", self.provider_id.id),
-        ])
-        if variable_only:
-            domain &= Domain("cmc_behavior", "=", "variable")
-        # why sudo: a certified figure must not depend on who presses Compute (same scope as _cmc_cost_groups)
-        return sum(row[-1] for row in self.env["account.analytic.line"].sudo()._cmc_cost_read_group(domain))
+        Line = self.env["account.analytic.line"]
+        # the shared helper reads the certified (sudo) company scope; relocation lines are never primary cost
+        costs = self.provider_id._cmc_cost_groups(
+            self.date_from, self.date_to, behavior="variable" if variable_only else False, company=self.company_id,
+            extra_domain=Line._cmc_relocation_domain(include=False),
+        )
+        return costs.get(self.provider_id.id, 0.0)
 
     def _cmc_compute(self):
         self.ensure_one()
@@ -130,7 +129,7 @@ class CmcTransferCharge(models.Model):
             {
                 "name": self.name, "date": self.date_to, "company_id": company.id, "amount": amount,
                 center.plan_id._column_name(): center.id, "cmc_cost_element_id": self.element_id.id, "cmc_behavior": behavior,
-                "cmc_transfer_charge_id": self.id,
+                "cmc_transfer_charge_id": self.id, "cmc_is_relocation": True,
             }
             for center, behavior, amount in postings if amount
         ])

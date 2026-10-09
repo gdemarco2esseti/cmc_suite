@@ -2,6 +2,8 @@ from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.fields import Command
 
+from odoo.addons.cmc_base.models.cmc_run_mixin import CMC_RUN_STATE
+
 from .cmc_abc_resource import SPENDING_PROFILES
 
 QTY = (16, 6)
@@ -103,10 +105,9 @@ class CmcAbbRun(models.Model):
 
     def _cmc_drop_target(self):
         """Delete what the runs wrote in their target version; an approved target raises (version lock)."""
-        for run in self:
-            run._cmc_drop_rates(run._cmc_rate_specs())
-        # why sudo: the lines belong to the run, whoever wrote them
-        self.env["cmc.budget.line"].sudo().search([("abb_run_id", "in", self.ids)]).unlink()
+        # why sudo: rates and lines belong to the run, whoever wrote them; the sentinel opens the lines' guard
+        self.env["cmc.rate"].sudo().search([("abb_run_id", "in", self.ids)]).unlink()
+        self.env["cmc.budget.line"].sudo().with_context(cmc_run_state=CMC_RUN_STATE).search([("abb_run_id", "in", self.ids)]).unlink()
 
     def _cmc_rate_specs(self):
         """[(holder, driver, component, value)] the run publishes as prospective rates, read from its results."""

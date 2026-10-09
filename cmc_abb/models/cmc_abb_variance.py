@@ -5,7 +5,7 @@ from odoo.exceptions import UserError, ValidationError
 from odoo.fields import Domain
 from odoo.tools import float_compare
 
-from odoo.addons.cmc_base.models.cmc_utils import month_range, month_start
+from odoo.addons.cmc_base.models.cmc_utils import month_end, month_range, month_start
 
 from .cmc_abb_run import QTY
 from .cmc_abc_resource import SPENDING_PROFILES
@@ -49,6 +49,8 @@ class CmcAbbVarianceRun(models.Model):
     def _check_dates(self):
         if any(run.date_to < run.date_from for run in self):
             raise ValidationError(self.env._("The end date cannot precede the start date."))
+        if any(run.date_from != month_start(run.date_from) or run.date_to != month_end(run.date_to) for run in self):
+            raise ValidationError(self.env._("The period must run from the first to the last day of a month."))
 
     def _cmc_reset_values(self):
         return {**super()._cmc_reset_values(), **dict.fromkeys(TOTAL_FIELDS, 0.0)}

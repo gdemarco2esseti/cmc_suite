@@ -74,8 +74,10 @@ class CmcAbbRun(models.Model):
         for res_id, res in resources.items():
             sup = supply[res_id]
             need = resource_demand[res_id] + nonproductive[res_id]
-            # why: with a shortage the cost is spread over the need, so nothing is assigned beyond the budget
-            sup["rate"] = sup["budgeted_cost"] / max(sup["supply_qty"], need) if need else 0.0
+            # why: with a shortage the cost is spread over the need, so nothing is assigned beyond the budget;
+            # an idle committed resource (no need) still has a rate over its supply
+            divisor = max(sup["supply_qty"], need)
+            sup["rate"] = sup["budgeted_cost"] / divisor if divisor else 0.0
             sup["assigned_cost"] = resource_demand[res_id] * sup["rate"]
             sup["unused_cost"] = sup["budgeted_cost"] - sup["assigned_cost"]
         rates = self._cmc_activity_rates(uses, resources, supply, demand)
@@ -141,6 +143,9 @@ class CmcAbbRun(models.Model):
                 raise UserError(self.env._("%s is approved: the budget lines go into a draft version.", target.display_name))
             if (target.date_from, target.date_to) != (source.date_from, source.date_to):
                 raise UserError(self.env._("%s must cover the same span as %s.", target.display_name, source.display_name))
+            other = self.sudo().search_count([("target_version_id", "=", target.id), ("state", "!=", "draft"), ("id", "!=", self.id)], limit=1)
+            if other:
+                raise UserError(self.env._("%s already holds a computed ABB run: reset it first.", target.display_name))
         # raises unless the origins are approved / computed, and locks them against a reset under this run
         for origin in (source, self.calibration_run_id, self.baseline_run_id):
             if origin:
@@ -316,26 +321,10 @@ class CmcAbbRun(models.Model):
             )
 
     def _cmc_publish_rates(self, target, months):
-        specs = self._cmc_rate_specs()
-        self._cmc_drop_rates(specs)
         # why sudo: rates are written by the engine; users have no create right on the registry for plans
-        self.env["cmc.rate"].sudo()._cmc_publish(
+        rates = self.env["cmc.rate"].sudo()._cmc_publish(
             target,
             [{"holder": holder, "driver": driver, "component": comp, "date": month, "value": value}
-             for holder, driver, comp, value in specs for month in months],
+             for holder, driver, comp, value in self._cmc_rate_specs() for month in months],
         )
-
-    def _cmc_drop_rates(self, specs):
-        """Same-key rates of the target version are replaced, not duplicated."""
-        target = self.target_version_id
-        if not (target and specs):
-            return
-        holders = defaultdict(set)
-        for holder, _driver, _comp, _value in specs:
-            holders[holder._name].add(holder.id)
-        domain = Domain([
-            ("origin_model", "=", "cmc.plan.version"), ("origin_id", "=", target.id),
-            ("driver_id", "in", list({driver.id for _h, driver, _c, _v in specs})),
-        ]) & Domain.OR([Domain("holder_model", "=", model) & Domain("holder_id", "in", sorted(ids)) for model, ids in holders.items()])
-        # why sudo: engine rows; an approved target still raises through the rate lock
-        self.env["cmc.rate"].sudo().search(domain).unlink()
+        rates.abb_run_id = self

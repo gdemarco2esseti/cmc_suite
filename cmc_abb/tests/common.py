@@ -69,7 +69,9 @@ when favourable (AD-112 spirit). Budget lines written into cmc_budget keep cmc_b
       per unit; unused_qty = max(supply_qty - need, 0); required_units = need / capacity per unit (= FTE for
       people); shortage_units = step: max(supply - committed, 0), fixed: max(required - committed, 0),
       flexible 0; excess_units = step: max(committed - supply, 0), else 0. budgeted_cost = supply_units x cost
-      per unit. Resource rate = budgeted_cost / max(supply_qty, demand) (shortage: no over-assignment).
+      per unit. Resource rate = budgeted_cost / max(supply_qty, need) (shortage: no over-assignment); rate 0
+      ONLY when that divisor is 0 (RN-001: a committed resource with zero demand keeps rate = cost / supply and
+      its whole supply is an idle state of ``idle_responsibility_id``; conservation holds).
    f. North->south: activity rate = Σ usage_per_unit x resource rate; fixed_rate from committed resources,
       variable_rate from flexible ones; assigned_cost = demand x rate. Object unit_cost = Σ qty_per_unit x
       activity rate, amount = volume x unit_cost.
@@ -90,8 +92,13 @@ when favourable (AD-112 spirit). Budget lines written into cmc_budget keep cmc_b
       the default ``_cmc_lookup`` without origin never returns them) for every month of the span: holder
       activity x activity ``driver_id`` x total / fixed / variable; holder resource x resource ``driver_id``
       x total; holder cost object x ``output_measure_id`` x total (unit cost). Same-key rows of the target
-      are replaced. Reset deletes the run's budget lines and these rates (target still draft: else the
-      version lock raises UserError and nothing is deleted).
+      are replaced. Publisher (RN-002): ``cmc.rate.abb_run_id`` (M2o cmc.abb.run, index, copy False, added by
+      cmc_abb) = the run that wrote the row. Reset / unlink deletes the run's budget lines and ONLY the rates
+      with its ``abb_run_id`` - a hand-typed rate of the target is never deleted (target still draft: else
+      the version lock raises UserError and nothing is deleted).
+      RN-002: at most ONE non-draft run per ``target_version_id`` (Compute of another -> UserError). Budget
+      lines with ``abb_run_id`` of a non-draft run: write / unlink by hand -> UserError (users and managers);
+      only the engine (Compute / reset / unlink of the run) writes or removes them.
    j. Baseline (FCS-03): ``delta_cost`` = total_budgeted_cost - baseline's; per resource
       ``delta_supply_units`` / ``delta_cost`` vs the baseline resource row; ``predicted_cost`` = Σ demand x
       BASELINE activity rate (forecast driver qty x stable rates); all 0 without a baseline.
@@ -118,7 +125,8 @@ when favourable (AD-112 spirit). Budget lines written into cmc_budget keep cmc_b
    - ``warning_ids`` -> ``cmc.abb.warning``: ``warning_type`` ``volume`` / ``mix``, ``activity_id``,
      ``cost_object_id``, ``calibration_qty``, ``planned_qty``, ``deviation_percent``.
 4. ``cmc.abb.variance.run`` (cmc.run.mixin, STD-05): ``name``, ``company_id``, ``abb_run_id`` (computed,
-   usage recorded), ``date_from``, ``date_to`` (inside the ABB span, else UserError); results ``line_ids`` ->
+   usage recorded), ``date_from``, ``date_to`` (inside the ABB span, else UserError; RN-003 / AD-105: date_from
+   first day of a month, date_to last day of a month, else ValidationError); results ``line_ids`` ->
    ``cmc.abb.variance.line`` one per resource of the ABB run. f = months of the span / ABB months.
    actual_demand_qty = Σ_activities ACTUAL facts (``version_id`` False, company, span) of the activity
    ``driver_id`` x usage_per_unit; actual_cost = ledger pool of the resource (cmc_abc pool rule: center x

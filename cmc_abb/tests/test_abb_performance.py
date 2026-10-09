@@ -9,6 +9,7 @@ CONTRACT
   query count is independent of the number of fact rows and ledger lines.
 """
 
+from calendar import monthrange
 from datetime import date
 
 from odoo.tests.common import tagged
@@ -75,7 +76,7 @@ class TestAbbPerformance(AbbCase):
             ])
             return self.env_a["cmc.abb.variance.run"].create({
                 "name": "WP12 vol %s" % n, "company_id": self.company_a.id, "abb_run_id": abb.id,
-                "date_from": date(2027, month, 1), "date_to": date(2027, month, 28),
+                "date_from": date(2027, month, 1), "date_to": date(2027, month, monthrange(2027, month)[1]),
             })
 
         small, big = load(3, 1), load(40, 2)

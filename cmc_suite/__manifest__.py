@@ -25,6 +25,7 @@
         "cmc_process_costing",
         "cmc_abb",
         "cmc_scenario",
+        "cmc_kpi",
     ],
     "installable": True,
     "application": True,

@@ -29,5 +29,54 @@
             <field name="global" eval="True"/>
             <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
         </record>
+
+        <record id="cmc_evm_estimate_line_company_rule" model="ir.rule">
+            <field name="name">CMC EVM estimate line: multi-company</field>
+            <field name="model_id" ref="model_cmc_evm_estimate_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_evm_risk_company_rule" model="ir.rule">
+            <field name="name">CMC EVM risk: multi-company</field>
+            <field name="model_id" ref="model_cmc_evm_risk"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_evm_baseline_line_company_rule" model="ir.rule">
+            <field name="name">CMC EVM baseline line: multi-company</field>
+            <field name="model_id" ref="model_cmc_evm_baseline_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_evm_change_request_company_rule" model="ir.rule">
+            <field name="name">CMC EVM change request: multi-company</field>
+            <field name="model_id" ref="model_cmc_evm_change_request"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_evm_run_company_rule" model="ir.rule">
+            <field name="name">CMC EVM run: multi-company</field>
+            <field name="model_id" ref="model_cmc_evm_run"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_evm_task_line_company_rule" model="ir.rule">
+            <field name="name">CMC EVM task line: multi-company</field>
+            <field name="model_id" ref="model_cmc_evm_task_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_evm_curve_company_rule" model="ir.rule">
+            <field name="name">CMC EVM curve: multi-company</field>
+            <field name="model_id" ref="model_cmc_evm_curve"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
     </data>
 </odoo>

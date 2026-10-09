@@ -1,4 +1,5 @@
 import calendar
+import math
 from datetime import timedelta
 
 from odoo.tools import float_round
@@ -217,3 +218,75 @@ def process_cost_report(method, units, elements, rounding=None):
 def simple_payback(one_time_cost, annual_saving):
     """Years to recover the investment; 0.0 when there is no saving to recover it with."""
     return one_time_cost / annual_saving if annual_saving > 0 else 0.0
+
+
+def _check_three_points(o, m, p):
+    if not o <= m <= p:
+        raise ValueError("Three-point estimate needs optimistic <= most likely <= pessimistic")
+
+
+def pert_estimate(o, m, p):
+    """(expected, sigma) of the PERT beta approximation."""
+    _check_three_points(o, m, p)
+    return (o + 4 * m + p) / 6.0, (p - o) / 6.0
+
+
+def triangular_estimate(o, m, p):
+    _check_three_points(o, m, p)
+    return (o + m + p) / 3.0
+
+
+def pert_total(estimates, z=2.0):
+    """(expected, sigma, low, high) of independent (o, m, p) estimates: sigma = root sum of squares."""
+    pairs = [pert_estimate(*e) for e in estimates]
+    expected = sum(e for e, _s in pairs)
+    sigma = math.sqrt(sum(s * s for _e, s in pairs))
+    return expected, sigma, expected - z * sigma, expected + z * sigma
+
+
+def emv(probability, impact):
+    """Expected monetary value; `probability` is a fraction, a negative impact is an opportunity."""
+    if not 0 <= probability <= 1:
+        raise ValueError("A probability lies between 0 and 1")
+    return probability * impact
+
+
+def contingency_reserve(risks):
+    return sum(emv(probability, impact) for probability, impact in risks)
+
+
+def evm_indices(bac, pv, ev, ac):
+    """Earned value indices and EAC variants; an undefined ratio, and everything built on it, is None."""
+    cpi = ev / ac if ac else None
+    spi = ev / pv if pv else None
+    eac = bac / cpi if cpi else None
+    combined = cpi * spi if cpi and spi else None
+    return {
+        "cv": ev - ac,
+        "sv": ev - pv,
+        "cpi": cpi,
+        "spi": spi,
+        "eac": eac,
+        "eac_atypical": ac + (bac - ev),
+        "eac_composite": ac + (bac - ev) / combined if combined else None,
+        "etc": eac - ac if eac is not None else None,
+        "vac": bac - eac if eac is not None else None,
+        "tcpi": (bac - ev) / (bac - ac) if bac != ac else None,
+    }
+
+
+def control_breaches(values, lower, upper):
+    """Indexes of the values strictly outside [lower, upper]."""
+    return [i for i, value in enumerate(values) if value < lower or value > upper]
+
+
+def rule_of_seven(values, center=0.0, run=7):
+    """True when `run` consecutive values sit strictly on the same side of `center`."""
+    streak, side = 0, 0
+    for value in values:
+        current = (value > center) - (value < center)
+        streak = streak + 1 if current and current == side else (1 if current else 0)
+        side = current
+        if streak >= run:
+            return True
+    return False

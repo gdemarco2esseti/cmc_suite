@@ -279,3 +279,5 @@ to be assigned by the orchestrator.
 - CB-1: `cmc.run.result.mixin.write` raises UserError before the ACL check; WP-04 (cmc.costing.result) and WP-05 (cmc.job.sheet/.labour) added per-model `check_access("write")` overrides. Move the ACL check into the mixin and drop the overrides.
 - CB-2: `_cmc_record_usage` does not de-duplicate origins within one call (WP-05 de-duplicates by hand).
 - CB-3: `account.analytic.line` create/write overrides now in 4 modules; allocation lock called twice (cmc_base + cmc_hr_timesheet) — candidate single guard entry point (ronin WP-01 watch-point).
+- CB-4 (ronin WP-09 RN-003, CONSOLIDA accepted): one shared "relocation posting" predicate in cmc_base (lines that only move cost: cmc_allocation_id, cmc_transfer_charge_id, future ones) used by the lock, responsibility summary, cost-function history, auto-classify/gate/manual marking in cmc_account, allocated-share guard. Merges CB-3. Until done, chargeback lines are mis-read by responsibility/auto-classify.
+- CB-5 (ronin WP-09 SIMPLIFY): batch form of `cmc.rate._cmc_lookup` used by cmc_profitability `_cmc_unit_rates` and cmc_direct_costing decision rate search.

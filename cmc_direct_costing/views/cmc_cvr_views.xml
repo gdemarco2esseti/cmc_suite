@@ -42,6 +42,9 @@
                             bg_color="text-bg-danger" invisible="has_breakeven"/>
                 </header>
                 <sheet>
+                    <div class="alert alert-warning" role="alert" invisible="not range_warning">
+                        <field name="range_warning" readonly="1" nolabel="1"/>
+                    </div>
                     <div class="oe_title">
                         <label for="name"/>
                         <h1><field name="name"/></h1>
@@ -56,7 +59,10 @@
                             <field name="price_unit" invisible="is_multiproduct"/>
                             <field name="variable_unit" invisible="is_multiproduct"/>
                             <field name="fixed_cost"/>
-                            <field name="target_profit" invisible="is_multiproduct"/>
+                            <field name="target_basis" invisible="is_multiproduct"/>
+                            <field name="target_profit" invisible="is_multiproduct or target_basis == 'margin_pct'"/>
+                            <field name="tax_rate" invisible="is_multiproduct or target_basis != 'after_tax'"/>
+                            <field name="target_margin_pct" invisible="is_multiproduct or target_basis != 'margin_pct'"/>
                             <field name="volume" invisible="is_multiproduct"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                             <field name="currency_id" invisible="1"/>
@@ -65,9 +71,11 @@
                         <group string="Results">
                             <field name="mc_unit" invisible="is_multiproduct"/>
                             <field name="mc_ratio"/>
-                            <field name="bep_qty" invisible="is_multiproduct"/>
+                            <field name="bep_qty"/>
                             <field name="bep_revenue"/>
+                            <field name="target_profit_pretax" invisible="is_multiproduct"/>
                             <field name="target_qty" invisible="is_multiproduct"/>
+                            <field name="target_revenue" invisible="is_multiproduct"/>
                             <field name="margin_of_safety"/>
                             <field name="mos_ratio"/>
                             <field name="operating_leverage"/>
@@ -82,9 +90,29 @@
                                     <field name="price_unit"/>
                                     <field name="variable_unit"/>
                                     <field name="mc_unit"/>
+                                    <field name="mix_share"/>
+                                    <field name="bep_qty"/>
+                                    <field name="bep_revenue"/>
                                     <field name="currency_id" column_invisible="1"/>
                                 </list>
                             </field>
+                        </page>
+                        <page string="What-if" name="whatif" invisible="is_multiproduct">
+                            <group string="Sensitivity">
+                                <field name="sens_pct"/>
+                            </group>
+                            <field name="sensitivity_html" readonly="1" nolabel="1"/>
+                            <group string="Iso-profit">
+                                <field name="iso_lever"/>
+                                <field name="iso_pct"/>
+                                <field name="iso_compensate"/>
+                            </group>
+                            <field name="iso_profit_html" readonly="1" nolabel="1"/>
+                            <group string="Cost structure comparison">
+                                <field name="alt_variable_unit"/>
+                                <field name="alt_fixed_cost"/>
+                            </group>
+                            <field name="structure_html" readonly="1" nolabel="1"/>
                         </page>
                         <page string="Break-even Curve" name="curve" invisible="is_multiproduct">
                             <field name="curve_ids" readonly="1">

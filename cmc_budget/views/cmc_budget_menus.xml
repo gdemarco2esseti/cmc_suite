@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_cmc_sec_budget"
+              name="Budget &amp; Variances"
+              parent="cmc_base.menu_cmc_operations"
+              sequence="30"/>
+    <menuitem id="menu_cmc_budget_line"
+              name="Budget Lines"
+              parent="menu_cmc_sec_budget"
+              action="action_cmc_budget_line"
+              sequence="10"/>
+    <menuitem id="menu_cmc_budget_bva"
+              name="Budget vs Actual"
+              parent="menu_cmc_sec_budget"
+              action="action_cmc_budget_bva"
+              sequence="20"
+              groups="cmc_base.group_cmc_user,cmc_base.group_cmc_responsible"/>
+    <menuitem id="menu_cmc_budget_variance_run"
+              name="Variance Runs"
+              parent="menu_cmc_sec_budget"
+              action="action_cmc_budget_variance_run"
+              sequence="30"/>
+    <menuitem id="menu_cmc_budget_cash_run"
+              name="Cash Forecasts"
+              parent="menu_cmc_sec_budget"
+              action="action_cmc_budget_cash_run"
+              sequence="40"
+              groups="cmc_base.group_cmc_user"/>
+    <menuitem id="menu_cmc_budget_seasonality"
+              name="Seasonality Profiles"
+              parent="cmc_base.menu_cmc_cfg_master"
+              action="action_cmc_budget_seasonality"
+              sequence="40"
+              groups="cmc_base.group_cmc_manager"/>
+</odoo>

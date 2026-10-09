@@ -7,3 +7,10 @@ from . import test_reclass
 from . import test_costing_period
 from . import test_costing_period_migration
 from . import test_costing_reset_migration
+from . import test_wp04_actual_prime_cost
+from . import test_wp04_unit_cost
+from . import test_wp04_variable_full
+from . import test_wp04_practical_capacity
+from . import test_wp04_rates
+from . import test_wp04_security
+from . import test_wp04_performance

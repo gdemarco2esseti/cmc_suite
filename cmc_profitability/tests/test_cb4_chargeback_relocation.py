@@ -10,6 +10,15 @@ CONTRACT (part pinned here; whole contract in cmc_base/tests/test_relocation.py)
       auto-classified (a classification rule on the center leaves the posted directness ``indirect``);
   (c) ``cmc.cost.function`` history of the provider ignores chargeback lines (K / v from the primary cost);
   (d) run-state lock: user / sudo writes and unlinks -> UserError, the CMC classification gate included.
+- RN-001 (ronin, CB-4 review) invariant "link => flag": a line with ``cmc_transfer_charge_id`` set ALWAYS has
+  ``cmc_is_relocation`` True: DB CHECK constraint declared in cmc_profitability (raw SQL -> CheckViolation) and
+  ``create`` / ``write`` carrying ``cmc_transfer_charge_id`` outside ``CMC_RUN_STATE`` -> UserError (admin, sudo).
+- RN-002 (ronin, CB-4 review) the provider cost read (``_cmc_primary_cost``) excludes ONLY chargeback postings
+  (``cmc_transfer_charge_id``), NOT allocation postings:
+  (A) step-down: an allocation INTO the provider is cost the provider charges out (building 300 -> IT, then a
+      full chargeback of IT moves 1300: IT +1300, Z -780, S -520 with the 30 : 20 = 60/40 driver);
+  (B) a provider with OUTGOING allocation postings (``cmc_allocation_id`` set, provider = allocation source) in the
+      chargeback span -> UserError at Compute (double relief), nothing written.
 
 FIXTURE (ProfitCase company A + CB-4 rows, March 2027)
   IT provider (auxiliary): fixed 800 + variable 200, element WP09 salaries (controllable). Receivers Z 30 h, S 20 h.
@@ -23,10 +32,13 @@ FIXTURE (ProfitCase company A + CB-4 rows, March 2027)
 import calendar
 from datetime import date
 
+from psycopg2.errors import CheckViolation
+
 from odoo import Command
 from odoo.exceptions import UserError
 from odoo.fields import Domain
 from odoo.tests.common import tagged
+from odoo.tools import mute_logger
 
 from .common import D_FROM, D_TO, ProfitCase
 
@@ -171,3 +183,75 @@ class TestCb4ChargebackRelocation(ProfitCase):
             line.sudo().unlink()
         self.assertTrue(line.exists())
         self.assertAlmostEqual(line.amount, amount)
+
+    # ---- RN-001: link => flag ---------------------------------------------------------
+
+    def test_rn001_db_check_chargeback_link_implies_flag(self):
+        # RN-001: the DB refuses a chargeback-linked line without the relocation flag
+        run = self._charge()
+        line = run.posted_line_ids[:1]
+        ordinary = self._cost(self.z, 5.0)
+        self.env.flush_all()
+        for query, params in (
+            ("UPDATE account_analytic_line SET cmc_is_relocation = false WHERE id = %s", [line.id]),
+            ("UPDATE account_analytic_line SET cmc_transfer_charge_id = %s WHERE id = %s", [run.id, ordinary.id]),
+        ):
+            with self.subTest(query=query), self.assertRaises(CheckViolation), mute_logger("odoo.sql_db"), self.env.cr.savepoint():
+                self.env.cr.execute(query, params)
+        self.env.invalidate_all()
+        self.assertTrue(line.cmc_is_relocation)
+        self.assertFalse(ordinary.cmc_transfer_charge_id)
+
+    def test_rn001_chargeback_link_refused_outside_run(self):
+        # RN-001: only the chargeback engine posts chargeback-linked lines; an ordinary line cannot be linked (no su bypass)
+        run = self._charge()
+        posted = run.posted_line_ids
+        Line = self.env["account.analytic.line"]
+        vals = {"name": "fake", "account_id": self.z.id, "amount": -5.0, "date": D_TO, "cmc_transfer_charge_id": run.id}
+        with self.assertRaises(UserError):
+            Line.create(dict(vals))
+        with self.assertRaises(UserError):
+            Line.sudo().create(dict(vals))
+        ordinary = self._cost(self.z, 5.0)
+        with self.assertRaises(UserError):
+            ordinary.write({"cmc_transfer_charge_id": run.id})
+        with self.assertRaises(UserError):
+            ordinary.sudo().write({"cmc_transfer_charge_id": run.id})
+        self.assertEqual(Line.search([("cmc_transfer_charge_id", "=", run.id)]), posted)
+        run.action_reset_to_draft()
+        self.assertTrue(ordinary.exists())
+
+    # ---- RN-002: only chargebacks are excluded from the provider cost ------------------
+
+    def test_rn002_step_down_allocation_into_provider_is_charged_out(self):
+        # RN-002 (A): building 300 allocated to IT is IT cost -> the full chargeback moves 1300 (60/40)
+        building = self._center("CB4 building", center_type="auxiliary")
+        self._cost(building, 300.0)
+        alloc = self.env["cmc.allocation"].create({
+            "name": "CB4 building to IT", "company_id": self.company.id, "source_account_id": building.id,
+            "driver_id": self.hours.id, "amount": 300.0, "date": D_TO, "element_id": self.sal.id,
+            "line_ids": [Command.create({"target_account_id": self.it.id, "quantity": 1.0})],
+        })
+        alloc.action_compute()
+        run = self._charge()
+        moved = {}
+        for line in run.posted_line_ids:
+            moved[line.account_id] = moved.get(line.account_id, 0.0) + line.amount
+        self.assertEqual(set(moved), {self.it, self.z, self.s})
+        self.assertAlmostEqual(moved[self.it], 1300.0)
+        self.assertAlmostEqual(moved[self.z], -780.0)
+        self.assertAlmostEqual(moved[self.s], -520.0)
+
+    def test_rn002_provider_with_outgoing_allocation_refused(self):
+        # RN-002 (B): IT already relieved by an allocation in the span -> charging it out again is a double relief
+        self._allocation()
+        run = self.env["cmc.transfer.charge"].create({
+            "name": "CB4 IT double relief", "company_id": self.company.id, "date_from": D_FROM, "date_to": D_TO,
+            "provider_id": self.it.id, "driver_id": self.hours.id, "criterion": "full", "element_id": self.sal.id,
+            "line_ids": [Command.create({"receiver_id": self.z.id, "quantity": 30.0}),
+                         Command.create({"receiver_id": self.s.id, "quantity": 20.0})],
+        })
+        with self.assertRaises(UserError):
+            run.action_compute()
+        self.assertFalse(run.posted_line_ids)
+        self.assertFalse(self.env["account.analytic.line"].search([("cmc_transfer_charge_id", "=", run.id)]))

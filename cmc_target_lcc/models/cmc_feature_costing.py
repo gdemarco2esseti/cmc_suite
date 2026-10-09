@@ -39,7 +39,7 @@ class CmcFeatureCosting(models.Model):
     violation_ids = fields.One2many("cmc.feature.violation", "costing_id", string="Guideline Violations", copy=False)
     best_alternative_id = fields.Many2one("cmc.feature.alternative", readonly=True, copy=False)
 
-    _cmc_input_fields = ("name", "company_id", "date", "target_cost_id", "alternative_ids", "variable_ids")
+    _cmc_input_fields = ( "company_id", "date", "target_cost_id", "alternative_ids", "variable_ids")
     _cmc_result_fields = ("result_ids", "violation_ids")
     _tlc_outputs = ("best_alternative_id",)
 

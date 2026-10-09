@@ -32,8 +32,7 @@ class CmcKaizenTarget(models.Model):
     variance = fields.Monetary(readonly=True, copy=False, help="Target - actual: positive is favourable.")
     target_met = fields.Boolean(readonly=True, copy=False)
 
-    _cmc_input_fields = (
-        "name", "company_id", "basis", "reduction_pct", "product_id", "unit_driver_id", "base_date", "date_from", "date_to",
+    _cmc_input_fields = ( "company_id", "basis", "reduction_pct", "product_id", "unit_driver_id", "base_date", "date_from", "date_to",
         "fixed_budget", "variable_budget", "actual_cost",
     )
     _cmc_result_fields = ("line_ids",)

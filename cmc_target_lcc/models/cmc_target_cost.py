@@ -38,8 +38,7 @@ class CmcTargetCost(models.Model):
     reduction_pct = fields.Float(string="Reduction %", readonly=True, copy=False, digits=(16, 2))
     target_met = fields.Boolean(readonly=True, copy=False)
 
-    _cmc_input_fields = (
-        "name", "company_id", "product_id", "unit_driver_id", "date", "target_price", "target_margin_pct",
+    _cmc_input_fields = ( "company_id", "product_id", "unit_driver_id", "date", "target_price", "target_margin_pct",
         "non_mfg_cost", "assembly_cost", "function_ids", "component_ids", "matrix_ids",
     )
     _cmc_result_fields = ("result_ids",)

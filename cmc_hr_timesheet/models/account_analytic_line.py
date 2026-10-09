@@ -38,26 +38,13 @@ class AccountAnalyticLine(models.Model):
             return False
         return self.cmc_center_id.cmc_center_type == "final"
 
-    def _cmc_auto_classify(self):
-        """Enrich timesheet labor lines as MOD (direct labor) before delegating
-        to the financial-account engine. Fill-only and manual-safe."""
-        mod = self._cmc_element_ref(MOD_XMLID)
-        vals_by_line = []
-        for line in self:
-            if (
-                line.cmc_classified_manually
-                or line.cmc_excluded
-                or not line._cmc_is_timesheet_mod()
-            ):
-                continue
-            vals = {}
-            if mod and not line.cmc_cost_element_id:
-                vals["cmc_cost_element_id"] = mod.id
-            if not line.cmc_behavior:
-                vals["cmc_behavior"] = "variable"  # labor scales with hours
-            if line.cmc_directness != "direct":
-                vals["cmc_directness"] = "direct"  # direct labor on the object
-            if vals:
-                vals_by_line.append((line.id, vals))
-        self._cmc_write_batched(vals_by_line)
-        return super()._cmc_auto_classify()
+    @api.model
+    def _cmc_bridge_profiles(self):
+        # direct labor (MOD): hours on a final center, scaling with the hours
+        return super()._cmc_bridge_profiles() + [{
+            "key": "timesheet_mod",
+            "match": "_cmc_is_timesheet_mod",
+            "element": MOD_XMLID,
+            "behavior": "variable",
+            "directness": "direct",
+        }]

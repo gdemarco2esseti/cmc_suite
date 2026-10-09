@@ -1,4 +1,17 @@
+import importlib.util
+import os
+
+from odoo.modules import get_module_path
 from odoo.tests.common import TransactionCase, new_test_user, tagged
+
+
+def _load_migrate():
+    path = os.path.join(get_module_path("cmc_hr_timesheet"), "migrations", "19.0.1.2.0", "post-migrate.py")
+    # why: the migrations folder is named after a version ("19.0.1.2.0"), not importable
+    spec = importlib.util.spec_from_file_location("cmc_hr_timesheet_post_migrate_1_2_0", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.migrate
 
 
 @tagged("post_install", "-at_install")
@@ -85,6 +98,46 @@ class TestTimesheetMod(TransactionCase):
         self.assertEqual(line.cmc_directness, "indirect")
         self.assertNotEqual(line.cmc_cost_element_id, self.mod)
 
+    # block 3 — the bridge withdraws what it set when the line stops being MOD
+    def test_mod_withdrawn_when_hours_move_to_auxiliary_center(self):
+        line = self._ts()
+        self.assertEqual(line.cmc_bridge_source, "timesheet_mod")
+        aux = self.env["account.analytic.account"].create(
+            {"name": "Manutenzione", "plan_id": self.plan.id, "cmc_center_type": "auxiliary"}
+        )
+        line.account_id = aux
+        self.assertFalse(line.cmc_bridge_source)
+        self.assertFalse(line.cmc_cost_element_id)
+        self.assertFalse(line.cmc_behavior)
+        self.assertEqual(line.cmc_directness, "indirect")
+
+    def test_mod_withdrawn_when_hours_zeroed(self):
+        line = self._ts()
+        line.unit_amount = 0.0
+        self.assertFalse(line.cmc_bridge_source)
+        self.assertFalse(line.cmc_cost_element_id)
+
+    def test_withdrawal_keeps_a_rule_classification(self):
+        aux = self.env["account.analytic.account"].create(
+            {"name": "Officina", "plan_id": self.plan.id, "cmc_center_type": "auxiliary"}
+        )
+        self.env["cmc.classification.rule"].create(
+            {"name": "aux fixed", "center_id": aux.id, "cmc_behavior": "fixed"}
+        )
+        line = self._ts()
+        line.account_id = aux
+        self.assertEqual(line.cmc_behavior, "fixed")
+        self.assertFalse(line.cmc_bridge_source)
+
+    def test_manual_line_is_not_withdrawn(self):
+        line = self._ts()
+        line.cmc_behavior = "semi_variable"  # by hand: the line is now manual
+        self.assertTrue(line.cmc_classified_manually)
+        self.assertFalse(line.cmc_bridge_source)
+        line.unit_amount = 0.0
+        self.assertEqual(line.cmc_behavior, "semi_variable")
+        self.assertEqual(line.cmc_cost_element_id, self.mod)
+
     # item 11 — la griglia timesheet crea la riga e scrive le ore DOPO:
     # la classificazione deve ri-innescarsi in scrittura.
     def test_classification_retriggered_when_hours_written_later(self):
@@ -164,3 +217,14 @@ class TestTimesheetMod(TransactionCase):
         self.assertFalse(line.cmc_cost_element_id)
         self.assertFalse(line.cmc_behavior)
         self.assertEqual(line.cmc_directness, "indirect")
+
+    def test_migration_tags_bridge_lines(self):
+        bridged = self._ts()
+        manual = self._ts(cmc_behavior="variable", cmc_directness="direct", cmc_cost_element_id=self.mod.id)
+        self.env.flush_all()
+        self.env.cr.execute("UPDATE account_analytic_line SET cmc_bridge_source = NULL WHERE id IN %s", ((bridged.id, manual.id),))
+        with self.assertLogs("cmc_hr_timesheet_post_migrate_1_2_0", level="INFO"):
+            _load_migrate()(self.env.cr, "19.0.1.1.0")
+        self.env.invalidate_all()
+        self.assertEqual(bridged.cmc_bridge_source, "timesheet_mod")
+        self.assertFalse(manual.cmc_bridge_source)

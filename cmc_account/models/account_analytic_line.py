@@ -24,6 +24,14 @@ class AccountAnalyticLine(models.Model):
         index="btree_not_null",
         help="Set when a user classifies the line by hand; rules never overwrite it.",
     )
+    cmc_bridge_source = fields.Char(
+        string="Classified by Bridge",
+        copy=False,
+        readonly=True,
+        index="btree_not_null",
+        help="Key of the operational-bridge profile that classified the line. "
+        "When the line stops matching it, the values it set are withdrawn.",
+    )
 
     # ------------------------------------------------------------------
     # helpers shared with the operational bridges
@@ -132,9 +140,10 @@ class AccountAnalyticLine(models.Model):
         # several write() calls in a loop.
         if reset:
             # 'indirect' is the fill-only sentinel of the engine
-            vals = dict(vals, cmc_cost_element_id=False, cmc_behavior=False, cmc_directness="indirect")
+            vals = dict(vals, cmc_cost_element_id=False, cmc_behavior=False, cmc_directness="indirect", cmc_bridge_source=False)
         elif manual:
-            vals = dict(vals, cmc_classified_manually=vals.get("cmc_classified_manually", True))
+            # a hand classification is no longer the bridge's to withdraw
+            vals = dict(vals, cmc_classified_manually=vals.get("cmc_classified_manually", True), cmc_bridge_source=False)
         res = super().write(vals)
         if not auto:
             if vals.keys() & CMC_CLASSIFICATION_FIELDS:
@@ -198,18 +207,42 @@ class AccountAnalyticLine(models.Model):
     # classification engine
     # ------------------------------------------------------------------
 
+    @api.model
+    def _cmc_bridge_profiles(self):
+        """Declarative hook of the operational bridges (timesheet, MRP...).
+
+        Each bridge appends one dict per kind of line it recognises:
+
+        - ``key``: stable identifier, stored on the line it classifies;
+        - ``match``: name of a line method returning True on a matching line;
+        - ``element``: xmlid of the cost element to set, or False;
+        - ``behavior`` / ``directness``: values to set, or False.
+
+        The first matching profile wins. The engine owns everything else: it
+        skips excluded and manually classified lines, fills only empty values,
+        remembers the profile in ``cmc_bridge_source`` and withdraws that
+        profile's values when the line no longer matches it.
+        """
+        return []
+
     def _cmc_auto_classify(self):
         """Fill-only auto-classification: restore any manual override persisted
-        for its (journal item, center), then derive the element from the financial account
-        mapping and apply the first matching rule. Never touches manually
-        classified lines; never creates new lines."""
-        # why not filtered by the bridges' callers: bridge overrides run BEFORE
-        # this base (MRO), so each of them skips excluded lines on its own.
+        for its (journal item, center), apply the bridge profiles, derive the
+        element from the financial account mapping and apply the first
+        matching rule. Never touches manually classified or excluded lines;
+        never creates new lines. One batched write for the whole set."""
         lines = self.filtered(lambda line: not line.cmc_excluded)
         if not lines:
             return True
         Rule = self.env["cmc.classification.rule"]
         rules_by_company = {}
+        profiles = self._cmc_bridge_profiles()
+        profile_by_key = {profile["key"]: profile for profile in profiles}
+        # resolved once: _cmc_element_ref logs a missing element on every call
+        element_by_profile = {
+            profile["key"]: (self._cmc_element_ref(profile["element"]).id if profile["element"] else False)
+            for profile in profiles
+        }
         # why sudo: read-only lookup of the stored CMC override; a warehouse or
         # shop-floor user posting a cost line has no read access to the
         # journal items it hangs from.
@@ -239,36 +272,58 @@ class AccountAnalyticLine(models.Model):
                         "cmc_directness": source.cmc_directness or False,
                         "cmc_cost_element_id": source.cmc_cost_element_id.id,
                         "cmc_classified_manually": True,
+                        "cmc_bridge_source": False,
                     }))
                 continue
             if line.cmc_classified_manually:
                 continue
+            current = {
+                "cmc_behavior": line.cmc_behavior or False,
+                "cmc_directness": line.cmc_directness or False,
+                "cmc_cost_element_id": line.cmc_cost_element_id.id,
+                "cmc_bridge_source": line.cmc_bridge_source or False,
+            }
+            new = dict(current)
+            profile = next((p for p in profiles if getattr(line, p["match"])()), None)
+            previous = profile_by_key.get(new["cmc_bridge_source"])
+            if new["cmc_bridge_source"] and (not profile or profile is not previous):
+                # withdraw what the previous profile set (values changed since stay)
+                if previous:
+                    if new["cmc_cost_element_id"] == element_by_profile[previous["key"]]:
+                        new["cmc_cost_element_id"] = False
+                    if new["cmc_behavior"] == previous["behavior"]:
+                        new["cmc_behavior"] = False
+                    if new["cmc_directness"] == previous["directness"]:
+                        new["cmc_directness"] = "indirect"
+                new["cmc_bridge_source"] = False
+            if profile:
+                self._cmc_fill(new, profile["behavior"], profile["directness"], element_by_profile[profile["key"]])
+                new["cmc_bridge_source"] = profile["key"]
+            mapped_element = element_by_account.get(line.general_account_id.id)
+            if not new["cmc_cost_element_id"] and mapped_element:
+                new["cmc_cost_element_id"] = mapped_element
             company = line.company_id or self.env.company
             if company.id not in rules_by_company:
                 rules_by_company[company.id] = Rule._rules_for_company(company)
-            vals = {}
-            mapped_element = element_by_account.get(line.general_account_id.id)
-            if not line.cmc_cost_element_id and mapped_element:
-                vals["cmc_cost_element_id"] = mapped_element
             rule = next(
                 (r for r in rules_by_company[company.id] if r._matches(line, center=center)),
                 False,
             )
             if rule:
-                if rule.cmc_behavior and not line.cmc_behavior:
-                    vals["cmc_behavior"] = rule.cmc_behavior
-                # fill-only: treat the bare 'indirect' default as "unset" so a
-                # rule does not clobber a value a bridge deliberately set (MOD/MP
-                # write 'direct' before this engine runs last in the MRO).
-                if rule.cmc_directness and line.cmc_directness in (False, "indirect"):
-                    vals["cmc_directness"] = rule.cmc_directness
-                if (
-                    rule.cmc_cost_element_id
-                    and "cmc_cost_element_id" not in vals
-                    and not line.cmc_cost_element_id
-                ):
-                    vals["cmc_cost_element_id"] = rule.cmc_cost_element_id.id
+                self._cmc_fill(new, rule.cmc_behavior, rule.cmc_directness, rule.cmc_cost_element_id.id)
+            vals = {fname: value for fname, value in new.items() if value != current[fname]}
             if vals:
                 vals_by_line.append((line.id, vals))
         lines._cmc_write_batched(vals_by_line)
         return True
+
+    @api.model
+    def _cmc_fill(self, values, behavior, directness, element_id):
+        """Fill-only merge into ``values``. The bare 'indirect' default counts
+        as unset, so a bridge or a rule can still set 'direct'."""
+        if behavior and not values["cmc_behavior"]:
+            values["cmc_behavior"] = behavior
+        if directness and values["cmc_directness"] in (False, "indirect"):
+            values["cmc_directness"] = directness
+        if element_id and not values["cmc_cost_element_id"]:
+            values["cmc_cost_element_id"] = element_id

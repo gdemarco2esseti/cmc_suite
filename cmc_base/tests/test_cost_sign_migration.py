@@ -5,6 +5,7 @@ from datetime import date
 from odoo.modules import get_module_path
 from odoo.modules.module import get_manifest
 from odoo.tests.common import TransactionCase, tagged
+from odoo.tools import parse_version
 
 MIGRATION_VERSION = "19.0.1.2.0"
 ON_DATE = date(2026, 3, 15)
@@ -56,8 +57,8 @@ class TestCostSignMigration(TransactionCase):
         self.env.invalidate_all()
 
     def test_manifest_version_bumped(self):
-        # AD-005: the migration only runs if the installed version moves to 19.0.1.2.0
-        self.assertEqual(get_manifest("cmc_base")["version"], MIGRATION_VERSION)
+        # AD-005: the migration only runs if the installed version moves to 19.0.1.2.0 or later
+        self.assertGreaterEqual(parse_version(get_manifest("cmc_base")["version"]), parse_version(MIGRATION_VERSION))
 
     def test_manual_classified_positive_line_is_flipped(self):
         # AD-005: a manual cost entry classified by behavior (+300) becomes -300

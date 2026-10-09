@@ -17,6 +17,8 @@ class CmcCvrAnalysis(models.Model):
         {"price_unit", "variable_unit", "fixed_cost", "is_multiproduct",
          "mode", "center_id", "date_from", "date_to"}
     )
+    # a write on any of these changes the source of the actual-mode fixed cost
+    FIXED_COST_TRIGGERS = frozenset({"mode", "center_id", "date_from", "date_to"})
 
     name = fields.Char(required=True, default=lambda s: s.env._("CVR Analysis"))
     company_id = fields.Many2one(
@@ -96,7 +98,9 @@ class CmcCvrAnalysis(models.Model):
             groups = rec.center_id._cmc_cost_groups(
                 rec.date_from, rec.date_to, behavior="fixed", company=rec.company_id
             )
-            rec.fixed_cost = groups.get(rec.center_id.id, 0.0)
+            # why: the callers rebuild the curve right after; the nested write
+            # (fixed_cost is a curve trigger) would build it a second time
+            rec.with_context(cmc_skip_curve=True).fixed_cost = groups.get(rec.center_id.id, 0.0)
 
     @api.onchange("mode", "center_id", "date_from", "date_to")
     def _onchange_fixed_cost_source(self):
@@ -192,14 +196,20 @@ class CmcCvrAnalysis(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         records = super().create(vals_list)
+        # explicit fixed_cost wins; create preserves vals order
+        records.filtered(
+            lambda r: "fixed_cost" not in vals_list[records.ids.index(r.id)]
+        )._derive_fixed_cost()
         records._build_curve()
         return records
 
     def write(self, vals):
         res = super().write(vals)
+        if "fixed_cost" not in vals and self.FIXED_COST_TRIGGERS & vals.keys():
+            self._derive_fixed_cost()  # before the curve, which reads fixed_cost
         # the curve is a snapshot of the parameters: never leave the tab showing
         # points computed from the previous ones
-        if self.CURVE_TRIGGERS & vals.keys():
+        if self.CURVE_TRIGGERS & vals.keys() and not self.env.context.get("cmc_skip_curve"):
             self._build_curve()
         return res
 
@@ -217,6 +227,9 @@ class CmcCvrAnalysis(models.Model):
             if float_is_zero(rec.bep_qty, precision_rounding=qty_rounding):
                 continue
             p, v, cf = rec.price_unit, rec.variable_unit, rec.fixed_cost
+            # why: bep_qty is stored rounded to the quantity digits, so revenue and
+            # cost computed on it differ by a few cents at the break-even point
+            bep = cf / rec.mc_unit
             vals_list += [
                 {
                     "analysis_id": rec.id,
@@ -224,7 +237,7 @@ class CmcCvrAnalysis(models.Model):
                     "revenue": p * q,
                     "total_cost": cf + v * q,
                 }
-                for q in (0.0, rec.bep_qty, rec.bep_qty * 1.5, rec.bep_qty * 2)
+                for q in (0.0, bep, bep * 1.5, bep * 2)
             ]
         if vals_list:
             self.env["cmc.cvr.curve"].create(vals_list)

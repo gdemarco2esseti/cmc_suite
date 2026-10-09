@@ -1,5 +1,6 @@
 from datetime import date
 
+from odoo.tests import Form
 from odoo.tests.common import TransactionCase, new_test_user, tagged
 from odoo.tools import formatLang
 
@@ -170,3 +171,13 @@ class TestCostSign(TransactionCase):
         value = next(k["value"] for k in data["kpis"] if k["key"] == "cost")
         env = self.env(user=self.cmc_user, context={"allowed_company_ids": [self.company.id]})
         self.assertEqual(value, formatLang(env, 1000.0, currency_obj=self.eur))
+
+    def test_cost_entry_form_saves_negative_amount(self):
+        # AD-005: typing a positive cost in the Cost Entry form stores amount -100
+        view = self.env.ref("cmc_base.view_cmc_cost_entry_form")
+        with Form(self.AL.with_user(self.cmc_user), view=view) as form:
+            form.name = "typed"
+            form.cmc_center_id = self.center
+            form.cmc_behavior = "fixed"
+            form.cmc_cost_amount = 100.0
+        self.assertEqual(form.record.amount, -100.0)

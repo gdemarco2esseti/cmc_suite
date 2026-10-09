@@ -5,6 +5,9 @@
         <field name="model">account.analytic.line</field>
         <field name="inherit_id" ref="analytic.view_account_analytic_line_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//group[@name='amount']" position="inside">
+                <field name="cmc_cost_amount" readonly="1" invisible="not cmc_behavior"/>
+            </xpath>
             <xpath expr="//group[@name='amount']" position="after">
                 <group name="cmc_taxonomy" string="Cost Management">
                     <field name="cmc_behavior"/>

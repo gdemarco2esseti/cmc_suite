@@ -9,7 +9,8 @@
                 <field name="name" string="Description"/>
                 <field name="cmc_cost_element_id"/>
                 <field name="cmc_behavior"/>
-                <field name="amount"/>
+                <field name="cmc_cost_amount" sum="Total"/>
+                <field name="currency_id" column_invisible="1"/>
                 <field name="date"/>
                 <field name="company_id" groups="base.group_multi_company" optional="hide"/>
             </list>
@@ -29,7 +30,8 @@
                             <field name="date"/>
                         </group>
                         <group>
-                            <field name="amount"/>
+                            <field name="cmc_cost_amount" help="Enter the cost as a positive figure."/>
+                            <field name="currency_id" invisible="1"/>
                             <field name="cmc_cost_element_id"/>
                             <field name="cmc_behavior"/>
                             <field name="cmc_directness"/>

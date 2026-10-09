@@ -6,3 +6,4 @@ from . import cmc_budget_variance
 from . import cmc_budget_cash
 from . import cmc_closing_run
 from . import cmc_budget_bva
+from . import cmc_scenario_evaluator

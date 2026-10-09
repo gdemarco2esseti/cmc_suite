@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-from odoo.exceptions import AccessError, ValidationError
+from odoo.exceptions import AccessError, UserError, ValidationError
 
 from .cmc_utils import month_range
 
@@ -103,6 +103,18 @@ class CmcPlanVersion(models.Model):
     def _cmc_months(self):
         self.ensure_one()
         return month_range(self.date_from, self.date_to)
+
+    def _cmc_scenario_evaluators(self):
+        """Profit evaluators producers register with `super() + [...]` (AD-102); entries:
+        {"key", "name", "prepare": callable(version) -> {"inputs": {path: float}, "evaluate": callable(values) ->
+        {(center_id, element_id, month): signed amount}}}."""
+        return []
+
+    def _cmc_scenario_evaluator(self, key):
+        for entry in self._cmc_scenario_evaluators():
+            if entry["key"] == key:
+                return entry
+        raise UserError(self.env._("No module provides the scenario evaluator %s.", key))
 
 
 class CmcPlanVersionAssumption(models.Model):

@@ -11,7 +11,10 @@ CONTRACT (whole WP-04; each test file repeats the part it covers)
   ``capacity_ids`` O2m ``cmc.costing.capacity`` (result rows, in ``_cmc_result_fields``):
   ``center_id``, ``fixed_cost``, ``variable_cost``, ``capacity_practical``, ``capacity_used``,
   ``fixed_rate``, ``fixed_charged``, ``unabsorbed_cost``.
-- ``cmc.costing.result`` new fields: ``produced_qty``; ``unit_cost_primo`` / ``unit_cost_industriale`` /
+- ``cmc.costing.result`` new fields: ``produced_qty``; ``prime_cost_origin`` Selection
+  ``standard`` / ``actual`` / ``standard_fallback`` (actual mode, no stamped direct lines ->
+  ``standard_price x produced_qty``, primo config ``source = 'standard_fallback'``; standard mode keeps
+  the stamped direct lines in the overhead pool, Σ indirect = Σ final residual - rulings 1 and 5); ``unit_cost_primo`` / ``unit_cost_industriale`` /
   ``unit_cost_complessivo`` / ``unit_cost_economico_tecnico`` (level / produced qty, 0 without qty);
   ``cost_variable`` / ``cost_fixed`` (= ``cost_complessivo - cost_variable``) and their ``unit_*``;
   ``price_cost_plus`` (= ``unit_cost_complessivo * (1 + markup_percent / 100)``);
@@ -63,6 +66,10 @@ class Wp04Case(TransactionCase):
         cls.p1 = Product.create({"name": "WP04 P1", "standard_price": 50})
         cls.p2 = Product.create({"name": "WP04 P2", "standard_price": 80})
         cls.rm = Product.create({"name": "WP04 raw material", "standard_price": 7})
+        # why: standard_price is company-dependent; the runs belong to companies A and B
+        for company in (cls.company_a, cls.company_b):
+            for product, price in ((cls.p1, 50), (cls.p2, 80), (cls.rm, 7)):
+                product.with_company(company).standard_price = price
         # ---- company A
         env = cls.env_a
         cls.hours = env["cmc.cost.driver"].create({"name": "WP04 hours", "code": "WP04H", "company_id": cls.company_a.id})

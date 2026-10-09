@@ -1,7 +1,7 @@
 # WP-04 cmc_full_costing v2 — dispatch (odoo-dev-lead, 2026-10-09)
 
 ## Rulings
-1. Standard-mode "double count" is by design: cost_primo there is a per-unit standard reference, stamped direct lines stay in the overhead pool (Σ indirect = Σ final-centre residual). Standard×qty + variance is WP-03. Characterization test: standard mode with stamped direct lines → Σ cost_indiretto = Σ residual (2940 = 1770+600+570), prime_cost_origin='standard'. Document in prime_cost_source help.
+1. Standard-mode "double count" is by design: cost_primo there is a per-unit standard reference, stamped direct lines stay in the overhead pool (Σ indirect = Σ final-centre residual). Standard×qty + variance is WP-03. Characterization test: standard mode with stamped direct lines → Σ cost_indiretto = Σ residual (2370 = Z 1770 incl. 570 direct + W 600), prime_cost_origin='standard'. Document in prime_cost_source help.
 2. rate component total = unit_cost_complessivo. 3. used > practical → whole fixed pool charged, idle 0, never negative. 4. facts/lines manual, no cmc_mrp depends (AD-102).
 5. Fallback (orchestrator, corrected): actual mode, product in scope with produced facts and no direct lines → cost_primo = standard_price × produced_qty, prime_cost_origin='standard_fallback' (0 if no produced qty; RM case cost_primo 0, flag standard_fallback). Flag values standard/actual/standard_fallback.
 

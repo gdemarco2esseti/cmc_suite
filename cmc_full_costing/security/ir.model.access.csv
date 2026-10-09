@@ -11,3 +11,9 @@ access_cmc_costing_config_user,cmc.costing.config.user,model_cmc_costing_config,
 access_cmc_costing_config_manager,cmc.costing.config.manager,model_cmc_costing_config,cmc_base.group_cmc_manager,1,1,1,1
 access_cmc_figurative_user,cmc.figurative.cost.user,model_cmc_figurative_cost,cmc_base.group_cmc_user,1,1,1,0
 access_cmc_figurative_manager,cmc.figurative.cost.manager,model_cmc_figurative_cost,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_costing_capacity_user,cmc.costing.capacity.user,model_cmc_costing_capacity,cmc_base.group_cmc_user,1,0,0,0
+access_cmc_costing_capacity_manager,cmc.costing.capacity.manager,model_cmc_costing_capacity,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_costing_simulate_user,cmc.costing.simulate.user,model_cmc_costing_simulate,cmc_base.group_cmc_user,1,1,1,1
+access_cmc_costing_simulate_manager,cmc.costing.simulate.manager,model_cmc_costing_simulate,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_costing_simulate_line_user,cmc.costing.simulate.line.user,model_cmc_costing_simulate_line,cmc_base.group_cmc_user,1,1,1,1
+access_cmc_costing_simulate_line_manager,cmc.costing.simulate.line.manager,model_cmc_costing_simulate_line,cmc_base.group_cmc_manager,1,1,1,1

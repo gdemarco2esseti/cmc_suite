@@ -137,8 +137,45 @@ Shipped data (xmlid ``cmc_fin_analysis.<id>``; formulas over the namespace above
   crisis_autonomy = equity/total_sources (``>=`` 0.5), crisis_mon = mon, crisis_ebit_charges = ebit-fin_charges,
   crisis_spread = roi-rod, crisis_fco_debt = cf_fco-(fin_debt_c+fin_charges).
 
+Extras (WP-13 W1, pinned by ``test_fin_extras.py`` / ``test_fin_report.py``)
+- ``cmc.fin.input``: ``models.UniqueIndex`` on (company_id, year, code) -> IntegrityError on a duplicate. An
+  input code equal to a line code (or ratio code) of the run is "a code defined twice" -> UserError at compute
+  naming the code.
+- FIN-06 what-if (area liquidity, ``full_only``): typed inputs ``target_dso``, ``target_dio_raw``,
+  ``target_dio_finished``, ``target_dpo``. ``whatif_cycle`` (unit days) = target_dso+target_dio_raw
+  +target_dio_finished-target_dpo; ``whatif_cash_release`` (unit amount) = (dso-target_dso)*revenue/360
+  +(dio_raw-target_dio_raw)*raw_consumption/360+(dio_finished-target_dio_finished)*cs_cogs/360
+  -(dpo-target_dpo)*(purchases+services)/360 (sequence after the ratios they read).
+- FIN-09 ``scheme_cf_liquidity`` (cash_flow, formulas only, sequence > ``scheme_cf_oic10``, no base_code):
+  liq_generated = cf_gross_self_financing+fin_income+extraordinary; liq_abs_op_c = taxes+(ccnop-prev_ccnop)
+  -(op_liab_nc-prev_op_liab_nc); liq_abs_op_nc = cf_op_investment+((fin_assets_nc+fin_assets_c)
+  -(prev_fin_assets_nc+prev_fin_assets_c)); liq_abs_debt = fin_charges-(fin_debt-prev_fin_debt);
+  liq_abs_equity = net_income-(equity-prev_equity); liq_residual = liq_generated-liq_abs_op_c-liq_abs_op_nc
+  -liq_abs_debt-liq_abs_equity (== cf_cash_change); liq_residual_pct = liq_residual/liq_generated*100.
+- FIN-10 ``cmc.fin.ratio.area`` gains ``data_quality`` (label "Data quality"); ratios (threshold ``<=`` 0,
+  unit ratio except dq_intangible_growth amount): dq_intangible_growth = intangible-prev_intangible;
+  dq_inventory_vs_revenue = inventory/prev_inventory-revenue/prev_revenue;
+  dq_receivables_vs_revenue = receivables/prev_receivables-revenue/prev_revenue.
+- FIN-11 (area value, unit amount): mva_cov = eva/wacc; ev = coin+mva_cov; equity_value = ev-pfn (CEIN = 0).
+- FIN-05 ``cmc.fin.criteria.change`` (valuation-criteria change register): ``company_id`` req (default env
+  company, check_company, global ir.rule as above), ``year`` Integer req, ``name`` Char req, ``reason`` Text,
+  ``line_codes`` Char req = comma-separated line codes (blanks around commas ignored; a code that is not the
+  code of an existing scheme line -> ValidationError). ACL user 1111 manager 1111. At compute, value rows of
+  the run company whose ``code`` is listed and whose ``year`` = the change year get
+  ``comparability_break = True`` (Boolean on ``cmc.fin.analysis.value``): the value of that year AND its YoY
+  (year vs year-1) are not comparable. Other years / lines / companies: False.
+- ``cmc.fin.analysis._fin_report_data()`` (ensure_one) ->
+  ``{"years": [int asc], "schemes": [{"scheme": rec, "lines": [{"code", "name", "line_type", "values": {year: float},
+  "common_size": {year: float}, "breaks": [year asc with comparability_break]}]}], "ratios": [{"area": key,
+  "area_label": str, "rows": [{"code", "name", "unit", "values": {year: {"value", "status", "benchmark"}}}]}]}``.
+  Schemes = the run schemes by (sequence, id), lines by (sequence, id); areas in Selection order, only areas
+  with rows; ``benchmark`` float or None. A missing value row = key absent. Query count independent of the
+  number of years / rows.
+- Report ``cmc_fin_analysis.action_report_cmc_fin_analysis`` (qweb-pdf, model + binding ``cmc.fin.analysis``):
+  prints line names, year headers, ``n.c.`` for an absent value, ratio names grouped by area label.
+
 Security (ACL r,w,c,u): scheme / line / rule / ratio user 1000 manager 1111; override / history / input /
-benchmark user 1111 manager 1111; run user 1110 manager 1111; value / ratio value user 1000 manager 1000.
+benchmark / criteria change user 1111 manager 1111; run user 1110 manager 1111; value / ratio value user 1000 manager 1000.
 The run is computed as the calling user: the reader gate applies (group_cmc_user, company in env.companies).
 
 Fixture (company A, calendar fiscal year): 2024 from HISTORY (a GL noise entry in 2024 must be ignored),

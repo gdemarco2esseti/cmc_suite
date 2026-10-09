@@ -40,10 +40,10 @@ class TestFinSecurity(FinAnalysisCommon):
         # AD-001: results are written by Compute only, never by hand
         run = self._run(2026, 2026, user=self.cmc_user)
         run.action_compute()
-        with self.assertRaises((AccessError, UserError)):
-            run.value_ids[:1].write({"value": 1.0})
-        with self.assertRaises((AccessError, UserError)):
-            run.ratio_value_ids[:1].write({"value": 1.0})
+        # why not a tuple: odoo's assertRaises checks issubclass(exc, AccessError); UserError is the mixin guard
+        for rows in (run.value_ids[:1], run.ratio_value_ids[:1]):
+            with self.assertRaises(UserError):
+                rows.write({"value": 1.0})
 
     def test_cmc_user_records_choices_history_and_inputs(self):
         # FIN-02 / AD-116: overrides, imported balances and typed inputs are analyst data entry

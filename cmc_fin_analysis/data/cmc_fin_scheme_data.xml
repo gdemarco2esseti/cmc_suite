@@ -1,0 +1,1067 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+        <record id="scheme_bs_functional" model="cmc.fin.scheme">
+            <field name="name">Balance sheet (financial and functional)</field>
+            <field name="code">bs_functional</field>
+            <field name="scheme_type">balance_sheet</field>
+            <field name="sequence">10</field>
+            <field name="company_id" eval="False"/>
+            <field name="base_code">total_assets</field>
+        </record>
+        <record id="line_intangible" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">10</field>
+            <field name="code">intangible</field>
+            <field name="name">Intangible assets</field>
+            <field name="line_type">account</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_tangible" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">20</field>
+            <field name="code">tangible</field>
+            <field name="name">Tangible assets</field>
+            <field name="line_type">account</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_other_op_nc" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">30</field>
+            <field name="code">other_op_nc</field>
+            <field name="name">Other operating non-current assets</field>
+            <field name="line_type">account</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_fin_assets_nc" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">40</field>
+            <field name="code">fin_assets_nc</field>
+            <field name="name">Non-current financial assets</field>
+            <field name="line_type">account</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_inv_raw" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">50</field>
+            <field name="code">inv_raw</field>
+            <field name="name">Raw materials inventory</field>
+            <field name="line_type">account</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_inv_finished" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">60</field>
+            <field name="code">inv_finished</field>
+            <field name="name">Finished goods inventory</field>
+            <field name="line_type">account</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_receivables" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">70</field>
+            <field name="code">receivables</field>
+            <field name="name">Trade receivables</field>
+            <field name="line_type">account</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_other_op_c" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">80</field>
+            <field name="code">other_op_c</field>
+            <field name="name">Other operating current assets</field>
+            <field name="line_type">account</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_fin_assets_c" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">90</field>
+            <field name="code">fin_assets_c</field>
+            <field name="name">Current financial assets</field>
+            <field name="line_type">account</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_cash" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">100</field>
+            <field name="code">cash</field>
+            <field name="name">Cash and equivalents</field>
+            <field name="line_type">account</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_equity" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">110</field>
+            <field name="code">equity</field>
+            <field name="name">Equity</field>
+            <field name="line_type">account</field>
+            <field name="sign">-1</field>
+            <field name="result_line" eval="True"/>
+        </record>
+        <record id="line_op_liab_nc" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">120</field>
+            <field name="code">op_liab_nc</field>
+            <field name="name">Operating non-current liabilities</field>
+            <field name="line_type">account</field>
+            <field name="sign">-1</field>
+        </record>
+        <record id="line_fin_debt_nc" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">130</field>
+            <field name="code">fin_debt_nc</field>
+            <field name="name">Non-current financial debt</field>
+            <field name="line_type">account</field>
+            <field name="sign">-1</field>
+        </record>
+        <record id="line_payables" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">140</field>
+            <field name="code">payables</field>
+            <field name="name">Trade payables</field>
+            <field name="line_type">account</field>
+            <field name="sign">-1</field>
+        </record>
+        <record id="line_other_op_liab_c" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">150</field>
+            <field name="code">other_op_liab_c</field>
+            <field name="name">Other operating current liabilities</field>
+            <field name="line_type">account</field>
+            <field name="sign">-1</field>
+        </record>
+        <record id="line_fin_debt_c" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">160</field>
+            <field name="code">fin_debt_c</field>
+            <field name="name">Current financial debt</field>
+            <field name="line_type">account</field>
+            <field name="sign">-1</field>
+        </record>
+        <record id="line_op_assets_nc" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">170</field>
+            <field name="code">op_assets_nc</field>
+            <field name="name">Operating non-current assets</field>
+            <field name="line_type">formula</field>
+            <field name="formula">intangible+tangible+other_op_nc</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_inventory" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">180</field>
+            <field name="code">inventory</field>
+            <field name="name">Inventory</field>
+            <field name="line_type">formula</field>
+            <field name="formula">inv_raw+inv_finished</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_op_assets_c" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">190</field>
+            <field name="code">op_assets_c</field>
+            <field name="name">Operating current assets</field>
+            <field name="line_type">formula</field>
+            <field name="formula">inventory+receivables+other_op_c</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_assets_nc" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">200</field>
+            <field name="code">assets_nc</field>
+            <field name="name">Non-current assets</field>
+            <field name="line_type">formula</field>
+            <field name="formula">op_assets_nc+fin_assets_nc</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_assets_c" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">210</field>
+            <field name="code">assets_c</field>
+            <field name="name">Current assets</field>
+            <field name="line_type">formula</field>
+            <field name="formula">op_assets_c+fin_assets_c+cash</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_total_assets" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">220</field>
+            <field name="code">total_assets</field>
+            <field name="name">Total assets</field>
+            <field name="line_type">formula</field>
+            <field name="formula">assets_nc+assets_c</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_op_liab_c" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">230</field>
+            <field name="code">op_liab_c</field>
+            <field name="name">Operating current liabilities</field>
+            <field name="line_type">formula</field>
+            <field name="formula">payables+other_op_liab_c</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_liab_nc" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">240</field>
+            <field name="code">liab_nc</field>
+            <field name="name">Non-current liabilities</field>
+            <field name="line_type">formula</field>
+            <field name="formula">op_liab_nc+fin_debt_nc</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_liab_c" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">250</field>
+            <field name="code">liab_c</field>
+            <field name="name">Current liabilities</field>
+            <field name="line_type">formula</field>
+            <field name="formula">op_liab_c+fin_debt_c</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_total_sources" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">260</field>
+            <field name="code">total_sources</field>
+            <field name="name">Total sources</field>
+            <field name="line_type">formula</field>
+            <field name="formula">equity+liab_nc+liab_c</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_net_fixed" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">270</field>
+            <field name="code">net_fixed</field>
+            <field name="name">Net fixed capital</field>
+            <field name="line_type">formula</field>
+            <field name="formula">op_assets_nc-op_liab_nc</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_ccnop" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">280</field>
+            <field name="code">ccnop</field>
+            <field name="name">Operating net working capital (CCNop)</field>
+            <field name="line_type">formula</field>
+            <field name="formula">op_assets_c-op_liab_c</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_coin" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">290</field>
+            <field name="code">coin</field>
+            <field name="name">Net operating invested capital (COIN)</field>
+            <field name="line_type">formula</field>
+            <field name="formula">net_fixed+ccnop</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_fin_assets" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">300</field>
+            <field name="code">fin_assets</field>
+            <field name="name">Financial assets</field>
+            <field name="line_type">formula</field>
+            <field name="formula">fin_assets_nc+fin_assets_c+cash</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_cin" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">310</field>
+            <field name="code">cin</field>
+            <field name="name">Net invested capital (CIN)</field>
+            <field name="line_type">formula</field>
+            <field name="formula">coin+fin_assets</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_fin_debt" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">320</field>
+            <field name="code">fin_debt</field>
+            <field name="name">Financial debt</field>
+            <field name="line_type">formula</field>
+            <field name="formula">fin_debt_nc+fin_debt_c</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_pfn" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">330</field>
+            <field name="code">pfn</field>
+            <field name="name">Net financial position (PFN)</field>
+            <field name="line_type">formula</field>
+            <field name="formula">fin_debt-fin_assets</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_pfn_nc" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">340</field>
+            <field name="code">pfn_nc</field>
+            <field name="name">Net financial position, non-current</field>
+            <field name="line_type">formula</field>
+            <field name="formula">fin_debt_nc-fin_assets_nc</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_pfn_c" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="sequence">350</field>
+            <field name="code">pfn_c</field>
+            <field name="name">Net financial position, current</field>
+            <field name="line_type">formula</field>
+            <field name="formula">fin_debt_c-fin_assets_c-cash</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="scheme_pl_value_added" model="cmc.fin.scheme">
+            <field name="name">Income statement - value added</field>
+            <field name="code">pl_value_added</field>
+            <field name="scheme_type">income_statement</field>
+            <field name="sequence">20</field>
+            <field name="company_id" eval="False"/>
+            <field name="base_code">revenue</field>
+        </record>
+        <record id="line_revenue" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="sequence">10</field>
+            <field name="code">revenue</field>
+            <field name="name">Revenue</field>
+            <field name="line_type">account</field>
+            <field name="sign">-1</field>
+        </record>
+        <record id="line_fg_inv_change" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="sequence">20</field>
+            <field name="code">fg_inv_change</field>
+            <field name="name">Change in finished goods</field>
+            <field name="line_type">account</field>
+            <field name="sign">-1</field>
+        </record>
+        <record id="line_other_revenue" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="sequence">30</field>
+            <field name="code">other_revenue</field>
+            <field name="name">Other revenue</field>
+            <field name="line_type">account</field>
+            <field name="sign">-1</field>
+        </record>
+        <record id="line_fin_income" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="sequence">40</field>
+            <field name="code">fin_income</field>
+            <field name="name">Financial income</field>
+            <field name="line_type">account</field>
+            <field name="sign">-1</field>
+        </record>
+        <record id="line_extraordinary" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="sequence">50</field>
+            <field name="code">extraordinary</field>
+            <field name="name">Extraordinary income</field>
+            <field name="line_type">account</field>
+            <field name="sign">-1</field>
+        </record>
+        <record id="line_purchases" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="sequence">60</field>
+            <field name="code">purchases</field>
+            <field name="name">Purchases</field>
+            <field name="line_type">account</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_raw_inv_change" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="sequence">70</field>
+            <field name="code">raw_inv_change</field>
+            <field name="name">Change in raw materials</field>
+            <field name="line_type">account</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_services" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="sequence">80</field>
+            <field name="code">services</field>
+            <field name="name">Services</field>
+            <field name="line_type">account</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_other_expenses" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="sequence">90</field>
+            <field name="code">other_expenses</field>
+            <field name="name">Other expenses</field>
+            <field name="line_type">account</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_personnel" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="sequence">100</field>
+            <field name="code">personnel</field>
+            <field name="name">Personnel</field>
+            <field name="line_type">account</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_severance" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="sequence">110</field>
+            <field name="code">severance</field>
+            <field name="name">Severance accrual</field>
+            <field name="line_type">account</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_depreciation" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="sequence">120</field>
+            <field name="code">depreciation</field>
+            <field name="name">Depreciation</field>
+            <field name="line_type">account</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_provisions" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="sequence">130</field>
+            <field name="code">provisions</field>
+            <field name="name">Provisions</field>
+            <field name="line_type">account</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_fin_charges" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="sequence">140</field>
+            <field name="code">fin_charges</field>
+            <field name="name">Financial charges</field>
+            <field name="line_type">account</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_taxes" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="sequence">150</field>
+            <field name="code">taxes</field>
+            <field name="name">Taxes</field>
+            <field name="line_type">account</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_production_value" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="sequence">160</field>
+            <field name="code">production_value</field>
+            <field name="name">Production value</field>
+            <field name="line_type">formula</field>
+            <field name="formula">revenue+fg_inv_change+other_revenue</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_external_costs" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="sequence">170</field>
+            <field name="code">external_costs</field>
+            <field name="name">External costs</field>
+            <field name="line_type">formula</field>
+            <field name="formula">purchases+raw_inv_change+services+other_expenses</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_value_added" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="sequence">180</field>
+            <field name="code">value_added</field>
+            <field name="name">Value added</field>
+            <field name="line_type">formula</field>
+            <field name="formula">production_value-external_costs</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_ebitda" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="sequence">190</field>
+            <field name="code">ebitda</field>
+            <field name="name">EBITDA (MOL)</field>
+            <field name="line_type">formula</field>
+            <field name="formula">value_added-personnel</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_non_cash" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="sequence">200</field>
+            <field name="code">non_cash</field>
+            <field name="name">Non-cash costs</field>
+            <field name="line_type">formula</field>
+            <field name="formula">severance+depreciation+provisions</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_mon" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="sequence">210</field>
+            <field name="code">mon</field>
+            <field name="name">Net operating margin (MON)</field>
+            <field name="line_type">formula</field>
+            <field name="formula">ebitda-non_cash</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_ebit" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="sequence">220</field>
+            <field name="code">ebit</field>
+            <field name="name">EBIT</field>
+            <field name="line_type">formula</field>
+            <field name="formula">mon+fin_income</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_ordinary_result" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="sequence">230</field>
+            <field name="code">ordinary_result</field>
+            <field name="name">Ordinary result</field>
+            <field name="line_type">formula</field>
+            <field name="formula">ebit-fin_charges</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_pre_tax" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="sequence">240</field>
+            <field name="code">pre_tax</field>
+            <field name="name">Pre-tax result</field>
+            <field name="line_type">formula</field>
+            <field name="formula">ordinary_result+extraordinary</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_net_income" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="sequence">250</field>
+            <field name="code">net_income</field>
+            <field name="name">Net income</field>
+            <field name="line_type">formula</field>
+            <field name="formula">pre_tax-taxes</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_raw_consumption" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="sequence">260</field>
+            <field name="code">raw_consumption</field>
+            <field name="name">Raw material consumption</field>
+            <field name="line_type">formula</field>
+            <field name="formula">purchases+raw_inv_change</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_gross_cash_flow" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="sequence">270</field>
+            <field name="code">gross_cash_flow</field>
+            <field name="name">Gross cash flow</field>
+            <field name="line_type">formula</field>
+            <field name="formula">net_income+non_cash</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="scheme_pl_cost_of_sales" model="cmc.fin.scheme">
+            <field name="name">Income statement - cost of sales</field>
+            <field name="code">pl_cost_of_sales</field>
+            <field name="scheme_type">income_statement</field>
+            <field name="sequence">30</field>
+            <field name="company_id" eval="False"/>
+            <field name="base_code">cs_revenue</field>
+        </record>
+        <record id="line_cs_revenue" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_cost_of_sales"/>
+            <field name="sequence">10</field>
+            <field name="code">cs_revenue</field>
+            <field name="name">Revenue</field>
+            <field name="line_type">account</field>
+            <field name="sign">-1</field>
+        </record>
+        <record id="line_cs_cogs" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_cost_of_sales"/>
+            <field name="sequence">20</field>
+            <field name="code">cs_cogs</field>
+            <field name="name">Cost of goods sold</field>
+            <field name="line_type">account</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_cs_overheads" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_cost_of_sales"/>
+            <field name="sequence">30</field>
+            <field name="code">cs_overheads</field>
+            <field name="name">Overheads</field>
+            <field name="line_type">account</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_cs_other" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_cost_of_sales"/>
+            <field name="sequence">40</field>
+            <field name="code">cs_other</field>
+            <field name="name">Other items</field>
+            <field name="line_type">account</field>
+            <field name="sign">-1</field>
+        </record>
+        <record id="line_cs_industrial_margin" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_cost_of_sales"/>
+            <field name="sequence">50</field>
+            <field name="code">cs_industrial_margin</field>
+            <field name="name">Industrial margin</field>
+            <field name="line_type">formula</field>
+            <field name="formula">cs_revenue-cs_cogs</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_cs_operating_result" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_cost_of_sales"/>
+            <field name="sequence">60</field>
+            <field name="code">cs_operating_result</field>
+            <field name="name">Operating result</field>
+            <field name="line_type">formula</field>
+            <field name="formula">cs_industrial_margin-cs_overheads</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_cs_net_income" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_cost_of_sales"/>
+            <field name="sequence">70</field>
+            <field name="code">cs_net_income</field>
+            <field name="name">Net income</field>
+            <field name="line_type">formula</field>
+            <field name="formula">cs_operating_result+cs_other</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="scheme_pl_contribution" model="cmc.fin.scheme">
+            <field name="name">Income statement - contribution margin</field>
+            <field name="code">pl_contribution</field>
+            <field name="scheme_type">income_statement</field>
+            <field name="sequence">40</field>
+            <field name="company_id" eval="False"/>
+            <field name="base_code">cm_revenue</field>
+        </record>
+        <record id="line_cm_revenue" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_contribution"/>
+            <field name="sequence">10</field>
+            <field name="code">cm_revenue</field>
+            <field name="name">Revenue</field>
+            <field name="line_type">account</field>
+            <field name="sign">-1</field>
+        </record>
+        <record id="line_cm_variable" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_contribution"/>
+            <field name="sequence">20</field>
+            <field name="code">cm_variable</field>
+            <field name="name">Variable costs</field>
+            <field name="line_type">account</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_cm_fixed" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_contribution"/>
+            <field name="sequence">30</field>
+            <field name="code">cm_fixed</field>
+            <field name="name">Fixed costs</field>
+            <field name="line_type">account</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_cm_other" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_contribution"/>
+            <field name="sequence">40</field>
+            <field name="code">cm_other</field>
+            <field name="name">Other items</field>
+            <field name="line_type">account</field>
+            <field name="sign">-1</field>
+        </record>
+        <record id="line_cm_margin" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_contribution"/>
+            <field name="sequence">50</field>
+            <field name="code">cm_margin</field>
+            <field name="name">Contribution margin</field>
+            <field name="line_type">formula</field>
+            <field name="formula">cm_revenue-cm_variable</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_cm_operating_result" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_contribution"/>
+            <field name="sequence">60</field>
+            <field name="code">cm_operating_result</field>
+            <field name="name">Operating result</field>
+            <field name="line_type">formula</field>
+            <field name="formula">cm_margin-cm_fixed</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_cm_net_income" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_pl_contribution"/>
+            <field name="sequence">70</field>
+            <field name="code">cm_net_income</field>
+            <field name="name">Net income</field>
+            <field name="line_type">formula</field>
+            <field name="formula">cm_operating_result+cm_other</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="scheme_cf_functional" model="cmc.fin.scheme">
+            <field name="name">Cash flow - by management area</field>
+            <field name="code">cf_functional</field>
+            <field name="scheme_type">cash_flow</field>
+            <field name="sequence">50</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="line_cf_gross_self_financing" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_cf_functional"/>
+            <field name="sequence">10</field>
+            <field name="code">cf_gross_self_financing</field>
+            <field name="name">Gross self-financing</field>
+            <field name="line_type">formula</field>
+            <field name="formula">mon+depreciation</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_cf_net_self_financing" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_cf_functional"/>
+            <field name="sequence">20</field>
+            <field name="code">cf_net_self_financing</field>
+            <field name="name">Net self-financing</field>
+            <field name="line_type">formula</field>
+            <field name="formula">cf_gross_self_financing-taxes</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_cf_fcoc" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_cf_functional"/>
+            <field name="sequence">30</field>
+            <field name="code">cf_fcoc</field>
+            <field name="name">Operating cash flow before investments (FCOC)</field>
+            <field name="line_type">formula</field>
+            <field name="formula">cf_net_self_financing-(ccnop-prev_ccnop)+(op_liab_nc-prev_op_liab_nc)</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_cf_op_investment" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_cf_functional"/>
+            <field name="sequence">40</field>
+            <field name="code">cf_op_investment</field>
+            <field name="name">Operating investments</field>
+            <field name="line_type">formula</field>
+            <field name="formula">(op_assets_nc-prev_op_assets_nc)+depreciation</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_cf_fco" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_cf_functional"/>
+            <field name="sequence">50</field>
+            <field name="code">cf_fco</field>
+            <field name="name">Operating free cash flow (FCO)</field>
+            <field name="line_type">formula</field>
+            <field name="formula">cf_fcoc-cf_op_investment</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_cf_ordinary" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_cf_functional"/>
+            <field name="sequence">60</field>
+            <field name="code">cf_ordinary</field>
+            <field name="name">Ordinary cash flow</field>
+            <field name="line_type">formula</field>
+            <field name="formula">cf_fco-((fin_assets_nc+fin_assets_c)-(prev_fin_assets_nc+prev_fin_assets_c))+fin_income</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_cf_debt_service" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_cf_functional"/>
+            <field name="sequence">70</field>
+            <field name="code">cf_debt_service</field>
+            <field name="name">Cash flow available for debt service</field>
+            <field name="line_type">formula</field>
+            <field name="formula">cf_ordinary+extraordinary</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_cf_fcfe" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_cf_functional"/>
+            <field name="sequence">80</field>
+            <field name="code">cf_fcfe</field>
+            <field name="name">Free cash flow to equity (FCFE)</field>
+            <field name="line_type">formula</field>
+            <field name="formula">cf_debt_service+(fin_debt-prev_fin_debt)-fin_charges</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_cf_cash_change" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_cf_functional"/>
+            <field name="sequence">90</field>
+            <field name="code">cf_cash_change</field>
+            <field name="name">Change in cash</field>
+            <field name="line_type">formula</field>
+            <field name="formula">cf_fcfe+(equity-prev_equity)-net_income</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_cf_check" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_cf_functional"/>
+            <field name="sequence">100</field>
+            <field name="code">cf_check</field>
+            <field name="name">Check against balance sheet cash</field>
+            <field name="line_type">formula</field>
+            <field name="formula">cf_cash_change-(cash-prev_cash)</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="scheme_cf_oic10" model="cmc.fin.scheme">
+            <field name="name">Cash flow - OIC 10 indirect</field>
+            <field name="code">cf_oic10</field>
+            <field name="scheme_type">cash_flow</field>
+            <field name="sequence">60</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="line_oic_a1" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_cf_oic10"/>
+            <field name="sequence">10</field>
+            <field name="code">oic_a1</field>
+            <field name="name">A.1 Result before taxes, interest, dividends</field>
+            <field name="line_type">formula</field>
+            <field name="formula">net_income+taxes+fin_charges-fin_income</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_oic_a2" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_cf_oic10"/>
+            <field name="sequence">20</field>
+            <field name="code">oic_a2</field>
+            <field name="name">A.2 Before changes in working capital</field>
+            <field name="line_type">formula</field>
+            <field name="formula">oic_a1+non_cash</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_oic_a3" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_cf_oic10"/>
+            <field name="sequence">30</field>
+            <field name="code">oic_a3</field>
+            <field name="name">A.3 After changes in working capital</field>
+            <field name="line_type">formula</field>
+            <field name="formula">oic_a2-(inventory-prev_inventory)-(receivables-prev_receivables)+(payables-prev_payables)-(other_op_c-prev_other_op_c)+(other_op_liab_c-prev_other_op_liab_c)</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_oic_a" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_cf_oic10"/>
+            <field name="sequence">40</field>
+            <field name="code">oic_a</field>
+            <field name="name">A. Operating cash flow</field>
+            <field name="line_type">formula</field>
+            <field name="formula">oic_a3-taxes-fin_charges+fin_income+((op_liab_nc-prev_op_liab_nc)-severance-provisions)</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_oic_b" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_cf_oic10"/>
+            <field name="sequence">50</field>
+            <field name="code">oic_b</field>
+            <field name="name">B. Investing cash flow</field>
+            <field name="line_type">formula</field>
+            <field name="formula">-((op_assets_nc-prev_op_assets_nc)+depreciation)-((fin_assets_nc+fin_assets_c)-(prev_fin_assets_nc+prev_fin_assets_c))</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_oic_c" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_cf_oic10"/>
+            <field name="sequence">60</field>
+            <field name="code">oic_c</field>
+            <field name="name">C. Financing cash flow</field>
+            <field name="line_type">formula</field>
+            <field name="formula">(fin_debt-prev_fin_debt)+(equity-prev_equity)-net_income</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_oic_delta" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_cf_oic10"/>
+            <field name="sequence">70</field>
+            <field name="code">oic_delta</field>
+            <field name="name">Change in cash (A+B+C)</field>
+            <field name="line_type">formula</field>
+            <field name="formula">oic_a+oic_b+oic_c</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="line_oic_check" model="cmc.fin.scheme.line">
+            <field name="scheme_id" ref="scheme_cf_oic10"/>
+            <field name="sequence">80</field>
+            <field name="code">oic_check</field>
+            <field name="name">Check against balance sheet cash</field>
+            <field name="line_type">formula</field>
+            <field name="formula">oic_delta-(cash-prev_cash)</field>
+            <field name="sign">1</field>
+        </record>
+        <record id="rule_bs_functional_asset_fixed_tangible" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">100</field>
+            <field name="account_type">asset_fixed</field>
+            <field name="line_id" ref="line_tangible"/>
+        </record>
+        <record id="rule_bs_functional_asset_non_current_other_op_nc" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">101</field>
+            <field name="account_type">asset_non_current</field>
+            <field name="line_id" ref="line_other_op_nc"/>
+        </record>
+        <record id="rule_bs_functional_asset_receivable_receivables" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">102</field>
+            <field name="account_type">asset_receivable</field>
+            <field name="line_id" ref="line_receivables"/>
+        </record>
+        <record id="rule_bs_functional_asset_current_other_op_c" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">103</field>
+            <field name="account_type">asset_current</field>
+            <field name="line_id" ref="line_other_op_c"/>
+        </record>
+        <record id="rule_bs_functional_asset_prepayments_other_op_c" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">104</field>
+            <field name="account_type">asset_prepayments</field>
+            <field name="line_id" ref="line_other_op_c"/>
+        </record>
+        <record id="rule_bs_functional_asset_cash_cash" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">105</field>
+            <field name="account_type">asset_cash</field>
+            <field name="line_id" ref="line_cash"/>
+        </record>
+        <record id="rule_bs_functional_liability_payable_payables" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">106</field>
+            <field name="account_type">liability_payable</field>
+            <field name="line_id" ref="line_payables"/>
+        </record>
+        <record id="rule_bs_functional_liability_current_other_op_liab_c" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">107</field>
+            <field name="account_type">liability_current</field>
+            <field name="line_id" ref="line_other_op_liab_c"/>
+        </record>
+        <record id="rule_bs_functional_liability_credit_card_fin_debt_c" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">108</field>
+            <field name="account_type">liability_credit_card</field>
+            <field name="line_id" ref="line_fin_debt_c"/>
+        </record>
+        <record id="rule_bs_functional_liability_non_current_fin_debt_nc" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">109</field>
+            <field name="account_type">liability_non_current</field>
+            <field name="line_id" ref="line_fin_debt_nc"/>
+        </record>
+        <record id="rule_bs_functional_equity_equity" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">110</field>
+            <field name="account_type">equity</field>
+            <field name="line_id" ref="line_equity"/>
+        </record>
+        <record id="rule_bs_functional_equity_unaffected_equity" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">111</field>
+            <field name="account_type">equity_unaffected</field>
+            <field name="line_id" ref="line_equity"/>
+        </record>
+        <record id="rule_pl_value_added_income_revenue" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">100</field>
+            <field name="account_type">income</field>
+            <field name="line_id" ref="line_revenue"/>
+        </record>
+        <record id="rule_pl_value_added_income_other_other_revenue" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">101</field>
+            <field name="account_type">income_other</field>
+            <field name="line_id" ref="line_other_revenue"/>
+        </record>
+        <record id="rule_pl_value_added_expense_direct_cost_purchases" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">102</field>
+            <field name="account_type">expense_direct_cost</field>
+            <field name="line_id" ref="line_purchases"/>
+        </record>
+        <record id="rule_pl_value_added_expense_services" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">103</field>
+            <field name="account_type">expense</field>
+            <field name="line_id" ref="line_services"/>
+        </record>
+        <record id="rule_pl_value_added_expense_depreciation_depreciation" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">104</field>
+            <field name="account_type">expense_depreciation</field>
+            <field name="line_id" ref="line_depreciation"/>
+        </record>
+        <record id="rule_pl_cost_of_sales_income_cs_revenue" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_cost_of_sales"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">100</field>
+            <field name="account_type">income</field>
+            <field name="line_id" ref="line_cs_revenue"/>
+        </record>
+        <record id="rule_pl_cost_of_sales_income_other_cs_other" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_cost_of_sales"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">101</field>
+            <field name="account_type">income_other</field>
+            <field name="line_id" ref="line_cs_other"/>
+        </record>
+        <record id="rule_pl_cost_of_sales_expense_direct_cost_cs_cogs" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_cost_of_sales"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">102</field>
+            <field name="account_type">expense_direct_cost</field>
+            <field name="line_id" ref="line_cs_cogs"/>
+        </record>
+        <record id="rule_pl_cost_of_sales_expense_depreciation_cs_cogs" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_cost_of_sales"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">103</field>
+            <field name="account_type">expense_depreciation</field>
+            <field name="line_id" ref="line_cs_cogs"/>
+        </record>
+        <record id="rule_pl_cost_of_sales_expense_cs_overheads" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_cost_of_sales"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">104</field>
+            <field name="account_type">expense</field>
+            <field name="line_id" ref="line_cs_overheads"/>
+        </record>
+        <record id="rule_pl_contribution_variable_cm_variable" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_contribution"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">50</field>
+            <field name="cmc_behavior">variable</field>
+            <field name="line_id" ref="line_cm_variable"/>
+        </record>
+        <record id="rule_pl_contribution_fixed_cm_fixed" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_contribution"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">51</field>
+            <field name="cmc_behavior">fixed</field>
+            <field name="line_id" ref="line_cm_fixed"/>
+        </record>
+        <record id="rule_pl_contribution_semi_variable_cm_fixed" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_contribution"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">52</field>
+            <field name="cmc_behavior">semi_variable</field>
+            <field name="line_id" ref="line_cm_fixed"/>
+        </record>
+        <record id="rule_pl_contribution_income_cm_revenue" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_contribution"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">100</field>
+            <field name="account_type">income</field>
+            <field name="line_id" ref="line_cm_revenue"/>
+        </record>
+        <record id="rule_pl_contribution_income_other_cm_other" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_contribution"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">101</field>
+            <field name="account_type">income_other</field>
+            <field name="line_id" ref="line_cm_other"/>
+        </record>
+        <record id="rule_pl_contribution_expense_cm_fixed" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_contribution"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">102</field>
+            <field name="account_type">expense</field>
+            <field name="line_id" ref="line_cm_fixed"/>
+        </record>
+        <record id="rule_pl_contribution_expense_direct_cost_cm_fixed" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_contribution"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">103</field>
+            <field name="account_type">expense_direct_cost</field>
+            <field name="line_id" ref="line_cm_fixed"/>
+        </record>
+        <record id="rule_pl_contribution_expense_depreciation_cm_fixed" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_contribution"/>
+            <field name="company_id" eval="False"/>
+            <field name="sequence">104</field>
+            <field name="account_type">expense_depreciation</field>
+            <field name="line_id" ref="line_cm_fixed"/>
+        </record>
+</odoo>

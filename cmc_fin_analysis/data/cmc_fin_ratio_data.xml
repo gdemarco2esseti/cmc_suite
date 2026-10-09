@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+        <record id="ratio_treasury_margin" model="cmc.fin.ratio">
+            <field name="name">Treasury margin</field>
+            <field name="code">treasury_margin</field>
+            <field name="sequence">10</field>
+            <field name="area">liquidity</field>
+            <field name="unit">amount</field>
+            <field name="expression">assets_c-inventory-liab_c</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_quick_ratio" model="cmc.fin.ratio">
+            <field name="name">Quick ratio</field>
+            <field name="code">quick_ratio</field>
+            <field name="sequence">20</field>
+            <field name="area">liquidity</field>
+            <field name="unit">ratio</field>
+            <field name="expression">(assets_c-inventory)/liab_c</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_nwc" model="cmc.fin.ratio">
+            <field name="name">Net working capital (CCN)</field>
+            <field name="code">nwc</field>
+            <field name="sequence">30</field>
+            <field name="area">liquidity</field>
+            <field name="unit">amount</field>
+            <field name="expression">assets_c-liab_c</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_current_ratio" model="cmc.fin.ratio">
+            <field name="name">Current ratio</field>
+            <field name="code">current_ratio</field>
+            <field name="sequence">40</field>
+            <field name="area">liquidity</field>
+            <field name="unit">ratio</field>
+            <field name="expression">assets_c/liab_c</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_dso" model="cmc.fin.ratio">
+            <field name="name">Days sales outstanding (DSO)</field>
+            <field name="code">dso</field>
+            <field name="sequence">50</field>
+            <field name="area">liquidity</field>
+            <field name="unit">days</field>
+            <field name="expression">360/(revenue/receivables)</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_dpo" model="cmc.fin.ratio">
+            <field name="name">Days payables outstanding (DPO)</field>
+            <field name="code">dpo</field>
+            <field name="sequence">60</field>
+            <field name="area">liquidity</field>
+            <field name="unit">days</field>
+            <field name="expression">360/((purchases+services)/payables)</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_dio_raw" model="cmc.fin.ratio">
+            <field name="name">Days inventory, raw materials</field>
+            <field name="code">dio_raw</field>
+            <field name="sequence">70</field>
+            <field name="area">liquidity</field>
+            <field name="unit">days</field>
+            <field name="expression">360/(raw_consumption/inv_raw)</field>
+            <field name="company_id" eval="False"/>
+            <field name="full_only" eval="True"/>
+        </record>
+        <record id="ratio_dio_finished" model="cmc.fin.ratio">
+            <field name="name">Days inventory, finished goods</field>
+            <field name="code">dio_finished</field>
+            <field name="sequence">80</field>
+            <field name="area">liquidity</field>
+            <field name="unit">days</field>
+            <field name="expression">360/(cs_cogs/inv_finished)</field>
+            <field name="company_id" eval="False"/>
+            <field name="full_only" eval="True"/>
+        </record>
+        <record id="ratio_commercial_cycle" model="cmc.fin.ratio">
+            <field name="name">Commercial cycle</field>
+            <field name="code">commercial_cycle</field>
+            <field name="sequence">90</field>
+            <field name="area">liquidity</field>
+            <field name="unit">days</field>
+            <field name="expression">dso+dio_raw+dio_finished-dpo</field>
+            <field name="company_id" eval="False"/>
+            <field name="full_only" eval="True"/>
+        </record>
+        <record id="ratio_cash_coverage" model="cmc.fin.ratio">
+            <field name="name">Cash / revenue</field>
+            <field name="code">cash_coverage</field>
+            <field name="sequence">100</field>
+            <field name="area">liquidity</field>
+            <field name="unit">percent</field>
+            <field name="expression">cash/revenue</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_autonomy" model="cmc.fin.ratio">
+            <field name="name">Financial autonomy</field>
+            <field name="code">autonomy</field>
+            <field name="sequence">110</field>
+            <field name="area">solidity</field>
+            <field name="unit">percent</field>
+            <field name="expression">equity/total_sources</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_debt_equity" model="cmc.fin.ratio">
+            <field name="name">Net debt / equity</field>
+            <field name="code">debt_equity</field>
+            <field name="sequence">120</field>
+            <field name="area">solidity</field>
+            <field name="unit">ratio</field>
+            <field name="expression">pfn/equity</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_structure_margin" model="cmc.fin.ratio">
+            <field name="name">Structure margin</field>
+            <field name="code">structure_margin</field>
+            <field name="sequence">130</field>
+            <field name="area">solidity</field>
+            <field name="unit">amount</field>
+            <field name="expression">equity-assets_nc</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_fixed_asset_coverage" model="cmc.fin.ratio">
+            <field name="name">Fixed asset coverage by equity</field>
+            <field name="code">fixed_asset_coverage</field>
+            <field name="sequence">140</field>
+            <field name="area">solidity</field>
+            <field name="unit">ratio</field>
+            <field name="expression">equity/assets_nc</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_interest_coverage" model="cmc.fin.ratio">
+            <field name="name">Interest coverage</field>
+            <field name="code">interest_coverage</field>
+            <field name="sequence">150</field>
+            <field name="area">solidity</field>
+            <field name="unit">ratio</field>
+            <field name="expression">ebitda/fin_charges</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_debt_coverage" model="cmc.fin.ratio">
+            <field name="name">Financial debt coverage</field>
+            <field name="code">debt_coverage</field>
+            <field name="sequence">160</field>
+            <field name="area">solidity</field>
+            <field name="unit">ratio</field>
+            <field name="expression">ebitda/fin_debt</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_financing_intensity" model="cmc.fin.ratio">
+            <field name="name">Financing intensity</field>
+            <field name="code">financing_intensity</field>
+            <field name="sequence">170</field>
+            <field name="area">solidity</field>
+            <field name="unit">percent</field>
+            <field name="expression">fin_debt/revenue</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_nc_asset_weight" model="cmc.fin.ratio">
+            <field name="name">Weight of non-current assets</field>
+            <field name="code">nc_asset_weight</field>
+            <field name="sequence">180</field>
+            <field name="area">solidity</field>
+            <field name="unit">percent</field>
+            <field name="expression">assets_nc/total_assets</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_roe" model="cmc.fin.ratio">
+            <field name="name">ROE</field>
+            <field name="code">roe</field>
+            <field name="sequence">190</field>
+            <field name="area">profitability</field>
+            <field name="unit">percent</field>
+            <field name="expression">net_income/equity</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_roe_avg" model="cmc.fin.ratio">
+            <field name="name">ROE on average equity</field>
+            <field name="code">roe_avg</field>
+            <field name="sequence">200</field>
+            <field name="area">profitability</field>
+            <field name="unit">percent</field>
+            <field name="expression">net_income/((prev_equity+equity)/2)</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_roa" model="cmc.fin.ratio">
+            <field name="name">ROA</field>
+            <field name="code">roa</field>
+            <field name="sequence">210</field>
+            <field name="area">profitability</field>
+            <field name="unit">percent</field>
+            <field name="expression">mon/total_assets</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_roi" model="cmc.fin.ratio">
+            <field name="name">ROI</field>
+            <field name="code">roi</field>
+            <field name="sequence">220</field>
+            <field name="area">profitability</field>
+            <field name="unit">percent</field>
+            <field name="expression">ebit/cin</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_roi_op" model="cmc.fin.ratio">
+            <field name="name">Operating ROI</field>
+            <field name="code">roi_op</field>
+            <field name="sequence">230</field>
+            <field name="area">profitability</field>
+            <field name="unit">percent</field>
+            <field name="expression">mon/coin</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_ros" model="cmc.fin.ratio">
+            <field name="name">ROS</field>
+            <field name="code">ros</field>
+            <field name="sequence">240</field>
+            <field name="area">profitability</field>
+            <field name="unit">percent</field>
+            <field name="expression">mon/revenue</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_op_turnover" model="cmc.fin.ratio">
+            <field name="name">Operating capital turnover</field>
+            <field name="code">op_turnover</field>
+            <field name="sequence">250</field>
+            <field name="area">profitability</field>
+            <field name="unit">ratio</field>
+            <field name="expression">revenue/coin</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_rod" model="cmc.fin.ratio">
+            <field name="name">ROD (cost of debt)</field>
+            <field name="code">rod</field>
+            <field name="sequence">260</field>
+            <field name="area">profitability</field>
+            <field name="unit">percent</field>
+            <field name="expression">fin_charges/fin_debt</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_lev_s" model="cmc.fin.ratio">
+            <field name="name">Leverage S (non-financial items)</field>
+            <field name="code">lev_s</field>
+            <field name="sequence">270</field>
+            <field name="area">profitability</field>
+            <field name="unit">ratio</field>
+            <field name="expression">pre_tax/ordinary_result</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_lev_i" model="cmc.fin.ratio">
+            <field name="name">Leverage I (tax)</field>
+            <field name="code">lev_i</field>
+            <field name="sequence">280</field>
+            <field name="area">profitability</field>
+            <field name="unit">ratio</field>
+            <field name="expression">net_income/pre_tax</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_roe_leverage" model="cmc.fin.ratio">
+            <field name="name">ROE by leverage decomposition</field>
+            <field name="code">roe_leverage</field>
+            <field name="sequence">290</field>
+            <field name="area">profitability</field>
+            <field name="unit">percent</field>
+            <field name="expression">(roi+(roi-rod)*fin_debt/equity)*lev_s*lev_i</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_va_per_employee" model="cmc.fin.ratio">
+            <field name="name">Value added per employee</field>
+            <field name="code">va_per_employee</field>
+            <field name="sequence">300</field>
+            <field name="area">profitability</field>
+            <field name="unit">amount</field>
+            <field name="expression">value_added/employees</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_st_debt_coverage" model="cmc.fin.ratio">
+            <field name="name">Gross cash flow / short-term financial debt</field>
+            <field name="code">st_debt_coverage</field>
+            <field name="sequence">310</field>
+            <field name="area">cash_flow</field>
+            <field name="unit">ratio</field>
+            <field name="expression">gross_cash_flow/fin_debt_c</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_ke" model="cmc.fin.ratio">
+            <field name="name">Cost of equity (Ke)</field>
+            <field name="code">ke</field>
+            <field name="sequence">320</field>
+            <field name="area">value</field>
+            <field name="unit">percent</field>
+            <field name="expression">rf+beta*(rm-rf)</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_wacc" model="cmc.fin.ratio">
+            <field name="name">WACC</field>
+            <field name="code">wacc</field>
+            <field name="sequence">330</field>
+            <field name="area">value</field>
+            <field name="unit">percent</field>
+            <field name="expression">ke*equity/(equity+pfn)+rod*(1-tax_rate)*pfn/(equity+pfn)</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_nopat" model="cmc.fin.ratio">
+            <field name="name">NOPAT</field>
+            <field name="code">nopat</field>
+            <field name="sequence">340</field>
+            <field name="area">value</field>
+            <field name="unit">amount</field>
+            <field name="expression">mon*(1-tax_rate)</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_eva" model="cmc.fin.ratio">
+            <field name="name">Economic value added (EVA)</field>
+            <field name="code">eva</field>
+            <field name="sequence">350</field>
+            <field name="area">value</field>
+            <field name="unit">amount</field>
+            <field name="expression">nopat-wacc*coin</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_crisis_balance" model="cmc.fin.ratio">
+            <field name="name">Equity + non-current liabilities - non-current assets</field>
+            <field name="code">crisis_balance</field>
+            <field name="sequence">360</field>
+            <field name="area">crisis</field>
+            <field name="unit">amount</field>
+            <field name="expression">equity+liab_nc-assets_nc</field>
+            <field name="company_id" eval="False"/>
+            <field name="threshold_op">&gt;</field>
+            <field name="threshold">0</field>
+        </record>
+        <record id="ratio_crisis_ccnop" model="cmc.fin.ratio">
+            <field name="name">Operating net working capital</field>
+            <field name="code">crisis_ccnop</field>
+            <field name="sequence">370</field>
+            <field name="area">crisis</field>
+            <field name="unit">amount</field>
+            <field name="expression">ccnop</field>
+            <field name="company_id" eval="False"/>
+            <field name="threshold_op">&gt;</field>
+            <field name="threshold">0</field>
+        </record>
+        <record id="ratio_crisis_autonomy" model="cmc.fin.ratio">
+            <field name="name">Financial autonomy (minimum 50%)</field>
+            <field name="code">crisis_autonomy</field>
+            <field name="sequence">380</field>
+            <field name="area">crisis</field>
+            <field name="unit">percent</field>
+            <field name="expression">equity/total_sources</field>
+            <field name="company_id" eval="False"/>
+            <field name="threshold_op">&gt;=</field>
+            <field name="threshold">0.5</field>
+        </record>
+        <record id="ratio_crisis_mon" model="cmc.fin.ratio">
+            <field name="name">Net operating margin</field>
+            <field name="code">crisis_mon</field>
+            <field name="sequence">390</field>
+            <field name="area">crisis</field>
+            <field name="unit">amount</field>
+            <field name="expression">mon</field>
+            <field name="company_id" eval="False"/>
+            <field name="threshold_op">&gt;</field>
+            <field name="threshold">0</field>
+        </record>
+        <record id="ratio_crisis_ebit_charges" model="cmc.fin.ratio">
+            <field name="name">EBIT - financial charges</field>
+            <field name="code">crisis_ebit_charges</field>
+            <field name="sequence">400</field>
+            <field name="area">crisis</field>
+            <field name="unit">amount</field>
+            <field name="expression">ebit-fin_charges</field>
+            <field name="company_id" eval="False"/>
+            <field name="threshold_op">&gt;</field>
+            <field name="threshold">0</field>
+        </record>
+        <record id="ratio_crisis_spread" model="cmc.fin.ratio">
+            <field name="name">ROI - ROD spread</field>
+            <field name="code">crisis_spread</field>
+            <field name="sequence">410</field>
+            <field name="area">crisis</field>
+            <field name="unit">percent</field>
+            <field name="expression">roi-rod</field>
+            <field name="company_id" eval="False"/>
+            <field name="threshold_op">&gt;</field>
+            <field name="threshold">0</field>
+        </record>
+        <record id="ratio_crisis_fco_debt" model="cmc.fin.ratio">
+            <field name="name">FCO - (current debt + financial charges)</field>
+            <field name="code">crisis_fco_debt</field>
+            <field name="sequence">420</field>
+            <field name="area">crisis</field>
+            <field name="unit">amount</field>
+            <field name="expression">cf_fco-(fin_debt_c+fin_charges)</field>
+            <field name="company_id" eval="False"/>
+            <field name="threshold_op">&gt;</field>
+            <field name="threshold">0</field>
+        </record>
+</odoo>

@@ -43,7 +43,8 @@ class AccountMoveLine(models.Model):
     @api.model
     def _cmc_gl_balances_at(self, company, date_to):
         scope = self._cmc_reader_scope(company)
-        year_start = company.compute_fiscalyear_dates(date_to)["date_from"]
+        # why sudo: account_accountant reads account.fiscal.year here, which CMC users cannot read
+        year_start = company.sudo().compute_fiscalyear_dates(date_to)["date_from"]
         base = [("parent_state", "=", "posted"), ("company_id", "=", company.id), ("date", "<=", date_to)]
         balances = {}
         for initial, domain in (

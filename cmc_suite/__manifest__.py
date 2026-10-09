@@ -14,6 +14,7 @@
         "cmc_direct_costing",
         "cmc_joint_costs",
         "cmc_account",
+        "cmc_fin_analysis",
         "cmc_hr_timesheet",
         "cmc_mrp",
     ],

@@ -17,6 +17,8 @@ def _pct(variance, plan):
 
 class CmcPlanVersion(models.Model):
     _inherit = "cmc.plan.version"
+    # why: the alert threshold only flags BvA rows, it changes no planned figure (CB-6)
+    _cmc_editable_when_done = ("name", "alert_threshold")
 
     budget_line_ids = fields.One2many("cmc.budget.line", "version_id", copy=True)
     target_total_cost = fields.Monetary(help="Company total of the cost budget. 0 = no check on approval.")

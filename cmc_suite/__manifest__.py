@@ -22,6 +22,7 @@
         "cmc_standard_cost",
         "cmc_profitability",
         "cmc_target_lcc",
+        "cmc_process_costing",
     ],
     "installable": True,
     "application": True,

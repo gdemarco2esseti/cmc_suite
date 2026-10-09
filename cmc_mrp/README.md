@@ -43,6 +43,14 @@ imputate al centro di costo di produzione.
   riconosce (tramite `mrp.workcenter.productivity.account_move_line_id`) e la **esclude**
   dalla classificazione, così non entra nella base di costo.
 
+## Misure quantità (feeder)
+
+- `mrp_produced_qty`: quantità prodotta (movimenti finiti `done`). Dalla 19.0.1.4.1 **esclude** i movimenti di
+  scarto (`scrap_id`): il core 19 valorizza `production_id` anche sullo scarto di un prodotto finito, che prima
+  veniva contato come prodotto.
+- `mrp_scrap_qty` (`cmc_mrp.cmc_measure_scrap_qty`, nuova): quantità scartata dei prodotti finiti di ordini con
+  centro CMC, stessa granularità e conversione UoM del prodotto; alimenta gli scarti di `cmc_process_costing`.
+
 ## Note
 
 - Estende `mrp.production`, `stock.move` e `account.analytic.line`.

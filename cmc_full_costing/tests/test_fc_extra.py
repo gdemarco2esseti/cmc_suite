@@ -23,7 +23,7 @@ class TestFullCostingExtra(TransactionCase):
     def _make_cost(self, center, amount, behavior="fixed"):
         col = center.plan_id._column_name()
         return self.AL.create(
-            {"name": "c", col: center.id, "amount": amount, "cmc_behavior": behavior,
+            {"name": "c", col: center.id, "amount": -amount, "cmc_behavior": behavior,  # AD-005: cost = negative amount
              "date": date(date.today().year, 6, 15)}
         )
 

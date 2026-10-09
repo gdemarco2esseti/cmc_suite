@@ -58,7 +58,7 @@ class TestCapacityMultiLine(TransactionCase):
         return {
             "name": "split cost",
             "account_id": center.id,
-            "amount": amount,
+            "amount": -amount,  # AD-005: cost = negative amount
             "date": self.d_line,
             "cmc_behavior": behavior,
         }
@@ -111,7 +111,7 @@ class TestCapacityMultiLine(TransactionCase):
     def test_ac62_write_multi_amount(self):
         # AC6.2: a single write changing amount on both lines refreshes both capacities
         lines = self._create_pair()
-        lines.write({"amount": 2000.0})
+        lines.write({"amount": -2000.0})
         self._assert_capacity(2000.0, 2000.0)
 
     def test_ac62_write_multi_behavior_to_variable(self):
@@ -138,7 +138,7 @@ class TestCapacityMultiLine(TransactionCase):
         # AC6.3: a non-CMC booker (bills/timesheets) does multi-line CRUD; sudo hook keeps capacities in sync
         lines = self._create_pair(env_user=self.outsider)
         self._assert_capacity(1000.0, 500.0)
-        lines.with_user(self.outsider).write({"amount": 50.0})
+        lines.with_user(self.outsider).write({"amount": -50.0})
         self._assert_capacity(50.0, 50.0)
         lines.with_user(self.outsider).unlink()
         self._assert_capacity(0.0, 0.0)
@@ -147,7 +147,7 @@ class TestCapacityMultiLine(TransactionCase):
         # AC6.3: a plain CMC user (no manager, no admin) does the same multi-line CRUD
         lines = self._create_pair(env_user=self.cmc_user)
         self._assert_capacity(1000.0, 500.0)
-        lines.with_user(self.cmc_user).write({"amount": 70.0})
+        lines.with_user(self.cmc_user).write({"amount": -70.0})
         self._assert_capacity(70.0, 70.0)
         lines.with_user(self.cmc_user).unlink()
         self._assert_capacity(0.0, 0.0)

@@ -39,7 +39,7 @@ class TestClosingPeriod(TransactionCase):
         return cls.AA.create({"name": name, "plan_id": cls.plan.id, "cmc_center_type": ctype})
 
     def _cost(self, center, amount, on_date, element=False):
-        vals = {"name": "cost", "account_id": center.id, "amount": amount, "date": on_date}
+        vals = {"name": "cost", "account_id": center.id, "amount": -amount, "date": on_date}  # AD-005: cost = negative amount
         if element:
             vals["cmc_cost_element_id"] = element.id
         return self.AL.create(vals)

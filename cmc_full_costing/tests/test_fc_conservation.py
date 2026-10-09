@@ -27,7 +27,7 @@ class TestFullCostingConservation(TransactionCase):
             {"name": name, "plan_id": self.plan.id, "cmc_center_type": "final"}
         )
         self.AL.create(
-            {"name": "c", "account_id": center.id, "amount": amount,
+            {"name": "c", "account_id": center.id, "amount": -amount,  # AD-005: cost = negative amount
              "cmc_behavior": "fixed", "date": date(self.year, 6, 15)}
         )
         return center

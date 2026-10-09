@@ -13,10 +13,9 @@ class AccountAnalyticLine(models.Model):
     )
 
     def _cmc_activity_pools(self, date_from=False, date_to=False, company=False):
-        """{activity_id: signed pool amount} aggregated directly on the tag
+        """{activity_id: pool cost (net, may be negative)} aggregated directly on the tag
         column. The activity tag is a single column on the line (unlike a cost
-        center, which can live on any analytic plan column), so a plain
-        _read_group is correct here."""
+        center, which can live on any analytic plan column)."""
         domain = [("cmc_activity_id", "!=", False)]
         if company:
             domain.append(("company_id", "in", [False] + company.ids))
@@ -24,7 +23,5 @@ class AccountAnalyticLine(models.Model):
             domain.append(("date", ">=", date_from))
         if date_to:
             domain.append(("date", "<=", date_to))
-        groups = self._read_group(
-            domain, groupby=["cmc_activity_id"], aggregates=["amount:sum"]
-        )
-        return {activity.id: (amount or 0.0) for activity, amount in groups}
+        groups = self._cmc_cost_read_group(domain, groupby=["cmc_activity_id"])
+        return {activity.id: cost for activity, cost in groups}

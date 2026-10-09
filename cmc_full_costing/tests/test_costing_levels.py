@@ -55,7 +55,7 @@ class TestCostingLevels(TransactionCase):
     @classmethod
     def _cost(cls, center, amount):
         cls.AL.create(
-            {"name": "c", "account_id": center.id, "amount": amount,
+            {"name": "c", "account_id": center.id, "amount": -amount,  # AD-005: cost = negative amount
              "cmc_behavior": "fixed", "date": date(date.today().year, 6, 15)}
         )
 

@@ -48,6 +48,15 @@ class AccountAnalyticLine(models.Model):
         help="Convenience field: routes the cost to a cost center regardless of "
         "the analytic plan it lives on.",
     )
+    cmc_cost_amount = fields.Monetary(
+        string="Cost",
+        compute="_compute_cmc_cost_amount",
+        inverse="_inverse_cmc_cost_amount",
+        currency_field="currency_id",
+        readonly=False,
+        help="Cost as a positive figure; stored as a negative analytic amount, "
+        "the Odoo sign of a cost.",
+    )
     cmc_excluded = fields.Boolean(
         string="Excluded from Cost Base",
         copy=False,
@@ -76,6 +85,24 @@ class AccountAnalyticLine(models.Model):
         help="Special vs common is RELATIVE to the cost object under evaluation, "
         "passed via the 'cmc_cost_object' context key.",
     )
+
+    @api.depends("amount")
+    def _compute_cmc_cost_amount(self):
+        for line in self:
+            line.cmc_cost_amount = -line.amount
+
+    def _inverse_cmc_cost_amount(self):
+        for line in self:
+            line.amount = -line.cmc_cost_amount
+
+    @api.model
+    def _cmc_cost_read_group(self, domain, groupby=()):
+        """``_read_group`` whose last aggregate is the COST (positive) of the
+        group: the one place where the analytic sign (cost < 0) is flipped."""
+        return [
+            (*row[:-1], -(row[-1] or 0.0))
+            for row in self._read_group(domain, groupby=groupby, aggregates=["amount:sum"])
+        ]
 
     @api.constrains("cmc_relevance_min", "cmc_relevance_max")
     def _check_cmc_relevant_range(self):

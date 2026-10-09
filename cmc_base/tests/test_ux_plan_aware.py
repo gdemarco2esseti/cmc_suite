@@ -22,7 +22,7 @@ class TestPlanAware(TransactionCase):
 
     def _make_cost(self, center, amount, behavior="fixed", element=False):
         col = center.plan_id._column_name()
-        vals = {"name": "c", col: center.id, "amount": amount, "cmc_behavior": behavior, "date": date(date.today().year, 6, 15)}
+        vals = {"name": "c", col: center.id, "amount": -amount, "cmc_behavior": behavior, "date": date(date.today().year, 6, 15)}
         if element:
             vals["cmc_cost_element_id"] = element.id
         return self.AL.create(vals)
@@ -88,7 +88,7 @@ class TestPlanAware(TransactionCase):
             {"name": "C1", "plan_id": root_def.id, "cmc_center_type": "final"}
         )
         l1 = self.AL.create(
-            {"name": "x", "cmc_center_id": c1.id, "amount": 100, "cmc_behavior": "fixed"}
+            {"name": "x", "cmc_center_id": c1.id, "amount": -100, "cmc_behavior": "fixed"}
         )
         self.assertEqual(l1.account_id, c1)
         self.assertEqual(l1.cmc_center_id, c1)
@@ -97,7 +97,7 @@ class TestPlanAware(TransactionCase):
             {"name": "C2", "plan_id": self.plan_alt.id, "cmc_center_type": "final"}
         )
         l2 = self.AL.create(
-            {"name": "y", "cmc_center_id": c2.id, "amount": 50, "cmc_behavior": "fixed"}
+            {"name": "y", "cmc_center_id": c2.id, "amount": -50, "cmc_behavior": "fixed"}
         )
         self.assertEqual(l2[self.plan_alt._column_name()], c2)
         self.assertEqual(l2.cmc_center_id, c2)
@@ -114,7 +114,7 @@ class TestPlanAware(TransactionCase):
             {"name": "CB", "plan_id": self.plan_alt.id, "cmc_center_type": "final"}
         )
         line = self.AL.create(
-            {"name": "x", "cmc_center_id": c_a.id, "amount": 10, "cmc_behavior": "fixed"}
+            {"name": "x", "cmc_center_id": c_a.id, "amount": -10, "cmc_behavior": "fixed"}
         )
         self.assertEqual(line.account_id, c_a)
         # reswap to a center on another plan

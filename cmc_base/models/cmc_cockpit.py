@@ -91,10 +91,10 @@ class CmcCockpit(models.TransientModel):
         company_domain = [("company_id", "=", self.env.company.id)]
 
         # total booked cost (classified lines), as a magnitude
-        cost_groups = AL._read_group(
-            [("cmc_behavior", "!=", False), ("cmc_excluded", "=", False)] + company_domain, aggregates=["amount:sum"]
+        cost_groups = AL._cmc_cost_read_group(
+            [("cmc_behavior", "!=", False), ("cmc_excluded", "=", False)] + company_domain
         )
-        total_cost = abs((cost_groups[0][0] or 0.0) if cost_groups else 0.0)
+        total_cost = cost_groups[0][-1] if cost_groups else 0.0
 
         all_steps = pipeline + methods
         runs_done = sum(s["count"] for s in all_steps if s["key"] in DONE_RUN_KEYS)
@@ -116,13 +116,15 @@ class CmcCockpit(models.TransientModel):
         ]
 
         # cost-by-element chart (stored FK -> _read_group is fine)
-        el_groups = AL._read_group(
+        el_groups = AL._cmc_cost_read_group(
             [("cmc_cost_element_id", "!=", False), ("cmc_excluded", "=", False)] + company_domain,
-            groupby=["cmc_cost_element_id"], aggregates=["amount:sum"],
+            groupby=["cmc_cost_element_id"],
         )
+        # why: a net-credit element has no slice in a doughnut
+        el_groups = [(el, cost) for el, cost in el_groups if cost > 0]
         chart = {
             "labels": [el.display_name for el, _ in el_groups],
-            "values": [abs(amount or 0.0) for _, amount in el_groups],
+            "values": [cost for _, cost in el_groups],
         }
 
         return {"pipeline": pipeline, "methods": methods,

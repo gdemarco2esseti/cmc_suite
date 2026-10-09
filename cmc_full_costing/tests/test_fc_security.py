@@ -55,7 +55,7 @@ class TestFullCostingSecurity(TransactionCase):
              "cmc_center_type": "final", "company_id": company.id}
         )
         env["account.analytic.line"].create(
-            {"name": "ind", "account_id": center.id, "amount": pool,
+            {"name": "ind", "account_id": center.id, "amount": -pool,  # AD-005: cost = negative amount
              "company_id": company.id, "cmc_behavior": "fixed",
              "cmc_directness": "indirect", "date": date(date.today().year, 6, 15)}
         )

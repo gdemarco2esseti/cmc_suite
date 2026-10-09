@@ -113,9 +113,7 @@ class CmcAbcRun(models.Model):
         snapshot = []
         for activity_id, line_ids in line_ids_by_activity.items():
             alines = self.env["cmc.abc.line"].browse(line_ids)
-            pool = float_round(
-                abs(pools.get(activity_id, 0.0)), precision_rounding=rounding
-            )
+            pool = float_round(pools.get(activity_id, 0.0), precision_rounding=rounding)
             # UNIQUE(run, activity, product) guarantees one line per product
             qty_by_product = {line.product_id.id: line.driver_qty for line in alines}
             base = sum(qty_by_product.values())
@@ -139,10 +137,10 @@ class CmcAbcRun(models.Model):
         # Cost tagged to an activity nobody entered a driver row for would
         # silently DISAPPEAR (no residual, no warning). Freeze it as an explicit
         # unallocated row so it shows in the reclass and on the run.
-        for activity_id, signed_pool in pools.items():
+        for activity_id, net_pool in pools.items():
             if activity_id in line_ids_by_activity:
                 continue
-            pool = float_round(abs(signed_pool), precision_rounding=rounding)
+            pool = float_round(net_pool, precision_rounding=rounding)
             if not float_is_zero(pool, precision_rounding=rounding):
                 snapshot.append(self._unallocated_vals(activity_id, pool))
         self.result_ids.unlink()

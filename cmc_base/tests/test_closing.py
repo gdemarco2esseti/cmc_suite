@@ -27,9 +27,9 @@ class TestClosing(TransactionCase):
         )
 
     def _cost(self, center, amount):
-        # cost pool localized on a center (positive magnitude for the test)
+        # cost pool localized on a center; AD-005: a cost is a NEGATIVE amount
         self.AL.create(
-            {"name": "cost", "account_id": center.id, "amount": amount, "date": date(date.today().year, 6, 15)}
+            {"name": "cost", "account_id": center.id, "amount": -amount, "date": date(date.today().year, 6, 15)}
         )
 
     def _service(self, provider, receiver, qty):

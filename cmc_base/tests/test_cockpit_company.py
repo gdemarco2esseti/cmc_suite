@@ -56,9 +56,9 @@ class TestCockpitCompany(TransactionCase):
 
     @classmethod
     def _cost(cls, center, element, amount):
-        # classified cost (cmc_behavior set) on a company-owned center
+        # classified cost (cmc_behavior set) on a company-owned center; AD-005: cost = negative amount
         cls.AL.create(
-            {"name": "cost", "account_id": center.id, "amount": amount,
+            {"name": "cost", "account_id": center.id, "amount": -amount,
              "company_id": center.company_id.id, "cmc_behavior": "fixed",
              "cmc_cost_element_id": element.id}
         )

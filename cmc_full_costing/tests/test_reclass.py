@@ -12,7 +12,7 @@ class TestFullReclass(TransactionCase):
         z = self.env["account.analytic.account"].create(
             {"name": "Z", "plan_id": plan.id, "cmc_center_type": "final"})
         self.env["account.analytic.line"].create(
-            {"name": "c", "account_id": z.id, "amount": 3000, "date": date(2026, 1, 15),
+            {"name": "c", "account_id": z.id, "amount": -3000, "date": date(2026, 1, 15),
              "cmc_behavior": "fixed", "cmc_cost_element_id": el.id})
         drv = self.env["cmc.cost.driver"].create({"name": "H", "code": "H"})
         p1 = self.env["product.product"].create({"name": "P1"})

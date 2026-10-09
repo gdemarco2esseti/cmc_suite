@@ -29,7 +29,7 @@ class TestCostingPeriod(TransactionCase):
         cls.year = 2019
         cls.center = cls.AA.create({"name": "Assembly", "plan_id": cls.plan.id, "cmc_center_type": "final"})
         cls.AL.create(
-            {"name": "ind", "account_id": cls.center.id, "amount": 1000, "date": date(cls.year, 2, 15),
+            {"name": "ind", "account_id": cls.center.id, "amount": -1000, "date": date(cls.year, 2, 15),
              "cmc_behavior": "fixed", "cmc_directness": "indirect"}
         )
         cls.product = cls.env["product.product"].create({"name": "P1", "standard_price": 10})

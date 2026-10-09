@@ -141,6 +141,7 @@ class TestMrpLabourTwin(TransactionCase):
         ])
 
     def _center_total(self):
+        # AD-005: _cmc_cost_groups returns COSTS (positive for negative lines)
         return self.center._cmc_cost_groups().get(self.center.id, 0.0)
 
     def _unclassified_queue(self):
@@ -168,25 +169,25 @@ class TestMrpLabourTwin(TransactionCase):
 
     def test_ac41_labour_once_model_on_expense_account(self):
         # AC4.1: distribution model on the labour (credited) account -> the twin
-        # is the line stamped on time_ids; the center must show -cost once.
+        # is the line stamped on time_ids; the center must show the cost once (AD-005: positive).
         self._distribution_model(self.labour_account)
         mo = self._complete(self._mo("ac41a"))
         self._assert_scenario(mo)
         self.assertAlmostEqual(
-            self._center_total(), -LABOUR_COST, places=2,
-            msg="labour must be counted once on the center (= -wo._cal_cost())",
+            self._center_total(), LABOUR_COST, places=2,
+            msg="labour must be counted once on the center (AD-005: cost = wo._cal_cost(), positive)",
         )
 
     def test_ac41_labour_once_model_on_wip_account(self):
         # AC4.1: distribution model on the production-location (debited) account
         # -> the twin is the LAST line of the entry, which core never stamps on
-        # time_ids; the center must still show -cost once.
+        # time_ids; the center must still show the cost once.
         self._distribution_model(self.wip_account)
         mo = self._complete(self._mo("ac41b"))
         self._assert_scenario(mo)
         self.assertAlmostEqual(
-            self._center_total(), -LABOUR_COST, places=2,
-            msg="labour must be counted once on the center (= -wo._cal_cost())",
+            self._center_total(), LABOUR_COST, places=2,
+            msg="labour must be counted once on the center (AD-005: cost = wo._cal_cost(), positive)",
         )
 
     # ------------------------------------------------------------------
@@ -265,7 +266,7 @@ class TestMrpLabourTwin(TransactionCase):
         self.assertTrue(lines)
         self.assertTrue(all(lines.mapped("cmc_excluded")))
         self.assertFalse(any(lines.mapped("cmc_behavior")))
-        self.assertAlmostEqual(self._center_total(), -LABOUR_COST, places=2)
+        self.assertAlmostEqual(self._center_total(), LABOUR_COST, places=2)
 
     def test_ac45_twin_stays_excluded_after_draft_and_repost(self):
         self._distribution_model(self.wip_account)
@@ -355,7 +356,7 @@ class TestMrpLabourTwin(TransactionCase):
         self._complete(mo, user=user)
         self._assert_scenario(mo)
         self.assertTrue(all(self._twins(mo).mapped("cmc_excluded")))
-        self.assertAlmostEqual(self._center_total(), -LABOUR_COST, places=2)
+        self.assertAlmostEqual(self._center_total(), LABOUR_COST, places=2)
 
     # ------------------------------------------------------------------
     # access cost -- the twin detection runs on EVERY analytic line created

@@ -137,7 +137,7 @@ class TestCvrActualMode(TransactionCase):
 
     def _cost(self, amount, behavior="fixed", day=15):
         return self.env["account.analytic.line"].create(
-            {"name": "c", "account_id": self.center.id, "amount": amount,
+            {"name": "c", "account_id": self.center.id, "amount": -amount,  # AD-005: cost = negative amount
              "date": date(2026, 1, day), "cmc_behavior": behavior}
         )
 
@@ -173,7 +173,7 @@ class TestCvrActualMode(TransactionCase):
         self._cost(30000)
         self._cost(99999, day=15)
         self.env["account.analytic.line"].create(
-            {"name": "old", "account_id": self.center.id, "amount": 777,
+            {"name": "old", "account_id": self.center.id, "amount": -777,
              "date": date(2025, 1, 15), "cmc_behavior": "fixed"}
         )
         a = self.env["cmc.cvr.analysis"].create(

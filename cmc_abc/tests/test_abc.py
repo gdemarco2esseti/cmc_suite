@@ -32,7 +32,8 @@ class TestAbc(TransactionCase):
     def _pool(cls, activity, amount, **kw):
         vals = {
             "name": "cost", "account_id": cls.center.id,
-            "amount": amount, "cmc_activity_id": activity.id,
+            # AD-005: cost = NEGATIVE amount; a negative `amount` arg is a reversal
+            "amount": -amount, "cmc_activity_id": activity.id,
         }
         vals.update(kw)
         return cls.AL.create(vals)
@@ -81,14 +82,34 @@ class TestAbc(TransactionCase):
         total = sum(run.result_ids.mapped("amount"))
         self.assertEqual(total, 100.0)
 
-    # pool read as magnitude regardless of sign (costs may be negative)
+    # AD-005: a reversal (positive amount) REDUCES the pool: cost 1000 + reversal 200 -> pool 800
     def test_negative_amount_pool(self):
-        self._pool(self.a, -1000)
+        self._pool(self.a, 1000)   # cost line, amount -1000
+        self._pool(self.a, -200)   # reversal line, amount +200
+        run = self._run([
+            {"activity_id": self.a.id, "product_id": self.p1.id, "driver_qty": 60},
+            {"activity_id": self.a.id, "product_id": self.p2.id, "driver_qty": 40},
+        ])
+        self.assertEqual(self._res(run, self.p1).amount, 480.0)
+        self.assertEqual(self._res(run, self.p2).amount, 320.0)
+        self.assertEqual(set(run.activity_result_ids.mapped("pool_amount")), {800.0})
+
+    # AD-005: a cost from a document (-600) and a manual Cost Entry (cmc_cost_amount=400) add up, never cancel
+    def test_document_and_manual_cost_entry_add_up(self):
+        self.AL.create({
+            "name": "bill", "account_id": self.center.id, "amount": -600.0,
+            "cmc_activity_id": self.a.id, "date": date(2026, 1, 15),
+        })
+        self.AL.create({
+            "name": "manual entry", "account_id": self.center.id, "cmc_cost_amount": 400.0,
+            "cmc_activity_id": self.a.id, "date": date(2026, 1, 15),
+        })
         run = self._run([
             {"activity_id": self.a.id, "product_id": self.p1.id, "driver_qty": 60},
             {"activity_id": self.a.id, "product_id": self.p2.id, "driver_qty": 40},
         ])
         self.assertEqual(self._res(run, self.p1).amount, 600.0)
+        self.assertEqual(self._res(run, self.p2).amount, 400.0)
 
     # empty pool -> zero results, no crash
     def test_empty_pool(self):
@@ -235,7 +256,7 @@ class TestAbc(TransactionCase):
         )
         self._pool(self.a, 1000)
         self.AL.create({
-            "name": "cost b", "account_id": center_b.id, "amount": 500,
+            "name": "cost b", "account_id": center_b.id, "amount": -500,
             "cmc_activity_id": act_b.id, "company_id": c2.id,
         })
         run_a = self._run([

@@ -5,6 +5,10 @@ from odoo.tools import float_compare, float_is_zero
 # never at the currency step
 RATIO_ROUNDING = 0.0001
 
+# why a sentinel: the context travels over RPC, so a plain True could be forged by a
+# client; an ``object()`` cannot be serialised (same as CMC_AUTO in cmc_base).
+_SKIP_CURVE = object()
+
 
 class CmcCvrAnalysis(models.Model):
     _name = "cmc.cvr.analysis"
@@ -100,7 +104,7 @@ class CmcCvrAnalysis(models.Model):
             )
             # why: the callers rebuild the curve right after; the nested write
             # (fixed_cost is a curve trigger) would build it a second time
-            rec.with_context(cmc_skip_curve=True).fixed_cost = groups.get(rec.center_id.id, 0.0)
+            rec.with_context(cmc_skip_curve=_SKIP_CURVE).fixed_cost = groups.get(rec.center_id.id, 0.0)
 
     @api.onchange("mode", "center_id", "date_from", "date_to")
     def _onchange_fixed_cost_source(self):
@@ -196,9 +200,11 @@ class CmcCvrAnalysis(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         records = super().create(vals_list)
-        # explicit fixed_cost wins; create preserves vals order
-        records.filtered(
-            lambda r: "fixed_cost" not in vals_list[records.ids.index(r.id)]
+        # explicit fixed_cost wins; create preserves vals order. A fixed_cost
+        # coming only from context (default_fixed_cost) is not in vals_list and is
+        # overridden by the derivation in actual mode, as intended.
+        records.browse(
+            [r.id for r, v in zip(records, vals_list) if "fixed_cost" not in v]
         )._derive_fixed_cost()
         records._build_curve()
         return records
@@ -209,7 +215,7 @@ class CmcCvrAnalysis(models.Model):
             self._derive_fixed_cost()  # before the curve, which reads fixed_cost
         # the curve is a snapshot of the parameters: never leave the tab showing
         # points computed from the previous ones
-        if self.CURVE_TRIGGERS & vals.keys() and not self.env.context.get("cmc_skip_curve"):
+        if self.CURVE_TRIGGERS & vals.keys() and self.env.context.get("cmc_skip_curve") is not _SKIP_CURVE:
             self._build_curve()
         return res
 
@@ -229,7 +235,7 @@ class CmcCvrAnalysis(models.Model):
             p, v, cf = rec.price_unit, rec.variable_unit, rec.fixed_cost
             # why: bep_qty is stored rounded to the quantity digits, so revenue and
             # cost computed on it differ by a few cents at the break-even point
-            bep = cf / rec.mc_unit
+            bep = cf / (p - v)
             vals_list += [
                 {
                     "analysis_id": rec.id,

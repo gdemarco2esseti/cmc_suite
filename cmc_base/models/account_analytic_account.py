@@ -50,7 +50,7 @@ class AccountAnalyticAccount(models.Model):
 
     def _cmc_cost_groups(self, date_from=False, date_to=False, behavior=False,
                          by_element=False, company=False):
-        """Plan-aware aggregation of analytic-line amounts for these centers.
+        """Plan-aware aggregation of the COSTS (positive) of these centers.
         A center may live on any analytic plan, so its costs sit in that plan's
         column (not necessarily the default one). Returns {account_id: amount}
         or {(account_id, element_id): amount} when by_element."""
@@ -70,10 +70,8 @@ class AccountAnalyticAccount(models.Model):
                 continue
             col = plan._column_name()
             groupby = [col, "cmc_cost_element_id"] if by_element else [col]
-            groups = Line._read_group(
-                base + [(col, "in", accounts.ids)],
-                groupby=groupby,
-                aggregates=["amount:sum"],
+            groups = Line._cmc_cost_read_group(
+                base + [(col, "in", accounts.ids)], groupby=groupby
             )
             for vals in groups:
                 account = vals[0]

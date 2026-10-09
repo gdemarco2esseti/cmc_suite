@@ -24,15 +24,15 @@ class TestCvrActualDerivation(TransactionCase):
         cls.center_b = cls.env["account.analytic.account"].create(
             {"name": "CVR derive B", "plan_id": cls.plan.id, "cmc_center_type": "final"}
         )
-        # fixed costs: positive amount = cost (same convention as test_cvr.py)
+        # AD-005: cost = NEGATIVE amount (same convention as test_cvr.py)
         line = cls.env["account.analytic.line"]
-        line.create({"name": "fx C jan", "account_id": cls.center.id, "amount": 1000,
+        line.create({"name": "fx C jan", "account_id": cls.center.id, "amount": -1000,
                      "date": date(2026, 1, 15), "cmc_behavior": "fixed"})
-        line.create({"name": "var C jan", "account_id": cls.center.id, "amount": 400,
+        line.create({"name": "var C jan", "account_id": cls.center.id, "amount": -400,
                      "date": date(2026, 1, 15), "cmc_behavior": "variable"})
-        line.create({"name": "fx C feb", "account_id": cls.center.id, "amount": 2500,
+        line.create({"name": "fx C feb", "account_id": cls.center.id, "amount": -2500,
                      "date": date(2026, 2, 15), "cmc_behavior": "fixed"})
-        line.create({"name": "fx B jan", "account_id": cls.center_b.id, "amount": 3000,
+        line.create({"name": "fx B jan", "account_id": cls.center_b.id, "amount": -3000,
                      "date": date(2026, 1, 15), "cmc_behavior": "fixed"})
 
     def _vals(self, **kw):

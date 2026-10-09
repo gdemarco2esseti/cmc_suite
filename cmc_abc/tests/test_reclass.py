@@ -18,7 +18,7 @@ class TestAbcReclass(TransactionCase):
             {"name": "Z", "plan_id": self._plan().id, "cmc_center_type": "final"})
         act = self.env["cmc.abc.activity"].create({"name": "Set", "code": "SET"})
         self.env["account.analytic.line"].create(
-            {"name": "pool", "account_id": z.id, "amount": 1000,
+            {"name": "pool", "account_id": z.id, "amount": -1000,
              "date": date(2026, 1, 15), "cmc_behavior": "variable",
              "cmc_cost_element_id": el.id, "cmc_activity_id": act.id})
         p1 = self.env["product.product"].create({"name": "P1"})
@@ -51,9 +51,9 @@ class TestAbcReclass(TransactionCase):
         self._assert_squares(run._cmc_reclass())
 
     def test_negative_pool_sign(self):
-        # B-1 regression: analytic cost lines are conventionally NEGATIVE; the
-        # reclass must abs() the pool like the engine, so activity rows come out
-        # POSITIVE and reconcile with the positive total subtotal.
+        # B-1 regression / AD-005: analytic cost lines are NEGATIVE (cost =
+        # -amount); the engine turns the pool into a positive cost, so activity
+        # rows come out POSITIVE and reconcile with the positive total subtotal.
         el = self.env.ref("cmc_base.cmc_element_mod")
         z = self.env["account.analytic.account"].create(
             {"name": "Zn", "plan_id": self._plan().id, "cmc_center_type": "final"})
@@ -93,7 +93,7 @@ class TestAbcReclass(TransactionCase):
         before = run._cmc_reclass()
         # more cost tagged to the same activity AFTER the run was computed
         self.env["account.analytic.line"].create(
-            {"name": "late", "account_id": z.id, "amount": 9999,
+            {"name": "late", "account_id": z.id, "amount": -9999,
              "date": date(2026, 1, 20), "cmc_behavior": "variable",
              "cmc_cost_element_id": el.id, "cmc_activity_id": act.id})
         run.invalidate_recordset()

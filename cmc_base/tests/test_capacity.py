@@ -25,7 +25,7 @@ class TestCapacity(TransactionCase):
             {
                 "name": "fixed cost",
                 "account_id": self.center.id,
-                "amount": amount,
+                "amount": -amount,  # AD-005: cost = negative amount
                 "date": date(2026, 1, 15),
                 "cmc_behavior": "fixed",
             }
@@ -36,7 +36,7 @@ class TestCapacity(TransactionCase):
             {
                 "name": "var cost",
                 "account_id": self.center.id,
-                "amount": amount,
+                "amount": -amount,  # AD-005: cost = negative amount
                 "date": date(2026, 1, 15),
                 "cmc_behavior": "variable",
             }

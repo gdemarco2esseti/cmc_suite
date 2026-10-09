@@ -39,7 +39,7 @@ class TestCmcSecurity(TransactionCase):
         vals = {
             "name": "cost",
             "account_id": self.center.id,
-            "amount": 100.0,
+            "amount": -100.0,
             "date": date(2026, 1, 15),
             "cmc_behavior": "fixed",
         }
@@ -51,7 +51,7 @@ class TestCmcSecurity(TransactionCase):
         analytic lines: the capacity-sync hook runs on every one of them."""
         line = self.AL.with_user(self.outsider).create(self._vals())
         line.write({"name": "renamed"})
-        line.write({"amount": 200.0})
+        line.write({"amount": -200.0})
         line.unlink()
 
     def test_non_cmc_user_line_still_updates_capacity(self):
@@ -67,7 +67,7 @@ class TestCmcSecurity(TransactionCase):
             }
         )
         self.assertEqual(analysis.fixed_cost, 0.0)
-        self.AL.with_user(self.outsider).create(self._vals(amount=500.0))
+        self.AL.with_user(self.outsider).create(self._vals(amount=-500.0))
         self.assertEqual(analysis.fixed_cost, 500.0)
         self.assertEqual(analysis.imputed_fixed_cost, 400.0)
         self.assertEqual(analysis.unused_capacity_cost, 100.0)
@@ -92,7 +92,7 @@ class TestCmcSecurity(TransactionCase):
         self.AL.create(
             self._vals(**{"account_id": False,
                           alt_plan._column_name(): alt_center.id,
-                          "amount": 300.0})
+                          "amount": -300.0})
         )
         self.assertEqual(analysis.fixed_cost, 300.0)
 

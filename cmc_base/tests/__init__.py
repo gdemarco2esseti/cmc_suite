@@ -19,3 +19,11 @@ from . import test_cost_object
 from . import test_measure_quantity
 from . import test_rate_registry
 from . import test_run_usage
+from . import test_wp01_cost_function
+from . import test_wp01_hierarchy
+from . import test_wp01_responsibility
+from . import test_wp01_allocation_run
+from . import test_wp01_step_down
+from . import test_wp01_capacity_levels
+from . import test_wp01_data_checks
+from . import test_wp01_responsible_security

@@ -112,3 +112,10 @@ Dispatch plan from odoo-dev-lead (inventory of every `amount` read, canonical `-
 - [ ] `odoo-qa` on the 5 commits (failures/tracebacks only).
 - [ ] Rōnin on the block-1 diff (it CERTIFIES fixes → mandatory).
 - [ ] Report to user; write block-2 plan.
+
+#### Task 8 dispatch contract (odoo-dev-lead, 2026-10-09)
+- Canonical helper `account.analytic.line._cmc_cost_read_group(domain, groupby=())` in `cmc_base/models/account_analytic_line.py`: same shape as `_read_group(..., aggregates=["amount:sum"])`, last element = cost = `-(sum or 0.0)`. ONLY place with `-amount`. Used by `_cmc_cost_groups`, cockpit (2 calls), cmc_abc `_cmc_activity_pools`. No `abs(` on amounts left in `cmc_*/models` (except closing pivot, cmc_utils).
+- `account.analytic.line.cmc_cost_amount`: Monetary "Cost", compute/inverse = `-amount`, not stored. Editable in the dedicated Cost Entry list/form (replaces `amount`, `sum="Total"`); readonly + `invisible="not cmc_behavior"` on the extended native form (native `amount` stays the editable field there).
+- Migration `cmc_base/migrations/19.0.1.2.0/post-migrate.py` (manifest 19.0.1.2.0): flip `amount` where `amount > 0` AND CMC-classified (`cmc_behavior`/`cmc_cost_element_id`/`cmc_activity_id` if column exists) AND no source document (`general_account_id`, `move_line_id`, `project_id`, `employee_id`, `cmc_mrp_move_id` NULL when columns exist, `COALESCE(category,'other')='other'`); log count + ids; recompute stored capacity fixed costs. Release note: draft + recompute closings/costings/CVR computed on mixed data.
+- Tests: flip sign inside local helpers (call sites unchanged); rewrite `cmc_abc test_negative_amount_pool` as "a reversal reduces the pool"; cmc_mrp twin asserts become `+LABOUR_COST`; new red tests (a) cost field round-trip, (b) reversal reduces cost in closing/cockpit/abc, (c) migration predicate.
+- Sequence: test-writer → model-dev → view-dev → qa. ~6.5h. Plus T3 leftovers in cmc_cvr.py.

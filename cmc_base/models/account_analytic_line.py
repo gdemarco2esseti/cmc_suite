@@ -185,7 +185,9 @@ class AccountAnalyticLine(models.Model):
             return CA.sudo()
         # plan-aware: the center may live on any analytic plan, not just the
         # default column read by account_id.
-        accounts = fixed._get_analytic_accounts()
+        # core's _get_analytic_accounts() is a singleton API: ask line by line
+        by_line = {line.id: line._get_analytic_accounts() for line in fixed}
+        accounts = self.env["account.analytic.account"].union(*by_line.values())
         if not accounts:
             return CA.sudo()
         dates = fixed.mapped("date")
@@ -198,7 +200,7 @@ class AccountAnalyticLine(models.Model):
         )
         matched = set()
         for line in fixed:
-            line_accounts = line._get_analytic_accounts()
+            line_accounts = by_line[line.id]
             for ca in candidates:
                 if (
                     ca.center_id in line_accounts

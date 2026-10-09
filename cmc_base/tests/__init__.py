@@ -9,3 +9,4 @@ from . import test_security
 from . import test_closing_period
 from . import test_closing_migration
 from . import test_cockpit_company
+from . import test_capacity_multi_line

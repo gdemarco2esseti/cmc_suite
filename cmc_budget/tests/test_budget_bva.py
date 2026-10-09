@@ -6,6 +6,10 @@ Feb 1,200, Mar 1,050; actual 2032 Jan 800, Feb 700, Mar 600.
   summary at 15 Feb: month plan -1,000 actual -1,200 var -200 (-20.0%); YTD plan -2,000 actual -2,100
   var -100 (-5.0%); prior YTD -1,500; threshold 10 -> alert_month True, alert_ytd False; threshold 4 -> both.
 INT-07: budget 1,000 EUR at 1.1 -> plan -1,100 in company currency.
+RN-004: is_alert on the center x element x month grain, threshold 10:
+  energy Feb plan fixed 400 + variable 600, actual semi-variable 1,050 -> group plan -1,000 actual -1,050 (-5%)
+  -> no row flagged (row grain would flag fixed and variable at 100%); actual 1,500 (-50%) -> every row flagged.
+  rent Feb plan Doors 600 + Windows 400, actual 1,050 (no business line) -> -5% -> no row flagged.
 """
 
 from odoo.tests.common import tagged
@@ -121,3 +125,41 @@ class TestBudgetBva(CmcBudgetCase):
             version._cmc_bva_summary(d(12, 31))
             counts.append(self.cr.sql_log_count - before)
         self.assertLessEqual(counts[1], counts[0] + 2, f"query count grows with the volume: {counts}")
+
+    def _alerts(self, version, center):
+        self.env.flush_all()
+        rows = self.Bva.search([("version_id", "=", version.id), ("center_id", "=", center.id), ("date", "=", d(2))])
+        self.assertGreater(len(rows), 1, "the fixture must spread the group over several rows")
+        return rows
+
+    def test_rn004_behavior_split_within_threshold_not_flagged(self):
+        # RN-004 / BUD-04: the fixed/variable split of a semi-variable plan is judged on the center x element total
+        center = self._center("BUD bva alert semi")
+        version = self._version(name="BUD bva alert semi")
+        self._line(version, center, 2, 400.0, element=self.energy, behavior="fixed")
+        self._line(version, center, 2, 600.0, element=self.energy, behavior="variable", driver_id=self.mh.id)
+        self._cost(center, 1050.0, d(2, 10), element=self.energy, behavior="semi_variable")
+        rows = self._alerts(version, center)
+        self.assertEqual(rows.mapped("is_alert"), [False] * len(rows), rows.read(["behavior", "plan_amount", "actual_amount"]))
+
+    def test_rn004_behavior_split_beyond_threshold_flags_every_row(self):
+        # RN-004 / BUD-04: beyond threshold the whole center x element group is flagged, the zero-plan actual row too
+        center = self._center("BUD bva alert semi over")
+        version = self._version(name="BUD bva alert semi over")
+        self._line(version, center, 2, 400.0, element=self.energy, behavior="fixed")
+        self._line(version, center, 2, 600.0, element=self.energy, behavior="variable", driver_id=self.mh.id)
+        self._cost(center, 1500.0, d(2, 10), element=self.energy, behavior="semi_variable")
+        rows = self._alerts(version, center)
+        self.assertEqual(rows.mapped("is_alert"), [True] * len(rows), rows.read(["behavior", "plan_amount", "actual_amount"]))
+
+    def test_rn004_business_line_split_within_threshold_not_flagged(self):
+        # RN-004 / BUD-01 T-A: actuals carry no business line, so a business-line split never flags on its own
+        center = self._center("BUD bva alert bl")
+        doors = self.AA.create({"name": "BUD bva BL Doors", "plan_id": self.plan.id, "company_id": self.company.id})
+        windows = self.AA.create({"name": "BUD bva BL Windows", "plan_id": self.plan.id, "company_id": self.company.id})
+        version = self._version(name="BUD bva alert bl")
+        self._line(version, center, 2, 600.0, business_line_id=doors.id)
+        self._line(version, center, 2, 400.0, business_line_id=windows.id)
+        self._cost(center, 1050.0, d(2, 10))
+        rows = self._alerts(version, center)
+        self.assertEqual(rows.mapped("is_alert"), [False] * len(rows), rows.read(["business_line_id", "plan_amount", "actual_amount"]))

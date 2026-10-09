@@ -123,6 +123,10 @@ class CmcPlanVersion(models.Model):
         self.env["cmc.budget.line"].create([
             {**vals, "version_id": by_year[line.date.year].id} for line, vals in zip(lines, lines.copy_data())
         ])
+        facts = self.env["cmc.measure.quantity"].search([("version_id", "=", self.id)])
+        self.env["cmc.measure.quantity"].create([
+            {**vals, "version_id": by_year[fact.date.year].id} for fact, vals in zip(facts, facts.copy_data()) if fact.date.year in by_year
+        ])
         return versions
 
     # ---- forecast -------------------------------------------------------
@@ -137,6 +141,9 @@ class CmcPlanVersion(models.Model):
         })
         remainder = self.budget_line_ids.filtered(lambda line: line.date > cut)
         actual_vals = self._cmc_actual_line_vals(month_start(self.date_from), min(month_end(cutoff), self.date_to))
+        # why: actuals are company currency, the lines are typed in the version currency (amount_company = actual)
+        for vals in actual_vals:
+            vals["figure"] = self.currency_id.round(vals["figure"] / self.currency_rate)
         self.env["cmc.budget.line"].create([
             {**vals, "version_id": forecast.id} for vals in actual_vals + remainder.copy_data()
         ])

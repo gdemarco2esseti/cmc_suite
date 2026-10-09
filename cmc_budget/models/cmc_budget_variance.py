@@ -1,7 +1,7 @@
 from collections import defaultdict
 
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 from odoo.fields import Domain
 
 from odoo.addons.cmc_base.models.cmc_utils import month_start
@@ -44,6 +44,7 @@ class CmcBudgetVarianceRun(models.Model):
         keys = set(budget) | {(Center.browse(cid), Element.browse(eid)) for cid, eid in actual_cost}
         drivers = self.env["cmc.cost.driver"].union(*(entry["driver"] for entry in budget.values()))
         planned, actual = self._cmc_quantities(centers, drivers)
+        self._cmc_check_planned_quantities(budget, planned)
         allowed = {(line.center_id, line.driver_id): line.allowed_qty for line in self.input_ids}
         practical = self._cmc_practical_capacity(centers, drivers)
         no_entry = {"fixed": 0.0, "variable": 0.0, "driver": self.env["cmc.cost.driver"]}
@@ -68,6 +69,15 @@ class CmcBudgetVarianceRun(models.Model):
             entry[behavior] += amount
             entry["driver"] = entry["driver"] or driver
         return budget
+
+    def _cmc_check_planned_quantities(self, budget, planned):
+        for (center, element), entry in budget.items():
+            if entry["variable"] and not planned[(center, entry["driver"])]:
+                raise UserError(self.env._(
+                    "No planned quantity in %(version)s for the variable budget of %(center)s / %(element)s, driver %(driver)s.",
+                    version=self.version_id.display_name, center=center.display_name, element=element.display_name,
+                    driver=entry["driver"].display_name or "-",
+                ))
 
     def _cmc_quantities(self, centers, drivers):
         """({(center, driver): planned qty}, {(center, driver): actual qty}) in one grouped read."""

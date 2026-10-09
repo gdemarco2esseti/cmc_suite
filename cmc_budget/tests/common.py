@@ -23,8 +23,9 @@ called ``figure``/``rate``/``qty``. Variances = actual - reference: positive = f
    ``version_id`` (required, cascade), ``company_id`` (related version, stored), ``currency_id`` (related version
    currency), ``company_currency_id``; ``kind`` Selection ``cost`` (default) / ``revenue``; ``center_id``
    (account.analytic.account, check_company; REQUIRED for cost lines -> ValidationError); ``element_id``
-   (cmc.cost.element); ``behavior`` Selection ``fixed`` (default) / ``variable``; ``driver_id`` (cmc.cost.driver,
-   the pool/driver of the line); ``responsibility_id`` (cmc.responsibility.center, area); ``business_line_id``
+   (cmc.cost.element, check_company: RN-003); ``behavior`` Selection ``fixed`` (default) / ``variable``;
+   ``driver_id`` (cmc.cost.driver, the pool/driver of the line, check_company: RN-003) - a line of company B with
+   an element or driver of company A is refused (UserError/ValidationError); company-less master data is shared; ``responsibility_id`` (cmc.responsibility.center, area); ``business_line_id``
    (account.analytic.account, any plan); ``payment_term_id`` (override for FCS-04);
    ``figure`` Monetary = the positive figure as typed (compute/inverse of ``amount``);
    ``amount`` Monetary = natural sign in VERSION currency (cost: -figure, revenue: +figure);
@@ -52,6 +53,9 @@ called ``figure``/``rate``/``qty``. Variances = actual - reference: positive = f
      ``account.move.line._cmc_revenue_read_group`` per month, kind revenue, no center); the budget lines of
      those months are NOT copied. Months after the cutoff: copy of the budget lines (the revised remainder,
      editable while draft). forecast = actual_1..m + revised_m+1..12.
+     RN-001 (INT-07): actuals are company currency; the actual lines are written back in VERSION currency,
+     ``figure = actual / currency_rate`` (version currency rounding), so their ``amount_company`` equals the
+     actual (company currency rounding) and the forecast BvA variance of an actual month is 0 - costs and revenue.
      Semi-variable actuals (T-B, dispatch C3): split with the ``cmc.cost.function`` of center x element
      (fallback: the function of the center with ``element_id`` False; the element-specific one wins):
      variable = ``variable_rate`` x Q, Q = ACTUAL facts (``version_id`` False) of the function's
@@ -60,6 +64,8 @@ called ``figure``/``rate``/``qty``. Variances = actual - reference: positive = f
      Batched: one facts read and one function search per forecast (query count independent of volume).
    - ``action_split_annual() -> cmc.plan.version`` (BUD-03): one draft budget version per calendar year of a
      multi-year span (name contains the year, ``parent_id`` = self, same currency/rate) with that year's lines.
+     RN-002: also the planned ``cmc.measure.quantity`` facts (``version_id`` = self) of each year are copied to the
+     matching child (``version_id`` = child), so flexible budget / variances of a child equal the parent's year.
    - ``_cmc_profit_gap() -> {"revenue", "cost", "profit", "target", "gap"}``: positive company-currency figures,
      profit = revenue - cost, gap = target_profit - profit.
    - ``_cmc_bva_summary(date_to, groupby=("center_id",)) -> list[dict]`` (BUD-04), company currency, natural
@@ -76,7 +82,11 @@ called ``figure``/``rate``/``qty``. Variances = actual - reference: positive = f
    ``version_type``, ``date`` (month), ``kind``, ``center_id``, ``element_id``, ``behavior``,
    ``business_line_id`` (T-A: plan rows keep the line's one, actual rows False), ``plan_amount``,
    ``actual_amount``, ``variance`` (= actual - plan), ``prior_actual_amount`` (actual of the same key 12 months
-   earlier), all company currency, natural sign, ``aggregator="sum"``. One row per budget/forecast version x month
+   earlier), all company currency, natural sign, ``aggregator="sum"``. ``is_alert`` (RN-004) is computed on the
+   center x element x month grain of the version (kind x center x element x month: behaviors and business lines
+   summed): abs(actual - plan) / abs(plan) x 100 > ``alert_threshold`` of that group, plan of the group 0 -> False;
+   every row of the group carries the group's flag (a fixed/variable or business-line split of the plan never
+   flags rows whose center x element total is within threshold). One row per budget/forecast version x month
    of its span x key present in plan, actual or prior actual. Actual cost = analytic lines (``cmc_excluded``
    False) of the company on cmc centers, cost element and behavior; actual revenue = posted income journal items
    (kind revenue, no center). LIVE: a new posting shows without any recompute.
@@ -85,7 +95,8 @@ called ``figure``/``rate``/``qty``. Variances = actual - reference: positive = f
    (budget/forecast, check_company), ``date_from``, ``date_to``, ``input_ids`` O2m ``cmc.budget.variance.input``
    (run-line-mixin: ``run_id``, ``center_id``, ``driver_id``, ``allowed_qty`` = standard quantity allowed for the
    actual output; missing -> allowed = actual qty), ``line_ids`` results ``cmc.budget.variance.line``.
-   Compute: version must be APPROVED (UserError otherwise) and its usage is recorded (AD-002: the version cannot
+   Compute: version must be APPROVED (UserError otherwise); RN-002: a variable line in scope whose (center,
+   driver) has no planned quantity in the version -> UserError (no silent fallback to the static budget); its usage is recorded (AD-002: the version cannot
    be reset while the run is computed). Snapshot: a later posting changes nothing until reset + compute.
    Scope = centers with budget lines in the version in the span. One result line per center x element:
    ``center_id``, ``element_id``, ``driver_id``, ``planned_qty`` (version facts), ``actual_qty`` (actual facts,
@@ -159,13 +170,14 @@ class CmcBudgetCommon:
             cls.env, login=f"bud_mgr_{cls.company.id}", groups="base.group_user,cmc_base.group_cmc_manager",
             company_id=cls.company.id, company_ids=[Command.set(cls.company.ids)],
         )
+        # RN-003: element and driver are company-checked on the budget line, so the fixture binds them to the company
         Element = cls.env["cmc.cost.element"]
-        cls.rent = Element.create({"name": "BUD Rent", "code": "BUDRENT"})
-        cls.energy = Element.create({"name": "BUD Energy", "code": "BUDNRG"})
-        cls.labour = Element.create({"name": "BUD Labour", "code": "BUDLAB"})
+        cls.rent = Element.create({"name": "BUD Rent", "code": "BUDRENT", "company_id": cls.company.id})
+        cls.energy = Element.create({"name": "BUD Energy", "code": "BUDNRG", "company_id": cls.company.id})
+        cls.labour = Element.create({"name": "BUD Labour", "code": "BUDLAB", "company_id": cls.company.id})
         Driver = cls.env["cmc.cost.driver"]
-        cls.mh = Driver.create({"name": "BUD machine hours", "code": "BUDMH"})
-        cls.lh = Driver.create({"name": "BUD labour hours", "code": "BUDLH"})
+        cls.mh = Driver.create({"name": "BUD machine hours", "code": "BUDMH", "company_id": cls.company.id})
+        cls.lh = Driver.create({"name": "BUD labour hours", "code": "BUDLH", "company_id": cls.company.id})
 
     @classmethod
     def _center(cls, name, center_type="final", company=None):
@@ -203,6 +215,15 @@ class CmcBudgetCommon:
             "driver_id": driver.id, "center_id": center.id, "date": d(month, year=year), "quantity": qty,
             "version_id": version.id if version else False, "company_id": center.company_id.id or cls.company.id,
         })
+
+    @classmethod
+    def _foreign(cls, code="CHF"):
+        """An active currency other than the company one (RN-001: CHF version on a USD company)."""
+        currency = cls.env.ref(f"base.{code}")
+        if currency == cls.company.currency_id:
+            currency = cls.env.ref("base.EUR")
+        currency.active = True
+        return currency
 
     def _approve(self, version):
         version.with_user(self.manager).action_approve()

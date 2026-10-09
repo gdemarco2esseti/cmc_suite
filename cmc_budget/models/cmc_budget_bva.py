@@ -83,8 +83,10 @@ class CmcBudgetBva(models.Model):
                    g.company_id, g.version_id, g.version_type, g.date, g.kind, g.center_id, g.element_id, g.behavior,
                    g.business_line_id, g.plan_amount, g.actual_amount, g.actual_amount - g.plan_amount AS variance,
                    g.prior_actual_amount,
-                   (g.plan_amount <> 0
-                    AND ABS(g.actual_amount - g.plan_amount) / ABS(g.plan_amount) * 100 > g.alert_threshold) AS is_alert
+                   (SUM(g.plan_amount) OVER w <> 0
+                    AND ABS(SUM(g.actual_amount) OVER w - SUM(g.plan_amount) OVER w) / ABS(SUM(g.plan_amount) OVER w) * 100
+                        > g.alert_threshold) AS is_alert
               FROM grouped g
+            WINDOW w AS (PARTITION BY g.version_id, g.date, g.kind, g.center_id, g.element_id)
             """
         )

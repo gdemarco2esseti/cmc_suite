@@ -36,7 +36,9 @@ class TestBudgetSecurity(CmcBudgetCase):
         cls._cost(cls.theirs, 800.0, d(3, 5))
         cls.version_b = cls._version(name="BUD sec B", company=cls.company_b)
         cls.center_b = cls._center("BUD sec B center", company=cls.company_b)
-        cls.line_b = cls._line(cls.version_b, cls.center_b, 3, 50.0)
+        # RN-003: a company-B line takes a company-B element (company-A master data is refused)
+        cls.rent_b = cls.env["cmc.cost.element"].create({"name": "BUD Rent B", "code": "BUDRENTB", "company_id": cls.company_b.id})
+        cls.line_b = cls._line(cls.version_b, cls.center_b, 3, 50.0, element=cls.rent_b)
 
     def _lines_seen(self, user):
         return self.Line.with_user(user).search([("id", "in", (self.line_mine | self.line_theirs | self.line_b).ids)])
@@ -119,3 +121,19 @@ class TestBudgetSecurity(CmcBudgetCase):
         # AD-115: _check_company on the budget line
         with self.assertRaises(UserError):  # ValidationError subclasses UserError
             self._line(self.version, self.center_b, 4, 10.0)
+
+    def test_rn003_element_of_other_company_refused(self):
+        # RN-003 / AD-115: check_company on element_id - a company-B line cannot use a company-A cost element
+        with self.assertRaises(UserError):  # ValidationError subclasses UserError
+            self._line(self.version_b, self.center_b, 4, 10.0, element=self.rent)
+
+    def test_rn003_driver_of_other_company_refused(self):
+        # RN-003 / AD-115: check_company on driver_id - a company-B line cannot use a company-A driver
+        with self.assertRaises(UserError):
+            self._line(self.version_b, self.center_b, 4, 10.0, element=self.rent_b, behavior="variable", driver_id=self.mh.id)
+
+    def test_rn003_shared_element_accepted(self):
+        # RN-003: company-less master data stays shared across companies
+        shared = self.env["cmc.cost.element"].create({"name": "BUD shared", "code": "BUDSHARED", "company_id": False})
+        line = self._line(self.version_b, self.center_b, 4, 10.0, element=shared)
+        self.assertEqual(line.element_id, shared)

@@ -3,6 +3,7 @@
     "version": "19.0.1.0.0",
     "category": "Accounting/Accounting",
     "summary": "Master and flexible budget, rolling forecast, spending/capacity variances, GPK dual-rate closing, cash forecast",
+    "description": "Known limit: the cash forecast is net of VAT (no VAT cash timing is modelled).",
     "author": "EsseTech by DueEsseTi Srl",
     "license": "LGPL-3",
     "depends": ["cmc_account"],

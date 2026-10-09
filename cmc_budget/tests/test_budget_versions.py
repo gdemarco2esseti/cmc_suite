@@ -113,3 +113,22 @@ class TestBudgetVersions(CmcBudgetCase):
         plan._cmc_budget_add({"kind": "revenue", "behavior": "variable"}, 360000.0)
         plan._cmc_budget_add({"center_id": self.center.id, "element_id": self.rent.id, "behavior": "fixed"}, 270000.0)
         return plan
+
+    def test_rn001_rolling_forecast_actuals_in_version_currency(self):
+        # RN-001 / INT-07 / FCS-01: USD company, CHF version at 1.1; actual 1,000 USD in January is written back as
+        # figure 1,000 / 1.1 = 909.09 CHF, so amount_company = -1,000 exactly and the forecast BvA variance is 0
+        center = self._center("BUD fx forecast")
+        chf = self._foreign("CHF")
+        budget = self._version(name="BUD fx 2033", currency_id=chf.id, currency_rate=1.1)
+        self._line(budget, center, 1, 900.0)
+        self._line(budget, center, 2, 900.0)
+        self._cost(center, 1000.0, d(1, 15))
+        forecast = budget.with_user(self.manager)._cmc_rolling_forecast(d(1, 31)).sudo()
+        self.assertEqual((forecast.currency_id, forecast.currency_rate), (chf, 1.1))
+        january = forecast.budget_line_ids.filtered(lambda line: line.center_id == center and line.date == d(1))
+        self.assertRecordValues(january, [{"figure": 909.09, "amount": -909.09, "amount_company": -1000.0}])
+        self.env.flush_all()
+        row = self.env["cmc.budget.bva"].search([
+            ("version_id", "=", forecast.id), ("date", "=", d(1)), ("center_id", "=", center.id), ("kind", "=", "cost"),
+        ])
+        self.assertRecordValues(row, [{"plan_amount": -1000.0, "actual_amount": -1000.0, "variance": 0.0}])

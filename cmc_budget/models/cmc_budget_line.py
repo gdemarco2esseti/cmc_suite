@@ -18,10 +18,9 @@ class CmcBudgetLine(models.Model):
     company_currency_id = fields.Many2one(related="version_id.company_id.currency_id", string="Company Currency")
     kind = fields.Selection([("cost", "Cost"), ("revenue", "Revenue")], required=True, default="cost")
     center_id = fields.Many2one("account.analytic.account", string="Cost Center", check_company=True, index="btree_not_null")
-    # why no check_company: cost elements and drivers are shared master data of the suite
-    element_id = fields.Many2one("cmc.cost.element", string="Cost Element")
+    element_id = fields.Many2one("cmc.cost.element", string="Cost Element", check_company=True)
     behavior = fields.Selection([("fixed", "Fixed"), ("variable", "Variable")], required=True, default="fixed")
-    driver_id = fields.Many2one("cmc.cost.driver", string="Driver")
+    driver_id = fields.Many2one("cmc.cost.driver", string="Driver", check_company=True)
     responsibility_id = fields.Many2one("cmc.responsibility.center", string="Area", check_company=True)
     business_line_id = fields.Many2one("account.analytic.account", string="Business Line", check_company=True)
     payment_term_id = fields.Many2one("account.payment.term", string="Payment Terms")

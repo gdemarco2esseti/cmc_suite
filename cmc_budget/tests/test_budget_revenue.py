@@ -3,6 +3,8 @@
 Hand-computed (March 2033): revenue budget 10,000; posted invoice 12,000 + posted credit note 1,000 + draft
 invoice 5,000 (ignored) -> actual 11,000, variance +1,000 (favourable, +10%). Rolling forecast cut at
 31 March: March revenue line = 11,000 actual, April keeps the 10,000 budget.
+RN-001 (INT-07): same actuals on a CHF version at 1.1 -> March revenue figure 11,000 / 1.1 = 10,000 CHF,
+amount_company 11,000 (not 12,100), forecast BvA revenue variance of March 0.
 """
 
 from odoo import Command
@@ -66,3 +68,16 @@ class TestBudgetRevenue(CmcBudgetCommon, AccountTestInvoicingCommon):
         forecast = self.version.with_user(self.manager)._cmc_rolling_forecast(d(3, 31)).sudo()
         revenue = forecast.budget_line_ids.filtered(lambda line: line.kind == "revenue")
         self.assertEqual(sorted((line.date, line.amount) for line in revenue), [(d(3), 11000.0), (d(4), 10000.0)])
+
+    def test_rn001_rolling_forecast_revenue_in_version_currency(self):
+        # RN-001 / INT-07 / FCS-01: actual revenue (company currency) is converted back into the version currency
+        chf = self._foreign("CHF")
+        version = self._version(name="BUD revenue fx 2033", currency_id=chf.id, currency_rate=1.1)
+        for month in (3, 4):
+            self._line(version, False, month, 10000.0, kind="revenue", behavior="variable")
+        forecast = version.with_user(self.manager)._cmc_rolling_forecast(d(3, 31)).sudo()
+        march = forecast.budget_line_ids.filtered(lambda line: line.kind == "revenue" and line.date == d(3))
+        self.assertRecordValues(march, [{"figure": 10000.0, "amount": 10000.0, "amount_company": 11000.0}])
+        self.env.flush_all()
+        row = self.env["cmc.budget.bva"].search([("version_id", "=", forecast.id), ("kind", "=", "revenue"), ("date", "=", d(3))])
+        self.assertRecordValues(row, [{"plan_amount": 11000.0, "actual_amount": 11000.0, "variance": 0.0}])

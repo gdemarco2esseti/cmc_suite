@@ -119,6 +119,12 @@ the runs of that period afterwards.
 - `cmc.cvr.analysis.leverage_impact()` removed (unused).
 - A costing run with a period or figurative cost but no driver consumption now stops with an
   error instead of silently leaving that cost out of every product.
+- Computed figures no longer depend on who presses *Compute*: the engines read the analytic
+  lines of the run's company whatever the user's own record rules (e.g. "own timesheets only").
+- Users can read, not write, `cmc.manual.classification` directly; classifying a line still
+  works as before (the system writes the override).
+- Master data used by computed results (products, partners, TDABC activities and resources, cost
+  centers of a closing) cannot be deleted while those results exist.
 - Italian translations regenerated.
 
 ## 9. Upgrade procedure

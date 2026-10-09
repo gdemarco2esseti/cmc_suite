@@ -6,7 +6,11 @@
     "license": "LGPL-3",
     "author": "EsseTech by DueEsseTi Srl",
     "depends": ["cmc_base"],
-    "data": [],
+    "data": [
+        "security/ir.model.access.csv",
+        "security/cmc_target_lcc_security.xml",
+        "views/cmc_target_lcc_views.xml",
+    ],
     "installable": True,
     "auto_install": False,
 }

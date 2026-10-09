@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- record rules live OUTSIDE noupdate so a domain fix reaches installed databases -->
+    <data>
+        <record id="cmc_target_cost_company_rule" model="ir.rule">
+            <field name="name">CMC target cost: multi-company</field>
+            <field name="model_id" ref="model_cmc_target_cost"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_kaizen_target_company_rule" model="ir.rule">
+            <field name="name">CMC kaizen target: multi-company</field>
+            <field name="model_id" ref="model_cmc_kaizen_target"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_feature_costing_company_rule" model="ir.rule">
+            <field name="name">CMC feature costing: multi-company</field>
+            <field name="model_id" ref="model_cmc_feature_costing"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_lcc_model_company_rule" model="ir.rule">
+            <field name="name">CMC lcc model: multi-company</field>
+            <field name="model_id" ref="model_cmc_lcc_model"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_target_cost_function_company_rule" model="ir.rule">
+            <field name="name">CMC target cost function: multi-company</field>
+            <field name="model_id" ref="model_cmc_target_cost_function"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_target_cost_component_company_rule" model="ir.rule">
+            <field name="name">CMC target cost component: multi-company</field>
+            <field name="model_id" ref="model_cmc_target_cost_component"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_target_cost_matrix_company_rule" model="ir.rule">
+            <field name="name">CMC target cost matrix: multi-company</field>
+            <field name="model_id" ref="model_cmc_target_cost_matrix"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_feature_alternative_company_rule" model="ir.rule">
+            <field name="name">CMC feature alternative: multi-company</field>
+            <field name="model_id" ref="model_cmc_feature_alternative"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_feature_variable_company_rule" model="ir.rule">
+            <field name="name">CMC feature variable: multi-company</field>
+            <field name="model_id" ref="model_cmc_feature_variable"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_lcc_year_company_rule" model="ir.rule">
+            <field name="name">CMC lcc year: multi-company</field>
+            <field name="model_id" ref="model_cmc_lcc_year"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_lcc_cost_line_company_rule" model="ir.rule">
+            <field name="name">CMC lcc cost line: multi-company</field>
+            <field name="model_id" ref="model_cmc_lcc_cost_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_target_cost_result_company_rule" model="ir.rule">
+            <field name="name">CMC target cost result: multi-company</field>
+            <field name="model_id" ref="model_cmc_target_cost_result"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_kaizen_target_line_company_rule" model="ir.rule">
+            <field name="name">CMC kaizen target line: multi-company</field>
+            <field name="model_id" ref="model_cmc_kaizen_target_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_feature_result_company_rule" model="ir.rule">
+            <field name="name">CMC feature result: multi-company</field>
+            <field name="model_id" ref="model_cmc_feature_result"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_feature_violation_company_rule" model="ir.rule">
+            <field name="name">CMC feature violation: multi-company</field>
+            <field name="model_id" ref="model_cmc_feature_violation"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_lcc_year_result_company_rule" model="ir.rule">
+            <field name="name">CMC lcc year result: multi-company</field>
+            <field name="model_id" ref="model_cmc_lcc_year_result"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_lcc_phase_result_company_rule" model="ir.rule">
+            <field name="name">CMC lcc phase result: multi-company</field>
+            <field name="model_id" ref="model_cmc_lcc_phase_result"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_design_guideline_company_rule" model="ir.rule">
+            <field name="name">CMC design guideline: multi-company</field>
+            <field name="model_id" ref="model_cmc_design_guideline"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+    </data>
+</odoo>

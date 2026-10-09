@@ -9,5 +9,6 @@
               name="Cockpit"
               parent="menu_cmc_root"
               action="action_cmc_cockpit_dashboard"
-              sequence="1"/>
+              sequence="1"
+              groups="cmc_base.group_cmc_user"/>
 </odoo>

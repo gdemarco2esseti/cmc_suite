@@ -34,12 +34,16 @@
                             <field name="source"/>
                             <field name="feeder_key" invisible="source != 'feeder'"
                                    required="source == 'feeder'"/>
+                            <field name="assignment"/>
+                            <field name="allocation_criterion" invisible="assignment == 'traced'"/>
                         </group>
                         <group>
                             <field name="company_id" groups="base.group_multi_company"/>
                             <field name="active" widget="boolean_toggle"/>
                         </group>
                     </group>
+                    <field name="rationale" placeholder="Why is this a reasonable allocation base?"
+                           invisible="assignment == 'traced'"/>
                     <field name="note" placeholder="Notes..."/>
                 </sheet>
             </form>

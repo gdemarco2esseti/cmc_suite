@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_data_check_wizard_form" model="ir.ui.view">
+        <field name="name">cmc.data.check.wizard.form</field>
+        <field name="model">cmc.data.check.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Data Checks">
+                <group>
+                    <group>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                    <group>
+                        <field name="tolerance" widget="percentage"/>
+                        <field name="threshold" widget="percentage"/>
+                    </group>
+                </group>
+                <field name="line_ids" readonly="1" invisible="not line_ids">
+                    <list string="Findings" create="false" edit="false"
+                          decoration-warning="warning">
+                        <field name="check_type"/>
+                        <field name="driver_id" optional="show"/>
+                        <field name="center_id" optional="show"/>
+                        <field name="value_current"/>
+                        <field name="value_reference"/>
+                        <field name="difference" optional="show"/>
+                        <field name="change_pct" optional="show"/>
+                        <field name="warning" widget="boolean" optional="hide"/>
+                        <field name="message"/>
+                    </list>
+                </field>
+                <footer>
+                    <button name="action_run" type="object" string="Run Checks" class="btn-primary" data-hotkey="q"/>
+                    <button special="cancel" string="Close" data-hotkey="x"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_data_check_wizard" model="ir.actions.act_window">
+        <field name="name">Data Checks</field>
+        <field name="res_model">cmc.data.check.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_cmc_data_check"
+              name="Data Checks"
+              parent="menu_cmc_sec_analysis"
+              action="action_cmc_data_check_wizard"
+              sequence="80"/>
+</odoo>

@@ -10,6 +10,10 @@
                 <field name="code"/>
                 <field name="name"/>
                 <field name="cmc_kind"/>
+                <field name="cmc_controllable" optional="show"/>
+                <field name="cmc_avoidable" optional="hide"/>
+                <field name="cmc_sunk" optional="hide"/>
+                <field name="cmc_commitment" optional="hide"/>
                 <field name="company_id" groups="base.group_multi_company"/>
             </list>
         </field>
@@ -116,7 +120,8 @@
         </field>
     </record>
 
-    <menuitem id="menu_cmc_dashboard" name="Dashboard" parent="menu_cmc_root" sequence="20"/>
+    <menuitem id="menu_cmc_dashboard" name="Dashboard" parent="menu_cmc_root" sequence="20"
+              groups="cmc_base.group_cmc_user"/>
 
     <record id="action_dash_cost_center" model="ir.actions.act_window">
         <field name="name">Cost per Center</field>

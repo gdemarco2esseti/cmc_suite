@@ -3,6 +3,7 @@ from odoo.exceptions import AccessError
 from odoo.fields import Domain
 
 REVENUE_TYPES = ("income", "income_other")
+EXPENSE_TYPES = ("expense", "expense_depreciation", "expense_direct_cost")
 
 
 class AccountMoveLine(models.Model):

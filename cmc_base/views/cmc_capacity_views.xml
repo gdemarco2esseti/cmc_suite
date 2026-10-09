@@ -27,6 +27,8 @@
             <form string="Capacity Analysis">
                 <header>
                     <button name="action_recompute" type="object" string="Recompute"/>
+                    <button name="action_estimate_practical" type="object" string="Estimate Practical"
+                            invisible="not downtime_rate"/>
                 </header>
                 <sheet>
                     <group>
@@ -43,16 +45,31 @@
                     <group string="Capacity (driver units)">
                         <group>
                             <field name="capacity_theoretical"/>
+                            <field name="downtime_rate"/>
                             <field name="capacity_practical"/>
+                            <field name="capacity_normal"/>
+                            <field name="capacity_budget"/>
                             <field name="capacity_actual"/>
                             <field name="utilization_rate"/>
                         </group>
                         <group string="Cost of Capacity">
+                            <field name="total_cost"/>
                             <field name="fixed_cost"/>
                             <field name="fixed_cost_coefficient"/>
                             <field name="imputed_fixed_cost"/>
                             <field name="unused_capacity_cost"/>
                             <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <group string="Cost per Driver Unit by Capacity Level" name="coefficients">
+                        <group>
+                            <field name="coefficient_theoretical"/>
+                            <field name="coefficient_practical"/>
+                            <field name="coefficient_normal"/>
+                        </group>
+                        <group>
+                            <field name="coefficient_budget"/>
+                            <field name="coefficient_actual"/>
                         </group>
                     </group>
                 </sheet>

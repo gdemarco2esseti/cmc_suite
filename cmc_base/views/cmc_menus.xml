@@ -4,12 +4,19 @@
               name="Cost Management"
               web_icon="cmc_base,static/description/icon.png"
               sequence="95"
-              groups="cmc_base.group_cmc_user"/>
+              groups="cmc_base.group_cmc_user,cmc_base.group_cmc_responsible"/>
 
     <menuitem id="menu_cmc_operations"
               name="Operations"
               parent="menu_cmc_root"
-              sequence="10"/>
+              sequence="10"
+              groups="cmc_base.group_cmc_user"/>
+
+    <menuitem id="menu_cmc_responsibility"
+              name="Responsibility"
+              parent="menu_cmc_root"
+              sequence="15"
+              groups="cmc_base.group_cmc_responsible"/>
 
     <!-- ===== Sezioni tematiche (sempre presenti, cmc_base) ===== -->
     <menuitem id="menu_cmc_sec_base"

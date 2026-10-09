@@ -3,3 +3,5 @@ access_cmc_rule_internal,cmc.classification.rule.internal,model_cmc_classificati
 access_cmc_rule_user,cmc.classification.rule.user,model_cmc_classification_rule,cmc_base.group_cmc_user,1,0,0,0
 access_cmc_rule_manager,cmc.classification.rule.manager,model_cmc_classification_rule,cmc_base.group_cmc_manager,1,1,1,1
 access_cmc_manual_classification_user,cmc.manual.classification.user,model_cmc_manual_classification,cmc_base.group_cmc_user,1,0,0,0
+access_cmc_coge_reconciliation_user,cmc.coge.reconciliation.user,model_cmc_coge_reconciliation,cmc_base.group_cmc_user,1,1,1,0
+access_cmc_coge_reconciliation_manager,cmc.coge.reconciliation.manager,model_cmc_coge_reconciliation,cmc_base.group_cmc_manager,1,1,1,1

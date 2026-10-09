@@ -37,6 +37,8 @@
                     <group>
                         <group>
                             <field name="method" readonly="state == 'done'"/>
+                            <field name="step_order" readonly="state == 'done'"
+                                   invisible="method != 'step_down'"/>
                             <field name="company_id" readonly="state == 'done'" groups="base.group_multi_company"/>
                         </group>
                         <group>
@@ -44,6 +46,13 @@
                             <field name="date_to" readonly="state == 'done'"/>
                         </group>
                     </group>
+                    <field name="step_ids" readonly="state == 'done'"
+                           invisible="method != 'step_down' or step_order != 'manual'">
+                        <list string="Closing Sequence" editable="bottom">
+                            <field name="sequence" widget="handle"/>
+                            <field name="center_id"/>
+                        </list>
+                    </field>
                     <field name="line_ids" readonly="1">
                         <list string="Results" create="false" edit="false">
                             <field name="center_id"/>

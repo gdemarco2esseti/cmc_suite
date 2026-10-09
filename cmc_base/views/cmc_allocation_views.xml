@@ -9,6 +9,8 @@
                 <field name="source_account_id"/>
                 <field name="driver_id"/>
                 <field name="amount"/>
+                <field name="date"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'"/>
                 <field name="company_id" groups="base.group_multi_company"/>
                 <field name="currency_id" column_invisible="1"/>
             </list>
@@ -20,6 +22,14 @@
         <field name="model">cmc.allocation</field>
         <field name="arch" type="xml">
             <form string="Cost Allocation">
+                <header>
+                    <button name="action_compute" type="object" string="Compute"
+                            class="oe_highlight" invisible="state == 'done'"/>
+                    <button name="action_reset_to_draft" type="object" string="Reset to Draft"
+                            invisible="state != 'done'"
+                            confirm="Resetting deletes the posted analytic lines. Continue?"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
                 <sheet>
                     <div class="oe_title">
                         <label for="name"/>
@@ -27,23 +37,40 @@
                     </div>
                     <group>
                         <group>
-                            <field name="source_account_id"/>
-                            <field name="driver_id"/>
+                            <field name="source_account_id" readonly="state == 'done'"/>
+                            <field name="driver_id" readonly="state == 'done'"/>
+                            <field name="element_id" readonly="state == 'done'"/>
                         </group>
                         <group>
-                            <field name="amount"/>
-                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="amount" readonly="state == 'done'"/>
+                            <field name="date" readonly="state == 'done'"/>
+                            <field name="company_id" readonly="state == 'done'" groups="base.group_multi_company"/>
                             <field name="currency_id" invisible="1"/>
                         </group>
                     </group>
-                    <field name="line_ids">
-                        <list string="Allocation Lines" editable="bottom">
-                            <field name="target_account_id"/>
-                            <field name="quantity"/>
-                            <field name="allocated_amount" sum="Total"/>
-                            <field name="currency_id" column_invisible="1"/>
-                        </list>
-                    </field>
+                    <notebook>
+                        <page string="Allocation Lines" name="lines">
+                            <field name="line_ids" readonly="state == 'done'">
+                                <list string="Allocation Lines" editable="bottom">
+                                    <field name="target_account_id"/>
+                                    <field name="quantity"/>
+                                    <field name="allocated_amount" sum="Total"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Posted Lines" name="posted" invisible="state != 'done'">
+                            <field name="posted_line_ids" readonly="1">
+                                <list string="Posted Lines" create="false" edit="false">
+                                    <field name="date"/>
+                                    <field name="account_id"/>
+                                    <field name="name"/>
+                                    <field name="amount" sum="Total"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

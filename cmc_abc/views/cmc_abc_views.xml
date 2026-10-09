@@ -90,7 +90,7 @@
                             </field>
                         </page>
                         <page string="Results" name="results">
-                            <field name="result_ids">
+                            <field name="result_ids" readonly="1">
                                 <list create="false" edit="false">
                                     <field name="product_id"/>
                                     <field name="amount" aggregator="sum"/>
@@ -99,7 +99,7 @@
                             </field>
                         </page>
                         <page string="Activity Pools" name="activity_results">
-                            <field name="activity_result_ids">
+                            <field name="activity_result_ids" readonly="1">
                                 <list create="false" edit="false">
                                     <field name="activity_id"/>
                                     <field name="product_id"/>

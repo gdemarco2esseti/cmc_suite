@@ -22,7 +22,8 @@ class CmcRunMixin(models.AbstractModel):
 
     # header fields and input One2many/Many2many a computed run must keep
     _cmc_input_fields = ()
-    # One2many fields holding the computed results, emptied on reset
+    # One2many fields holding the computed results, emptied on reset; their
+    # comodels inherit cmc.run.result.mixin
     _cmc_result_fields = ()
 
     state = fields.Selection(
@@ -37,19 +38,22 @@ class CmcRunMixin(models.AbstractModel):
 
     @api.model_create_multi
     def create(self, vals_list):
-        if not self._cmc_state_unlocked() and any(
-            vals.get("state", "draft") != "draft" for vals in vals_list
-        ):
+        runs = super().create(vals_list)
+        # checked on the records: a default_state in the context fills vals
+        # only inside super().create()
+        if not self._cmc_state_unlocked() and any(run.state != "draft" for run in runs):
             raise UserError(
                 self.env._("A run is created in draft: compute it to make it computed.")
             )
-        return super().create(vals_list)
+        return runs
 
     def write(self, vals):
         if "state" in vals and not self._cmc_state_unlocked():
             raise UserError(
                 self.env._("Use Compute or Reset to Draft to change the state of a run.")
             )
+        if not set(self._cmc_result_fields).isdisjoint(vals) and not self._cmc_state_unlocked():
+            raise UserError(self.env._("The results of a run are written by Compute only."))
         if not set(self._cmc_input_fields).isdisjoint(vals):
             # no env.su bypass: the classification gate writes as superuser
             self._cmc_check_editable()
@@ -62,6 +66,9 @@ class CmcRunMixin(models.AbstractModel):
     # ---- actions --------------------------------------------------------
 
     def action_compute(self):
+        # access first: the lock and the messages below must not serve a
+        # caller who cannot write these runs
+        self.check_access("write")
         self._cmc_lock_rows()
         computed = self.filtered(lambda run: run.state == "done")
         if computed:
@@ -77,15 +84,17 @@ class CmcRunMixin(models.AbstractModel):
         return True
 
     def action_reset_to_draft(self):
+        self.check_access("write")
         self._cmc_lock_rows()
         self._cmc_check_no_dependents()
-        self.check_access("write")
+        unlocked = self.with_context(cmc_run_state=CMC_RUN_STATE)
         for fname in self._cmc_result_fields:
             # why: results are written by the engine only (some result models
-            # give users read access alone); deleting them is part of the
-            # reset the user was just allowed to perform on the run itself
-            self.mapped(fname).sudo().unlink()
-        self._cmc_set_state("draft")
+            # give users read access alone); deleting them all, whatever the
+            # user's record rules show, is part of the reset the user was just
+            # allowed to perform on the run itself
+            unlocked.sudo().mapped(fname).unlink()
+        unlocked.write({**self._cmc_reset_values(), "state": "draft"})
         return True
 
     # ---- hooks ----------------------------------------------------------
@@ -94,6 +103,10 @@ class CmcRunMixin(models.AbstractModel):
         """Build the results of one run. Called by action_compute, which then
         marks the run computed."""
         raise NotImplementedError
+
+    def _cmc_reset_values(self):
+        """Header outputs of the engine to clear on reset, as write() vals."""
+        return {}
 
     def _cmc_check_no_dependents(self):
         """Raise UserError when another computed document reads these runs and
@@ -142,19 +155,54 @@ class CmcRunLineMixin(models.AbstractModel):
     _name = "cmc.run.line.mixin"
     _description = "CMC run input line"
 
+    def _cmc_guard_runs(self, runs):
+        # the run row lock serializes the edit against a concurrent Compute
+        runs._cmc_lock_rows()
+        runs._cmc_check_editable()
+
     @api.model_create_multi
     def create(self, vals_list):
         lines = super().create(vals_list)
-        lines.run_id._cmc_check_editable()
+        self._cmc_guard_runs(lines.run_id)
         return lines
 
     def write(self, vals):
-        self.run_id._cmc_check_editable()
+        self._cmc_guard_runs(self.run_id)
         res = super().write(vals)
         if "run_id" in vals:
-            self.run_id._cmc_check_editable()
+            self._cmc_guard_runs(self.run_id)
         return res
 
     def unlink(self):
-        self.run_id._cmc_check_editable()
+        self._cmc_guard_runs(self.run_id)
+        return super().unlink()
+
+
+class CmcRunResultMixin(models.AbstractModel):
+    """Result row of a CMC run: written by Compute while the run is in draft,
+    deleted by Reset. A computed run's results never change by hand, whatever
+    the access rights on the result model."""
+
+    _name = "cmc.run.result.mixin"
+    _description = "CMC run result row"
+
+    def _cmc_check_results_open(self, runs):
+        if not runs._cmc_state_unlocked():
+            runs._cmc_check_editable()
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        rows = super().create(vals_list)
+        self._cmc_check_results_open(rows.run_id)
+        return rows
+
+    def write(self, vals):
+        self._cmc_check_results_open(self.run_id)
+        res = super().write(vals)
+        if "run_id" in vals:
+            self._cmc_check_results_open(self.run_id)
+        return res
+
+    def unlink(self):
+        self._cmc_check_results_open(self.run_id)
         return super().unlink()

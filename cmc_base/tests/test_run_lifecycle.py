@@ -1,7 +1,10 @@
 from datetime import date
 
-from odoo.exceptions import UserError
+import psycopg2
+
+from odoo.exceptions import AccessError, UserError
 from odoo.tests.common import TransactionCase, new_test_user, tagged
+from odoo.tools import mute_logger
 
 from odoo.addons.cmc_base.models.cmc_run_mixin import CMC_RUN_STATE
 
@@ -87,3 +90,40 @@ class TestRunLifecycle(TransactionCase):
     def test_copy_is_draft(self):
         run = self._computed()
         self.assertEqual(run.copy().state, "draft")
+
+    def test_results_of_done_run_locked_for_user(self):
+        run = self._computed().with_user(self.user)
+        line = run.line_ids[:1]
+        with self.assertRaises(UserError):
+            run.write({"line_ids": [(2, line.id)]})
+        with self.assertRaises(UserError):
+            line.unlink()
+        with self.assertRaises(UserError):
+            line.write({"cost_residual": 1.0})
+        with self.assertRaises(UserError):
+            self.env["cmc.closing.line"].with_user(self.user).create(
+                {"run_id": run.id, "center_id": self.center.id, "cost_residual": 9.0}
+            )
+        with self.assertRaises(UserError):
+            run.cost_analysis_ids[:1].unlink()
+
+    def test_default_state_cannot_create_done_run(self):
+        with self.assertRaises(UserError):
+            self.env["cmc.closing.run"].with_user(self.user).with_context(default_state="done").create({**self.period})
+
+    def test_center_of_done_closing_cannot_be_deleted(self):
+        # a center with no cost line of its own: only the closing result holds it
+        empty = self.center.copy({"name": "Empty LC"})
+        run = self._computed()
+        self.assertIn(empty, run.line_ids.center_id)
+        with self.assertRaises(psycopg2.IntegrityError), mute_logger("odoo.sql_db"), self.env.cr.savepoint():
+            empty.unlink()
+            self.env.flush_all()
+
+    def test_access_checked_before_reset(self):
+        run = self._computed()
+        outsider = new_test_user(self.env, login="cmc_lc_outsider", groups="base.group_user")
+        with self.assertRaises(AccessError):
+            run.with_user(outsider).action_reset_to_draft()
+        with self.assertRaises(AccessError):
+            run.with_user(outsider).action_compute()

@@ -231,6 +231,7 @@ class CmcJointLine(models.Model):
 
 class CmcJointResult(models.Model):
     _name = "cmc.joint.result"
+    _inherit = ["cmc.run.result.mixin"]
     _description = "Joint Cost Result"
     _order = "is_byproduct, product_id"
 

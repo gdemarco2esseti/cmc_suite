@@ -32,6 +32,7 @@ class CmcCostElement(models.Model):
 
 class CmcCostAnalysisLine(models.Model):
     _name = "cmc.cost.analysis.line"
+    _inherit = ["cmc.run.result.mixin"]
     _description = "Cost Analysis Matrix Line"
     _order = "run_id, state, center_id"
     _check_company_auto = True
@@ -42,7 +43,8 @@ class CmcCostAnalysisLine(models.Model):
     company_id = fields.Many2one(related="run_id.company_id", store=True, index=True)
     currency_id = fields.Many2one(related="run_id.currency_id")
     center_id = fields.Many2one(
-        "account.analytic.account", required=True, index=True, ondelete="cascade"
+        # restrict, as on cmc.closing.line: results of a computed closing stay
+        "account.analytic.account", required=True, index=True, ondelete="restrict"
     )
     center_type = fields.Selection(related="center_id.cmc_center_type", store=True)
     element_id = fields.Many2one(

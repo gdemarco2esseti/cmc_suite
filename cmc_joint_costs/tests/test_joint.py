@@ -252,6 +252,13 @@ class TestJoint(TransactionCase):
         with self.assertRaises(UserError):
             run.line_ids[:1].quantity = 10
 
+    def test_line_cannot_move_into_done_run(self):
+        done = self._run("physical", 1000, [{"product_id": self.pA.id, "quantity": 60}])
+        draft = self.Run.create({"name": "D", "method": "physical", "joint_cost": 10,
+                                 "line_ids": [(0, 0, {"product_id": self.pB.id, "quantity": 1})]})
+        with self.assertRaises(UserError):
+            draft.line_ids.run_id = done
+
     def test_header_locked_when_done(self):
         run = self._run("physical", 1000, [
             {"product_id": self.pA.id, "quantity": 60},

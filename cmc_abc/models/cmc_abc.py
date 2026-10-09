@@ -222,6 +222,7 @@ class CmcAbcLine(models.Model):
 
 class CmcAbcResult(models.Model):
     _name = "cmc.abc.result"
+    _inherit = ["cmc.run.result.mixin"]
     _description = "ABC Result (cost per object)"
     _order = "product_id"
     _check_company_auto = True
@@ -239,6 +240,7 @@ class CmcAbcResult(models.Model):
 
 class CmcAbcActivityResult(models.Model):
     _name = "cmc.abc.activity.result"
+    _inherit = ["cmc.run.result.mixin"]
     _description = "ABC Activity Pool Snapshot"
     _order = "activity_id, product_id"
     _check_company_auto = True

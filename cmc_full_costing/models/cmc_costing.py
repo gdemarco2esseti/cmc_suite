@@ -143,6 +143,8 @@ class CmcCostingRun(models.Model):
 
     def _cmc_compute(self):
         self.ensure_one()
+        # the closing row lock pairs with the costing-row lock its reset takes
+        self.closing_run_id._cmc_lock_rows()
         if self.closing_run_id.state != "done":
             raise UserError(
                 self.env._(
@@ -393,6 +395,7 @@ class CmcCostingLine(models.Model):
 
 class CmcCostingResult(models.Model):
     _name = "cmc.costing.result"
+    _inherit = ["cmc.run.result.mixin"]
     _description = "Full cost per product (stored result)"
     _order = "run_id, product_id"
 

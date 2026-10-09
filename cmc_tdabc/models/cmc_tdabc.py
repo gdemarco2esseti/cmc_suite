@@ -214,6 +214,9 @@ class CmcTdabcRun(models.Model):
     _cmc_input_fields = ("company_id", "date_from", "date_to", "line_ids")
     _cmc_result_fields = ("result_ids", "capacity_result_ids")
 
+    def _cmc_reset_values(self):
+        return {**super()._cmc_reset_values(), "scenario_warning": False}
+
     def _cmc_compute(self):
         self.ensure_one()
         self.result_ids.unlink()
@@ -526,6 +529,7 @@ class CmcTdabcRunLine(models.Model):
 
 class CmcTdabcResult(models.Model):
     _name = "cmc.tdabc.result"
+    _inherit = ["cmc.run.result.mixin"]
     _description = "TDABC Result (cost per object per scenario)"
     _order = "scenario, activity_id"
 
@@ -552,6 +556,7 @@ class CmcTdabcResult(models.Model):
 
 class CmcTdabcCapacityResult(models.Model):
     _name = "cmc.tdabc.capacity.result"
+    _inherit = ["cmc.run.result.mixin"]
     _description = "TDABC Capacity Result (per resource per scenario)"
     _order = "scenario, resource_id"
 

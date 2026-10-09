@@ -59,7 +59,7 @@
                             </field>
                         </page>
                         <page string="Results" name="results">
-                            <field name="result_ids">
+                            <field name="result_ids" readonly="1">
                                 <list create="false" edit="false">
                                     <field name="product_id"/>
                                     <field name="cost_primo" sum="Prime"/>

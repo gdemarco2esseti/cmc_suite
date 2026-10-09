@@ -347,6 +347,7 @@ class CmcClosingRun(models.Model):
 
 class CmcClosingLine(models.Model):
     _name = "cmc.closing.line"
+    _inherit = ["cmc.run.result.mixin"]
     _description = "Cost Center Closing Result Line"
     _order = "run_id, center_id"
 
@@ -355,8 +356,10 @@ class CmcClosingLine(models.Model):
     )
     company_id = fields.Many2one(related="run_id.company_id", store=True)
     currency_id = fields.Many2one(related="run_id.currency_id")
+    # restrict: a cascade would delete result rows of a computed closing at
+    # database level, past the AD-001 lock, and change what costing reads
     center_id = fields.Many2one(
-        "account.analytic.account", required=True, index=True, ondelete="cascade"
+        "account.analytic.account", required=True, index=True, ondelete="restrict"
     )
     center_type = fields.Selection(related="center_id.cmc_center_type", store=True)
     cost_initial = fields.Monetary()

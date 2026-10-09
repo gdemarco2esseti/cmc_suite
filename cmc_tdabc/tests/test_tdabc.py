@@ -252,7 +252,9 @@ class TestTdabc(TransactionCase):
 
     def test_reset_deletes_results(self):
         run, res, act = self._simple_run()
+        run.scenario_warning = "left over"  # an engine output, cleared on reset
         run.action_reset_to_draft()
+        self.assertFalse(run.scenario_warning)
         self.assertEqual(run.state, "draft")
         self.assertFalse(run.result_ids)
         self.assertFalse(run.capacity_result_ids)

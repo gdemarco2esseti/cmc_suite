@@ -1,7 +1,7 @@
 from datetime import date
 
-from odoo.exceptions import AccessError
-from odoo.tests.common import TransactionCase, tagged
+from odoo.exceptions import AccessError, UserError
+from odoo.tests.common import TransactionCase, new_test_user, tagged
 
 
 @tagged("post_install", "-at_install")
@@ -123,6 +123,22 @@ class TestFullCostingSecurity(TransactionCase):
         with self.assertRaises(AccessError):
             self.env["cmc.costing.result"].with_user(self.user_a).create(
                 {"run_id": run.id, "product_id": product.id, "cost_primo": 1.0}
+            )
+
+    def test_manager_cannot_forge_quota_or_config(self):
+        """quota/config are result rows too: even a manager (full ACL) cannot
+        add or change them on a computed run."""
+        run, _c, _d, _product, _cl = self._fixture(self.company_a)
+        manager = new_test_user(
+            self.env, login="cmc_fc_manager", groups="base.group_user,cmc_base.group_cmc_manager",
+            company_id=self.company_a.id, company_ids=[(6, 0, self.company_a.ids)],
+        )
+        result = run.result_ids[:1].with_user(manager)
+        with self.assertRaises(UserError):
+            result.quota_ids[:1].amount = 1.0
+        with self.assertRaises(UserError):
+            self.env["cmc.costing.config"].with_user(manager).create(
+                {"result_id": result.id, "level": "primo", "amount": 1.0}
             )
 
     # ---- multi-company isolation (P0) ------------------------------------

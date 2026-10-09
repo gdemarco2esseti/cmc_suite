@@ -184,3 +184,10 @@ class TestCostingLevels(TransactionCase):
                 {"provider_id": self.z.id, "receiver_id": self.comm.id,
                  "driver_id": self.driver.id, "quantity": 10}
             )
+
+    def test_pool_without_driver_units_fails_loud(self):
+        # a period or figurative pool with nothing to spread it on would vanish
+        run = self.env["cmc.costing.run"].new({"name": "No units", "company_id": self.env.company.id})
+        with self.assertRaises(ValidationError):
+            run._spread_by_units(500.0, {})
+        self.assertEqual(run._spread_by_units(0.0, {}), {})

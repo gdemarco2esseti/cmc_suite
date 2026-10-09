@@ -117,6 +117,8 @@ the runs of that period afterwards.
 - Engine internals split into steps; one `spread()` for every proportional split. Figures are the
   same; a residual cent may land on a different product only in exact ties.
 - `cmc.cvr.analysis.leverage_impact()` removed (unused).
+- A costing run with a period or figurative cost but no driver consumption now stops with an
+  error instead of silently leaving that cost out of every product.
 - Italian translations regenerated.
 
 ## 9. Upgrade procedure
@@ -132,9 +134,10 @@ the runs of that period afterwards.
    and 3 needs a decision.
 4. For each run listed as computed on the old sign, and for closings whose labour changed with the
    MRP backfill:
-   1. reset to draft the **costing runs** (and ABC runs, actual-mode CVR analyses) of the period;
+   1. reset to draft the **costing runs** and the ABC runs of the period;
    2. reset to draft the **closing runs** (refused while a computed costing reads them);
-   3. compute the closing runs, then the costing runs, then CVR analyses and ABC runs.
+   3. compute the closing runs, then the costing runs and the ABC runs;
+   4. press *Recompute* on the actual-mode CVR analyses (they have no draft/computed state).
 5. Check the Unclassified queue and the Cost Entries screen for the lines flagged by the warnings.
 
 Rehearsed on a copy of the `cmc_all` demo (2026-10-09): upgrade from 19.0.1.0.0 without errors,

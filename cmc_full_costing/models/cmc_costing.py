@@ -234,12 +234,21 @@ class CmcCostingRun(models.Model):
         return indirect, quotas
 
     def _spread_by_units(self, pool, prod_units):
-        """{product_id: share of pool by units}; empty without pool or units."""
+        """{product_id: share of pool by units}; empty without a pool. A pool
+        with no driver units to spread it on fails loud, as a center cost
+        without allocation base does: it would vanish from every product."""
         rounding = self.company_id.currency_id.rounding
-        if float_is_zero(pool, precision_rounding=rounding) or float_is_zero(
-            sum(prod_units.values()), precision_rounding=qty_rounding(self.env)
-        ):
+        if float_is_zero(pool, precision_rounding=rounding):
             return {}
+        if float_is_zero(sum(prod_units.values()), precision_rounding=qty_rounding(self.env)):
+            raise ValidationError(
+                self.env._(
+                    "Costing run %(name)s has %(amt)s of period or figurative cost "
+                    "but no driver consumption to spread it on.",
+                    name=self.display_name,
+                    amt=pool,
+                )
+            )
         return spread(pool, prod_units, rounding)
 
     def _result_vals(self, products, direct, indirect, quotas, comm_admin, figurative, refs):
@@ -417,6 +426,7 @@ class CmcCostingResult(models.Model):
 
 class CmcCostingQuota(models.Model):
     _name = "cmc.costing.quota"
+    _inherit = ["cmc.run.result.mixin"]
     _description = "Indirect quota contributed by one center to one product"
     _order = "result_id, center_id"
 
@@ -437,6 +447,7 @@ class CmcCostingQuota(models.Model):
 
 class CmcCostingConfig(models.Model):
     _name = "cmc.costing.config"
+    _inherit = ["cmc.run.result.mixin"]
     _description = "Cost configuration level per product (traceability)"
     _order = "result_id, sequence"
 

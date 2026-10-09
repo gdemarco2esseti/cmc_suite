@@ -73,5 +73,9 @@ Single module while iterating: `--test-tags=/cmc_mrp` (still `-u` the module und
 | 4 | f5415a1, ac5994a, 420edc3, 832c422 | review + rōnin (RN-001) fixed | result rows only under CMC_RUN_STATE; CVR rounding kept; MRP adoption via `_cmc_fill` |
 | 5 | 5747a78, eaff3b8, f1f7dfe | full regression 387/387 with EE bridge; upgrade rehearsal on a copy of cmc_all | symlinks `custom/cmc_*` pending explicit confirmation (AD-004) |
 
-Known, not changed (pre-existing): a non-zero period / figurative indirect pool with zero driver units
-is not allocated and not reported (`_spread_by_units` returns `{}`), unlike `_center_map` which fails loud.
+Close-out order (rōnin final RN-002), each step on explicit user confirmation:
+1. merge `refactor/suite-2026-10` into the branch the main checkout `custom/cmc_suite01` runs;
+2. replace `custom/cmc_*` copies with symlinks to `custom/cmc_suite01/cmc_*` (copies are identical to
+   the main checkout today, so nothing is lost) and add `custom/cmc_timesheet_grid`;
+3. `-u` all CMC modules on the working databases, following the release notes.
+Symlinks before the merge would keep Odoo on the pre-refactor code.

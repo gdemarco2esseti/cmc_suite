@@ -94,19 +94,24 @@ class AccountAnalyticLine(models.Model):
 
     def write(self, vals):
         auto = self.env.context.get("cmc_auto_classify") is CMC_AUTO
+        # "remove manual" is a true reset to what the rules say
+        reset = not auto and "cmc_classified_manually" in vals and not vals["cmc_classified_manually"]
         # a user write of a TRUTHY classification value marks the line as manual
-        manual = not auto and any(vals.get(fname) for fname in CLASSIFICATION_FIELDS)
-        if manual:
-            # never mutate the caller's dict: core reuses one vals dict across
-            # several write() calls in a loop.
-            vals = dict(vals, cmc_classified_manually=vals.get(
-                "cmc_classified_manually", True
-            ))
+        manual = not (auto or reset) and any(vals.get(fname) for fname in CLASSIFICATION_FIELDS)
+        # never mutate the caller's dict: core reuses one vals dict across
+        # several write() calls in a loop.
+        if reset:
+            # 'indirect' is the fill-only sentinel of the engine
+            vals = dict(vals, cmc_cost_element_id=False, cmc_behavior=False, cmc_directness="indirect")
+        elif manual:
+            vals = dict(vals, cmc_classified_manually=vals.get("cmc_classified_manually", True))
         res = super().write(vals)
         if not auto:
-            if manual or "cmc_classified_manually" in vals:
+            if vals.keys() & CMC_CLASSIFICATION_FIELDS:
                 self._cmc_store_manual_classification()
-            if vals.keys() & self._cmc_classify_trigger_fields():
+            if reset:
+                self._cmc_auto_classify()
+            elif vals.keys() & self._cmc_classify_trigger_fields():
                 self.filtered(
                     lambda line: not line.cmc_classified_manually
                 )._cmc_auto_classify()
@@ -117,7 +122,13 @@ class AccountAnalyticLine(models.Model):
     # ------------------------------------------------------------------
 
     def _cmc_store_manual_classification(self):
-        """Persist the manual classification per (journal item, cost center)."""
+        """Persist the manual classification per (journal item, cost center).
+
+        Known edges, fixed on purpose: the override belongs to the journal item,
+        so an item recreated in draft loses it (cascade); changing the center of
+        a line leaves the record of the old center orphaned. Lines sharing the
+        key (multi-plan distributions) share one classification: the last wins.
+        """
         lines = self.filtered(lambda line: line.move_line_id and line.cmc_center_id)
         if not lines:
             return
@@ -129,23 +140,27 @@ class AccountAnalyticLine(models.Model):
             (rec.move_line_id.id, rec.center_id.id): rec
             for rec in Manual.search([("move_line_id", "in", lines.move_line_id.ids)])
         }
-        to_create = []
+        wanted = {}  # key -> vals, or None when the key must be forgotten
         for line in lines:
-            key = (line.move_line_id.id, line.cmc_center_id.id)
-            record = existing.get(key)
-            if not line.cmc_classified_manually:
-                if record:
-                    record.unlink()
-                continue
-            vals = {
+            wanted[(line.move_line_id.id, line.cmc_center_id.id)] = {
                 "cmc_behavior": line.cmc_behavior or False,
                 "cmc_directness": line.cmc_directness or False,
                 "cmc_cost_element_id": line.cmc_cost_element_id.id,
-            }
-            if record:
-                record.write(vals)
+            } if line.cmc_classified_manually else None
+        stale = Manual
+        updates = defaultdict(list)
+        to_create = []
+        for key, vals in wanted.items():
+            record = existing.get(key)
+            if vals is None:
+                stale |= record or Manual
+            elif record:
+                updates[tuple(sorted(vals.items()))].append(record.id)
             else:
                 to_create.append(dict(vals, move_line_id=key[0], center_id=key[1]))
+        stale.unlink()
+        for vals, ids in updates.items():
+            Manual.browse(ids).write(dict(vals))
         if to_create:
             Manual.create(to_create)
 

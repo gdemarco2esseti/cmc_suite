@@ -1,4 +1,8 @@
+import logging
+
 from odoo import SUPERUSER_ID, api
+
+_logger = logging.getLogger(__name__)
 
 OLD_COLUMNS = (
     "cmc_classified_manually",
@@ -16,13 +20,12 @@ def migrate(cr, version):
     if not cr.fetchone():
         return  # fresh install or already migrated
     env = api.Environment(cr, SUPERUSER_ID, {})
-    # the manual classification used to sit on the journal item and was copied
-    # to every sibling analytic line: keep it only on the lines that were
-    # themselves manual, keyed by their own center.
+    # the old flag on the journal item was copied to every sibling analytic line:
+    # the lines that are themselves manual are what the new model keeps, keyed by
+    # their own center (siblings manual on the line only included).
     cr.execute(
         "SELECT al.id FROM account_analytic_line al "
-        "JOIN account_move_line aml ON aml.id = al.move_line_id "
-        "WHERE aml.cmc_classified_manually AND al.cmc_classified_manually"
+        "WHERE al.cmc_classified_manually AND al.move_line_id IS NOT NULL"
     )
     lines = env["account.analytic.line"].browse([row[0] for row in cr.fetchall()])
     Manual = env["cmc.manual.classification"]
@@ -31,10 +34,14 @@ def migrate(cr, version):
         for rec in Manual.search([("move_line_id", "in", lines.move_line_id.ids)])
     }
     to_create = []
+    discarded = []
     for line in lines:
         center = line.cmc_center_id
         key = (line.move_line_id.id, center.id)
-        if not center or key in seen:
+        if not center:
+            discarded.append(line.id)
+            continue
+        if key in seen:
             continue
         seen.add(key)
         to_create.append({
@@ -45,5 +52,10 @@ def migrate(cr, version):
             "cmc_cost_element_id": line.cmc_cost_element_id.id,
         })
     Manual.create(to_create)
+    if discarded:
+        _logger.warning(
+            "cmc_account: %d manual classification(s) not migrated, the analytic "
+            "line has no cost center: ids %s", len(discarded), discarded,
+        )
     for column in OLD_COLUMNS:
         cr.execute(f'ALTER TABLE account_move_line DROP COLUMN IF EXISTS "{column}"')  # noqa: S608 - constant names

@@ -7,6 +7,8 @@
             <field name="global" eval="True"/>
             <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
         </record>
+        <!-- satellite of account.move.line: same `in company_ids` domain as the
+             core journal item rule, so it sees exactly the items the user sees -->
         <record id="cmc_manual_classification_company_rule" model="ir.rule">
             <field name="name">CMC manual classification: multi-company</field>
             <field name="model_id" ref="model_cmc_manual_classification"/>

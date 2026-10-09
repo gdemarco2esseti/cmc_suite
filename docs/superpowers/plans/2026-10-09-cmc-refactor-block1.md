@@ -98,6 +98,15 @@
 
 ---
 
+### Task 6: capacity refresh on multi-line batches (cmc_base)
+`_cmc_capacity_rows` called core `_get_analytic_accounts()` (singleton-only) on a recordset → `Expected singleton` on any CRUD touching fixed lines on 2 centers. Test: `cmc_base/tests/test_capacity_multi_line.py`.
+
+### Task 7: CMC controller can classify bill lines (cmc_account) — AD-007
+Covered by `test_controller_with_cmc_rights_only_classifies_bill_line` in `cmc_account/tests/test_manual_split.py`; done together with Task 5.
+
+### Task 8: one sign convention (all modules) — AD-005
+Dispatch plan from odoo-dev-lead (inventory of every `amount` read, canonical `-amount` in `_cmc_cost_groups`, Cost Entry positive input, fixture helper, migration predicate). Includes T3 review leftovers (CVR derived CF sign, rename context `cmc_cvr_skip_curve`, batch derive without O(n²), `p - v` in curve).
+
 ## Block 1 exit (checkpoint with user)
 - [ ] Full regression: 241 + new tests, 0 failed.
 - [ ] `odoo-qa` on the 5 commits (failures/tracebacks only).

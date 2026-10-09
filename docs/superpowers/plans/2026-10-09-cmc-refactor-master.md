@@ -18,6 +18,9 @@
 | AD-001 | A computed (`done`) run is **locked**: any create/write/unlink on its input lines AND on its header input fields raises `UserError`. The only way back is an explicit `action_reset_to_draft`, which **deletes the results**. Applies to closing, costing, abc, tdabc, joint. Changes joint (today: silent auto-invalidate) and full costing (today: reset keeps stale results). |
 | AD-002 | Resetting a closing run is **forbidden** while a `done` costing run references it (`UserError` naming the costing runs). No cascade. |
 | AD-003 | Scope: blocks 1–5, checkpoint with the user after each block. |
+| AD-005 | Sign convention = Odoo natural: **cost = negative `amount`** on `account.analytic.line`. Cost Entry shows/accepts a positive cost and stores it negative; engines read cost as `-amount` in one canonical place (no scattered `abs()`). Migration flips existing manual CMC lines stored positive (lines without a source document). Done as Task 8 of block 1. |
+| AD-006 | MRP labour twin = every analytic line of the `_post_labour` journal entry (expense AND WIP side), not only the line stamped on `time_ids`: the entry only moves value already measured by the workcenter line. |
+| AD-007 | A CMC controller (`group_cmc_user`) must be able to classify any analytic line in the Unclassified queue (incl. bill lines when `hr_timesheet` is installed): CMC-only classification fields written via a checked `sudo()`; other fields keep core protection. Task 7. |
 | AD-004 | Source of truth = repo `custom/cmc_suite01`; at close-out `custom/cmc_*` become symlinks to it (deleting the copies needs explicit confirmation). |
 
 ## Blocks

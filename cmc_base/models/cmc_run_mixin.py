@@ -79,7 +79,8 @@ class CmcRunMixin(models.AbstractModel):
                 )
             )
         for run in self:
-            run._cmc_compute()
+            # the sentinel opens the result rows to the engine only
+            run.with_context(cmc_run_state=CMC_RUN_STATE)._cmc_compute()
             run._cmc_set_state("done")
         return True
 
@@ -179,30 +180,28 @@ class CmcRunLineMixin(models.AbstractModel):
 
 
 class CmcRunResultMixin(models.AbstractModel):
-    """Result row of a CMC run: written by Compute while the run is in draft,
-    deleted by Reset. A computed run's results never change by hand, whatever
-    the access rights on the result model."""
+    """Result row of a CMC run: written by Compute and deleted by Reset, both
+    under the CMC_RUN_STATE sentinel, never by hand. A draft run must hold no
+    result a user slipped in: Compute would certify it next to its own rows."""
 
     _name = "cmc.run.result.mixin"
     _description = "CMC run result row"
 
-    def _cmc_check_results_open(self, runs):
-        if not runs._cmc_state_unlocked():
-            runs._cmc_check_editable()
+    def _cmc_check_results_open(self):
+        if self.env.context.get("cmc_run_state") is not CMC_RUN_STATE:
+            raise UserError(self.env._("The results of a run are written by Compute only."))
 
     @api.model_create_multi
     def create(self, vals_list):
+        # after super(): a user without create rights gets the AccessError
         rows = super().create(vals_list)
-        self._cmc_check_results_open(rows.run_id)
+        self._cmc_check_results_open()
         return rows
 
     def write(self, vals):
-        self._cmc_check_results_open(self.run_id)
-        res = super().write(vals)
-        if "run_id" in vals:
-            self._cmc_check_results_open(self.run_id)
-        return res
+        self._cmc_check_results_open()
+        return super().write(vals)
 
     def unlink(self):
-        self._cmc_check_results_open(self.run_id)
+        self._cmc_check_results_open()
         return super().unlink()

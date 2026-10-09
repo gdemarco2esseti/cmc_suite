@@ -115,6 +115,13 @@ class TestCvr(TransactionCase):
         self.assertEqual(a.fixed_cost, 90000.0)
         self.assertEqual(a.bep_qty, 15000.0)
 
+    def test_margin_of_safety_on_rounded_break_even(self):
+        # stored monetary figures: MoS comes from the break-even revenue at the
+        # currency step (p=10.01, Q=1.5 -> revenue 15.015, BEP revenue 7.00)
+        a = self._cvr(price_unit=10.01, variable_unit=0.0, fixed_cost=7.004, volume=1.5)
+        self.assertEqual(a.bep_revenue, 7.0)
+        self.assertAlmostEqual(a.margin_of_safety, 8.02, places=2)
+
 
 @tagged("post_install", "-at_install")
 class TestCvrActualMode(TransactionCase):
@@ -182,3 +189,4 @@ class TestCvrActualMode(TransactionCase):
         )
         a.action_recompute()
         self.assertEqual(a.fixed_cost, 129999.0)
+

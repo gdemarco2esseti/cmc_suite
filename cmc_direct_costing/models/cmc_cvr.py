@@ -1,7 +1,7 @@
 from collections import defaultdict
 
 from odoo import api, fields, models
-from odoo.tools import float_compare, float_is_zero
+from odoo.tools import float_compare, float_is_zero, float_round
 
 from odoo.addons.cmc_base.models.cmc_utils import qty_rounding
 
@@ -168,7 +168,10 @@ class CmcCvrAnalysis(models.Model):
                 )
                 res["target_qty"] = (target_profit + cf) / mc
             mc_total, actual_rev = mc * volume, p * volume
-        res["margin_of_safety"] = actual_rev - res["bep_revenue"]
+        # monetary outputs at the currency step, as the stored fields hold
+        # them: margin and ratio are derived from the rounded figures
+        res["bep_revenue"] = float_round(res["bep_revenue"], precision_rounding=rounding)
+        res["margin_of_safety"] = float_round(actual_rev - res["bep_revenue"], precision_rounding=rounding)
         res["mos_ratio"] = (
             res["margin_of_safety"] / actual_rev * 100
             if not float_is_zero(actual_rev, precision_rounding=rounding)

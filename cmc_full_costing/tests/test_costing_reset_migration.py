@@ -29,7 +29,7 @@ class TestCostingResetMigration(TransactionCase):
         stale, kept = self.env["cmc.costing.run"].create(
             [{**period, "name": name, "closing_run_id": closing.id} for name in ("stale", "kept")]
         )
-        self.env["cmc.costing.result"].create(
+        self.env["cmc.costing.result"].with_context(cmc_run_state=CMC_RUN_STATE).create(
             [{"run_id": run.id, "product_id": product.id, "cost_primo": 10.0} for run in (stale, kept)]
         )
         # "kept" is computed; "stale" went through the old reset (draft, results left in place)

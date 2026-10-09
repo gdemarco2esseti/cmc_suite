@@ -3,7 +3,8 @@
     <!-- ACL note (security/ir.model.access.csv): cmc.costing.result/.quota/
          .config are engine-written only. Users get read-only access (1,0,0,0)
          so nobody can inject rows over RPC into a run they can merely read;
-         _compute_costing() creates and unlinks them under sudo. -->
+         the engine (_cmc_compute) creates them under sudo, Reset deletes them.
+         cmc.run.result.mixin also refuses any write outside Compute/Reset. -->
     <!-- record rules live OUTSIDE noupdate: a domain fix must be able to
          reach databases that already have the module installed -->
     <data>

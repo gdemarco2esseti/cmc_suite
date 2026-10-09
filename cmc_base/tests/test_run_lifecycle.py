@@ -127,3 +127,11 @@ class TestRunLifecycle(TransactionCase):
             run.with_user(outsider).action_reset_to_draft()
         with self.assertRaises(AccessError):
             run.with_user(outsider).action_compute()
+
+    def test_results_of_draft_run_locked_too(self):
+        # a row slipped into a draft run would be certified by the next Compute
+        draft = self.env["cmc.closing.run"].create({**self.period})
+        with self.assertRaises(UserError):
+            self.env["cmc.closing.line"].with_user(self.user).create(
+                {"run_id": draft.id, "center_id": self.center.id, "cost_residual": 9000.0}
+            )

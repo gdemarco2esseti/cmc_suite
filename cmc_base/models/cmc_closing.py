@@ -29,8 +29,6 @@ def _solve_linear(matrix, vector):
     return [a[i][n] for i in range(n)]
 
 
-
-
 class CmcClosingRun(models.Model):
     _name = "cmc.closing.run"
     _inherit = ["cmc.run.mixin"]

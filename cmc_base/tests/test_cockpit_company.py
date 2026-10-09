@@ -116,7 +116,7 @@ class TestCockpitCompany(TransactionCase):
             run = self.env["cmc.costing.run"].create(
                 {**period, "closing_run_id": closing.id, "company_id": company.id}
             )
-            self.env["cmc.costing.result"].create(
+            self.env["cmc.costing.result"].with_context(cmc_run_state=CMC_RUN_STATE).create(
                 {"run_id": run.id, "product_id": product.id}
             )
         data = self._cockpit(self.company_a, self.company_b)

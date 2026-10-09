@@ -1,5 +1,7 @@
 from odoo import api, fields, models
 
+from odoo.addons.cmc_base.models.account_analytic_line import CMC_AUTO
+
 MOD_XMLID = "cmc_base.cmc_element_mod"
 
 
@@ -45,7 +47,8 @@ class AccountAnalyticLine(models.Model):
         # rights are checked before (ACL) and on the records created (rules):
         # the shortcut must not let a user create lines they could not create.
         self.check_access("create")
-        twins = super(AccountAnalyticLine, self.sudo()).create(twin_vals).with_env(self.env)
+        # CMC_AUTO: the system values above are no manual classification
+        twins = super(AccountAnalyticLine, self.sudo().with_context(cmc_auto_classify=CMC_AUTO)).create(twin_vals).with_env(self.env)
         twins.check_access("create")
         ids = [None] * len(vals_list)
         for pos, record in zip(plain_pos, plain):

@@ -292,6 +292,9 @@ class CmcTdabcRun(models.Model):
                 "(sale), or untick Derived Volume and enter the volume manually."
             ))
         domain = AL._cmc_tdabc_domain(self.date_from, self.date_to, self.company_id)
+        # why sudo: the same scope as _cmc_tdabc_hours (all the company's lines,
+        # whoever presses Compute): minutes over a narrower volume inflate rates
+        AL = AL.sudo()
         out = {}
         if has_product:
             prod = AL._read_group(

@@ -282,6 +282,12 @@ class TestMrpLabourTwin(TransactionCase):
         entry.action_post()
         self.assertFalse(old.exists(), "precondition: core rebuilt the lines")
         self._assert_labour_once(mo)
+        # a rebuilt twin is a system line, never a manual classification
+        rebuilt = self._twins(mo)
+        self.assertTrue(rebuilt)
+        self.assertFalse(any(rebuilt.mapped("cmc_classified_manually")))
+        self.assertFalse(self.env["cmc.manual.classification"].search_count(
+            [("move_line_id", "in", rebuilt.move_line_id.ids)]))
 
     def test_ac45_twin_excluded_when_distribution_added_to_posted_line(self):
         # no distribution model: the entry has no analytic line until the

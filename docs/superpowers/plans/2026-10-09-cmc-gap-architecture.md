@@ -274,3 +274,8 @@ Capability ids per AD are listed in each record; WP <-> capability mapping per A
 FCS-03 -> WP-12, FCS-04 -> WP-02, FIN-12 -> WP-09). No `TS-NNN`/`RF-AREA-NNN` exist yet for this
 programme: the dev-lead/tech-specs pass assigns them per WP and cites these AD ids. `T<n>`/`HT<n>`:
 to be assigned by the orchestrator.
+
+## Consolidation backlog (orchestrator, 2026-10-09)
+- CB-1: `cmc.run.result.mixin.write` raises UserError before the ACL check; WP-04 (cmc.costing.result) and WP-05 (cmc.job.sheet/.labour) added per-model `check_access("write")` overrides. Move the ACL check into the mixin and drop the overrides.
+- CB-2: `_cmc_record_usage` does not de-duplicate origins within one call (WP-05 de-duplicates by hand).
+- CB-3: `account.analytic.line` create/write overrides now in 4 modules; allocation lock called twice (cmc_base + cmc_hr_timesheet) — candidate single guard entry point (ronin WP-01 watch-point).

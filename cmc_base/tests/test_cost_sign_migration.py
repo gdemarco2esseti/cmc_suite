@@ -151,8 +151,12 @@ class TestCostSignMigration(TransactionCase):
         self.env.flush_all()
         self.env.invalidate_all()
         self.env.cr.execute("UPDATE account_analytic_line SET cmc_classified_manually = FALSE WHERE id = %s", (line.id,))
-        self._migrate()
+        with self.assertLogs("cmc_base_post_migrate_1_2_0", level="WARNING") as logs:
+            self._migrate()
         self.assertEqual(line.amount, 300.0)
+        self.assertIn("classified by a rule", logs.output[0])
+        self.assertIn("verify by hand", logs.output[0])
+        self.assertIn(str(line.id), logs.output[0])
 
     def test_ambiguous_negative_line_is_warned_not_changed(self):
         # AD-005: a classified document-less negative line may be an old reversal: warn, never touch
@@ -175,3 +179,39 @@ class TestCostSignMigration(TransactionCase):
         self.env.cr.execute("UPDATE cmc_capacity_analysis SET fixed_cost = 999 WHERE id = %s", (analysis.id,))
         self._migrate()
         self.assertEqual(analysis.fixed_cost, 0.0)
+
+    def _done_closing(self, name, date_from, date_to, state="done"):
+        run = self.env["cmc.closing.run"].create({"name": name, "date_from": date_from, "date_to": date_to})
+        # why raw SQL: the run is "computed" long before the migration, with no recompute here
+        self.env.cr.execute("UPDATE cmc_closing_run SET state = %s WHERE id = %s", (state, run.id))
+        return run
+
+    def test_concluded_runs_over_the_period_are_listed(self):
+        # AD-005: a done run whose period holds a flipped line was computed on the old sign: the log names it;
+        # a run on another period, or still in draft, is not touched by the change and is not listed
+        self._line(300.0, cmc_behavior="fixed")
+        stale = self._done_closing("RUN-STALE", date(2026, 3, 1), date(2026, 3, 31))
+        self._done_closing("RUN-OTHER-PERIOD", date(2026, 5, 1), date(2026, 5, 31))
+        self._done_closing("RUN-DRAFT", date(2026, 3, 1), date(2026, 3, 31), state="draft")
+        with self.assertLogs("cmc_base_post_migrate_1_2_0", level="WARNING") as logs:
+            self._migrate()
+        output = "\n".join(logs.output)
+        self.assertIn("reset to draft and recompute", output)
+        self.assertIn("cmc_closing_run %d" % stale.id, output)
+        self.assertNotIn("RUN-OTHER-PERIOD", output)
+        self.assertNotIn("RUN-DRAFT", output)
+
+    def test_actual_mode_cvr_analysis_is_listed(self):
+        # AD-005: an actual-mode CVR analysis stored its fixed cost on the old sign; a simulation never read the lines
+        if "cmc.cvr.analysis" not in self.env:
+            self.skipTest("cmc_direct_costing not installed")
+        self._line(300.0, cmc_behavior="fixed")
+        CVR = self.env["cmc.cvr.analysis"]
+        vals = {"center_id": self.center.id, "date_from": date(2026, 3, 1), "date_to": date(2026, 3, 31), "price_unit": 10, "variable_unit": 4}
+        actual = CVR.create(dict(vals, name="CVR-ACTUAL", mode="consuntivo"))
+        CVR.create(dict(vals, name="CVR-SIM", mode="simulazione", fixed_cost=1))
+        with self.assertLogs("cmc_base_post_migrate_1_2_0", level="WARNING") as logs:
+            self._migrate()
+        output = "\n".join(logs.output)
+        self.assertIn("cmc_cvr_analysis %d" % actual.id, output)
+        self.assertNotIn("CVR-SIM", output)

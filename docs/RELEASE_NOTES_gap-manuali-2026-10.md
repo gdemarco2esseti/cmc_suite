@@ -5,7 +5,7 @@ Branch `feat/gap-manuali` (integration of feat/gap-*). Analysis: `docs/analysis/
 (AD-101..AD-119, consolidation backlog CB-1..CB-8). Every work package went through red tests → dev → QA → rōnin → fixes.
 
 ## Coverage
-Before: 24/126 capabilities covered (19%). After: 125/126 covered + KPI-02 closed by `cmc_kpi_mrp` (see register §4/§5).
+Before: 24/126 capabilities covered (19%). After: 126/126 in-scope capabilities covered (register §4/§5, recounted by script).
 
 ## New modules (CE, no Enterprise/OCA dependency)
 | Module | Covers |

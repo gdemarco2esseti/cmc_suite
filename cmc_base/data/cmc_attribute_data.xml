@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- shipped classification attributes (company-less: shared by all companies) -->
+    <record id="cmc_attribute_value_added" model="cmc.attribute">
+        <field name="name">Value-added class</field>
+        <field name="code">VA_CLASS</field>
+        <field name="sequence">10</field>
+        <field name="company_id" eval="False"/>
+        <field name="target_model_ids" eval="[(6, 0, [ref('account.model_account_analytic_account') if False else ref('analytic.model_account_analytic_account'), ref('model_cmc_cost_object')])]"/>
+    </record>
+    <record id="cmc_attribute_value_va" model="cmc.attribute.value">
+        <field name="attribute_id" ref="cmc_attribute_value_added"/>
+        <field name="name">Value-added</field>
+        <field name="code">VA</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="cmc_attribute_value_bva" model="cmc.attribute.value">
+        <field name="attribute_id" ref="cmc_attribute_value_added"/>
+        <field name="name">Business value-added</field>
+        <field name="code">BVA</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="cmc_attribute_value_nva" model="cmc.attribute.value">
+        <field name="attribute_id" ref="cmc_attribute_value_added"/>
+        <field name="name">Non value-added</field>
+        <field name="code">NVA</field>
+        <field name="sequence">30</field>
+    </record>
+
+    <record id="cmc_attribute_cost_of_quality" model="cmc.attribute">
+        <field name="name">Cost of quality</field>
+        <field name="code">COQ</field>
+        <field name="sequence">20</field>
+        <field name="company_id" eval="False"/>
+        <field name="target_model_ids" eval="[(6, 0, [ref('analytic.model_account_analytic_account'), ref('model_cmc_cost_object')])]"/>
+    </record>
+    <record id="cmc_attribute_value_coq_prevention" model="cmc.attribute.value">
+        <field name="attribute_id" ref="cmc_attribute_cost_of_quality"/>
+        <field name="name">Prevention</field>
+        <field name="code">prevention</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="cmc_attribute_value_coq_appraisal" model="cmc.attribute.value">
+        <field name="attribute_id" ref="cmc_attribute_cost_of_quality"/>
+        <field name="name">Appraisal</field>
+        <field name="code">appraisal</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="cmc_attribute_value_coq_internal_failure" model="cmc.attribute.value">
+        <field name="attribute_id" ref="cmc_attribute_cost_of_quality"/>
+        <field name="name">Internal failure</field>
+        <field name="code">internal_failure</field>
+        <field name="sequence">30</field>
+    </record>
+    <record id="cmc_attribute_value_coq_external_failure" model="cmc.attribute.value">
+        <field name="attribute_id" ref="cmc_attribute_cost_of_quality"/>
+        <field name="name">External failure</field>
+        <field name="code">external_failure</field>
+        <field name="sequence">40</field>
+    </record>
+    <record id="cmc_attribute_value_coq_error_free" model="cmc.attribute.value">
+        <field name="attribute_id" ref="cmc_attribute_cost_of_quality"/>
+        <field name="name">Error-free</field>
+        <field name="code">error_free</field>
+        <field name="sequence">50</field>
+    </record>
+
+    <record id="cmc_attribute_efficiency" model="cmc.attribute">
+        <field name="name">Efficiency (1-5)</field>
+        <field name="code">EFFICIENCY</field>
+        <field name="sequence">30</field>
+        <field name="company_id" eval="False"/>
+        <field name="target_model_ids" eval="[(6, 0, [ref('analytic.model_account_analytic_account'), ref('model_cmc_cost_object')])]"/>
+    </record>
+    <record id="cmc_attribute_value_e1" model="cmc.attribute.value">
+        <field name="attribute_id" ref="cmc_attribute_efficiency"/>
+        <field name="name">1 - Very low</field>
+        <field name="code">E1</field>
+        <field name="sequence">10</field>
+        <field name="weight">1.0</field>
+    </record>
+    <record id="cmc_attribute_value_e2" model="cmc.attribute.value">
+        <field name="attribute_id" ref="cmc_attribute_efficiency"/>
+        <field name="name">2 - Low</field>
+        <field name="code">E2</field>
+        <field name="sequence">20</field>
+        <field name="weight">2.0</field>
+    </record>
+    <record id="cmc_attribute_value_e3" model="cmc.attribute.value">
+        <field name="attribute_id" ref="cmc_attribute_efficiency"/>
+        <field name="name">3 - Medium</field>
+        <field name="code">E3</field>
+        <field name="sequence">30</field>
+        <field name="weight">3.0</field>
+    </record>
+    <record id="cmc_attribute_value_e4" model="cmc.attribute.value">
+        <field name="attribute_id" ref="cmc_attribute_efficiency"/>
+        <field name="name">4 - High</field>
+        <field name="code">E4</field>
+        <field name="sequence">40</field>
+        <field name="weight">4.0</field>
+    </record>
+    <record id="cmc_attribute_value_e5" model="cmc.attribute.value">
+        <field name="attribute_id" ref="cmc_attribute_efficiency"/>
+        <field name="name">5 - Very high</field>
+        <field name="code">E5</field>
+        <field name="sequence">50</field>
+        <field name="weight">5.0</field>
+    </record>
+
+    <record id="cmc_attribute_customer_segment" model="cmc.attribute">
+        <field name="name">Customer segment</field>
+        <field name="code">SEGMENT</field>
+        <field name="sequence">40</field>
+        <field name="company_id" eval="False"/>
+        <field name="target_model_ids" eval="[(6, 0, [ref('base.model_res_partner')])]"/>
+    </record>
+    <record id="cmc_attribute_channel" model="cmc.attribute">
+        <field name="name">Sales channel</field>
+        <field name="code">CHANNEL</field>
+        <field name="sequence">50</field>
+        <field name="company_id" eval="False"/>
+        <field name="target_model_ids" eval="[(6, 0, [ref('base.model_res_partner')])]"/>
+    </record>
+</odoo>

@@ -1,6 +1,6 @@
 {
     "name": "CMC - Cost Management & Controlling (Base)",
-    "version": "19.0.1.4.0",
+    "version": "19.0.1.5.0",
     "category": "Accounting/Accounting",
     "summary": "Fondamenta del controllo di gestione: tassonomia dei costi e oggetto di costo",
     "author": "2ST",
@@ -10,6 +10,7 @@
         "security/cmc_security.xml",
         "security/ir.model.access.csv",
         "data/cmc_data.xml",
+        "data/cmc_attribute_data.xml",
         "data/cmc_cron.xml",
         "views/account_analytic_account_views.xml",
         "views/account_analytic_line_views.xml",
@@ -17,6 +18,7 @@
         "views/cmc_allocation_views.xml",
         "views/cmc_center_service_views.xml",
         "views/cmc_menus.xml",
+        "views/cmc_attribute_views.xml",
         "views/cmc_plan_version_views.xml",
         "views/cmc_measure_quantity_views.xml",
         "views/cmc_rate_views.xml",

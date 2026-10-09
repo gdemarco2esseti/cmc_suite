@@ -33,6 +33,20 @@
     <!-- record rules live OUTSIDE noupdate: a domain fix must be able to
          reach databases that already have the module installed -->
     <data>
+        <record id="cmc_attribute_company_rule" model="ir.rule">
+            <field name="name">CMC attribute: multi-company</field>
+            <field name="model_id" ref="model_cmc_attribute"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_attribute_value_company_rule" model="ir.rule">
+            <field name="name">CMC attribute value: multi-company</field>
+            <field name="model_id" ref="model_cmc_attribute_value"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
         <record id="cmc_cost_driver_company_rule" model="ir.rule">
             <field name="name">CMC cost driver: multi-company</field>
             <field name="model_id" ref="model_cmc_cost_driver"/>

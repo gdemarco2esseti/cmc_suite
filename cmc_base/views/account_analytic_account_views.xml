@@ -16,6 +16,8 @@
                                options="{'no_quick_create': True}"/>
                         <field name="cmc_is_period"/>
                     </group>
+                    <field name="cmc_attribute_value_ids" widget="many2many_tags" colspan="2"
+                           options="{'no_create': True}"/>
                     <field name="cmc_responsibility_ids" widget="many2many_tags" readonly="1"
                            invisible="not cmc_responsibility_ids" colspan="2"/>
                 </group>

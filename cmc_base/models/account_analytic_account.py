@@ -6,7 +6,8 @@ from odoo.fields import Domain
 
 
 class AccountAnalyticAccount(models.Model):
-    _inherit = "account.analytic.account"
+    _name = "account.analytic.account"
+    _inherit = ["account.analytic.account", "cmc.attribute.mixin"]
     # NB: deliberately no _parent_name override — retargeting child_of /
     # parent_of for every reader of this core model buys nothing here
     # (no _parent_store, and the suite never queries the CMC hierarchy);

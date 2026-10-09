@@ -12,6 +12,7 @@ DEFAULT_TYPES = {
 
 class CmcCostObject(models.Model):
     _name = "cmc.cost.object"
+    _inherit = ["cmc.attribute.mixin"]
     _description = "Cost Object"
     _order = "object_type, id"
 

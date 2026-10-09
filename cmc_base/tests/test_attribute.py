@@ -295,5 +295,5 @@ class TestAttributeFramework(TransactionCase):
         for xmlid in ("cmc_base.cmc_attribute_company_rule", "cmc_base.cmc_attribute_value_company_rule"):
             rule = self.env.ref(xmlid)
             data = self.env["ir.model.data"].search([("module", "=", "cmc_base"), ("name", "=", xmlid.split(".")[1])])
-            self.assertTrue(rule.global_)
+            self.assertTrue(rule["global"])
             self.assertFalse(data.noupdate, xmlid)

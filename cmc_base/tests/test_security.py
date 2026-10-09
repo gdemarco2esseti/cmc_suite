@@ -1,6 +1,6 @@
 from datetime import date
 
-from odoo.exceptions import AccessError
+from odoo.exceptions import AccessError, UserError
 from odoo.tests.common import TransactionCase, new_test_user, tagged
 
 
@@ -127,3 +127,16 @@ class TestCmcSecurity(TransactionCase):
         )
         visible = self.CA.with_user(self.cmc_user).search([])
         self.assertNotIn(foreign, visible)
+
+    def test_cost_element_of_another_company_is_refused(self):
+        """CMC controllers write classification fields in sudo (AD-007), which
+        skips record rules: the company check is what keeps elements apart."""
+        other_company = self.env["res.company"].create({"name": "CMC Co 3"})
+        foreign = self.env["cmc.cost.element"].create(
+            {"name": "Foreign", "code": "FOREIGN", "company_id": other_company.id}
+        )
+        line = self.AL.create(
+            {"name": "cost", "account_id": self.center.id, "amount": -10.0}
+        )
+        with self.assertRaises(UserError):
+            line.write({"cmc_cost_element_id": foreign.id})

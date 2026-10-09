@@ -34,7 +34,7 @@ class AccountAnalyticLine(models.Model):
         "cmc.cost.driver", string="Cost Driver", check_company=True
     )
     cmc_cost_element_id = fields.Many2one(
-        "cmc.cost.element", string="Cost Element", index=True,
+        "cmc.cost.element", string="Cost Element", index=True, check_company=True,
         help="Nature of the cost (materials, direct labor, depreciation...).",
     )
     cmc_center_id = fields.Many2one(

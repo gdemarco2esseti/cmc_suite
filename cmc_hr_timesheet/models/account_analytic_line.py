@@ -1,8 +1,6 @@
 from odoo import api, models
 from odoo.tools import float_is_zero
 
-from odoo.addons.cmc_account.models.account_analytic_line import CMC_CLASSIFICATION_FIELDS
-
 MOD_XMLID = "cmc_base.cmc_element_mod"
 
 
@@ -10,22 +8,9 @@ class AccountAnalyticLine(models.Model):
     _inherit = "account.analytic.line"
 
     def write(self, vals):
-        if (
-            not self.env.su
-            and vals
-            and set(vals) <= CMC_CLASSIFICATION_FIELDS
-            and self.env.user.has_group("cmc_base.group_cmc_user")
-        ):
-            self.check_access("read")
-            # why sudo: the queue sends a CMC controller to lines owned by other
-            # users, and hr_timesheet (_check_can_write + record rules) refuses
-            # any foreign write. Only CMC classification fields pass this gate,
-            # and only on lines the user can read. sudo re-enters write(), so
-            # the manual marking in cmc_account still runs. Never for an
-            # excluded twin: sudo would defeat the superuser-only guard of
-            # cmc_base, which must refuse the write as the user.
-            if not any(self.mapped("cmc_excluded")):
-                return self.sudo().write(vals)
+        # must sit above hr_timesheet in the MRO: its checks refuse foreign writes
+        if self._cmc_classification_gate(vals):
+            return True
         return super().write(vals)
 
     @api.model

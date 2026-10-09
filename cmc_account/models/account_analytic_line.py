@@ -7,6 +7,9 @@ from odoo.addons.cmc_base.models.account_analytic_line import CMC_AUTO
 
 _logger = logging.getLogger(__name__)
 
+# context sentinel (not a boolean, same reason as CMC_AUTO): marks a write made
+# by the classification gate, so Enterprise bridges can tell it from a user write
+CMC_GATE = object()
 CLASSIFICATION_FIELDS = ("cmc_behavior", "cmc_directness", "cmc_cost_element_id")
 # the center is NOT here: changing it moves the accounting allocation
 CMC_CLASSIFICATION_FIELDS = {*CLASSIFICATION_FIELDS, "cmc_classified_manually"}
@@ -92,7 +95,34 @@ class AccountAnalyticLine(models.Model):
         lines._cmc_auto_classify()
         return lines
 
+    def _cmc_classification_gate(self, vals):
+        """Let a CMC controller write ONLY classification fields on lines they can
+        read, whoever owns the line. Returns True when it did the write.
+
+        why sudo: the Unclassified queue sends the controller to lines of other
+        users (bills, timesheets); record rules and the timesheet checks refuse
+        a foreign write. The sudo skips the write ACL as well, on purpose
+        (AD-007): the fields are CMC metadata, never accounting figures. It
+        re-enters write(), so the manual marking still runs. Never for an
+        excluded twin: sudo would defeat the superuser-only guard of cmc_base,
+        which must refuse the write as the user.
+        """
+        if (
+            self.env.su
+            or not vals
+            or not set(vals) <= CMC_CLASSIFICATION_FIELDS
+            or not self.env.user.has_group("cmc_base.group_cmc_user")
+        ):
+            return False
+        self.check_access("read")
+        if any(self.mapped("cmc_excluded")):
+            return False
+        self.sudo().with_context(cmc_classification_gate=CMC_GATE).write(vals)
+        return True
+
     def write(self, vals):
+        if self._cmc_classification_gate(vals):
+            return True
         auto = self.env.context.get("cmc_auto_classify") is CMC_AUTO
         # "remove manual" is a true reset to what the rules say
         reset = not auto and "cmc_classified_manually" in vals and not vals["cmc_classified_manually"]

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- record rules live OUTSIDE noupdate: a domain fix must be able to
+         reach databases that already have the module installed -->
+    <data>
+        <record id="cmc_budget_seasonality_company_rule" model="ir.rule">
+            <field name="name">CMC budget seasonality: multi-company</field>
+            <field name="model_id" ref="model_cmc_budget_seasonality"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_budget_seasonality_line_company_rule" model="ir.rule">
+            <field name="name">CMC budget seasonality line: multi-company</field>
+            <field name="model_id" ref="model_cmc_budget_seasonality_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_budget_line_company_rule" model="ir.rule">
+            <field name="name">CMC budget line: multi-company</field>
+            <field name="model_id" ref="model_cmc_budget_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_budget_bva_company_rule" model="ir.rule">
+            <field name="name">CMC budget vs actual: multi-company</field>
+            <field name="model_id" ref="model_cmc_budget_bva"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_budget_variance_run_company_rule" model="ir.rule">
+            <field name="name">CMC budget variance run: multi-company</field>
+            <field name="model_id" ref="model_cmc_budget_variance_run"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_budget_variance_input_company_rule" model="ir.rule">
+            <field name="name">CMC budget variance input: multi-company</field>
+            <field name="model_id" ref="model_cmc_budget_variance_input"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_budget_variance_line_company_rule" model="ir.rule">
+            <field name="name">CMC budget variance result: multi-company</field>
+            <field name="model_id" ref="model_cmc_budget_variance_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_budget_cash_run_company_rule" model="ir.rule">
+            <field name="name">CMC budget cash run: multi-company</field>
+            <field name="model_id" ref="model_cmc_budget_cash_run"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_budget_cash_line_company_rule" model="ir.rule">
+            <field name="name">CMC budget cash result: multi-company</field>
+            <field name="model_id" ref="model_cmc_budget_cash_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_budget_line_responsible_rule" model="ir.rule">
+            <field name="name">CMC budget line: own responsibility</field>
+            <field name="model_id" ref="model_cmc_budget_line"/>
+            <field name="groups" eval="[(4, ref('cmc_base.group_cmc_responsible'))]"/>
+            <field name="domain_force">['|', ('center_id.cmc_responsibility_ids.owner_id', '=', user.id), ('responsibility_id.owner_id', '=', user.id)]</field>
+        </record>
+
+        <record id="cmc_budget_line_user_rule" model="ir.rule">
+            <field name="name">CMC budget line: all (controlling user)</field>
+            <field name="model_id" ref="model_cmc_budget_line"/>
+            <field name="groups" eval="[(4, ref('cmc_base.group_cmc_user'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <record id="cmc_budget_bva_responsible_rule" model="ir.rule">
+            <field name="name">CMC budget vs actual: own responsibility</field>
+            <field name="model_id" ref="model_cmc_budget_bva"/>
+            <field name="groups" eval="[(4, ref('cmc_base.group_cmc_responsible'))]"/>
+            <field name="domain_force">[('center_id.cmc_responsibility_ids.owner_id', '=', user.id)]</field>
+        </record>
+
+        <record id="cmc_budget_bva_user_rule" model="ir.rule">
+            <field name="name">CMC budget vs actual: all (controlling user)</field>
+            <field name="model_id" ref="model_cmc_budget_bva"/>
+            <field name="groups" eval="[(4, ref('cmc_base.group_cmc_user'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+    </data>
+</odoo>

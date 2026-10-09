@@ -49,3 +49,7 @@ access_cmc_data_check_wizard_line_user,cmc.data.check.wizard.line.user,model_cmc
 access_cmc_responsibility_summary_responsible,cmc.responsibility.summary.responsible,model_cmc_responsibility_summary,cmc_base.group_cmc_responsible,1,1,1,1
 access_cmc_responsibility_summary_line_responsible,cmc.responsibility.summary.line.responsible,model_cmc_responsibility_summary_line,cmc_base.group_cmc_responsible,1,1,1,1
 access_analytic_account_cmc_responsible,account.analytic.account.cmc.responsible,analytic.model_account_analytic_account,cmc_base.group_cmc_responsible,1,0,0,0
+access_cmc_attribute_user,cmc.attribute.user,model_cmc_attribute,cmc_base.group_cmc_user,1,0,0,0
+access_cmc_attribute_manager,cmc.attribute.manager,model_cmc_attribute,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_attribute_value_user,cmc.attribute.value.user,model_cmc_attribute_value,cmc_base.group_cmc_user,1,0,0,0
+access_cmc_attribute_value_manager,cmc.attribute.value.manager,model_cmc_attribute_value,cmc_base.group_cmc_manager,1,1,1,1

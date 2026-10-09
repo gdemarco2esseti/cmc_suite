@@ -1,9 +1,13 @@
 import ast
+import importlib.util
+import os
 
 from odoo import fields
 from odoo.exceptions import AccessError, UserError
+from odoo.modules import get_module_path
 from odoo.tests.common import TransactionCase, new_test_user, tagged
 
+MIGRATION_PATH = os.path.join(get_module_path("cmc_mrp"), "migrations", "19.0.1.1.0", "post-migrate.py")
 LABOUR_COST = 30.0  # 60 minutes logged x 30.0 / hour
 
 
@@ -414,3 +418,40 @@ class TestMrpLabourTwin(TransactionCase):
                 "move_line_id": item.id,
             })
         self.assertEqual(self.AL.search_count([]), before)
+
+    # ------------------------------------------------------------------
+    # RN-003 -- the twins booked before the exclusion existed
+    # ------------------------------------------------------------------
+
+    def test_migration_excludes_historical_twins(self):
+        self._distribution_model(self.wip_account)
+        mo = self._complete(self._mo("mig"))
+        self._assert_scenario(mo)
+        entry = self._labour_entry(mo)
+        twins = self._twins(mo)
+        # the history: no exclusion flag, the twins classified as plain costs
+        self.env.flush_all()
+        self.env.cr.execute("UPDATE account_move_line SET cmc_excluded = FALSE WHERE move_id = %s", (entry.id,))
+        self.env.cr.execute(
+            "UPDATE account_analytic_line SET cmc_excluded = FALSE, cmc_behavior = 'fixed', cmc_directness = 'direct', "
+            "cmc_cost_element_id = %s, cmc_classified_manually = TRUE WHERE id IN %s",
+            (self.mod.id, tuple(twins.ids)),
+        )
+        self.env.invalidate_all()
+        self.assertAlmostEqual(self._center_total(), 2 * LABOUR_COST, places=2, msg="precondition: counted twice")
+
+        # why: the migrations folder is named after a version, not importable
+        spec = importlib.util.spec_from_file_location("cmc_mrp_post_migrate_1_1_0", MIGRATION_PATH)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        with self.assertLogs("cmc_mrp_post_migrate_1_1_0", level="INFO") as logs:
+            module.migrate(self.env.cr, "19.0.1.0.0")
+        self.env.invalidate_all()
+
+        self.assertIn(str(len(twins)), logs.output[0])
+        self.assertTrue(all(entry.line_ids.mapped("cmc_excluded")))
+        self.assertTrue(all(twins.mapped("cmc_excluded")))
+        self.assertFalse(any(twins.mapped("cmc_behavior")))
+        self.assertFalse(any(twins.mapped("cmc_classified_manually")))
+        self.assertFalse(mo.workorder_ids.wc_analytic_account_line_ids.filtered("cmc_excluded"))
+        self.assertAlmostEqual(self._center_total(), LABOUR_COST, places=2)

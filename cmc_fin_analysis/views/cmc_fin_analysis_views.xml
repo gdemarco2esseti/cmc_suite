@@ -189,6 +189,7 @@
                             <field name="scheme_ids" widget="many2many_tags" readonly="state == 'done'"/>
                         </group>
                         <group>
+                            <field name="excluded_journal_ids" widget="many2many_tags" readonly="state == 'done'" domain="[('company_id', '=', company_id)]"/>
                             <field name="reduced_mode" readonly="state == 'done'"/>
                             <field name="ateco_code" readonly="state == 'done'"/>
                             <field name="company_id" readonly="state == 'done'" groups="base.group_multi_company"/>

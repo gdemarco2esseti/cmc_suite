@@ -41,11 +41,13 @@ class AccountMoveLine(models.Model):
         return self._cmc_reader_scope(company)._read_group(domain, list(groupby), ["balance:sum"])
 
     @api.model
-    def _cmc_gl_balances_at(self, company, date_to):
+    def _cmc_gl_balances_at(self, company, date_to, exclude_journals=None):
         scope = self._cmc_reader_scope(company)
         # why sudo: account_accountant reads account.fiscal.year here, which CMC users cannot read
         year_start = company.sudo().compute_fiscalyear_dates(date_to)["date_from"]
         base = [("parent_state", "=", "posted"), ("company_id", "=", company.id), ("date", "<=", date_to)]
+        if exclude_journals:
+            base.append(("journal_id", "not in", exclude_journals.ids))
         balances = {}
         for initial, domain in (
             (True, Domain(base)),

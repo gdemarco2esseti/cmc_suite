@@ -63,6 +63,7 @@ class CmcFinMappingRule(models.Model):
     scheme_id = fields.Many2one("cmc.fin.scheme", required=True, ondelete="cascade", index=True)
     company_id = fields.Many2one("res.company", default=lambda self: self.env.company, index=True)
     sequence = fields.Integer(default=10)
+    chart_template = fields.Char(help="Chart of accounts the rule applies to (company chart_template); empty = every chart.")
     line_id = fields.Many2one("cmc.fin.scheme.line", required=True, ondelete="cascade", check_company=True)
     account_id = fields.Many2one("account.account", check_company=True, ondelete="cascade")
     account_code_prefix = fields.Char()

@@ -1,6 +1,6 @@
 {
     "name": "CMC - Financial Statement Analysis",
-    "version": "19.0.1.0.0",
+    "version": "19.0.1.1.0",
     "category": "Accounting/Accounting",
     "summary": "Balance sheet / P&L reclassification, ratios, cash-flow statements (analisi di bilancio)",
     "author": "EsseTech by DueEsseTi Srl",
@@ -10,6 +10,7 @@
         "security/cmc_fin_security.xml",
         "security/ir.model.access.csv",
         "data/cmc_fin_scheme_data.xml",
+        "data/cmc_fin_mapping_it_data.xml",
         "data/cmc_fin_ratio_data.xml",
         "views/cmc_fin_scheme_views.xml",
         "views/cmc_fin_ratio_views.xml",

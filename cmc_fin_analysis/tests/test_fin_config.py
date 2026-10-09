@@ -129,7 +129,9 @@ class TestFinConfig(TransactionCase):
             "income": "revenue", "income_other": "other_revenue", "expense_direct_cost": "purchases",
             "expense": "services", "expense_depreciation": "depreciation",
         })
-        self.assertTrue(all(rule.sequence >= 100 for rule in self.bs.rule_ids | self.va.rule_ids if not rule.company_id))
+        # chart-agnostic type rules come after company rules (10) and chart-specific prefix rules (11..99)
+        self.assertTrue(all(rule.sequence >= 100 for rule in self.bs.rule_ids | self.va.rule_ids
+                            if not rule.company_id and not rule.chart_template))
 
     def test_shipped_contribution_rules_use_behavior_first(self):
         # AD-116: contribution P&L reads the account behavior of the cmc_account classification rules

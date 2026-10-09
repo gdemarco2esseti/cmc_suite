@@ -101,6 +101,7 @@
                 <field name="line_id" domain="[('scheme_id', '=', scheme_id), ('line_type', '=', 'account')]"/>
                 <field name="account_id"/>
                 <field name="account_code_prefix"/>
+                <field name="chart_template" optional="hide"/>
                 <field name="account_type"/>
                 <field name="cmc_behavior"/>
                 <field name="company_id" groups="base.group_multi_company"/>

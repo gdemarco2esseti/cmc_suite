@@ -174,6 +174,30 @@ Extras (WP-13 W1, pinned by ``test_fin_extras.py`` / ``test_fin_report.py``)
 - Report ``cmc_fin_analysis.action_report_cmc_fin_analysis`` (qweb-pdf, model + binding ``cmc.fin.analysis``):
   prints line names, year headers, ``n.c.`` for an absent value, ratio names grouped by area label.
 
+Hardening (ronin RN-001..RN-003, pinned by ``test_fin_hardening.py``)
+- RN-001 ``cmc.fin.mapping.rule.chart_template`` Char: empty = every chart; set = the rule only applies when
+  ``run.company_id.chart_template`` equals it (a non-Italian company never picks up the Italian rules).
+  Shipped shared rules (company False) with ``chart_template = "it"``, ``account_code_prefix`` only,
+  sequence 11..99 (after the company rules at 10, before the type rules >= 100; more specific prefix first):
+  ``scheme_bs_functional``: 11 intangible, 12 tangible (12x1 depreciation funds netted), 13 fin_assets_nc,
+  1401 inv_raw, other 14 inv_finished, 154 receivables (bad-debt allowance netted), 2301 op_liab_nc (TFR),
+  2410 fin_debt_nc (mortgages), 2411 / 2423 / 2440 fin_debt_c.
+  ``scheme_pl_value_added``: 4121 / 4131 raw_inv_change (inventory change), other 41 purchases,
+  4403 severance, other 44 personnel, 45 / 46 / 47 depreciation, 48 provisions, 51 fin_income, 52 fin_charges,
+  81 taxes. Codes from ``l10n_it/data/template/account.account-it.csv`` (padded to 6 digits by the chart:
+  prefixes unaffected); the other schemes keep the type rules.
+  The l10n_it scenario is skipped (SkipTest in setUpClass) when ``l10n_it`` is not installed.
+- RN-002 run field ``excluded_journal_ids`` M2m ``account.journal`` (check_company; in ``_cmc_input_fields``):
+  journal items of those journals are ignored by the GL read of every ``gl`` year (e.g. a year-end closing
+  entry -> the figures stay the pre-closing ones). The filter goes through the ``cmc_account`` reader.
+- RN-003 names of every line formula and ratio of the run are checked at compute (before any row is written):
+  known = line codes of every scheme visible to the company, ``prev_<known code>``, ratio codes,
+  ``cmc.fin.input`` codes of the company (any year) and the input codes read by the shipped ratios
+  (rf, beta, rm, tax_rate, employees, target_dso, target_dio_raw, target_dio_finished, target_dpo).
+  Unknown name -> UserError naming the line / ratio code and the name. A formula LINE reading a line code
+  of a scheme not in the run -> UserError naming the line and the missing code (no silent drop). A ratio in
+  that case, a known input not typed for the year, ``prev_*`` on the first run year -> ``not_computable`` as before.
+
 Security (ACL r,w,c,u): scheme / line / rule / ratio user 1000 manager 1111; override / history / input /
 benchmark / criteria change user 1111 manager 1111; run user 1110 manager 1111; value / ratio value user 1000 manager 1000.
 The run is computed as the calling user: the reader gate applies (group_cmc_user, company in env.companies).

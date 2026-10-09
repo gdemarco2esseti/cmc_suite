@@ -1,3 +1,4 @@
+import ast
 import math
 import operator
 from collections import Counter, defaultdict
@@ -7,10 +8,12 @@ from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.fields import Domain
 from odoo.tools import float_is_zero
-from odoo.tools.safe_eval import safe_eval
+from odoo.tools.safe_eval import _BUILTINS, safe_eval
 
 from .cmc_fin_utils import split_codes
 
+# inputs read by the shipped ratios: known even when the company has not typed them (the ratio is then not computable)
+SHIPPED_INPUTS = {"rf", "beta", "rm", "tax_rate", "employees", "target_dso", "target_dio_raw", "target_dio_finished", "target_dpo"}
 THRESHOLD_OPS = {">": operator.gt, ">=": operator.ge, "<": operator.lt, "<=": operator.le}
 
 
@@ -30,7 +33,10 @@ class _Mapper:
         accounts = run.env["account.account"].sudo().with_company(company).browse(account_ids)  # why sudo: CMC users have no accounting rights
         self.infos = {row["id"]: row for row in accounts.read(["code", "account_type", "include_initial_balance"])}
         self.rules = {
-            scheme.id: scheme.rule_ids.filtered(lambda rule: not rule.company_id or rule.company_id == company).sorted(lambda rule: (rule.sequence, rule.id))
+            scheme.id: scheme.rule_ids.filtered(
+                lambda rule: (not rule.company_id or rule.company_id == company)
+                and (not rule.chart_template or rule.chart_template == company.chart_template)
+            ).sorted(lambda rule: (rule.sequence, rule.id))
             for scheme in schemes
         }
         self.behavior_rules = (
@@ -90,12 +96,13 @@ class CmcFinAnalysis(models.Model):
     year_from = fields.Integer(required=True, default=lambda self: fields.Date.today().year - 2, aggregator=False)
     year_to = fields.Integer(required=True, default=lambda self: fields.Date.today().year, aggregator=False)
     scheme_ids = fields.Many2many("cmc.fin.scheme", default=lambda self: self._default_scheme_ids())
+    excluded_journal_ids = fields.Many2many("account.journal", check_company=True, help="Journals ignored by the general ledger read (e.g. year-end closing).")
     reduced_mode = fields.Boolean(help="Abbreviated statements: ratios needing detail are flagged not computable.")
     ateco_code = fields.Char(help="Sector (ATECO) of the benchmarks shown next to the ratios.")
     value_ids = fields.One2many("cmc.fin.analysis.value", "run_id")
     ratio_value_ids = fields.One2many("cmc.fin.ratio.value", "run_id")
 
-    _cmc_input_fields = ("company_id", "year_from", "year_to", "scheme_ids", "reduced_mode", "ateco_code")
+    _cmc_input_fields = ("company_id", "year_from", "year_to", "scheme_ids", "excluded_journal_ids", "reduced_mode", "ateco_code")
     _cmc_result_fields = ("value_ids", "ratio_value_ids")
 
     def _default_scheme_ids(self):
@@ -118,6 +125,7 @@ class CmcFinAnalysis(models.Model):
         ratios = self._fin_ratios()
         inputs = self._fin_inputs(years)
         self._fin_check_codes(schemes, ratios, inputs)
+        self._fin_check_names(schemes, ratios)
         breaks = self._fin_breaks(years)
         balances = self._fin_balances(years)
         mapper = _Mapper(self, schemes, {acc for accounts, _source in balances.values() for acc in accounts})
@@ -172,6 +180,24 @@ class CmcFinAnalysis(models.Model):
         if duplicates:
             raise UserError(self.env._("These codes are defined more than once: %s", ", ".join(duplicates)))
 
+    def _fin_check_names(self, schemes, ratios):
+        """Unknown names (typos) and formulas reading a line of a scheme outside the run are errors, not silent gaps."""
+        company_domain = Domain("company_id", "=", False) | Domain("company_id", "parent_of", self.company_id.id)
+        visible = {line.code for line in self.env["cmc.fin.scheme"].with_context(active_test=False).search(company_domain).line_ids}
+        in_run = {line.code for scheme in schemes for line in scheme.line_ids}
+        others = set(ratios.mapped("code")) | SHIPPED_INPUTS | {code for (code,) in self.env["cmc.fin.input"]._read_group([("company_id", "=", self.company_id.id)], ["code"])}
+        checks = [(line.code, line.formula, True) for scheme in schemes for line in scheme.line_ids if line.line_type == "formula"]
+        checks += [(ratio.code, ratio.expression, False) for ratio in ratios]
+        for label, expression, strict in checks:
+            names = {node.id for node in ast.walk(ast.parse(expression, mode="eval")) if isinstance(node, ast.Name)} - set(_BUILTINS)
+            bases = {name: name.removeprefix("prev_") if name not in visible | others else name for name in names}
+            unknown = sorted(name for name, base in bases.items() if base not in visible | others)
+            if unknown:
+                raise UserError(self.env._("%(label)s: unknown names in the formula: %(names)s", label=label, names=", ".join(unknown)))
+            missing = sorted({base for base in bases.values() if base in visible - in_run - others})
+            if strict and missing:
+                raise UserError(self.env._("%(label)s needs lines of schemes not selected in the run: %(names)s", label=label, names=", ".join(missing)))
+
     def _fin_balance_date(self, year):
         # why sudo: with account_accountant the fiscal-year lookup needs accounting rights a CMC user lacks
         company = self.company_id.sudo()
@@ -190,6 +216,7 @@ class CmcFinAnalysis(models.Model):
         ):
             history[year][account.id] = balance
         Line = self.env["account.move.line"]
+        excluded = self.sudo().excluded_journal_ids  # why sudo: only the ids are used, and CMC users have no accounting rights on journals
         balances = {}
         for year in years:
             if year in history:
@@ -197,8 +224,7 @@ class CmcFinAnalysis(models.Model):
                     raise UserError(self.env._("The balances imported for %s do not sum to zero.", year))
                 accounts, source = history[year], "history"
             else:
-                # why sudo on the company record only: the fiscal-year lookup needs accounting rights; the reader gate stays on the user env
-                balances_at = Line._cmc_gl_balances_at(company.sudo(), self._fin_balance_date(year))
+                balances_at = Line._cmc_gl_balances_at(company, self._fin_balance_date(year), excluded)
                 accounts = {account.id: balance for account, balance in balances_at.items()}
                 source = "gl"
             balances[year] = ({acc: bal for acc, bal in accounts.items() if not float_is_zero(bal, precision_rounding=rounding)}, source)

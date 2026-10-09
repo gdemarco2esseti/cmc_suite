@@ -94,3 +94,11 @@ class TestClassification(TransactionCase):
         self._line(self.acc)
         after = self.AL.search_count([("account_id", "=", self.center.id)])
         self.assertEqual(after, before + 1)  # exactly one line, not duplicated
+
+    def test_unclassified_queue_opens_on_its_cost_list(self):
+        # with hr_timesheet installed the default list is the timesheet one
+        action = self.env.ref("cmc_account.action_cmc_unclassified_lines")
+        list_view = action.view_ids.filtered(lambda v: v.view_mode == "list").view_id
+        self.assertEqual(list_view, self.env.ref("cmc_account.view_cmc_unclassified_list"))
+        arch = self.env["account.analytic.line"].get_views([(list_view.id, "list")])["views"]["list"]["arch"]
+        self.assertIn('name="cmc_cost_amount"', arch)

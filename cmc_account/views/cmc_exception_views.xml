@@ -1,9 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- The queue is a classification worklist: its own list, so that with
+         hr_timesheet installed it does not open on the timesheet list (hours,
+         no cost). Only the classification columns are editable. -->
+    <record id="view_cmc_unclassified_list" model="ir.ui.view">
+        <field name="name">account.analytic.line.cmc.unclassified.list</field>
+        <field name="model">account.analytic.line</field>
+        <field name="priority">90</field>
+        <field name="arch" type="xml">
+            <list string="Unclassified Cost Lines" editable="bottom" create="false" delete="false">
+                <field name="date" readonly="1"/>
+                <field name="name" readonly="1"/>
+                <field name="cmc_center_id" readonly="1"/>
+                <field name="general_account_id" readonly="1" optional="show"/>
+                <field name="partner_id" readonly="1" optional="show"/>
+                <field name="product_id" readonly="1" optional="hide"/>
+                <field name="cmc_cost_amount" readonly="1" sum="Total"/>
+                <field name="cmc_behavior"/>
+                <field name="cmc_directness"/>
+                <field name="cmc_cost_element_id"/>
+                <field name="company_id" column_invisible="1"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
     <record id="action_cmc_unclassified_lines" model="ir.actions.act_window">
         <field name="name">Unclassified Cost Lines</field>
         <field name="res_model">account.analytic.line</field>
         <field name="view_mode">list,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'sequence': 1, 'view_mode': 'list', 'view_id': ref('view_cmc_unclassified_list')}),
+            (0, 0, {'sequence': 2, 'view_mode': 'form', 'view_id': ref('cmc_base.view_cmc_cost_entry_form')})]"/>
         <!-- Every COST line without a behavior, whatever produced it: journal
              items, timesheets and manufacturing consumption all land here.
              Revenue (amount > 0) never has a cost behavior and must not clog

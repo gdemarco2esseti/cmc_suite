@@ -7,9 +7,14 @@ CONTRACT (part, see common.py)
 - Computed run locked (UserError on input write); reset clears outputs and lines.
 - Compute records the usage of the closing, the previous month run and the upstream department run: none of them
   can be reset while this run is computed (UserError); a draft source -> UserError at Compute.
+- RN-002: the closing period must equal the run period (a quarter closing on a monthly run -> UserError).
+- RN-001: a computed run accepts no write on any stored field outside ``_cmc_editable_when_done`` (UserError), see
+  ``test_process_run_lock.py``.
 """
 
 from datetime import timedelta
+
+from dateutil.relativedelta import relativedelta
 
 from odoo.exceptions import UserError, ValidationError
 from odoo.tests.common import tagged
@@ -119,3 +124,16 @@ class TestProcessLifecycle(ProcessCase):
         run = self._run(closing_run_id=closing.id, compute=False)
         with self.assertRaises(UserError):
             run.action_compute()
+
+    def test_closing_period_must_equal_run_period(self):
+        # RN-002: a closing wider than the month (a quarter around P) reallocates the services of the other months
+        # into this run's conversion cost: the closing period must be exactly the run period
+        closing = self.env["cmc.closing.run"].create(
+            {"name": "WP06 quarter closing", "method": "direct", "company_id": self.company.id,
+             "date_from": P_FROM - relativedelta(months=1), "date_to": N_TO}
+        )
+        closing.action_compute()
+        run = self._run(closing_run_id=closing.id, compute=False)
+        with self.assertRaises(UserError):
+            run.action_compute()
+        self.assertEqual(run.state, "draft")

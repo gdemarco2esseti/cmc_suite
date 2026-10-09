@@ -16,8 +16,11 @@ sheet); the reader converts the analytic cost with ``-amount`` (AD-005). Percent
 Cost elements (Selection ``element``): ``transferred_in`` (always 100 % complete), ``materials``, ``conversion``.
 
 1. ``cmc.process.run`` (``cmc.run.mixin``, ``_check_company_auto``) - one department x one calendar month.
+   ``name`` is NOT an input: it stays editable on a computed run (RN-001, ``_cmc_editable_when_done = ("name",)``).
+   LOCK (RN-001 / CB-6): on a computed run every other stored field - inputs AND outputs - refuses a write
+   (UserError) outside the ``CMC_RUN_STATE`` sentinel.
    INPUTS (``_cmc_input_fields``, locked when computed):
-   ``name``, ``company_id`` (default env company), ``currency_id`` (related), ``center_id`` (department = CMC cost
+   ``company_id`` (default env company), ``currency_id`` (related), ``center_id`` (department = CMC cost
    center, required, check_company), ``product_id`` (process output, required), ``date_from`` / ``date_to``
    (required; exactly ONE calendar month, else ValidationError), ``method`` Selection ``weighted_average``
    (default) / ``fifo``, ``previous_run_id`` (same department and product, an EARLIER month, else ValidationError:
@@ -61,7 +64,8 @@ Cost elements (Selection ``element``): ``transferred_in`` (always 100 % complete
      line (MOD ``cmc_base.cmc_element_mod`` + overhead) PLUS, when ``closing_run_id`` is set, the
      ``cost_received`` of the closing line of the center (overhead reallocated from service centers: with it
      materials + conversion = the closing residual of the department). The closing must be computed, same company,
-     its period must contain the run period (UserError) and is recorded as used (AD-002);
+     its period must EQUAL the run period (RN-002: a wider closing, e.g. a quarter on a monthly run, mixes the
+     other months' service reallocation into this month -> UserError) and is recorded as used (AD-002);
    * ``transferred_in`` period cost = ``previous_dept_run_id.transferred_out_cost`` (usage recorded);
      ``previous_run_id`` usage recorded too (its reset is refused while this run is computed);
    * ``cmc_utils.process_cost_report(method, ...)`` with the currency rounding; spoiled units at 100 %.

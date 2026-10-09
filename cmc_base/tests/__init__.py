@@ -29,3 +29,4 @@ from . import test_wp01_data_checks
 from . import test_wp01_responsible_security
 from . import test_attribute
 from . import test_wp06_eu
+from . import test_run_lock

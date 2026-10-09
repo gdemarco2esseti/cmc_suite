@@ -25,6 +25,8 @@ class CmcRunMixin(models.AbstractModel):
     # One2many fields holding the computed results, emptied on reset; their
     # comodels inherit cmc.run.result.mixin
     _cmc_result_fields = ()
+    # stored fields a computed run still accepts (no figure depends on them)
+    _cmc_editable_when_done = ("name",)
     # a plan version keeps its rates (they are inputs) when reset
     _cmc_rates_are_inputs = False
 
@@ -56,7 +58,7 @@ class CmcRunMixin(models.AbstractModel):
             )
         if not set(self._cmc_result_fields).isdisjoint(vals) and not self._cmc_state_unlocked():
             raise UserError(self.env._("The results of a run are written by Compute only."))
-        if not set(self._cmc_input_fields).isdisjoint(vals):
+        if not self._cmc_state_unlocked() and self._cmc_locked_fields(vals):
             # no env.su bypass: the classification gate writes as superuser
             self._cmc_check_editable()
         return super().write(vals)
@@ -199,6 +201,15 @@ class CmcRunMixin(models.AbstractModel):
 
     def _cmc_set_state(self, state):
         self.with_context(cmc_run_state=CMC_RUN_STATE).write({"state": state})
+
+    def _cmc_locked_fields(self, vals):
+        """Written stored fields (and input relations) a computed run refuses."""
+        free = {"state", *self._cmc_editable_when_done}
+        return {
+            fname for fname in vals
+            if fname not in free
+            and (fname in self._cmc_input_fields or ((field := self._fields.get(fname)) and field.store and field.column_type))
+        }
 
     def _cmc_check_editable(self):
         computed = self.filtered(lambda run: run.state == "done")

@@ -26,7 +26,7 @@ class CmcProcessRun(models.Model):
     _check_company_auto = True
 
     _cmc_input_fields = (
-        "name", "company_id", "center_id", "product_id", "date_from", "date_to", "method", "previous_run_id", "previous_dept_run_id",
+        "company_id", "center_id", "product_id", "date_from", "date_to", "method", "previous_run_id", "previous_dept_run_id",
         "closing_run_id", "normal_spoilage_pct", "beginning_units", "beginning_pct_materials", "beginning_pct_conversion",
         "beginning_cost_transferred_in", "beginning_cost_materials", "beginning_cost_conversion", "units_started", "units_completed",
         "units_spoiled", "ending_units", "ending_pct_materials", "ending_pct_conversion",
@@ -231,8 +231,8 @@ class CmcProcessRun(models.Model):
 
     def _cmc_check_closing(self):
         closing = self.closing_run_id
-        if closing and (closing.company_id != self.company_id or closing.date_from > self.date_from or closing.date_to < self.date_to):
-            raise UserError(self.env._("The closing run must be of the same company and cover the period of the run."))
+        if closing and (closing.company_id != self.company_id or closing.date_from != self.date_from or closing.date_to != self.date_to):
+            raise UserError(self.env._("The closing run must be of the same company and of the same period as the run."))
 
     def _cmc_element_costs(self):
         """{element: beginning/period cost and WIP percentages}; the transferred-in element only when chained."""

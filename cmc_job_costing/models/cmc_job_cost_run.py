@@ -15,7 +15,7 @@ class CmcJobCostRun(models.Model):
     _check_company_auto = True
 
     _cmc_input_fields = (
-        "name", "company_id", "date_from", "date_to", "project_ids", "labour_rate_source", "labour_driver_id",
+        "company_id", "date_from", "date_to", "project_ids", "labour_rate_source", "labour_driver_id",
         "overhead_source", "overhead_base", "overhead_rate", "overhead_driver_id", "overhead_center_ids",
     )
     _cmc_result_fields = ("sheet_ids", "labour_ids")

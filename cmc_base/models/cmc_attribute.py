@@ -18,6 +18,17 @@ class CmcAttribute(models.Model):
     target_model_ids = fields.Many2many("ir.model", string="Applies To", domain="[('transient', '=', False)]")
     value_ids = fields.One2many("cmc.attribute.value", "attribute_id", string="Values")
 
+    @api.constrains("code", "company_id")
+    def _check_code_visibility(self):
+        # why sudo: a homonym of another company is invisible to the caller but still ambiguous
+        clash = self.sudo().with_context(active_test=False).search([("code", "in", self.mapped("code"))])
+        for attribute in self:
+            if any(
+                other != attribute and other.code == attribute.code and (not other.company_id or not attribute.company_id)
+                for other in clash
+            ):
+                raise ValidationError(self.env._("The code %s is already used by a shared or company attribute.", attribute.code))
+
     @api.constrains("target_model_ids")
     def _check_target_model_ids(self):
         mixin = self.env.registry["cmc.attribute.mixin"]

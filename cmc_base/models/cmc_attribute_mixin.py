@@ -25,14 +25,23 @@ class CmcAttributeMixin(models.AbstractModel):
                 if self._name not in attribute.target_model_ids.mapped("model"):
                     raise ValidationError(self.env._("Attribute %s does not apply to this record type.", attribute.name))
 
+    def _cmc_resolve_attribute(self, attribute):
+        """The attribute (by record or code); a code means the one shared or of the current companies."""
+        if not isinstance(attribute, str):
+            return attribute
+        # why sudo: superuser has no record rules, so the company is filtered explicitly
+        return self.env["cmc.attribute"].sudo().search(
+            [("code", "=", attribute), ("company_id", "in", [False] + self.env.companies.ids)], limit=1
+        )
+
     def _cmc_attribute_value(self, attribute):
         self.ensure_one()
-        by_code = isinstance(attribute, str)
-        return self.cmc_attribute_value_ids.filtered(lambda v: (v.attribute_id.code == attribute) if by_code else (v.attribute_id == attribute))[:1]
+        attribute = self._cmc_resolve_attribute(attribute)
+        return self.cmc_attribute_value_ids.filtered(lambda v: v.attribute_id == attribute)[:1]
 
     def _cmc_group_by_attribute(self, attribute):
         """Return {value_id: [record ids], False: [record ids without value]} in one query."""
-        domain = [("attribute_id.code", "=", attribute)] if isinstance(attribute, str) else [("attribute_id", "=", attribute.id)]
+        domain = [("attribute_id", "=", self._cmc_resolve_attribute(attribute).id)]
         # _search applies the caller's record rules on the values
         values = self.env["cmc.attribute.value"]._search(domain)
         field = self._fields["cmc_attribute_value_ids"]

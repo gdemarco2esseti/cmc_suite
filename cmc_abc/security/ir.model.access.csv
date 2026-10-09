@@ -9,3 +9,15 @@ access_cmc_abc_result_user,cmc.abc.result.user,model_cmc_abc_result,cmc_base.gro
 access_cmc_abc_result_manager,cmc.abc.result.manager,model_cmc_abc_result,cmc_base.group_cmc_manager,1,1,1,1
 access_cmc_abc_activity_result_user,cmc.abc.activity.result.user,model_cmc_abc_activity_result,cmc_base.group_cmc_user,1,0,1,1
 access_cmc_abc_activity_result_manager,cmc.abc.activity.result.manager,model_cmc_abc_activity_result,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_abc_resource_user,cmc.abc.resource.user,model_cmc_abc_resource,cmc_base.group_cmc_user,1,0,0,0
+access_cmc_abc_resource_manager,cmc.abc.resource.manager,model_cmc_abc_resource,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_abc_driver_component_user,cmc.abc.driver.component.user,model_cmc_abc_driver_component,cmc_base.group_cmc_user,1,0,0,0
+access_cmc_abc_driver_component_manager,cmc.abc.driver.component.manager,model_cmc_abc_driver_component,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_abc_resource_line_user,cmc.abc.resource.line.user,model_cmc_abc_resource_line,cmc_base.group_cmc_user,1,1,1,1
+access_cmc_abc_resource_line_manager,cmc.abc.resource.line.manager,model_cmc_abc_resource_line,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_abc_capacity_user,cmc.abc.capacity.user,model_cmc_abc_capacity,cmc_base.group_cmc_user,1,1,1,1
+access_cmc_abc_capacity_manager,cmc.abc.capacity.manager,model_cmc_abc_capacity,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_abc_activity_cost_user,cmc.abc.activity.cost.user,model_cmc_abc_activity_cost,cmc_base.group_cmc_user,1,0,1,1
+access_cmc_abc_activity_cost_manager,cmc.abc.activity.cost.manager,model_cmc_abc_activity_cost,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_abc_flow_user,cmc.abc.flow.user,model_cmc_abc_flow,cmc_base.group_cmc_user,1,0,1,1
+access_cmc_abc_flow_manager,cmc.abc.flow.manager,model_cmc_abc_flow,cmc_base.group_cmc_manager,1,1,1,1

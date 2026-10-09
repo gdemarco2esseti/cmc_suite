@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_job_cost_run_list" model="ir.ui.view">
+        <field name="name">cmc.job.cost.run.list</field>
+        <field name="model">cmc.job.cost.run</field>
+        <field name="arch" type="xml">
+            <list string="Job Cost Runs">
+                <field name="name"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="wip_total" optional="show"/>
+                <field name="completed_total" optional="show"/>
+                <field name="overhead_variance" optional="show"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_job_cost_run_form" model="ir.ui.view">
+        <field name="name">cmc.job.cost.run.form</field>
+        <field name="model">cmc.job.cost.run</field>
+        <field name="arch" type="xml">
+            <form string="Job Cost Run">
+                <header>
+                    <button name="action_compute" type="object" string="Compute" class="oe_highlight" invisible="state == 'done'"/>
+                    <button name="action_reset_to_draft" type="object" string="Reset to Draft" invisible="state != 'done'"
+                            confirm="Resetting deletes the computed results. Continue?"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" readonly="state == 'done'"/></h1>
+                    </div>
+                    <group>
+                        <group string="Period and jobs">
+                            <field name="date_from" readonly="state == 'done'"/>
+                            <field name="date_to" readonly="state == 'done'"/>
+                            <field name="project_ids" widget="many2many_tags" readonly="state == 'done'"/>
+                            <field name="company_id" readonly="state == 'done'" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="Rates">
+                            <field name="labour_rate_source" readonly="state == 'done'"/>
+                            <field name="labour_driver_id" readonly="state == 'done'" required="labour_rate_source == 'registry'"/>
+                            <field name="overhead_source" readonly="state == 'done'"/>
+                            <field name="overhead_base" readonly="state == 'done'"/>
+                            <field name="overhead_rate" readonly="state == 'done'" invisible="overhead_source == 'registry'"/>
+                            <field name="overhead_driver_id" readonly="state == 'done'" invisible="overhead_source != 'registry'"
+                                   required="overhead_source == 'registry'"/>
+                            <field name="overhead_center_ids" widget="many2many_tags" readonly="state == 'done'"/>
+                        </group>
+                    </group>
+                    <group string="Result" invisible="state != 'done'">
+                        <group>
+                            <field name="overhead_applied"/>
+                            <field name="overhead_actual"/>
+                            <field name="overhead_variance"/>
+                        </group>
+                        <group>
+                            <field name="wip_total"/>
+                            <field name="completed_total"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Job Cost Sheets" name="sheets">
+                            <field name="sheet_ids" readonly="1">
+                                <list create="false" edit="false">
+                                    <field name="project_id"/>
+                                    <field name="hours" sum="Hours"/>
+                                    <field name="direct_cost" sum="Direct"/>
+                                    <field name="labour_cost" sum="Labour"/>
+                                    <field name="overhead_applied" sum="Overhead"/>
+                                    <field name="job_cost" sum="Job cost"/>
+                                    <field name="revenue" sum="Revenue"/>
+                                    <field name="margin" sum="Margin"/>
+                                    <field name="margin_percent"/>
+                                    <field name="job_status" widget="badge"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Labour" name="labour">
+                            <field name="labour_ids" readonly="1">
+                                <list create="false" edit="false">
+                                    <field name="sheet_id"/>
+                                    <field name="date"/>
+                                    <field name="center_id"/>
+                                    <field name="category_id"/>
+                                    <field name="hours" sum="Hours"/>
+                                    <field name="rate"/>
+                                    <field name="amount" sum="Amount"/>
+                                    <field name="rate_origin"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_job_cost_run" model="ir.actions.act_window">
+        <field name="name">Job Cost Runs</field>
+        <field name="res_model">cmc.job.cost.run</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a job cost run</p>
+            <p>Build the job cost sheet of every job of a period: direct costs, hours at the resource rate, applied overhead, margin.</p>
+        </field>
+    </record>
+
+    <record id="view_cmc_job_sheet_list" model="ir.ui.view">
+        <field name="name">cmc.job.sheet.list</field>
+        <field name="model">cmc.job.sheet</field>
+        <field name="arch" type="xml">
+            <list string="Job Cost Sheets" create="false" edit="false">
+                <field name="run_id"/>
+                <field name="project_id"/>
+                <field name="hours" sum="Hours"/>
+                <field name="direct_cost" sum="Direct"/>
+                <field name="labour_cost" sum="Labour"/>
+                <field name="overhead_applied" sum="Overhead"/>
+                <field name="job_cost" sum="Job cost"/>
+                <field name="revenue" sum="Revenue"/>
+                <field name="margin" sum="Margin"/>
+                <field name="margin_percent"/>
+                <field name="job_status" widget="badge"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_job_sheet_form" model="ir.ui.view">
+        <field name="name">cmc.job.sheet.form</field>
+        <field name="model">cmc.job.sheet</field>
+        <field name="arch" type="xml">
+            <form string="Job Cost Sheet" create="false" edit="false">
+                <sheet>
+                    <div class="oe_title"><h1><field name="project_id"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="run_id"/>
+                            <field name="job_status"/>
+                            <field name="close_date" invisible="not close_date"/>
+                            <field name="hours"/>
+                        </group>
+                        <group>
+                            <field name="direct_material_cost"/>
+                            <field name="other_direct_cost"/>
+                            <field name="labour_cost"/>
+                            <field name="prime_cost"/>
+                            <field name="overhead_base_qty"/>
+                            <field name="overhead_applied"/>
+                            <field name="job_cost"/>
+                            <field name="revenue"/>
+                            <field name="margin"/>
+                            <field name="margin_percent"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <field name="labour_ids">
+                        <list>
+                            <field name="date"/>
+                            <field name="center_id"/>
+                            <field name="category_id"/>
+                            <field name="hours"/>
+                            <field name="rate"/>
+                            <field name="amount"/>
+                            <field name="rate_origin"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_job_sheet" model="ir.actions.act_window">
+        <field name="name">Job Cost Sheets</field>
+        <field name="res_model">cmc.job.sheet</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

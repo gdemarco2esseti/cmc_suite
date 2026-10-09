@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_cmc_job_rate_user,cmc.job.rate.user,model_cmc_job_rate,cmc_base.group_cmc_user,1,1,1,0
+access_cmc_job_rate_manager,cmc.job.rate.manager,model_cmc_job_rate,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_job_cost_run_user,cmc.job.cost.run.user,model_cmc_job_cost_run,cmc_base.group_cmc_user,1,1,1,0
+access_cmc_job_cost_run_manager,cmc.job.cost.run.manager,model_cmc_job_cost_run,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_job_sheet_user,cmc.job.sheet.user,model_cmc_job_sheet,cmc_base.group_cmc_user,1,0,0,0
+access_cmc_job_sheet_manager,cmc.job.sheet.manager,model_cmc_job_sheet,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_job_sheet_labour_user,cmc.job.sheet.labour.user,model_cmc_job_sheet_labour,cmc_base.group_cmc_user,1,0,0,0
+access_cmc_job_sheet_labour_manager,cmc.job.sheet.labour.manager,model_cmc_job_sheet_labour,cmc_base.group_cmc_manager,1,1,1,1

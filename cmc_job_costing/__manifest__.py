@@ -6,7 +6,15 @@
     "license": "LGPL-3",
     "author": "EsseTech by DueEsseTi Srl",
     "depends": ["cmc_hr_timesheet"],
-    "data": [],
+    "data": [
+        "security/ir.model.access.csv",
+        "security/cmc_job_costing_security.xml",
+        "views/cmc_job_rate_views.xml",
+        "views/cmc_job_cost_run_views.xml",
+        "views/project_project_views.xml",
+        "views/cmc_job_costing_menus.xml",
+        "report/report_job_cost_sheet.xml",
+    ],
     "installable": True,
     "auto_install": False,
 }

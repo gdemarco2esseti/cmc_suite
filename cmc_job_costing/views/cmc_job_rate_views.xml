@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_job_rate_list" model="ir.ui.view">
+        <field name="name">cmc.job.rate.list</field>
+        <field name="model">cmc.job.rate</field>
+        <field name="arch" type="xml">
+            <list string="Resource Center Rates" editable="bottom">
+                <field name="date"/>
+                <field name="center_id"/>
+                <field name="category_id"/>
+                <field name="rate_mode"/>
+                <field name="special_cost" readonly="rate_mode == 'manual'"/>
+                <field name="common_cost_share" readonly="rate_mode == 'manual'"/>
+                <field name="gross_hours" optional="show" readonly="rate_mode == 'manual'"/>
+                <field name="absence_hours" optional="show" readonly="rate_mode == 'manual'"/>
+                <field name="net_hours" optional="show"/>
+                <field name="hourly_rate" readonly="rate_mode == 'computed'"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="currency_id" column_invisible="1"/>
+                <button name="action_cmc_load_center_cost" type="object" string="Load center cost" icon="fa-download"
+                        invisible="rate_mode == 'manual'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_job_rate_search" model="ir.ui.view">
+        <field name="name">cmc.job.rate.search</field>
+        <field name="model">cmc.job.rate</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="center_id"/>
+                <field name="category_id"/>
+                <filter name="computed" string="Computed" domain="[('rate_mode', '=', 'computed')]"/>
+                <group>
+                    <filter name="group_center" string="Center" context="{'group_by': 'center_id'}"/>
+                    <filter name="group_month" string="Month" context="{'group_by': 'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cmc_job_rate" model="ir.actions.act_window">
+        <field name="name">Resource Center Rates</field>
+        <field name="res_model">cmc.job.rate</field>
+        <field name="view_mode">list</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create the hourly rate of a resource center</p>
+            <p>Job costing values the hours of a job at these monthly rates, not at the employee cost.</p>
+        </field>
+    </record>
+</odoo>

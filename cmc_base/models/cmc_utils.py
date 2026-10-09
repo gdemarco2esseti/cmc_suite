@@ -98,3 +98,8 @@ def ols_fit(points):
     syy = sum((c - mean_c) ** 2 for _q, c in points)
     v = sxy / sxx
     return mean_c - v * mean_q, v, sxy**2 / (sxx * syy) if syy else 1.0
+
+
+def simple_payback(one_time_cost, annual_saving):
+    """Years to recover the investment; 0.0 when there is no saving to recover it with."""
+    return one_time_cost / annual_saving if annual_saving > 0 else 0.0

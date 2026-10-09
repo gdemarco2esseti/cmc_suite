@@ -21,3 +21,13 @@ access_cmc_abc_activity_cost_user,cmc.abc.activity.cost.user,model_cmc_abc_activ
 access_cmc_abc_activity_cost_manager,cmc.abc.activity.cost.manager,model_cmc_abc_activity_cost,cmc_base.group_cmc_manager,1,1,1,1
 access_cmc_abc_flow_user,cmc.abc.flow.user,model_cmc_abc_flow,cmc_base.group_cmc_user,1,0,1,1
 access_cmc_abc_flow_manager,cmc.abc.flow.manager,model_cmc_abc_flow,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_abc_activity_measure_user,cmc.abc.activity.measure.user,model_cmc_abc_activity_measure,cmc_base.group_cmc_user,1,0,0,0
+access_cmc_abc_activity_measure_manager,cmc.abc.activity.measure.manager,model_cmc_abc_activity_measure,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_abc_activity_performance_user,cmc.abc.activity.performance.user,model_cmc_abc_activity_performance,cmc_base.group_cmc_user,1,0,1,1
+access_cmc_abc_activity_performance_manager,cmc.abc.activity.performance.manager,model_cmc_abc_activity_performance,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_abm_initiative_user,cmc.abm.initiative.user,model_cmc_abm_initiative,cmc_base.group_cmc_user,1,1,1,0
+access_cmc_abm_initiative_manager,cmc.abm.initiative.manager,model_cmc_abm_initiative,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_abm_benchmark_user,cmc.abm.benchmark.user,model_cmc_abm_benchmark,cmc_base.group_cmc_user,1,1,1,0
+access_cmc_abm_benchmark_manager,cmc.abm.benchmark.manager,model_cmc_abm_benchmark,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_abm_benchmark_line_user,cmc.abm.benchmark.line.user,model_cmc_abm_benchmark_line,cmc_base.group_cmc_user,1,0,0,0
+access_cmc_abm_benchmark_line_manager,cmc.abm.benchmark.line.manager,model_cmc_abm_benchmark_line,cmc_base.group_cmc_manager,1,1,1,1

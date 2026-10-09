@@ -108,7 +108,7 @@ class CmcAbcRun(models.Model):
         """(flows, {activity id: [fixed, variable]}, in-scope cost, unassigned cost)."""
         lines = self.resource_line_ids.read(["resource_id", "activity_id", "percent", "quantity"], load=False)
         resources = self.resource_line_ids.resource_id
-        basis = {r["id"]: r for r in resources.read(["name", "driver_basis"], load=False)}
+        basis = {r["id"]: r for r in resources.read(["name", "driver_basis", "center_id"], load=False)}
         weights = defaultdict(lambda: defaultdict(float))
         for ln in lines:
             kind = "percent" if basis[ln["resource_id"]]["driver_basis"] == "percent" else "quantity"
@@ -136,19 +136,20 @@ class CmcAbcRun(models.Model):
                     stage1[act_id][0] += f
                     stage1[act_id][1] += v
                     flows.append(self._cmc_flow(
-                        "resource", f, v, source_resource_id=res_id, cost_element_id=element_id, target_activity_id=act_id
+                        "resource", f, v, source_resource_id=res_id, cost_element_id=element_id, target_activity_id=act_id,
+                        center_id=basis[res_id]["center_id"],
                     ))
         # the v1 tag: a direct charge of the activity, kept apart from the resource pools
         tags = defaultdict(_pair)
-        for activity, element, behavior, cost in self.env["account.analytic.line"]._cmc_activity_pool_groups(
+        for activity, center, element, behavior, cost in self.env["account.analytic.line"]._cmc_activity_pool_groups(
             self.date_from, self.date_to, self.company_id
         ):
-            tags[(activity.id, element.id)][behavior == "variable"] += cost
-        for (act_id, element_id), pair in tags.items():
+            tags[(activity.id, center.id, element.id)][behavior == "variable"] += cost
+        for (act_id, center_id, element_id), pair in tags.items():
             f, v = (float_round(x, precision_rounding=rounding) for x in pair)
             stage1[act_id][0] += f
             stage1[act_id][1] += v
-            flows.append(self._cmc_flow("tag", f, v, cost_element_id=element_id, target_activity_id=act_id))
+            flows.append(self._cmc_flow("tag", f, v, cost_element_id=element_id, target_activity_id=act_id, center_id=center_id))
         return flows, stage1, in_scope, unassigned
 
     def _cmc_flow(self, stage, fixed, variable, **vals):
@@ -162,15 +163,19 @@ class CmcAbcRun(models.Model):
         if not self.trace_direct:
             return {}, []
         base, stamped = self._cmc_ledger_domains()
-        traced = defaultdict(_pair)
+        by_center = defaultdict(_pair)
         groups = self.env["account.analytic.line"].sudo()._cmc_cost_read_group(
-            base & Domain("cmc_activity_id", "=", False) & stamped, ["cmc_cost_object_id", "cmc_behavior"]
+            base & Domain("cmc_activity_id", "=", False) & stamped, ["cmc_cost_object_id", "account_id", "cmc_behavior"]
         )
-        for obj, behavior, cost in groups:
-            traced[obj.id][behavior == "variable"] += cost
-        for pair in traced.values():
+        for obj, center, behavior, cost in groups:
+            by_center[(obj.id, center.id)][behavior == "variable"] += cost
+        traced = defaultdict(_pair)
+        for (oid, _center_id), pair in by_center.items():
             pair[:] = [float_round(x, precision_rounding=rounding) for x in pair]
-        return traced, [self._cmc_flow("trace", f, v, target_object_id=oid) for oid, (f, v) in traced.items()]
+            traced[oid][0] += pair[0]
+            traced[oid][1] += pair[1]
+        flows = [self._cmc_flow("trace", f, v, target_object_id=oid, center_id=center_id) for (oid, center_id), (f, v) in by_center.items()]
+        return traced, flows
 
     # ---- stages 2-3: activities -> activities -> objects -> objects ---------
 
@@ -329,6 +334,7 @@ class CmcAbcRun(models.Model):
         objects = self.env["cmc.cost.object"].sudo().browse(acc).read(["res_model", "res_id"], load=False)
         product_of = {o["id"]: o["res_id"] if o["res_model"] == "product.product" else False for o in objects}
         quantities = self._cmc_quantities(self.output_measure_id, acc)
+        defects = self._cmc_quantities(self.defect_measure_id, acc)
         results = {}
         for oid, parts in acc.items():
             pair = {name: [float_round(x, precision_rounding=rounding) for x in parts[name]] for name in ("traced", "activity", "object", "forwarded")}
@@ -336,7 +342,10 @@ class CmcAbcRun(models.Model):
             variable = sum(pair[name][1] for name in ("traced", "activity", "object"))
             amount = float_round(fixed + variable, precision_rounding=rounding)
             qty = quantities.get(oid, 0.0)
+            defect_qty = defects.get(oid, 0.0)
             results[oid] = {
+                "defect_qty": defect_qty,
+                "copq_amount": float_round(defect_qty * amount / qty, precision_rounding=rounding) if qty else 0.0,
                 "run_id": self.id, "cost_object_id": oid, "product_id": product_of[oid],
                 "traced_cost": sum(pair["traced"]), "activity_cost": sum(pair["activity"]), "object_cost": sum(pair["object"]),
                 "amount": amount, "forwarded_amount": sum(pair["forwarded"]), "fixed_amount": fixed, "variable_amount": variable,
@@ -472,8 +481,10 @@ class CmcAbcRun(models.Model):
         idle_rate, sustaining_rate = self._cmc_burdens(results, unused, sustaining, rounding)
         self._cmc_compare(results, rounding)
         self._cmc_publish_rates(rows, results)
+        self._cmc_abm_snapshot(rows, all_flows, results)
         self.env["cmc.abc.flow"].create(all_flows)
         self.env["cmc.abc.activity.cost"].create(rows)
+        self.env["cmc.abc.activity.performance"].create(self._cmc_performance_vals(rows))
         self.env["cmc.abc.result"].create(list(results.values()))
         self.env["cmc.abc.activity.result"].create(self._cmc_activity_results(all_flows, rows, results))
         sustaining_flow = next((f for f in all_flows if f["stage"] == "sustaining"), None)
@@ -481,6 +492,7 @@ class CmcAbcRun(models.Model):
             "total_resource_cost": resource_cost, "total_traced_cost": traced_cost, "total_object_cost": object_cost,
             "total_activity_cost": float_round(sum(r["resource_cost"] for r in rows), precision_rounding=rounding),
             "unused_capacity_cost": unused, "sustaining_cost": sustaining,
+            "copq_total": float_round(sum(r["copq_amount"] for r in results.values()), precision_rounding=rounding),
             "in_scope_cost": float_round(in_scope, precision_rounding=rounding),
             "unassigned_cost": float_round(unassigned, precision_rounding=rounding),
             "idle_burden_rate": idle_rate, "sustaining_burden_rate": sustaining_rate,

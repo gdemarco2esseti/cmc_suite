@@ -281,9 +281,12 @@ class CmcRunResultMixin(models.AbstractModel):
         return rows
 
     def write(self, vals):
+        # access first: a caller without the right gets the AccessError, not the sentinel message
+        self.check_access("write")
         self._cmc_check_results_open()
         return super().write(vals)
 
     def unlink(self):
+        self.check_access("unlink")
         self._cmc_check_results_open()
         return super().unlink()

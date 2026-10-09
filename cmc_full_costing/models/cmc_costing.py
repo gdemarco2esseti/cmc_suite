@@ -752,12 +752,6 @@ class CmcCostingResult(models.Model):
     quota_ids = fields.One2many("cmc.costing.quota", "result_id")
     config_ids = fields.One2many("cmc.costing.config", "result_id")
 
-    def write(self, vals):
-        # why: the mixin refuses the write outside Compute with a UserError before the ACL is checked;
-        # a user without write rights must get the AccessError
-        self.check_access("write")
-        return super().write(vals)
-
     def _cmc_unit_cost_curve(self, volumes):
         """Unit full cost at each volume: Cu = v + CF / Q."""
         self.ensure_one()

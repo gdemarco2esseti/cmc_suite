@@ -19,6 +19,7 @@
         "cmc_mrp",
         "cmc_budget",
         "cmc_job_costing",
+        "cmc_standard_cost",
     ],
     "installable": True,
     "application": True,

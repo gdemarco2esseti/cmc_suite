@@ -349,10 +349,6 @@ class CmcJobSheet(models.Model):
     close_date = fields.Date()
     labour_ids = fields.One2many("cmc.job.sheet.labour", "sheet_id")
 
-    def write(self, vals):
-        # why: a user without write rights gets the ACL answer, not the engine-only one
-        self.check_access("write")
-        return super().write(vals)
 
 
 class CmcJobSheetLabour(models.Model):
@@ -373,7 +369,3 @@ class CmcJobSheetLabour(models.Model):
     amount = fields.Monetary()
     rate_origin = fields.Selection([("table", "Rate table"), ("registry", "Rate registry")], required=True)
 
-    def write(self, vals):
-        # why: a user without write rights gets the ACL answer, not the engine-only one
-        self.check_access("write")
-        return super().write(vals)

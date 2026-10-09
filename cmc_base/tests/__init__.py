@@ -13,3 +13,8 @@ from . import test_capacity_multi_line
 from . import test_cost_sign
 from . import test_cost_sign_migration
 from . import test_run_lifecycle
+from . import test_month_helper
+from . import test_plan_version
+from . import test_cost_object
+from . import test_measure_quantity
+from . import test_rate_registry

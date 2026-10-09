@@ -54,7 +54,10 @@ Results (``cmc.run.result.mixin``, in ``_cmc_result_fields``, company_id related
   ``customer_object_id``, ``quantity``, ``revenue``, ``list_amount`` (product ``lst_price`` x quantity; =
   revenue without product), ``discount_amount`` (= revenue - list_amount), ``unit_price`` (revenue / qty),
   ``variable_unit_cost``, ``full_unit_cost``, ``variable_cost``, ``contribution_margin``,
-  ``product_sustaining_cost``, ``floor_status``; ``action_cmc_open_journal_items()`` -> act_window on
+  ``product_sustaining_cost``, ``floor_status``. RN-001: ``quantity`` is ALWAYS in the product UoM (an invoice
+  line in a packaging UoM, e.g. 1 Dozen of a product in Units, counts 12), so ``list_amount`` = lst_price x 12,
+  ``variable_cost`` = -12 x variable rate and ``unit_price`` / ``avg_price`` are per product unit (floor check on
+  the same unit as the rate); ``action_cmc_open_journal_items()`` -> act_window on
   ``account.move.line`` whose domain is exactly the posted income items of the fact (run as the user, no sudo).
 - ``product_ids`` -> ``cmc.profit.product`` (one per sold product + one product False): ``product_id``,
   ``cost_object_id``, ``sbu_value_id``, ``quantity``, ``revenue``, ``variable_cost``, ``contribution_margin``,
@@ -98,7 +101,9 @@ Results (``cmc.run.result.mixin``, in ``_cmc_result_fields``, company_id related
 Shipped data: ``cmc_profitability.cmc_attribute_sbu`` (cmc.attribute, code ``SBU``, company False, target
 product.template). Security (AD-115): group_cmc_user computes runs and reads results, manager configures price
 elements and transfer rules; results read-only; non-CMC users no access; rules not noupdate.
-ALC-07 ``cmc.transfer.charge``: see test_transfer_pricing.py.
+ALC-07 ``cmc.transfer.charge``: see test_transfer_pricing.py (RN-002: the provider cost read EXCLUDES the
+analytic lines posted by any chargeback, ``cmc_transfer_charge_id`` set, so a second run on the same provider and
+span reads the primary cost again; a provider cost of 0 -> UserError, nothing written).
 
 MAIN FIXTURE (company A of AccountTestInvoicingCommon, March 2027, no taxes)
   Sales: INV1 C1 / S1: P1 10 @100 -10% = 900, P2 20 @50 = 1000; INV2 C2 / S2: P1 10 @100 = 1000;
@@ -387,6 +392,30 @@ class ProfitCase(AccountTestInvoicingCommon):
         if compute:
             run.action_compute()
         return run
+
+    def _packaging_sale(self):
+        """RN-001 fixture: P5 in Units, list 10, own standard version variable 8 / total 9 (March); 1 Dozen @90 to C2."""
+        self.p5 = self.env["product.product"].create({"name": "WP09 P5 packaged", "list_price": 10.0, "uom_id": self.env.ref("uom.product_uom_unit").id})
+        obj_p5 = self.env["cmc.cost.object"]._cmc_ensure_objects(self.p5, company=self.company)
+        version = self.env["cmc.plan.version"].create({
+            "name": "WP09 RN-001 std", "version_type": "standard", "company_id": self.company.id,
+            "date_from": date(2027, 1, 1), "date_to": date(2027, 12, 31),
+        })
+        self.env["cmc.rate"]._cmc_publish(version, [
+            {"holder": obj_p5, "driver": self.units, "component": component, "date": D_FROM, "value": value}
+            for component, value in (("variable", 8.0), ("total", 9.0))
+        ])
+        version.action_approve()
+        move = self.env["account.move"].with_company(self.company).create({
+            "move_type": "out_invoice", "partner_id": self.c2.id, "invoice_date": D_MID, "date": D_MID,
+            "invoice_user_id": self.salesperson_2.id, "journal_id": self.company_data["default_journal_sale"].id,
+            "invoice_line_ids": [Command.create({
+                "product_id": self.p5.id, "quantity": 1.0, "product_uom_id": self.env.ref("uom.product_uom_dozen").id,
+                "price_unit": 90.0, "account_id": self.revenue_account.id, "tax_ids": [Command.clear()],
+            })],
+        })
+        move.action_post()
+        return self._run(cost_version_id=version.id)
 
     # ---- row pickers --------------------------------------------------------
 

@@ -61,7 +61,7 @@ class CmcProfitRun(models.Model):
             & Domain("account_id.account_type", "in", REVENUE_TYPES)
             & Domain("product_id", "!=", False)
         )
-        quantity = Line._cmc_reader_scope(company)._read_group(domain, [*groupby, "move_id.move_type"], ["quantity:sum"])
+        quantity = Line._cmc_reader_scope(company)._read_group(domain, [*groupby, "move_id.move_type", "product_uom_id"], ["quantity:sum"])
         partners = {row[1].id for row in revenue if row[1]} | {row[1].id for row in quantity if row[1]}
         commercial = self._cmc_commercial_map(partners)
 
@@ -71,8 +71,10 @@ class CmcProfitRun(models.Model):
         facts = defaultdict(lambda: {"revenue": 0.0, "quantity": 0.0})
         for product, partner, user, month, amount in revenue:
             facts[key(product, partner, user, month)]["revenue"] += amount
-        for product, partner, user, month, move_type, qty in quantity:
-            facts[key(product, partner, user, month)]["quantity"] += -(qty or 0.0) if move_type in REFUND_TYPES else (qty or 0.0)
+        for product, partner, user, month, move_type, uom, qty in quantity:
+            # RN-001: a packaging UoM (Dozen) counts in the product UoM
+            qty = uom._compute_quantity(qty or 0.0, product.uom_id, round=False) if uom else (qty or 0.0)
+            facts[key(product, partner, user, month)]["quantity"] += -qty if move_type in REFUND_TYPES else qty
         return facts
 
     def _cmc_unit_rates(self, objects, months):

@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
+from odoo.fields import Domain
 from odoo.tools import float_round
 
 from odoo.addons.cmc_base.models.cmc_utils import month_start, spread
@@ -95,6 +96,17 @@ class CmcTransferCharge(models.Model):
             raise UserError(self.env._("The %s price must be positive.", dict(CRITERIA)[criterion].lower()))
         return price
 
+    def _cmc_primary_cost(self, variable_only=False):
+        self.ensure_one()
+        domain = Domain([
+            ("cmc_excluded", "=", False), ("company_id", "in", [False, self.company_id.id]), ("date", ">=", self.date_from),
+            ("date", "<=", self.date_to), ("cmc_transfer_charge_id", "=", False), (self.provider_id.plan_id._column_name(), "=", self.provider_id.id),
+        ])
+        if variable_only:
+            domain &= Domain("cmc_behavior", "=", "variable")
+        # why sudo: a certified figure must not depend on who presses Compute (same scope as _cmc_cost_groups)
+        return sum(row[-1] for row in self.env["account.analytic.line"].sudo()._cmc_cost_read_group(domain))
+
     def _cmc_compute(self):
         self.ensure_one()
         lines = self.line_ids
@@ -103,9 +115,10 @@ class CmcTransferCharge(models.Model):
             raise UserError(self.env._("The receivers consume no service unit: there is nothing to charge."))
         company, rounding = self.company_id, self.currency_id.rounding
         provider = self.provider_id
-        total = provider._cmc_cost_groups(self.date_from, self.date_to, company=company).get(provider.id, 0.0)
-        variable = provider._cmc_cost_groups(self.date_from, self.date_to, behavior="variable", company=company).get(provider.id, 0.0)
-        total, variable = float_round(total, precision_rounding=rounding), float_round(variable, precision_rounding=rounding)
+        # RN-002: primary cost only, an earlier chargeback of the same span must not relieve the provider twice
+        total, variable = (float_round(self._cmc_primary_cost(variable_only), precision_rounding=rounding) for variable_only in (False, True))
+        if total <= 0:
+            raise UserError(self.env._("The provider has no cost in the period: there is nothing to charge."))
         unit_cost, unit_variable = total / units, variable / units
         price = self._cmc_price(unit_cost, unit_variable)
         weights = {line.id: line.quantity for line in lines}

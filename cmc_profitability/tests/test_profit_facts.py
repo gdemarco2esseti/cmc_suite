@@ -167,3 +167,12 @@ class TestProfitFacts(ProfitCase):
         with self.assertRaises(UserError):
             run.action_compute()
         self.assertEqual(run.state, "draft")
+
+    def test_rn001_packaging_uom_converted_to_product_uom(self):
+        # RN-001: 1 Dozen of a product in Units is 12 units: quantity, list amount and variable cost in product UoM
+        run = self._packaging_sale()
+        line = run.fact_ids.filtered(lambda f: f.product_id == self.p5)
+        self.assertRecordValues(line, [{
+            "partner_id": self.c2.id, "quantity": 12.0, "revenue": 90.0, "list_amount": 120.0, "discount_amount": -30.0,
+            "unit_price": 7.5, "variable_unit_cost": 8.0, "variable_cost": -96.0, "contribution_margin": -6.0,
+        }])

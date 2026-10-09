@@ -36,6 +36,9 @@ CONTRACT
 FIXTURE (company "WP09 TP", March 2027): IT provider fixed 800 + variable 200; receivers Z 30 h, S 20 h ->
 units 50, unit cost 20, variable 4; cost moved Z -600 (F -480 V -120), S -400 (F -320 V -80).
 ABC run: IT 100% -> HELP (hours), 40 h -> rate 25.
+RN-002 (accepted rule): the provider cost read excludes the lines of every chargeback (``cmc_transfer_charge_id``
+set): a second run on the same provider and span (other service unit) reads the primary cost 1000 again, never
+the 0 left by the relief of the first run; a computed provider cost of 0 -> UserError, nothing written.
 """
 
 from datetime import date
@@ -194,6 +197,27 @@ class TestTransferPricing(TransactionCase):
         self.assertAlmostEqual(Rate._cmc_lookup(self.it, self.hours, D_MID, origin=run, component="variable", company=self.company).value, 4.0)
         run.action_reset_to_draft()
         self.assertFalse(Rate._cmc_lookup(self.it, self.hours, D_MID, origin=run, company=self.company))
+
+    # ---- RN-002: overlapping chargebacks on the same provider ----------------------
+
+    def test_rn002_second_run_excludes_chargeback_lines(self):
+        # RN-002: run 1 relieves IT of 1000; run 2 (same span, other unit) still reads the primary cost 1000
+        self._charge("full")
+        tickets = self.env["cmc.cost.driver"].create({"name": "WP09 IT tickets", "code": "WP09ITT", "measure_type": "transaction",
+                                                      "company_id": self.company.id})
+        run2 = self._charge("full", name="WP09 IT tickets chargeback", driver_id=tickets.id)
+        self.assertRecordValues(run2, [{"provider_cost": -1000.0, "provider_variable_cost": -200.0, "service_units": 50.0,
+                                        "unit_cost": 20.0, "transfer_price": 20.0}])
+
+    def test_rn002_zero_provider_cost_refused(self):
+        # RN-002: a provider with no cost in the span has nothing to charge: fail loud, nothing posted
+        empty = self.env["account.analytic.account"].create({"name": "WP09 TP empty", "plan_id": self.plan.id,
+                                                             "cmc_center_type": "auxiliary", "company_id": self.company.id})
+        run = self._charge("full", compute=False, provider_id=empty.id)
+        with self.assertRaises(UserError):
+            run.action_compute()
+        self.assertEqual(run.state, "draft")
+        self.assertFalse(self.env["account.analytic.line"].search_count([("cmc_transfer_charge_id", "=", run.id)]))
 
     # ---- validation -------------------------------------------------------------
 

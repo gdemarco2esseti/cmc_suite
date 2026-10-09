@@ -32,6 +32,14 @@ class TestFloorDirectCosting(ProfitCase):
         self.assertEqual(self._fact(run, self.p3, self.c2).floor_status, "below_variable")
         self.assertEqual(self._fact(run, self.p1, self.c1).floor_status, "ok")
 
+    def test_rn001_floor_on_product_unit_price(self):
+        # RN-001 / DIF-05: 1 Dozen @90 = 7.5 per unit, below the variable rate 8 -> below_variable (not 90 > 8 ok)
+        run = self._packaging_sale()
+        self.assertRecordValues(self._product(run, self.p5), [
+            {"quantity": 12.0, "avg_price": 7.5, "variable_unit_cost": 8.0, "floor_status": "below_variable"},
+        ])
+        self.assertEqual(run.fact_ids.filtered(lambda f: f.product_id == self.p5).floor_status, "below_variable")
+
     def test_direct_costing_by_product(self):
         # DC-02: the margin statement is fed from actual sales and the run costs, by product
         run = self._run()

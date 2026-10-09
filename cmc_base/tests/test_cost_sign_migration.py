@@ -121,3 +121,57 @@ class TestCostSignMigration(TransactionCase):
         )
         self._migrate()
         self.assertEqual(line.amount, 300.0)
+
+    def test_stock_linked_positive_line_untouched(self):
+        # AD-005: stock_account valuation lines are category 'other' without account/document:
+        # only the stock.move M2M identifies them
+        if "stock.move" not in self.env:
+            self.skipTest("stock_account not installed")
+        line = self._line(300.0, cmc_behavior="fixed")
+        product = self.env["product.product"].create({"name": "Sign mig product"})
+        move = self.env["stock.move"].create(
+            {
+                "product_id": product.id,
+                "product_uom_qty": 1,
+                "location_id": self.env.ref("stock.stock_location_stock").id,
+                "location_dest_id": self.env.ref("stock.stock_location_customers").id,
+                "analytic_account_line_ids": [(6, 0, line.ids)],
+            }
+        )
+        self.assertTrue(move)
+        self._migrate()
+        self.assertEqual(line.amount, 300.0)
+
+    def test_rule_classified_positive_line_untouched(self):
+        # AD-005: an entry classified by a cmc_account rule (not manual) is not ours to flip
+        if "cmc_classified_manually" not in self.AL._fields:
+            self.skipTest("cmc_account not installed")
+        line = self._line(300.0, cmc_behavior="fixed")
+        # why raw SQL: ORM writes on the flag would trigger the reset-to-rules logic
+        self.env.flush_all()
+        self.env.invalidate_all()
+        self.env.cr.execute("UPDATE account_analytic_line SET cmc_classified_manually = FALSE WHERE id = %s", (line.id,))
+        self._migrate()
+        self.assertEqual(line.amount, 300.0)
+
+    def test_ambiguous_negative_line_is_warned_not_changed(self):
+        # AD-005: a classified document-less negative line may be an old reversal: warn, never touch
+        line = self._line(-300.0, cmc_behavior="fixed")
+        with self.assertLogs("cmc_base_post_migrate_1_2_0", level="WARNING") as logs:
+            self._migrate()
+        self.assertIn("verify by hand", logs.output[0])
+        self.assertIn(str(line.id), logs.output[0])
+        self.assertEqual(line.amount, -300.0)
+
+    def test_all_capacity_analyses_recomputed(self):
+        # AD-005: the raw UPDATE touches amounts: EVERY stored capacity figure is refreshed, not only the flipped lines' rows
+        self._line(300.0, cmc_behavior="fixed")
+        other = self.env["account.analytic.account"].create(
+            {"name": "Sign mig other", "plan_id": self.center.plan_id.id, "cmc_center_type": "final"}
+        )
+        analysis = self.env["cmc.capacity.analysis"].create(
+            {"center_id": other.id, "date_from": date(2026, 1, 1), "date_to": date(2026, 12, 31), "capacity_theoretical": 100, "capacity_practical": 80}
+        )
+        self.env.cr.execute("UPDATE cmc_capacity_analysis SET fixed_cost = 999 WHERE id = %s", (analysis.id,))
+        self._migrate()
+        self.assertEqual(analysis.fixed_cost, 0.0)

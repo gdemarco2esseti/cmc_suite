@@ -1,5 +1,6 @@
 from datetime import date
 
+from odoo.exceptions import UserError
 from odoo.tests import Form
 from odoo.tests.common import TransactionCase, new_test_user, tagged
 from odoo.tools import formatLang
@@ -181,3 +182,19 @@ class TestCostSign(TransactionCase):
             form.cmc_behavior = "fixed"
             form.cmc_cost_amount = 100.0
         self.assertEqual(form.record.amount, -100.0)
+
+    # ---- (g) amount and cmc_cost_amount together are ambiguous ----------------
+
+    def test_amount_and_cost_amount_together_rejected(self):
+        # AD-005: two writers of the same figure: refuse instead of picking one silently
+        with self.assertRaises(UserError):
+            self._line(-100.0, cmc_cost_amount=100.0)
+        line = self._line(-100.0)
+        with self.assertRaises(UserError):
+            line.write({"amount": -50.0, "cmc_cost_amount": 50.0})
+
+    def test_cost_amount_inverse_batch(self):
+        # AD-005: several lines written at once get the same negative amount
+        lines = self._line(-1.0) | self._line(-2.0)
+        lines.write({"cmc_cost_amount": 70.0})
+        self.assertEqual(lines.mapped("amount"), [-70.0, -70.0])

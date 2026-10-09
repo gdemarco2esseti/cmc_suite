@@ -16,7 +16,7 @@ class AccountAnalyticLine(models.Model):
         """{activity_id: pool cost (net, may be negative)} aggregated directly on the tag
         column. The activity tag is a single column on the line (unlike a cost
         center, which can live on any analytic plan column)."""
-        domain = [("cmc_activity_id", "!=", False)]
+        domain = [("cmc_activity_id", "!=", False), ("cmc_excluded", "=", False)]
         if company:
             domain.append(("company_id", "in", [False] + company.ids))
         if date_from:

@@ -1,15 +1,21 @@
 import logging
 
 from odoo import SUPERUSER_ID, api
+from odoo.addons.cmc_base.models.account_analytic_line import CAPACITY_DERIVED_FIELDS
 from odoo.tools import SQL, sql
 
 _logger = logging.getLogger(__name__)
 
 TABLE = "account_analytic_line"
 MAX_LOGGED_IDS = 50
+STOCK_REL = "account_analytic_line_stock_move_rel"
 # columns that mark a line as born from a document or another flow: absent
 # column = that flow is not installed, nothing to exclude
 DOCUMENT_COLUMNS = ("move_line_id", "project_id", "employee_id", "cmc_mrp_move_id")
+
+
+def _ids_log(ids):
+    return "%s%s" % (ids[:MAX_LOGGED_IDS], " ..." if len(ids) > MAX_LOGGED_IDS else "")
 
 
 def migrate(cr, version):
@@ -17,30 +23,49 @@ def migrate(cr, version):
     entries that were stored positive; document-born lines already carry Odoo's
     natural sign."""
     has = lambda column: sql.column_exists(cr, TABLE, column)  # noqa: E731
+    env = api.Environment(cr, SUPERUSER_ID, {})
+    # the raw UPDATE below must see pending ORM writes
+    env.flush_all()
     classified = [SQL("cmc_behavior IS NOT NULL"), SQL("cmc_cost_element_id IS NOT NULL")]
     if has("cmc_activity_id"):
         classified.append(SQL("cmc_activity_id IS NOT NULL"))
     conditions = [
-        SQL("amount > 0"),
         SQL("(%s)", SQL(" OR ").join(classified)),
         SQL("cmc_excluded IS NOT TRUE"),
     ]
     conditions += [SQL("%s IS NULL", SQL.identifier(c)) for c in ("general_account_id", *DOCUMENT_COLUMNS) if has(c)]
     if has("category"):
         conditions.append(SQL("COALESCE(category, 'other') = 'other'"))
+    if sql.table_exists(cr, STOCK_REL):
+        # stock_account books its valuation lines as category 'other', linked only through this M2M
+        conditions.append(SQL("NOT EXISTS (SELECT 1 FROM %s WHERE %s = account_analytic_line.id)", SQL.identifier(STOCK_REL), SQL.identifier(STOCK_REL, "account_analytic_line_id")))
+    if has("cmc_classified_manually"):
+        # cmc_account marks as manual what a person classified; rule-born entries are not ours to flip.
+        # Rules only set behavior/element, so a line carrying neither (activity tag only) is manual too.
+        # Without cmc_account there are no rules: every classified line is manual.
+        conditions.append(SQL("(cmc_classified_manually IS TRUE OR (cmc_behavior IS NULL AND cmc_cost_element_id IS NULL))"))
+
+    where = SQL(" AND ").join(conditions)
+    cr.execute(SQL("SELECT id FROM %s WHERE amount < 0 AND %s ORDER BY id", SQL.identifier(TABLE), where))
+    ambiguous = [row[0] for row in cr.fetchall()]
+    if ambiguous:
+        _logger.warning(
+            "cmc_base: %d classified entries without a document already have a negative amount "
+            "(old-convention reversals are indistinguishable from costs): verify by hand: "
+            "under the new sign a negative amount is a cost (ids: %s)",
+            len(ambiguous), _ids_log(ambiguous),
+        )
     cr.execute(SQL(
-        "UPDATE %s SET amount = -amount WHERE %s RETURNING id",
-        SQL.identifier(TABLE), SQL(" AND ").join(conditions),
+        "UPDATE %s SET amount = -amount WHERE amount > 0 AND %s RETURNING id",
+        SQL.identifier(TABLE), where,
     ))
     ids = sorted(row[0] for row in cr.fetchall())
-    _logger.info(
-        "cmc_base: flipped %d manual cost entries to the negative sign (ids: %s%s)",
-        len(ids), ids[:MAX_LOGGED_IDS], " ..." if len(ids) > MAX_LOGGED_IDS else "",
-    )
+    _logger.info("cmc_base: flipped %d manual cost entries to the negative sign (ids: %s)", len(ids), _ids_log(ids))
     if not ids:
         return
-    # the raw UPDATE bypassed the ORM hooks: refresh the stored capacity figures
-    env = api.Environment(cr, SUPERUSER_ID, {})
-    lines = env[TABLE.replace("_", ".")].browse(ids)
-    lines._cmc_touch_capacity(lines._cmc_capacity_rows())
+    # the raw UPDATE bypassed the ORM hooks: drop stale caches and refresh ALL stored capacity figures
+    env[TABLE.replace("_", ".")].invalidate_model(["amount"])
+    rows = env["cmc.capacity.analysis"].search([])
+    for fname in CAPACITY_DERIVED_FIELDS:
+        env.add_to_compute(rows._fields[fname], rows)
     env.flush_all()

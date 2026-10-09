@@ -15,7 +15,7 @@
 <ol><li>(Opzionale) imposta il periodo <em>Date From / Date To</em> per delimitare i pool.</li><li>Nel tab <strong>Driver attività</strong> aggiungi le righe <em>attività × prodotto × quantità driver</em> (quanto ogni prodotto consuma di ciascuna attività).</li><li>Premi <strong>Calcola</strong>. Il tab <strong>Risultati</strong> mostra il costo ABC per prodotto.</li></ol>
 <p><img src="abc_form_risultati.png" alt="Risultati ABC" class="img img-fluid"/></p>
 <h2>Note</h2>
-<ul><li>I pool sono aggregati direttamente sulla colonna-tag (<code>_read_group</code>), non plan-aware: il tag attività è un&#x27;unica colonna sulla riga analitica.</li><li>I costi possono essere negativi: il pool è letto in valore assoluto.</li><li>Ricalcolo idempotente (lock <code>FOR UPDATE</code>, unlink+create).</li><li>Per l&#x27;evoluzione <strong>Time-Driven ABC</strong> (capacità, tariffa €/min, time equations, capacità inutilizzata) vedi il modulo <code>cmc_tdabc</code>.</li></ul>
+<ul><li>I pool sono aggregati direttamente sulla colonna-tag (<code>_read_group</code>), non plan-aware: il tag attività è un&#x27;unica colonna sulla riga analitica.</li><li>Il pool è il costo netto (costo = importo analitico negativo): gli storni (importi positivi) lo riducono.</li><li>Ricalcolo idempotente (lock <code>FOR UPDATE</code>, unlink+create).</li><li>Per l&#x27;evoluzione <strong>Time-Driven ABC</strong> (capacità, tariffa €/min, time equations, capacità inutilizzata) vedi il modulo <code>cmc_tdabc</code>.</li></ul>
 </div>
 </div>
 </section>

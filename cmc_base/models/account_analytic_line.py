@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from odoo import api, fields, models
 from odoo.fields import Domain
 from odoo.exceptions import AccessError, UserError, ValidationError
@@ -92,8 +94,16 @@ class AccountAnalyticLine(models.Model):
             line.cmc_cost_amount = -line.amount
 
     def _inverse_cmc_cost_amount(self):
+        by_cost = defaultdict(set)
         for line in self:
-            line.amount = -line.cmc_cost_amount
+            by_cost[line.cmc_cost_amount].add(line.id)
+        for cost, ids in by_cost.items():
+            self.browse(ids).amount = -cost
+
+    @api.model
+    def _cmc_check_one_amount(self, vals):
+        if "amount" in vals and "cmc_cost_amount" in vals:
+            raise UserError(self.env._("Set either Amount or Cost, not both: Cost is the Amount with the opposite sign."))
 
     @api.model
     def _cmc_cost_read_group(self, domain, groupby=()):
@@ -266,11 +276,14 @@ class AccountAnalyticLine(models.Model):
     def create(self, vals_list):
         if not self.env.su and any("cmc_excluded" in vals for vals in vals_list):
             raise AccessError(self.env._("The cost base exclusion is set by the system only."))
+        for vals in vals_list:
+            self._cmc_check_one_amount(vals)
         lines = super().create(vals_list)
         lines._cmc_touch_capacity(lines._cmc_capacity_rows())
         return lines
 
     def write(self, vals):
+        self._cmc_check_one_amount(vals)
         if "cmc_excluded" in vals and not self.env.su:
             raise AccessError(self.env._("The cost base exclusion is set by the system only."))
         # a twin cannot be forced back into the cost base by hand; only system

@@ -94,6 +94,17 @@ class TestAbc(TransactionCase):
         self.assertEqual(self._res(run, self.p2).amount, 320.0)
         self.assertEqual(set(run.activity_result_ids.mapped("pool_amount")), {800.0})
 
+    # AD-005: an excluded twin tagged with an activity stays out of the pool
+    def test_excluded_line_not_in_pool(self):
+        self._pool(self.a, 1000)
+        # why sudo: the exclusion flag is system-only by design
+        self.AL.sudo().create({
+            "name": "twin", "account_id": self.center.id, "amount": -500.0,
+            "cmc_activity_id": self.a.id, "cmc_excluded": True,
+        })
+        pools = self.AL._cmc_activity_pools()
+        self.assertEqual(pools[self.a.id], 1000.0)
+
     # AD-005: a cost from a document (-600) and a manual Cost Entry (cmc_cost_amount=400) add up, never cancel
     def test_document_and_manual_cost_entry_add_up(self):
         self.AL.create({

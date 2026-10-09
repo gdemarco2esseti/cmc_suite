@@ -108,6 +108,14 @@ class CmcLccModel(models.Model):
         }
         self._tlc_write_batch(driver_lines, snapshot)
         actual = {y.year for y in self.year_ids if y.is_actual}
+        untyped = lines.filtered(
+            lambda line: line.year in actual and not line.actual_amount and not line.actual_zero
+            and (snapshot[line.id]["amount"] if line.driver_id else line.amount)
+        )
+        if untyped:
+            raise UserError(self.env._(
+                "Type the actual (or confirm it is zero) in an actual year for: %(lines)s", lines=", ".join(untyped.mapped("name")),
+            ))
         return {
             line.id: line.actual_amount if line.year in actual
             else currency.round((snapshot[line.id]["amount"] if line.driver_id else line.amount) * line.probability_pct / 100)
@@ -150,7 +158,7 @@ class CmcLccModel(models.Model):
         lc_cost, lc_revenue = sum(cost), sum(revenue)
         pv_cost = largest_remainder(sum(c * f for c, f in zip(cost, factor, strict=True)), dict(enumerate(c * f for c, f in zip(cost, factor, strict=True))), rounding)
         pv_phase = largest_remainder(sum(by_phase_pv.values()), by_phase_pv, rounding)
-        baseline_net = {r.year: r.net_flow for r in self.baseline_id.year_result_ids}
+        baseline_net = {r.calendar_year: r.net_flow for r in self.baseline_id.year_result_ids}
         year_vals, cum_net, cum_pv, cum_cost, cum_committed = [], 0.0, 0.0, 0.0, 0.0
         breakeven, seen_negative = False, False
         for t in range(horizon):
@@ -167,7 +175,7 @@ class CmcLccModel(models.Model):
                 "cumulative_committed_pct": round(cum_committed / lc_cost * 100, 2) if lc_cost else 0.0,
                 "cumulative_incurred_pct": round(cum_cost / lc_cost * 100, 2) if lc_cost else 0.0,
                 "is_actual": t in years and years[t].is_actual,
-                "incremental_flow": net[t] - baseline_net.get(t, 0.0) if self.baseline_id else 0.0,
+                "incremental_flow": net[t] - baseline_net.get(self.start_year + t, 0.0) if self.baseline_id else 0.0,
             })
         phase_vals = [
             {
@@ -187,9 +195,19 @@ class CmcLccModel(models.Model):
             "non_recurring_cost": lc_cost - sum(recurring), "lifetime_volume": lifetime, "lc_unit_cost": unit_cost,
             "lc_revenue": lc_revenue, "lc_profit": lc_revenue - lc_cost, "lc_profit_npv": profit_npv,
             "has_breakeven": bool(breakeven), "breakeven_year": breakeven or 0,
-            "incremental_npv": profit_npv - self.baseline_id.lc_profit_npv if self.baseline_id else 0.0,
+            "incremental_npv": self._tlc_incremental_npv(rate, net, baseline_net),
             **self._tlc_residual(years, volume, lc_cost, unit_cost),
         })
+
+    def _tlc_incremental_npv(self, rate, net, baseline_net):
+        """NPV of model - baseline flows on the common calendar timeline, discounted from the earliest start year."""
+        baseline = self.baseline_id
+        if not baseline:
+            return 0.0
+        first = min(self.start_year, baseline.start_year)
+        last = max(self.start_year + self.horizon_years, baseline.start_year + baseline.horizon_years)
+        own = {self.start_year + t: n for t, n in enumerate(net)}
+        return npv(rate, [own.get(cy, 0.0) - baseline_net.get(cy, 0.0) for cy in range(first, last)])
 
     def _tlc_residual(self, years, volume, lc_cost, unit_cost):
         """Turney Ch8/14: the rate in force is the residual unit cost; actual years absorb cost at the rate in force."""
@@ -197,7 +215,9 @@ class CmcLccModel(models.Model):
         previous = self.previous_id
         absorbed = 0.0
         if actual:
-            new_actual = actual - {y.year for y in previous.year_ids if y.is_actual}
+            # RN-001: "actual in previous" is matched on the calendar year, never on the index
+            previous_actual = {previous.start_year + y.year for y in previous.year_ids if y.is_actual}
+            new_actual = {t for t in actual if self.start_year + t not in previous_actual}
             absorbed = (previous.absorbed_to_date if previous else 0.0) + sum(volume[t] for t in new_actual if t < len(volume)) * (
                 previous.residual_unit_cost if previous else unit_cost
             )
@@ -246,6 +266,7 @@ class CmcLccCostLine(models.Model):
     amount = fields.Monetary(help="Estimate; for a driver line the snapshot of quantity x rate.")
     probability_pct = fields.Float(string="Probability %", default=100.0, digits=(16, 2), help="Below 100: a contingent liability weighs its expected value.")
     actual_amount = fields.Monetary(help="What happened, used in an actual year.")
+    actual_zero = fields.Boolean(string="Confirmed Zero", help="The actual is a confirmed zero: the estimated cost did not happen.")
     holder_model = fields.Char()
     holder_id = fields.Many2oneReference(model_field="holder_model")
     driver_id = fields.Many2one("cmc.cost.driver", string="Driver")

@@ -121,7 +121,8 @@ class TestLcc(TlcCase):
         years = [(0, 0, 0.0, False), (1, 4000, 5.0, True)]
         costs = [
             self._cost("Production y1", "production", "usual", 1, 8000.0, actual_amount=8600.0),
-            self._cost("Liability y1", "take_back", "liability", 1, 10000.0, probability_pct=20.0, actual_amount=0.0),
+            self._cost("Liability y1", "take_back", "liability", 1, 10000.0, probability_pct=20.0, actual_amount=0.0,
+                       actual_zero=True),
             self._cost("Production y2", "production", "usual", 2, 8000.0),
         ]
         model = self._lcc(years, costs)
@@ -146,6 +147,52 @@ class TestLcc(TlcCase):
             "lc_cost": 20000.0, "lifetime_volume": 8000.0, "lc_unit_cost": 2.5, "absorbed_to_date": 6000.0,
             "residual_cost": 14000.0, "residual_volume": 5000.0, "residual_unit_cost": 2.8,
         }])
+
+    def test_lcc01_rn001_residual_aligned_by_calendar_year(self):
+        # RN-001: a revision starting in 2028 absorbs 2028 at the rate in force of a (2.80), matched on the calendar year
+        estimate = self._lcc([(1, 2500, 0.0, False), (2, 2500, 0.0, False), (3, 2500, 0.0, False), (4, 2500, 0.0, False)],
+                             [self._cost("Development", "rd", "usual", 0, 20000.0, recurrence="non_recurring")], horizon_years=5)
+        estimate.action_compute()
+        model_a = self._lcc(
+            [(0, 0, 0.0, True), (1, 3000, 0.0, True), (2, 2500, 0.0, False), (3, 2500, 0.0, False)],
+            [self._cost("Development", "rd", "usual", 0, 20000.0, recurrence="non_recurring", actual_amount=20000.0)],
+            horizon_years=5, previous_id=estimate.id,
+        )
+        model_a.action_compute()
+        self.assertRecordValues(model_a, [{"absorbed_to_date": 6000.0, "residual_unit_cost": 2.8}])
+        # c starts 2028: its year 0 (2028) is NOT actual in a (a's 2028 is its year 2); index alignment would see
+        # year 0 as already actual in a and absorb nothing (6,000 / residual 5.60)
+        revision = self._lcc(
+            [(0, 2500, 0.0, True), (1, 2500, 0.0, False)],
+            # the life cost of the account to date, carried into the revision's year 0 (whole-life lc_cost)
+            [self._cost("Development to date", "rd", "usual", 0, 20000.0, recurrence="non_recurring", actual_amount=20000.0)],
+            start_year=2028, horizon_years=2, previous_id=model_a.id,
+        )
+        revision.action_compute()
+        self.assertRecordValues(revision, [{
+            "lc_cost": 20000.0, "absorbed_to_date": 13000.0, "residual_cost": 7000.0, "residual_volume": 2500.0,
+            "residual_unit_cost": 2.8,
+        }])
+
+    def test_lcc01_rn002_actual_not_typed_raises(self):
+        # RN-002: in an actual year an estimated cost with actual 0 and no confirmation is a missing actual, not a zero
+        years = [(0, 0, 0.0, False), (1, 4000, 5.0, True)]
+        costs = [
+            self._cost("Production y1", "production", "usual", 1, 8000.0, actual_amount=8600.0),
+            self._cost("Warranty y1 untyped", "use", "hidden", 1, 1000.0),
+        ]
+        model = self._lcc(years, costs)
+        with self.assertRaisesRegex(UserError, "Warranty y1 untyped"):
+            model.action_compute()
+
+    def test_lcc01_rn002_confirmed_zero_accepted(self):
+        # RN-002: the explicit actual_zero flag certifies that the estimated cost really did not happen
+        years = [(1, 4000, 5.0, True)]
+        costs = [self._cost("Warranty y1", "use", "hidden", 1, 1000.0, actual_zero=True),
+                 self._cost("No estimate y1", "use", "usual", 1, 0.0)]
+        model = self._lcc(years, costs)
+        model.action_compute()
+        self.assertRecordValues(model, [{"state": "done", "lc_cost": 0.0, "has_actuals": True}])
 
     def test_lcc01_previous_model_locked_while_read(self):
         # AD-002: the model whose unit cost was in force cannot be reset while a revision reads it

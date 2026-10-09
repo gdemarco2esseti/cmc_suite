@@ -63,6 +63,23 @@ class TestLccViews(TlcCase):
         self.assertEqual(rows.mapped("incremental_flow"), [0.0, 0.0, 0.0, 500.0])
         self.assertAlmostEqual(alternative.incremental_npv, 500.0, places=2)
 
+    def test_lcc02_rn001_baseline_aligned_by_calendar_year(self):
+        # RN-001: an alternative starting a year later is compared on the calendar year, not on the index
+        baseline = self._lcc([(1, 1000, 10.0, False), (2, 1000, 10.0, False)], [self._cost("Launch", "rd", "usual", 0, 5000.0)],
+                             start_year=2026, horizon_years=3, discount_rate=10.0)
+        baseline.action_compute()
+        self.assertEqual(baseline.year_result_ids.sorted("year").mapped("net_flow"), [-5000.0, 10000.0, 10000.0])
+        alternative = self._lcc([(0, 1000, 10.0, False), (1, 1000, 10.0, False)], [], start_year=2027, horizon_years=2,
+                                discount_rate=10.0, baseline_id=baseline.id)
+        alternative.action_compute()
+        rows = alternative.year_result_ids.sorted("year")
+        self.assertEqual(rows.mapped("calendar_year"), [2027, 2028])
+        # 2027: 10,000 - 10,000 = 0; 2028: 10,000 - 10,000 = 0 (index alignment would give 15,000 / 0)
+        self.assertEqual(rows.mapped("incremental_flow"), [0.0, 0.0])
+        # common timeline from 2026 at 10%: +5,000 (2026, baseline only) + 0/1.1 + 0/1.21 = 5,000
+        # (index-based lc_profit_npv difference would be 19,090.91 - 12,355.37 = 6,735.54)
+        self.assertAlmostEqual(alternative.incremental_npv, 5000.0, places=2)
+
     def test_lcc02_baseline_must_be_computed(self):
         # AD-002: a draft baseline is no certified comparison
         baseline = self._base_lcc()

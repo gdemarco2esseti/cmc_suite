@@ -99,11 +99,15 @@ LCC-01 / LCC-02 ``cmc.lcc.model`` - life-cycle cost and profit of a product or c
   ``distribution`` / ``use`` / ``take_back`` (take-back and disposal), ``category`` ``usual`` / ``hidden`` /
   ``liability`` / ``less_tangible``, ``recurrence`` ``recurring`` (default) / ``non_recurring``, ``year``,
   ``amount`` (estimate), ``probability_pct`` (default 100: a contingent liability = EMV), ``actual_amount``,
+  ``actual_zero`` Boolean (RN-002: the actual of the line is a CONFIRMED zero, default False),
   ``commit_year`` (year the cost is committed, default 0), driver-based: ``holder_model`` + ``holder_id`` +
   ``driver_id`` + ``quantity`` (amount = quantity x registry rate at ``rate_date``; readonly ``rate_value``
   written by Compute). A line year outside 0..horizon-1 -> UserError at Compute.
 - Effective cost of a line: in an ``is_actual`` year = ``actual_amount`` (what happened, no probability); else
   (driver amount or ``amount``) x probability_pct / 100.
+- RN-002 (no silent zero): in an ``is_actual`` year a line with a non-zero estimate (``amount``, or the driver
+  amount) and ``actual_amount`` 0 is an actual never typed -> UserError at Compute naming the line(s), unless its
+  ``actual_zero`` is set (e.g. a liability that never happened). A line whose estimate is 0 needs no flag.
 - Rate (``cmc_utils``, exact Fisher): same basis -> discount_rate; real flows + nominal rate -> real_rate; nominal
   flows + real rate -> nominal_rate; ``effective_rate`` percent (16, 6). Discount factor 1/(1+r)^year (year 0 = 1).
 - Results ``year_result_ids`` -> ``cmc.lcc.year.result`` (one per year 0..horizon-1): ``year``,
@@ -111,7 +115,8 @@ LCC-01 / LCC-02 ``cmc.lcc.model`` - life-cycle cost and profit of a product or c
   ``non_recurring_cost``, ``net_flow`` = revenue - cost, ``discount_factor`` (16, 6), ``pv_cost``, ``pv_net``,
   ``cumulative_net``, ``cumulative_pv``, ``committed_cost`` (lines with that commit_year),
   ``cumulative_committed_pct`` / ``cumulative_incurred_pct`` (of lc_cost, (16, 2)), ``is_actual``,
-  ``incremental_flow`` = net_flow - baseline net_flow of the same year (0 without baseline).
+  ``incremental_flow`` = net_flow - baseline net_flow of the same CALENDAR year (RN-001: rows are matched on
+  ``start_year + year``, never on the index; a calendar year without a baseline row counts 0; 0 without baseline).
   ``phase_result_ids`` -> ``cmc.lcc.phase.result`` (cost view, one per phase x category present): ``phase``,
   ``category``, ``amount``, ``pv_amount``, ``share_pct`` (16, 2). Conservation (INT-05): sum phase amounts =
   sum year costs = lc_cost.
@@ -120,12 +125,22 @@ LCC-01 / LCC-02 ``cmc.lcc.model`` - life-cycle cost and profit of a product or c
   ``lc_profit`` = revenue - cost, ``lc_profit_npv`` = NPV of the net flows, ``has_breakeven`` /
   ``breakeven_year`` (calendar year of the first cumulative_net >= 0 after a negative start), ``has_actuals``,
   ``absorbed_to_date``, ``residual_cost``, ``residual_volume``, ``residual_unit_cost`` (16, 4),
-  ``incremental_npv`` = lc_profit_npv - baseline.lc_profit_npv.
+  ``incremental_npv`` (RN-001) = NPV, at the model's effective rate, of the incremental flows on the COMMON
+  calendar timeline: from min(start_year, baseline.start_year) to the last calendar year of either model, the
+  flow of each calendar year = model net_flow - baseline net_flow (a year outside a model's horizon counts 0 for
+  it), discounted 1/(1+r)^(calendar_year - min start year). Years present only in the baseline enter the NPV but
+  get no year_result row (rows stay one per own horizon year). Same start year and horizon: = lc_profit_npv -
+  baseline.lc_profit_npv. Hand case: baseline 2026 flows -5,000 / 10,000 / 10,000, alternative 2027 flows
+  10,000 / 10,000 at 10%: incremental 2026 +5,000, 2027 0, 2028 0 -> incremental_npv 5,000.
 - Residual (Turney Ch8/14): rate in force of a model = its residual_unit_cost. Without actual years: absorbed 0,
   residual = lc_cost / lifetime volume. With actual years: absorbed_to_date = previous.absorbed_to_date + (volume
   of the actual years not actual in previous) x previous rate in force (without previous: x own lc_unit_cost);
   residual_cost = lc_cost - absorbed; residual_volume = volume of the non-actual years; residual_unit_cost =
-  residual_cost / residual_volume.
+  residual_cost / residual_volume. RN-001: "actual in previous" is matched on the CALENDAR year (start_year +
+  year of each model), never on the index; lc_cost of a revision is the whole life cost of the account (a
+  revision starting later carries the cost to date as a line of its year 0). Hand case: a (2026, previous =
+  the 2026 $2 estimate) actual 2026/2027 -> absorbed 6,000, residual 2.80; revision c starts 2028, previous a,
+  2028 actual 2,500 units -> absorbed 6,000 + 2,500 x 2.80 = 13,000, residual (20,000 - 13,000) / 2,500 = 2.80.
 
 Fixture (company A = env company, rates published by a computed producer closing run, Jan 2026)
   Output measure "units" (statistical). Product cost objects: P 180 (Jan) / 170 (Feb); K 50 (Jan) / 48.5 (Feb)

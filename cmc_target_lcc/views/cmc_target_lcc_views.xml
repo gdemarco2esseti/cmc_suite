@@ -412,6 +412,7 @@
                                     <field name="amount"/>
                                     <field name="probability_pct"/>
                                     <field name="actual_amount"/>
+                                    <field name="actual_zero"/>
                                     <field name="holder_model"/>
                                     <field name="holder_id"/>
                                     <field name="driver_id"/>

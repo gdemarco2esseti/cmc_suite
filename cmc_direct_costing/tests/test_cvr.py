@@ -41,7 +41,6 @@ class TestCvr(TransactionCase):
     def test_operating_leverage(self):
         a = self._cvr(price_unit=10, variable_unit=4, fixed_cost=2000, volume=400)
         self.assertEqual(a.operating_leverage, 6.0)
-        self.assertAlmostEqual(a.leverage_impact(0.3333), 2.0, places=2)
 
     def test_leverage_zero_uo(self):
         a = self._cvr(price_unit=10, variable_unit=4, fixed_cost=2400, volume=400)

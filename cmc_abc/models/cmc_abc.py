@@ -3,7 +3,7 @@ from collections import defaultdict
 from odoo import api, fields, models
 from odoo.tools import float_is_zero, float_round
 
-from odoo.addons.cmc_base.models.cmc_utils import largest_remainder
+from odoo.addons.cmc_base.models.cmc_utils import spread
 
 # Explicit precision for activity-driver quantities. A bare `if base` truthiness
 # test lets a degenerate 1e-18 through the CHECK(driver_qty > 0) constraint and
@@ -97,9 +97,7 @@ class CmcAbcRun(models.Model):
                 if not float_is_zero(pool, precision_rounding=rounding):
                     snapshot.append(self._unallocated_vals(activity_id, pool))
                 continue
-            coeff = pool / base
-            raw = {p: coeff * q for p, q in qty_by_product.items()}
-            shares = largest_remainder(pool, raw, rounding)
+            shares = spread(pool, qty_by_product, rounding)
             for product_id, amount in shares.items():
                 object_cost[product_id] += amount
                 snapshot.append({
@@ -119,8 +117,6 @@ class CmcAbcRun(models.Model):
             pool = float_round(net_pool, precision_rounding=rounding)
             if not float_is_zero(pool, precision_rounding=rounding):
                 snapshot.append(self._unallocated_vals(activity_id, pool))
-        self.result_ids.unlink()
-        self.activity_result_ids.unlink()
         self.env["cmc.abc.result"].create([
             {
                 "run_id": self.id,

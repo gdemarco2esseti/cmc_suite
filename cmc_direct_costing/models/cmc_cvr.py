@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from odoo import api, fields, models
 from odoo.tools import float_compare, float_is_zero
 
@@ -96,17 +98,20 @@ class CmcCvrAnalysis(models.Model):
 
     def _derive_fixed_cost(self):
         """Pull the fixed cost of the center from its analytic lines. Only in
-        actual mode: a simulation CF is typed by the user and kept as is."""
-        for rec in self:
-            if not (rec.mode == "consuntivo" and rec.center_id
-                    and rec.date_from and rec.date_to):
-                continue  # keep the manual / simulation value
-            groups = rec.center_id._cmc_cost_groups(
-                rec.date_from, rec.date_to, behavior="fixed", company=rec.company_id
-            )
-            # why: the callers rebuild the curve right after; the nested write
-            # (fixed_cost is a curve trigger) would build it a second time
-            rec.with_context(cmc_skip_curve=_SKIP_CURVE).fixed_cost = groups.get(rec.center_id.id, 0.0)
+        actual mode: a simulation CF is typed by the user and kept as is.
+        One cost query per (company, period), whatever the number of analyses."""
+        derived = self.filtered(
+            lambda rec: rec.mode == "consuntivo" and rec.center_id and rec.date_from and rec.date_to
+        )
+        batches = defaultdict(lambda: self.browse())
+        for rec in derived:
+            batches[(rec.company_id, rec.date_from, rec.date_to)] |= rec
+        for (company, date_from, date_to), recs in batches.items():
+            groups = recs.center_id._cmc_cost_groups(date_from, date_to, behavior="fixed", company=company)
+            for rec in recs:
+                # why: the callers rebuild the curve right after; the nested write
+                # (fixed_cost is a curve trigger) would build it a second time
+                rec.with_context(cmc_skip_curve=_SKIP_CURVE).fixed_cost = groups.get(rec.center_id.id, 0.0)
 
     @api.onchange("mode", "center_id", "date_from", "date_to")
     def _onchange_fixed_cost_source(self):
@@ -121,74 +126,58 @@ class CmcCvrAnalysis(models.Model):
     )
     def _compute_cvr(self):
         for rec in self:
-            # a margin below the currency step is rounding noise, not a margin:
-            # comparing bare floats turned v=9.999 against p=10.00 into a
-            # break-even quantity three orders of magnitude off
-            rounding = rec.company_id.currency_id.rounding or 0.01
-            cf = rec.fixed_cost
-            if rec.is_multiproduct and rec.line_ids:
-                tot_rev = sum(l.qty * l.price_unit for l in rec.line_ids)
-                tot_mc = sum(
-                    l.qty * (l.price_unit - l.variable_unit) for l in rec.line_ids
-                )
-                has_rev = not float_is_zero(tot_rev, precision_rounding=rounding)
-                ratio = (tot_mc / tot_rev) if has_rev else 0.0
-                positive_mc = float_compare(
-                    tot_mc, 0.0, precision_rounding=rounding
-                ) > 0
-                rec.mc_unit = 0.0
-                rec.mc_ratio = ratio
-                rec.has_breakeven = positive_mc and has_rev
-                rec.bep_qty = 0.0
-                rec.bep_revenue = (
-                    (cf / ratio)
-                    if not float_is_zero(ratio, precision_rounding=RATIO_ROUNDING)
-                    else 0.0
-                )
-                rec.target_qty = 0.0
-                mc_total = tot_mc
-                actual_rev = tot_rev
-            else:
-                p, v = rec.price_unit, rec.variable_unit
-                mc = p - v
-                has_price = not float_is_zero(p, precision_rounding=rounding)
-                ratio = (mc / p) if has_price else 0.0
-                rec.mc_unit = mc
-                rec.mc_ratio = ratio
-                rec.has_breakeven = (
-                    float_compare(mc, 0.0, precision_rounding=rounding) > 0
-                )
-                if rec.has_breakeven:
-                    rec.bep_qty = cf / mc
-                    rec.bep_revenue = (
-                        (cf / ratio)
-                        if not float_is_zero(ratio, precision_rounding=RATIO_ROUNDING)
-                        else 0.0
-                    )
-                    rec.target_qty = (rec.target_profit + cf) / mc
-                else:
-                    rec.bep_qty = rec.bep_revenue = rec.target_qty = 0.0
-                mc_total = mc * rec.volume
-                actual_rev = p * rec.volume
-            # margin of safety
-            rec.margin_of_safety = actual_rev - rec.bep_revenue
-            rec.mos_ratio = (
-                rec.margin_of_safety / actual_rev * 100
-                if not float_is_zero(actual_rev, precision_rounding=rounding)
-                else 0.0
-            )
-            # operating leverage LO = MC_total / UO (guard near-zero UO, not just 0)
-            uo = mc_total - cf
-            rec.operating_leverage = (
-                (mc_total / uo)
-                if not float_is_zero(uo, precision_rounding=rounding)
-                else 0.0
-            )
+            mix = [(l.qty, l.price_unit, l.variable_unit) for l in rec.line_ids] if rec.is_multiproduct else []
+            rec.update(self._cvp_figures(
+                rec.price_unit, rec.variable_unit, rec.fixed_cost, rec.target_profit, rec.volume,
+                mix, rec.company_id.currency_id.rounding or 0.01,
+            ))
 
-    def leverage_impact(self, revenue_change_pct):
-        """Estimate the % change of operating profit for a % change of revenue."""
-        self.ensure_one()
-        return self.operating_leverage * revenue_change_pct
+    @api.model
+    def _cvp_figures(self, p, v, cf, target_profit, volume, mix, rounding):
+        """Pure CVP maths: {field: value} of the derived outputs. ``mix`` holds
+        (qty, price, variable) per product of a multi-product analysis, else is
+        empty. A margin below the currency step is rounding noise, not a margin:
+        comparing bare floats turned v=9.999 against p=10.00 into a break-even
+        quantity three orders of magnitude off."""
+        if mix:
+            tot_rev = sum(qty * price for qty, price, _var in mix)
+            tot_mc = sum(qty * (price - var) for qty, price, var in mix)
+            has_rev = not float_is_zero(tot_rev, precision_rounding=rounding)
+            ratio = (tot_mc / tot_rev) if has_rev else 0.0
+            positive_mc = float_compare(tot_mc, 0.0, precision_rounding=rounding) > 0
+            res = {
+                "mc_unit": 0.0,
+                "mc_ratio": ratio,
+                "has_breakeven": positive_mc and has_rev,
+                "bep_qty": 0.0,
+                "bep_revenue": (cf / ratio) if not float_is_zero(ratio, precision_rounding=RATIO_ROUNDING) else 0.0,
+                "target_qty": 0.0,
+            }
+            mc_total, actual_rev = tot_mc, tot_rev
+        else:
+            mc = p - v
+            has_price = not float_is_zero(p, precision_rounding=rounding)
+            ratio = (mc / p) if has_price else 0.0
+            has_breakeven = float_compare(mc, 0.0, precision_rounding=rounding) > 0
+            res = {"mc_unit": mc, "mc_ratio": ratio, "has_breakeven": has_breakeven,
+                   "bep_qty": 0.0, "bep_revenue": 0.0, "target_qty": 0.0}
+            if has_breakeven:
+                res["bep_qty"] = cf / mc
+                res["bep_revenue"] = (
+                    (cf / ratio) if not float_is_zero(ratio, precision_rounding=RATIO_ROUNDING) else 0.0
+                )
+                res["target_qty"] = (target_profit + cf) / mc
+            mc_total, actual_rev = mc * volume, p * volume
+        res["margin_of_safety"] = actual_rev - res["bep_revenue"]
+        res["mos_ratio"] = (
+            res["margin_of_safety"] / actual_rev * 100
+            if not float_is_zero(actual_rev, precision_rounding=rounding)
+            else 0.0
+        )
+        # operating leverage LO = MC_total / UO (guard near-zero UO, not just 0)
+        uo = mc_total - cf
+        res["operating_leverage"] = (mc_total / uo) if not float_is_zero(uo, precision_rounding=rounding) else 0.0
+        return res
 
     def action_recompute(self):
         # re-derive the fixed cost from current analytic lines (consuntivo),

@@ -219,8 +219,6 @@ class CmcTdabcRun(models.Model):
 
     def _cmc_compute(self):
         self.ensure_one()
-        self.result_ids.unlink()
-        self.capacity_result_ids.unlink()
         # Aggregate analytic data ONCE and thread it through every scenario
         # (avoids re-running the same _read_group per scenario / per method).
         hours = self.env["account.analytic.line"]._cmc_tdabc_hours(

@@ -4,7 +4,7 @@ from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_is_zero, float_round
 
-from odoo.addons.cmc_base.models.cmc_utils import largest_remainder, qty_rounding
+from odoo.addons.cmc_base.models.cmc_utils import qty_rounding, spread
 
 
 class CmcCostingRun(models.Model):
@@ -153,14 +153,35 @@ class CmcCostingRun(models.Model):
                     name=self.closing_run_id.display_name,
                 )
             )
+        center_map = self._center_map(self._final_center_totals())
+        indirect, quotas = self._indirect_quotas(center_map)
+        # scope = declared products plus any product consuming a driver, so no
+        # indirect quota is computed without a matching result row (conservation)
+        products = self.product_ids | self.line_ids.product_id
+        # units consumed per product (allocation base for period & figurative)
+        prod_units = defaultdict(float)
+        for ln in self.line_ids:
+            prod_units[ln.product_id.id] += ln.driver_qty
+        # TS-006: commercial/administrative period costs allocated to products
+        comm_admin = self._spread_by_units(self._period_pool(), prod_units)
+        # TS-002: figurative costs (direct to product, or indirect by units)
+        figurative = self._figurative_costs(products, prod_units)
+        res_vals = self._result_vals(
+            products, self._direct_cost(products), indirect, quotas, comm_admin,
+            figurative, self._reference_prices(products),
+        )
+        # the engine is the only writer of the derived rows: users get read-only
+        # access to them (see security/ir.model.access.csv)
+        self.env["cmc.costing.result"].sudo().create(res_vals)
+
+    def _center_map(self, totals):
+        """{center_id (False = plant-wide): (cost, {product_id: driver_qty})}.
+        Fails loud on a cost without an allocation base."""
         rounding = self.company_id.currency_id.rounding
         qty_step = qty_rounding(self.env)
-        totals = self._final_center_totals()
-
         consume = defaultdict(lambda: defaultdict(float))
         for ln in self.line_ids:
             consume[ln.center_id.id][ln.product_id.id] += ln.driver_qty
-
         if self.base == "single":
             if not self.single_driver_id:
                 raise ValidationError(
@@ -175,12 +196,9 @@ class CmcCostingRun(models.Model):
             center_map = {False: (pool, dict(prod_qty))}
         else:
             center_map = {c: (totals.get(c, 0.0), consume.get(c, {})) for c in totals}
-
         for key, (total, pq) in center_map.items():
             has_cost = not float_is_zero(total, precision_rounding=rounding)
-            has_base = not float_is_zero(
-                sum(pq.values()), precision_rounding=qty_step
-            )
+            has_base = not float_is_zero(sum(pq.values()), precision_rounding=qty_step)
             if has_cost and not has_base:
                 center = self.env["account.analytic.account"].browse(key)
                 raise ValidationError(
@@ -191,59 +209,44 @@ class CmcCostingRun(models.Model):
                         amt=total,
                     )
                 )
+        return center_map
 
-        # scope = declared products plus any product consuming a driver, so no
-        # indirect quota is computed without a matching result row (conservation)
-        products = self.product_ids | self.line_ids.product_id
-        direct = self._direct_cost(products)
+    def _indirect_quotas(self, center_map):
+        """Spread each center cost over its products by driver quantity.
+        Returns ({product_id: indirect}, {product_id: [quota vals]})."""
+        rounding = self.company_id.currency_id.rounding
+        qty_step = qty_rounding(self.env)
         indirect = defaultdict(float)
         quotas = defaultdict(list)
         for key, (total, pq) in center_map.items():
             b = sum(pq.values())
             if float_is_zero(b, precision_rounding=qty_step):
-                # no allocation base: a non-zero cost was already rejected above
+                # no allocation base: a non-zero cost was already rejected
                 continue
-            coeff = total / b
-            raw = {p: coeff * q for p, q in pq.items()}
-            shares = largest_remainder(
-                float_round(total, precision_rounding=rounding), raw, rounding
-            )
-            for p, amount in shares.items():
+            for p, amount in spread(total, pq, rounding).items():
                 indirect[p] += amount
                 quotas[p].append(
                     {
                         "center_id": key or False,
-                        "coefficient": coeff,
+                        "coefficient": total / b,
                         "driver_qty": pq[p],
                         "amount": amount,
                     }
                 )
+        return indirect, quotas
 
-        # units consumed per product (allocation base for period & figurative)
-        prod_units = defaultdict(float)
-        for ln in self.line_ids:
-            prod_units[ln.product_id.id] += ln.driver_qty
-        total_units = sum(prod_units.values())
+    def _spread_by_units(self, pool, prod_units):
+        """{product_id: share of pool by units}; empty without pool or units."""
+        rounding = self.company_id.currency_id.rounding
+        if float_is_zero(pool, precision_rounding=rounding) or float_is_zero(
+            sum(prod_units.values()), precision_rounding=qty_rounding(self.env)
+        ):
+            return {}
+        return spread(pool, prod_units, rounding)
 
-        # TS-006: commercial/administrative period costs allocated to products
-        period_pool = self._period_pool()
-        if not float_is_zero(
-            period_pool, precision_rounding=rounding
-        ) and not float_is_zero(total_units, precision_rounding=qty_step):
-            raw = {p: period_pool * u / total_units for p, u in prod_units.items()}
-            comm_admin = largest_remainder(
-                float_round(period_pool, precision_rounding=rounding), raw, rounding
-            )
-        else:
-            comm_admin = {}
-
-        # TS-002: figurative costs (direct to product, or indirect by units)
-        figurative = self._figurative_costs(products, prod_units)
-        refs = self._reference_prices(products)
-
-        # the engine is the only writer of the derived rows: users get read-only
-        # access to them (see security/ir.model.access.csv)
-        self.result_ids.sudo().unlink()
+    def _result_vals(self, products, direct, indirect, quotas, comm_admin, figurative, refs):
+        """Result rows: the four cost configuration levels per product."""
+        rounding = self.company_id.currency_id.rounding
         res_vals = []
         for product in products:
             p = product.id
@@ -255,8 +258,6 @@ class CmcCostingRun(models.Model):
             figur = float_round(figurative.get(p, 0.0), precision_rounding=rounding)
             eco = float_round(complessivo + figur, precision_rounding=rounding)
             ref = refs.get(p, 0.0)
-            std_ref = float_round(ref, precision_rounding=rounding)
-            variance = float_round(industriale - ref, precision_rounding=rounding)
             config = [
                 (0, 0, {"sequence": 10, "level": "primo", "amount": primo,
                         "increment": primo, "source": "standard_price"}),
@@ -278,13 +279,13 @@ class CmcCostingRun(models.Model):
                     "cost_complessivo": complessivo,
                     "cost_figurativo": figur,
                     "cost_economico_tecnico": eco,
-                    "standard_price_ref": std_ref,
-                    "std_price_delta": variance,
+                    "standard_price_ref": float_round(ref, precision_rounding=rounding),
+                    "std_price_delta": float_round(industriale - ref, precision_rounding=rounding),
                     "quota_ids": [(0, 0, q) for q in quotas.get(p, [])],
                     "config_ids": config,
                 }
             )
-        self.env["cmc.costing.result"].sudo().create(res_vals)
+        return res_vals
 
     def _period_pool(self):
         """Commercial/administrative period costs: analytic lines on centers
@@ -305,8 +306,6 @@ class CmcCostingRun(models.Model):
         """Figurative costs (economico-tecnico only): direct ones map to their
         product, indirect ones are spread by units. Conserves the pool."""
         self.ensure_one()
-        rounding = self.company_id.currency_id.rounding
-        qty_step = qty_rounding(self.env)
         domain = [("company_id", "in", [False] + self.company_id.ids)]
         # only figuratives overlapping the run period (undated = always applicable)
         if self.date_from:
@@ -328,15 +327,8 @@ class CmcCostingRun(models.Model):
                 result[ref.id] += fc.amount
             else:
                 indirect_pool += fc.amount
-        total_units = sum(prod_units.values())
-        if not float_is_zero(
-            indirect_pool, precision_rounding=rounding
-        ) and not float_is_zero(total_units, precision_rounding=qty_step):
-            raw = {p: indirect_pool * u / total_units for p, u in prod_units.items()}
-            for p, amount in largest_remainder(
-                float_round(indirect_pool, precision_rounding=rounding), raw, rounding
-            ).items():
-                result[p] += amount
+        for p, amount in self._spread_by_units(indirect_pool, prod_units).items():
+            result[p] += amount
         return result
 
     def _reference_prices(self, products):

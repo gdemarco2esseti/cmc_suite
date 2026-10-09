@@ -2,7 +2,7 @@ from odoo import fields, models
 from odoo.exceptions import UserError
 from odoo.tools import float_compare, float_is_zero, float_round
 
-from odoo.addons.cmc_base.models.cmc_utils import largest_remainder, qty_rounding
+from odoo.addons.cmc_base.models.cmc_utils import qty_rounding, spread
 
 
 class CmcJointRun(models.Model):
@@ -72,7 +72,6 @@ class CmcJointRun(models.Model):
 
         alloc = self._allocate(net_joint, mains, rounding)
 
-        self.result_ids.unlink()
         vals = []
         for line in mains:
             vals.append(self._result_vals(line, alloc.get(line, 0.0), rounding, False))
@@ -109,11 +108,7 @@ class CmcJointRun(models.Model):
                 "No positive allocation base for the '%s' method: the joint cost "
                 "cannot be split.", method,
             ))
-        coeff = net_joint / base
-        raw = {line: coeff * w for line, w in weights.items()}
-        return largest_remainder(
-            float_round(net_joint, precision_rounding=rounding), raw, rounding
-        )
+        return spread(net_joint, weights, rounding)
 
     def _allocate_constant_gm(self, net_joint, mains, rounding):
         """Each product keeps the same gross-margin %; the joint cost assigned is

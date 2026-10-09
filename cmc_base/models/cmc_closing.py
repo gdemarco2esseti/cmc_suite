@@ -75,13 +75,10 @@ class CmcClosingRun(models.Model):
             self.date_from, self.date_to, company=self.company_id
         )
 
-    def _proportion_maps(self, to_close, centers):
+    def _proportion_maps(self, to_close, final_ids):
         """Build, in ONE query, the per-provider allocation proportions.
         Returns (prop_full, prop_final): provider_id -> {receiver_id: fraction}.
         prop_full normalizes over all receivers; prop_final over final ones only."""
-        final_ids = set(
-            centers.filtered(lambda c: c.cmc_center_type == "final").ids
-        )
         services = self.env["cmc.center.service"].search(
             [
                 ("provider_id", "in", to_close.ids),
@@ -134,10 +131,12 @@ class CmcClosingRun(models.Model):
         self.ensure_one()
         centers = self._centers()
         initial = self._initial_costs(centers)
+        # the center split is read once and handed to every step
         to_close = centers.filtered(
             lambda c: c.cmc_center_type in ("auxiliary", "intermediate")
         )
-        prop_full, prop_final = self._proportion_maps(to_close, centers)
+        final_ids = set(centers.filtered(lambda c: c.cmc_center_type == "final").ids)
+        prop_full, prop_final = self._proportion_maps(to_close, final_ids)
 
         if self.method == "reciprocal":
             received, distributed = self._run_reciprocal(to_close, initial, prop_full)
@@ -146,8 +145,6 @@ class CmcClosingRun(models.Model):
                 to_close, initial, prop_full, prop_final
             )
 
-        # idempotent: rebuild result lines
-        self.line_ids.unlink()
         vals = []
         for center in centers:
             ini = initial.get(center.id, 0.0)
@@ -164,21 +161,14 @@ class CmcClosingRun(models.Model):
                 }
             )
         self.env["cmc.closing.line"].create(vals)
-        self._build_cost_analysis(centers, received)
+        self._build_cost_analysis(centers, set(to_close.ids), final_ids, received)
 
-    def _build_cost_analysis(self, centers, received):
+    def _build_cost_analysis(self, centers, to_close, final_ids, received):
         """Materialize the cost-analysis matrix (center x element) in both
         pre- and post-ribaltamento states, tying out to this closing."""
-        self.cost_analysis_ids.unlink()
         cost_by = centers._cmc_cost_groups(
             self.date_from, self.date_to, by_element=True, company=self.company_id
         )
-        to_close = set(
-            centers.filtered(
-                lambda c: c.cmc_center_type in ("auxiliary", "intermediate")
-            ).ids
-        )
-        final_ids = set(centers.filtered(lambda c: c.cmc_center_type == "final").ids)
         ribalt = self.env.ref(
             "cmc_base.cost_element_ribaltamento", raise_if_not_found=False
         )

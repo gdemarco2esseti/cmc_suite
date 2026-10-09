@@ -25,3 +25,12 @@ def largest_remainder(total, raw, rounding):
 def qty_rounding(env):
     """Rounding step of a driver or product quantity (a quantity, never a currency)."""
     return 10 ** -env["decimal.precision"].precision_get("Product Unit")
+
+
+def spread(total, weights, rounding):
+    """Split `total` across `weights` ({key: weight}) proportionally, rounded
+    with largest_remainder so the parts re-sum exactly to `total` rounded at
+    `rounding`. The caller has already rejected a zero weight base."""
+    coeff = total / sum(weights.values())
+    raw = {key: coeff * weight for key, weight in weights.items()}
+    return largest_remainder(float_round(total, precision_rounding=rounding), raw, rounding)

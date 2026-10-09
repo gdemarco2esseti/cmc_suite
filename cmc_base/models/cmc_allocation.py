@@ -1,5 +1,6 @@
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
+from odoo.fields import Domain
 from odoo.tools import float_is_zero
 
 from .cmc_utils import largest_remainder
@@ -7,6 +8,7 @@ from .cmc_utils import largest_remainder
 
 class CmcAllocation(models.Model):
     _name = "cmc.allocation"
+    _inherit = ["cmc.run.mixin"]
     _description = "Cost Allocation"
     _check_company_auto = True
     _check_company_domain = models.check_company_domain_parent_of
@@ -25,7 +27,13 @@ class CmcAllocation(models.Model):
     )
     driver_id = fields.Many2one("cmc.cost.driver", required=True, check_company=True)
     amount = fields.Monetary(string="Amount to Allocate", required=True)
+    date = fields.Date(required=True, default=fields.Date.context_today, help="Posting date of the result.")
+    element_id = fields.Many2one("cmc.cost.element", string="Cost Element", check_company=True)
     line_ids = fields.One2many("cmc.allocation.line", "allocation_id")
+    posted_line_ids = fields.One2many("account.analytic.line", "cmc_allocation_id", string="Posted Lines")
+
+    _cmc_input_fields = ("company_id", "source_account_id", "driver_id", "amount", "date", "element_id", "line_ids")
+    _cmc_result_fields = ("posted_line_ids",)
 
     @api.constrains("amount", "line_ids")
     def _check_allocation_base(self):
@@ -58,10 +66,63 @@ class CmcAllocation(models.Model):
         return largest_remainder(self.amount, raw, rounding)
 
 
+    def _cmc_compute(self):
+        self.ensure_one()
+        shares = self._allocate_conserving()
+        postings = [(line.target_account_id, -shares[line.id]) for line in self.line_ids]
+        postings.append((self.source_account_id, self.amount))
+        # fail loud: the relocation must not create or lose cost
+        if self.currency_id.compare_amounts(sum(amount for _center, amount in postings), 0.0):
+            raise ValidationError(self.env._("Allocation %(name)s does not conserve the amount.", name=self.name))
+        self.env["account.analytic.line"].create([
+            {
+                "name": self.name,
+                "date": self.date,
+                "company_id": self.company_id.id,
+                "amount": amount,
+                center.plan_id._column_name(): center.id,
+                "cmc_cost_element_id": self.element_id.id,
+                "cmc_allocation_id": self.id,
+            }
+            for center, amount in postings
+        ])
+
+    def unlink(self):
+        if self.filtered(lambda alloc: alloc.state == "done"):
+            raise UserError(self.env._("A computed allocation cannot be deleted: reset it to draft first."))
+        return super().unlink()
+
+    @api.model
+    def _cmc_allocated_share(self, company, date_from, date_to):
+        """Share of the indirect cost of the span that is spread by convention (guardrail 10%)."""
+        self.check_access("read")
+        # why sudo: aggregates of the whole company, whatever the lines' rules show the caller
+        Line = self.env["account.analytic.line"].sudo()
+        overhead = Line._cmc_cost_read_group(
+            Domain("company_id", "=", company.id) & Domain("cmc_excluded", "=", False)
+            & Domain("cmc_directness", "=", "indirect") & Domain("cmc_allocation_id", "=", False)
+            & Domain("date", ">=", date_from) & Domain("date", "<=", date_to)
+        )[0][0]
+        allocated = sum(
+            amount
+            for _driver, amount in self.sudo()._read_group(
+                Domain("company_id", "=", company.id) & Domain("state", "=", "done")
+                & Domain("driver_id.assignment", "=", "allocated")
+                & Domain("date", ">=", date_from) & Domain("date", "<=", date_to),
+                ["driver_id"],
+                ["amount:sum"],
+            )
+        )
+        share = allocated / overhead * 100 if overhead else 0.0
+        return {"total_overhead": overhead, "allocated": allocated, "share": share, "warning": share > 10}
+
+
 class CmcAllocationLine(models.Model):
     _name = "cmc.allocation.line"
+    _inherit = ["cmc.run.line.mixin"]
     _description = "Cost Allocation Line"
     _check_company_auto = True
+    _cmc_run_field = "allocation_id"
 
     allocation_id = fields.Many2one(
         "cmc.allocation", required=True, ondelete="cascade", index=True

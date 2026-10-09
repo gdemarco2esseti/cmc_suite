@@ -15,3 +15,7 @@ from . import cmc_reclass_mixin
 from . import cmc_plan_version
 from . import cmc_measure_quantity
 from . import cmc_rate
+from . import cmc_cost_function
+from . import cmc_responsibility
+from . import cmc_data_check
+from . import cmc_center_cost_report

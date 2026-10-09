@@ -33,6 +33,9 @@ class CmcCapacityAnalysis(models.Model):
     capacity_theoretical = fields.Float(digits="Product Unit")
     capacity_practical = fields.Float(digits="Product Unit")
     capacity_actual = fields.Float(digits="Product Unit")
+    capacity_normal = fields.Float(digits="Product Unit")
+    capacity_budget = fields.Float(digits="Product Unit")
+    downtime_rate = fields.Float(string="Downtime %", help="Share of the theoretical capacity lost to breaks and downtime.")
 
     # derived figures — stored because the row IS period-scoped
     fixed_cost = fields.Monetary(compute="_compute_capacity", store=True)
@@ -45,6 +48,15 @@ class CmcCapacityAnalysis(models.Model):
         string="Utilization %", compute="_compute_capacity", store=True
     )
 
+    total_cost = fields.Monetary(
+        string="Total Cost", compute="_compute_levels", store=True, help="Fixed + variable cost of the period."
+    )
+    coefficient_theoretical = fields.Float(compute="_compute_levels", store=True)
+    coefficient_practical = fields.Float(compute="_compute_levels", store=True)
+    coefficient_normal = fields.Float(compute="_compute_levels", store=True)
+    coefficient_budget = fields.Float(compute="_compute_levels", store=True)
+    coefficient_actual = fields.Float(compute="_compute_levels", store=True)
+
     _center_period_uniq = models.Constraint(
         "UNIQUE(center_id, date_from, date_to, company_id)",
         "One capacity analysis per cost center and period.",
@@ -52,6 +64,12 @@ class CmcCapacityAnalysis(models.Model):
     _practical_le_theoretical = models.Constraint(
         "CHECK(capacity_theoretical = 0 OR capacity_practical <= capacity_theoretical)",
         "Practical capacity cannot exceed theoretical capacity.",
+    )
+    _levels_bounded = models.Constraint(
+        "CHECK(capacity_normal >= 0 AND capacity_budget >= 0 AND downtime_rate BETWEEN 0 AND 100 "
+        "AND (capacity_theoretical = 0 OR (capacity_normal <= capacity_theoretical "
+        "AND capacity_budget <= capacity_theoretical)))",
+        "Normal and budget capacity must be between zero and the theoretical capacity; downtime is 0-100%.",
     )
     _dates_ordered = models.Constraint(
         "CHECK(date_from <= date_to)",
@@ -72,8 +90,8 @@ class CmcCapacityAnalysis(models.Model):
                 rec.date_to or "",
             )
 
-    def _fixed_costs(self):
-        """{record_id: fixed_cost_of_center_in_period}, batched per period.
+    def _period_costs(self, behavior=False):
+        """{record_id: cost_of_center_in_period} (of one behavior, or all), batched per period.
         Plan-aware: reads the center's costs on whatever analytic plan it lives."""
         result = {}
         by_period = defaultdict(lambda: self.browse())
@@ -81,7 +99,7 @@ class CmcCapacityAnalysis(models.Model):
             by_period[(rec.date_from, rec.date_to, rec.company_id.id)] |= rec
         for (df, dt, cid), recs in by_period.items():
             amounts = recs.center_id._cmc_cost_groups(
-                df, dt, behavior="fixed",
+                df, dt, behavior=behavior,
                 company=self.env["res.company"].browse(cid),
             )
             for rec in recs:
@@ -96,7 +114,7 @@ class CmcCapacityAnalysis(models.Model):
         "capacity_actual",
     )
     def _compute_capacity(self):
-        fixed = self._fixed_costs()
+        fixed = self._period_costs("fixed")
         for rec in self:
             rounding = rec.company_id.currency_id.rounding
             fc = fixed.get(rec.id, 0.0)
@@ -119,6 +137,29 @@ class CmcCapacityAnalysis(models.Model):
             rec.utilization_rate = (
                 rec.capacity_actual / prac * 100 if prac else 0.0
             )
+
+    @api.depends(
+        "center_id",
+        "date_from",
+        "date_to",
+        "capacity_theoretical",
+        "capacity_practical",
+        "capacity_normal",
+        "capacity_budget",
+        "capacity_actual",
+    )
+    def _compute_levels(self):
+        totals = self._period_costs()
+        for rec in self:
+            rec.total_cost = totals.get(rec.id, 0.0)
+            for level in ("theoretical", "practical", "normal", "budget", "actual"):
+                capacity = rec[f"capacity_{level}"]
+                rec[f"coefficient_{level}"] = rec.total_cost / capacity if capacity else 0.0
+
+    def action_estimate_practical(self):
+        for rec in self:
+            rec.capacity_practical = rec.capacity_theoretical * (1 - rec.downtime_rate / 100)
+        return True
 
     @api.onchange("capacity_actual", "capacity_practical")
     def _warn_overcapacity(self):

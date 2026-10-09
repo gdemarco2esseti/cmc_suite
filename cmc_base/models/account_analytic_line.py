@@ -4,6 +4,8 @@ from odoo import api, fields, models
 from odoo.fields import Domain
 from odoo.exceptions import AccessError, UserError, ValidationError
 
+from .cmc_run_mixin import CMC_RUN_STATE
+
 # why a sentinel: the context travels over RPC, so a plain True under
 # ``cmc_auto_classify`` could be forged by any client. An ``object()`` cannot be
 # serialised, hence only server code can put it there.
@@ -15,6 +17,12 @@ CAPACITY_DERIVED_FIELDS = (
     "imputed_fixed_cost",
     "unused_capacity_cost",
     "utilization_rate",
+    "total_cost",
+    "coefficient_theoretical",
+    "coefficient_practical",
+    "coefficient_normal",
+    "coefficient_budget",
+    "coefficient_actual",
 )
 
 
@@ -85,6 +93,15 @@ class AccountAnalyticLine(models.Model):
         index=True,
         ondelete="restrict",
         help="Registry key of the object this cost is referred to: groupable, unlike the Reference.",
+    )
+    cmc_allocation_id = fields.Many2one(
+        "cmc.allocation",
+        string="Allocation",
+        index="btree_not_null",
+        ondelete="restrict",
+        readonly=True,
+        copy=False,
+        help="Allocation run that posted this system line.",
     )
     cmc_cost_traceability = fields.Selection(
         selection=[("special", "Special"), ("common", "Common")],
@@ -228,7 +245,7 @@ class AccountAnalyticLine(models.Model):
     # ---- keep capacity analyses in sync with the underlying costs ----------
 
     def _cmc_capacity_rows(self):
-        """Capacity analyses whose center+period covers these fixed lines.
+        """Capacity analyses whose center+period covers these dated cost-base lines.
 
         Runs sudo on purpose: anybody may book an analytic line (timesheets,
         vendor bills, manufacturing), while capacity rows are CMC-only data.
@@ -236,9 +253,7 @@ class AccountAnalyticLine(models.Model):
         derived figures in sync.
         """
         CA = self.env["cmc.capacity.analysis"]
-        fixed = self.filtered(
-            lambda line: line.cmc_behavior == "fixed" and line.date and not line.cmc_excluded
-        )
+        fixed = self.filtered(lambda line: line.date and not line.cmc_excluded)
         if not fixed:
             return CA.sudo()
         # plan-aware: the center may live on any analytic plan, not just the
@@ -279,8 +294,17 @@ class AccountAnalyticLine(models.Model):
         for fname in CAPACITY_DERIVED_FIELDS:
             self.env.add_to_compute(rows._fields[fname], rows)
 
+    def _cmc_check_allocation_lock(self, vals_list=()):
+        # why no env.su bypass: a posted allocation line is a result of a run;
+        # only compute/reset (the sentinel) may touch it, whoever calls
+        if self.env.context.get("cmc_run_state") is CMC_RUN_STATE:
+            return
+        if any(vals.get("cmc_allocation_id") for vals in vals_list) or self.filtered("cmc_allocation_id"):
+            raise UserError(self.env._("Lines posted by an allocation change only by computing or resetting it."))
+
     @api.model_create_multi
     def create(self, vals_list):
+        self._cmc_check_allocation_lock(vals_list)
         if not self.env.su and any("cmc_excluded" in vals for vals in vals_list):
             raise AccessError(self.env._("The cost base exclusion is set by the system only."))
         for vals in vals_list:
@@ -290,6 +314,7 @@ class AccountAnalyticLine(models.Model):
         return lines
 
     def write(self, vals):
+        self._cmc_check_allocation_lock([vals])
         self._cmc_check_one_amount(vals)
         if "cmc_excluded" in vals and not self.env.su:
             raise AccessError(self.env._("The cost base exclusion is set by the system only."))
@@ -320,6 +345,7 @@ class AccountAnalyticLine(models.Model):
         return res
 
     def unlink(self):
+        self._cmc_check_allocation_lock()
         rows = self._cmc_capacity_rows()
         res = super().unlink()
         self._cmc_touch_capacity(rows)

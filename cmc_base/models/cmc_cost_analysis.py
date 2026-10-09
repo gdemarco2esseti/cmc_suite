@@ -1,4 +1,5 @@
-from odoo import fields, models
+from odoo import api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class CmcCostElement(models.Model):
@@ -23,11 +24,28 @@ class CmcCostElement(models.Model):
         "res.company", default=lambda self: self.env.company, index=True
     )
 
+    cmc_controllable = fields.Boolean(
+        string="Controllable",
+        default=True,
+        help="The manager of the center can influence this cost.",
+    )
+    cmc_avoidable = fields.Boolean(string="Avoidable", help="Disappears if the activity is dropped.")
+    cmc_sunk = fields.Boolean(string="Sunk", help="Already incurred: irrelevant for decisions.")
+    cmc_commitment = fields.Selection(
+        selection=[("committed", "Committed"), ("discretionary", "Discretionary")],
+        string="Commitment",
+    )
+
     _code_company_uniq = models.UniqueIndex(
         "(code, COALESCE(company_id, 0)) WHERE code IS NOT NULL",
         "The cost element code must be unique per company "
         "(shared records included).",
     )
+
+    @api.constrains("cmc_sunk", "cmc_avoidable")
+    def _check_cmc_sunk_not_avoidable(self):
+        if self.filtered(lambda element: element.cmc_sunk and element.cmc_avoidable):
+            raise ValidationError(self.env._("A sunk cost cannot be avoidable."))
 
 
 class CmcCostAnalysisLine(models.Model):

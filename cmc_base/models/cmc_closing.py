@@ -52,10 +52,17 @@ class CmcClosingRun(models.Model):
         required=True,
         default="direct",
     )
+    step_order = fields.Selection(
+        selection=[("auto", "Automatic"), ("service_share", "Share of service to other centers"), ("manual", "Manual sequence")],
+        required=True,
+        default="auto",
+        help="Order in which the step-down method closes the centers.",
+    )
+    step_ids = fields.One2many("cmc.closing.step", "run_id", string="Closing Sequence")
     line_ids = fields.One2many("cmc.closing.line", "run_id")
     cost_analysis_ids = fields.One2many("cmc.cost.analysis.line", "run_id")
 
-    _cmc_input_fields = ("company_id", "date_from", "date_to", "method")
+    _cmc_input_fields = ("company_id", "date_from", "date_to", "method", "step_order", "step_ids")
     _cmc_result_fields = ("line_ids", "cost_analysis_ids")
 
     # ---- data gathering -------------------------------------------------
@@ -214,14 +221,37 @@ class CmcClosingRun(models.Model):
             )
         self.env["cmc.cost.analysis.line"].create(vals)
 
-    def _ordered_providers(self, to_close, prop_full):
-        """Step-down order: centers serving more other to-close centers first."""
+    def _ordered_providers(self, to_close, prop_full, initial):
+        """Step-down order: by `step_order` (auto: centers serving more other to-close centers first)."""
         close_ids = set(to_close.ids)
 
         def serves_count(provider):
             return sum(1 for rid in prop_full.get(provider.id, {}) if rid in close_ids)
 
+        def service_share(provider):
+            return sum(w for rid, w in prop_full.get(provider.id, {}).items() if rid in close_ids and rid != provider.id)
+
+        if self.step_order == "service_share":
+            return to_close.sorted(key=lambda c: (-service_share(c), c.id))
+        if self.step_order == "manual":
+            return self._manual_providers(to_close, initial)
         return to_close.sorted(key=lambda c: (-serves_count(c), c.id))
+
+    def _manual_providers(self, to_close, initial):
+        """The listed centers in sequence; every to-close center with cost must be listed."""
+        listed = self.step_ids.sorted(lambda step: (step.sequence, step.id)).center_id
+        stray = listed - to_close
+        missing = to_close.filtered(lambda c: initial.get(c.id) and c not in listed)
+        if stray or missing:
+            raise ValidationError(
+                self.env._(
+                    "The closing sequence must list every center to close that has cost, and only those. "
+                    "Not to close: %(stray)s. Missing: %(missing)s.",
+                    stray=", ".join(stray.mapped("display_name")) or "-",
+                    missing=", ".join(missing.mapped("display_name")) or "-",
+                )
+            )
+        return listed | (to_close - listed).sorted("id")
 
     def _run_sequential(self, to_close, initial, prop_full, prop_final):
         """Direct and step-down share the same sweep; they differ only in which
@@ -231,7 +261,7 @@ class CmcClosingRun(models.Model):
         current = {c.id: initial.get(c.id, 0.0) for c in to_close}
 
         order = to_close if self.method == "direct" else self._ordered_providers(
-            to_close, prop_full
+            to_close, prop_full, initial
         )
         closed = set()
 
@@ -361,3 +391,23 @@ class CmcClosingLine(models.Model):
     cost_received = fields.Monetary()
     cost_distributed = fields.Monetary()
     cost_residual = fields.Monetary()
+
+
+class CmcClosingStep(models.Model):
+    _name = "cmc.closing.step"
+    _inherit = ["cmc.run.line.mixin"]
+    _description = "Closing Sequence Step"
+    _order = "sequence, id"
+    _check_company_auto = True
+    _cmc_run_field = "run_id"
+
+    run_id = fields.Many2one("cmc.closing.run", required=True, ondelete="cascade", index=True)
+    sequence = fields.Integer(default=10)
+    center_id = fields.Many2one(
+        "account.analytic.account", required=True, check_company=True, ondelete="restrict"
+    )
+    company_id = fields.Many2one(related="run_id.company_id", store=True, index=True)
+
+    _run_center_uniq = models.UniqueIndex(
+        "(run_id, center_id)", "A center appears once in the closing sequence."
+    )

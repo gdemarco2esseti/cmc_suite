@@ -68,3 +68,33 @@ def phase_by_month(total, date_from, date_to, rounding, weights=None):
     if not sum(month_weights.values()):
         raise ValueError("the weights of the span sum to zero")
     return spread(total, month_weights, rounding)
+
+
+def high_low(points):
+    """(K, v) of C = K + v*Q through the points with the lowest and highest Q."""
+    points = list(points)
+    if len(points) < 2:
+        raise ValueError("at least two points are needed")
+    low = min(points, key=lambda p: p[0])
+    high = max(points, key=lambda p: p[0])
+    if high[0] == low[0]:
+        raise ValueError("the quantities are all equal")
+    v = (high[1] - low[1]) / (high[0] - low[0])
+    return low[1] - v * low[0], v
+
+
+def ols_fit(points):
+    """(K, v, r2) of the least squares line C = K + v*Q; r2 is 1.0 on a flat cost."""
+    points = list(points)
+    if len(points) < 2:
+        raise ValueError("at least two points are needed")
+    n = len(points)
+    mean_q = sum(q for q, _c in points) / n
+    mean_c = sum(c for _q, c in points) / n
+    sxx = sum((q - mean_q) ** 2 for q, _c in points)
+    if not sxx:
+        raise ValueError("the quantities are all equal")
+    sxy = sum((q - mean_q) * (c - mean_c) for q, c in points)
+    syy = sum((c - mean_c) ** 2 for _q, c in points)
+    v = sxy / sxx
+    return mean_c - v * mean_q, v, sxy**2 / (sxx * syy) if syy else 1.0

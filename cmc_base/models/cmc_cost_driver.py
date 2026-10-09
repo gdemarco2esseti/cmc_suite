@@ -28,6 +28,22 @@ class CmcCostDriver(models.Model):
         required=True,
         default="manual",
     )
+    allocation_criterion = fields.Selection(
+        selection=[
+            ("cause_effect", "Cause and effect"),
+            ("benefit", "Benefit received"),
+            ("fairness", "Fairness"),
+            ("ability_to_bear", "Ability to bear"),
+        ],
+        help="Criterion that justifies this base when the cost is allocated.",
+    )
+    rationale = fields.Text(help="Why this base is a reasonable one.")
+    assignment = fields.Selection(
+        selection=[("traced", "Traced"), ("allocated", "Allocated")],
+        required=True,
+        default="allocated",
+        help="Traced: the consumption is measured. Allocated: spread by a convention.",
+    )
     feeder_key = fields.Char(help="Key of the bridge feeder that loads the quantities of this measure.")
 
     _code_company_uniq = models.UniqueIndex(

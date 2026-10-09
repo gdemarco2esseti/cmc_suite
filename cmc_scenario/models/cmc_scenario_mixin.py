@@ -32,7 +32,13 @@ class CmcScenarioRunMixin(models.AbstractModel):
 
     def _scenario_amounts(self, version):
         """{(center_id, element_id, month): amount in company currency} of `version` at its own inputs."""
-        prepared = self._scenario_prepare(version)
+        entry = version._cmc_scenario_evaluator(self.evaluator_key)
+        if not entry.get("versioned"):
+            raise UserError(self.env._(
+                "The evaluator %s does not depend on the version: comparing or consolidating versions with it is meaningless.",
+                entry["name"],
+            ))
+        prepared = entry["prepare"](version)
         return {key: version._cmc_to_company_currency(amount) for key, amount in prepared["evaluate"](prepared["inputs"]).items()}
 
     @staticmethod

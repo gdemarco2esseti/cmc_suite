@@ -8,7 +8,7 @@ class CmcPlanVersion(models.Model):
     _inherit = "cmc.plan.version"
 
     def _cmc_scenario_evaluators(self):
-        entry = {"key": "budget_lines", "name": self.env._("Budget lines"), "prepare": self._cmc_budget_scenario_prepare}
+        entry = {"key": "budget_lines", "name": self.env._("Budget lines"), "versioned": True, "prepare": self._cmc_budget_scenario_prepare}
         return super()._cmc_scenario_evaluators() + [entry]
 
     def _cmc_budget_scenario_prepare(self, version):

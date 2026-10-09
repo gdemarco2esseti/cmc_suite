@@ -25,6 +25,14 @@ Evaluator (every run has ``evaluator_key`` Char required): ``cmc.plan.version._c
 ``prepare(version)`` is called ONCE per version per Compute; ``evaluate(values)`` is pure, its amounts are in the
 version currency and converted to company currency with ``version.currency_rate`` (line amounts stored through
 ``version._cmc_to_company_currency``). Profit of a version = sum of its evaluated amounts.
+RN-002: an evaluator that reads company-currency figures (e.g. ``cvr``: a CVR analysis is in company currency)
+divides its MONETARY inputs by ``version.currency_rate`` in ``prepare`` (quantities untouched), so that the engine's
+x currency_rate gives back the company amount (rate 2.0, CVR result 1,000 -> evaluate 500 -> engine output 1,000).
+RN-001: every hook entry declares ``"versioned": True | False`` = whether its figures depend on the version (read
+from the version's own data). ``budget_lines`` and the test evaluator: True; ``cvr``: False (it reads the latest
+CVR analysis of the company in the span, whatever the version). Comparison and consolidation Compute (or create)
+refuse a non-versioned evaluator with UserError whose message names the evaluator (its ``name``): comparing or
+summing versions that cannot differ is meaningless. Simulation accepts it (it perturbs the inputs of one run).
 
 ACL: runs (``cmc.scenario.comparison``, ``cmc.scenario.simulation``, ``cmc.scenario.consolidation``):
 group_cmc_user read/write/create (NO unlink), group_cmc_manager full; ``cmc.scenario.variable``: user and
@@ -143,7 +151,7 @@ class ScenarioCase(TransactionCase):
         Version = type(self.env["cmc.plan.version"])
         # the cmc_base hook must exist (AD-102): patching a missing attribute fails here, which is the point
         original = Version._cmc_scenario_evaluators
-        entry = {"key": EVALUATOR_KEY, "name": "WP11 test CVR", "prepare": self._prepare}
+        entry = {"key": EVALUATOR_KEY, "name": "WP11 test CVR", "versioned": True, "prepare": self._prepare}
 
         def evaluators(model):
             return original(model) + [entry]

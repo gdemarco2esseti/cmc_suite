@@ -106,7 +106,7 @@ class CmcPlanVersion(models.Model):
 
     def _cmc_scenario_evaluators(self):
         """Profit evaluators producers register with `super() + [...]` (AD-102); entries:
-        {"key", "name", "prepare": callable(version) -> {"inputs": {path: float}, "evaluate": callable(values) ->
+        {"key", "name", "versioned": bool (figures depend on the version), "prepare": callable(version) -> {"inputs": {path: float}, "evaluate": callable(values) ->
         {(center_id, element_id, month): signed amount}}}."""
         return []
 

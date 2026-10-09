@@ -70,7 +70,7 @@ class TestBudgetSecurity(CmcBudgetCase):
             {"name": "BUD sec var", "version_id": self.version.id, "date_from": d(3), "date_to": d(3, 31)}
         )
         run.action_compute()
-        self.assertEqual(set(run.line_ids.mapped("center_id")), self.mine | self.theirs)
+        self.assertEqual(run.line_ids.center_id, self.mine | self.theirs)
 
     def test_cmc_user_sees_all_centers(self):
         # AD-115: the user rule lifts the responsible filter, within the company
@@ -117,5 +117,5 @@ class TestBudgetSecurity(CmcBudgetCase):
 
     def test_center_of_other_company_refused(self):
         # AD-115: _check_company on the budget line
-        with self.assertRaises((UserError, ValidationError)):
+        with self.assertRaises(UserError):  # ValidationError subclasses UserError
             self._line(self.version, self.center_b, 4, 10.0)

@@ -6,7 +6,10 @@
     "author": "EsseTech by DueEsseTi Srl",
     "license": "LGPL-3",
     "depends": ["cmc_account"],
-    "data": [],
+    "data": [
+        "security/ir.model.access.csv",
+        "security/cmc_budget_security.xml",
+    ],
     "installable": True,
     "application": False,
     "auto_install": False,

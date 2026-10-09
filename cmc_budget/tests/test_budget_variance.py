@@ -154,7 +154,7 @@ class TestBudgetVariance(CmcBudgetCase):
     def test_results_written_by_compute_only(self):
         # AD-113: result rows are engine rows
         run = self._run()
-        with self.assertRaises((UserError, AccessError)):
+        with self.assertRaises(UserError):  # AccessError subclasses UserError
             run.line_ids[:1].with_user(self.manager).write({"spending_variance": 0.0})
 
     def test_query_count_independent_of_volume(self):

@@ -52,6 +52,12 @@ called ``figure``/``rate``/``qty``. Variances = actual - reference: positive = f
      ``account.move.line._cmc_revenue_read_group`` per month, kind revenue, no center); the budget lines of
      those months are NOT copied. Months after the cutoff: copy of the budget lines (the revised remainder,
      editable while draft). forecast = actual_1..m + revised_m+1..12.
+     Semi-variable actuals (T-B, dispatch C3): split with the ``cmc.cost.function`` of center x element
+     (fallback: the function of the center with ``element_id`` False; the element-specific one wins):
+     variable = ``variable_rate`` x Q, Q = ACTUAL facts (``version_id`` False) of the function's
+     ``driver_id`` on the center in that month; fixed = actual - variable (K is not used). No function, a
+     ``step`` function or Q = 0 -> the whole actual is fixed. Actual fixed/variable lines keep their behavior.
+     Batched: one facts read and one function search per forecast (query count independent of volume).
    - ``action_split_annual() -> cmc.plan.version`` (BUD-03): one draft budget version per calendar year of a
      multi-year span (name contains the year, ``parent_id`` = self, same currency/rate) with that year's lines.
    - ``_cmc_profit_gap() -> {"revenue", "cost", "profit", "target", "gap"}``: positive company-currency figures,
@@ -63,9 +69,12 @@ called ``figure``/``rate``/``qty``. Variances = actual - reference: positive = f
      ``alert_ytd``. month = month of ``date_to``; YTD = Jan 1 of that year (or version start if later) .. end of
      that month; pct = variance / abs(plan) x 100 (0 when plan is 0); alert = abs(pct) > ``alert_threshold``.
      Grouped reads only: query count independent of lines/months (AD-114).
+     T-A (BUD-01): ``groupby=("business_line_id",)`` groups by the line's business line; actuals carry no
+     business line (the cost reader is center based) and fall in the ``False`` group.
 
 4. ``cmc.budget.bva`` (``_auto = False`` SQL view, read-only, AD-114 (7)): ``company_id``, ``version_id``,
-   ``version_type``, ``date`` (month), ``kind``, ``center_id``, ``element_id``, ``behavior``, ``plan_amount``,
+   ``version_type``, ``date`` (month), ``kind``, ``center_id``, ``element_id``, ``behavior``,
+   ``business_line_id`` (T-A: plan rows keep the line's one, actual rows False), ``plan_amount``,
    ``actual_amount``, ``variance`` (= actual - plan), ``prior_actual_amount`` (actual of the same key 12 months
    earlier), all company currency, natural sign, ``aggregator="sum"``. One row per budget/forecast version x month
    of its span x key present in plan, actual or prior actual. Actual cost = analytic lines (``cmc_excluded``

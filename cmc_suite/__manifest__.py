@@ -17,6 +17,7 @@
         "cmc_fin_analysis",
         "cmc_hr_timesheet",
         "cmc_mrp",
+        "cmc_budget",
     ],
     "installable": True,
     "application": True,

@@ -15,7 +15,7 @@ class AccountAnalyticLine(models.Model):
 
     def write(self, vals):
         # why here too: hr_timesheet refuses foreign lines first, hiding the CMC allocation lock message
-        self._cmc_check_allocation_lock([vals])
+        self._cmc_check_relocation_lock([vals])
         # must sit above hr_timesheet in the MRO: its checks refuse foreign writes
         if self._cmc_classification_gate(vals):
             return True

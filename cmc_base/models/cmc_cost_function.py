@@ -83,8 +83,8 @@ class CmcCostFunction(models.Model):
         # line rules show (same scope as _cmc_cost_groups)
         costs = self.env["account.analytic.line"].sudo()._cmc_cost_read_group(
             Domain(col, "=", self.center_id.id) & Domain("cmc_excluded", "=", False)
-            # why: allocation postings move cost between centers, they are not behavior evidence
-            & Domain("cmc_allocation_id", "=", False)
+            # why: relocation postings move cost between centers, they are not behavior evidence
+            & self.env["account.analytic.line"]._cmc_relocation_domain(include=False)
             & Domain("company_id", "in", [False, self.company_id.id])
             & Domain("date", ">=", cmc_utils.month_start(self.date_from)) & Domain("date", "<=", self.date_to)
             & (Domain("cmc_cost_element_id", "=", self.element_id.id) if self.element_id else Domain.TRUE),

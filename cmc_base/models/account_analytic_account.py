@@ -86,15 +86,15 @@ class AccountAnalyticAccount(models.Model):
         return {center.id: walk(center.id) for center in self}
 
     def _cmc_cost_groups(self, date_from=False, date_to=False, behavior=False,
-                         by_element=False, company=False, controllable=None):
+                         by_element=False, company=False, controllable=None, extra_domain=None):
         """Plan-aware aggregation of the COSTS (positive) of these centers.
         A center may live on any analytic plan, so its costs sit in that plan's
         column (not necessarily the default one). Returns {account_id: amount}
         or {(account_id, element_id): amount} when by_element. `controllable`
         keeps the lines whose element is (True) or is not (False) controllable;
-        a line without element is not controllable."""
+        a line without element is not controllable. `extra_domain` narrows the lines."""
         Line = self.env["account.analytic.line"]
-        base = Domain("cmc_excluded", "=", False)
+        base = Domain("cmc_excluded", "=", False) & (extra_domain or Domain.TRUE)
         if company:
             # why sudo: a certified figure must not depend on who presses
             # Compute (timesheet rules show a user only their own lines); the

@@ -41,6 +41,9 @@
 - Multi-company: `ir.rule` `parent_of company_ids` on every model, `_char_map` company filter, `with_user` + two-company tests.
 - `cmc_reclass_mixin` stays non-stored; `account_analytic_line` inverse order (write new center, then clear old column); MRP UoM-hour labour discriminator; MRP adopt-core-line.
 - Test classes `@tagged("post_install", "-at_install")`.
+- (rōnin, end of block 1) AD-001 lock must NOT let `env.su` through: the CMC classification gate writes as superuser.
+- Every bridge override of `_cmc_auto_classify` skips `cmc_excluded` and `cmc_classified_manually` lines (MRO runs bridges before the base). Block 3's hook must own this skip and the single gate entry point (`_cmc_classification_gate`), not only the bridge profiles.
+- Overrides of `write` above core checks call `_cmc_classification_gate`; Enterprise checks are bypassed only with the `CMC_GATE` sentinel. System writes use sentinels (`CMC_AUTO`, `CMC_GATE`, `_SKIP_CURVE`), never booleans in context.
 
 ## Test command (every task, every block)
 

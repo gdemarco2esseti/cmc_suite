@@ -7,7 +7,11 @@ Hand numbers: yield (good / (good + scrap) x 100) Jan 95.0, Feb 90.0, Mar 98.0; 
 OTD static target 95, red 10: Jan 75 -> gap -21.0526 % red, score 78.9474; Feb 100 -> +5.2632 % green.
 cycle time (lower is better) 5.0 vs 6.0 -> gap (6 - 5) / 6 = +16.6667 % green, score 116.6667.
 rent BvA target 0 -> gap = the value itself: Jan +10 green (score 110), Feb -20 red (score 80).
+RN-003: cascade "ops_excellence" (yield 60 / otd 40, static targets) Jan: yield 95 vs 90 -> score 105.5556,
+  otd 78.9474 -> 0.6 x 105.5556 + 0.4 x 78.9474 = 94.9123.
 """
+
+from datetime import date
 
 from odoo.exceptions import UserError, ValidationError
 from odoo.tests import tagged
@@ -23,12 +27,12 @@ class TestKpiRun(KpiCase):
         return lib, self._run(JAN, MAR, version_id=version.id, **vals)
 
     def test_every_active_kpi_every_month(self):
-        # KPI-01: one row per active KPI x month of the span; an archived KPI is skipped
+        # KPI-01: one row per active KPI x month of the span; an archived KPI (read by no formula) is skipped
         lib = self._library()
-        lib["good_qty"].active = False
+        lib["cycle_time"].active = False
         run = self._run(JAN, MAR)
         self.assertEqual(len(run.value_ids), (len(lib) - 1) * 3)
-        self.assertFalse(run.value_ids.filtered(lambda r: r.kpi_id == lib["good_qty"]))
+        self.assertFalse(run.value_ids.filtered(lambda r: r.kpi_id == lib["cycle_time"]))
         self.assertEqual(set(run.value_ids.mapped("date")), {JAN, FEB, MAR})
 
     def test_selected_kpis_only(self):
@@ -162,3 +166,70 @@ class TestKpiRun(KpiCase):
         version = self._target_version([])
         with self.assertRaises(ValidationError):
             self.env["cmc.kpi.target"].create({"version_id": version.id, "kpi_id": lib["otd"].id, "date": DEC_2025, "target_value": 1.0})
+
+    # ---- RN-003: inputs of the selected KPIs, archived inputs, reason ----
+
+    def test_rn003_formula_inputs_auto_included(self):
+        # RN-003: selecting a formula brings in the KPIs it reads, so it is computed, not silently empty
+        lib = self._library()
+        run = self._run(JAN, kpi_ids=[(6, 0, lib["yield_pct"].ids)])
+        self.assertEqual(run.value_ids.kpi_id, lib["yield_pct"] | lib["good_qty"] | lib["scrap_qty"])
+        self.assertRecordValues(self._val(run, lib["yield_pct"], JAN), [{"computable": True}])
+        self.assertAlmostEqual(self._val(run, lib["yield_pct"], JAN).value, 95.0, places=4)
+
+    def test_rn003_cascade_children_auto_included(self):
+        # RN-003: selecting a cascade brings in its children (and, transitively, what they read)
+        lib = self._library()
+        parent = self._kpi("ops_excellence", "cascade", perspective="internal", unit="percent")
+        lib["yield_pct"].write({"parent_id": parent.id, "cascade_weight": 60.0})
+        lib["otd"].write({"parent_id": parent.id, "cascade_weight": 40.0})
+        run = self._run(JAN, kpi_ids=[(6, 0, parent.ids)])
+        self.assertEqual(run.value_ids.kpi_id, parent | lib["yield_pct"] | lib["otd"] | lib["good_qty"] | lib["scrap_qty"])
+        self.assertAlmostEqual(self._val(run, parent, JAN).value, 94.912281, places=3)
+
+    def test_rn003_archived_input_of_active_formula_raises(self):
+        # RN-003: an active formula reading an archived KPI is a configuration error, named, not a silent gap
+        lib = self._library()
+        lib["good_qty"].active = False
+        run = self._run(JAN, compute=False)
+        with self.assertRaises(UserError) as caught:
+            run.action_compute()
+        self.assertIn("yield_pct", str(caught.exception))
+        self.assertIn("good_qty", str(caught.exception))
+        self.assertFalse(run.value_ids)
+
+    def test_rn003_reason_of_not_computable(self):
+        # RN-003: a not computable value says why, naming the KPI whose data is missing
+        lib = self._library()
+        late = self._kpi("late_share", "formula", formula="100 - otd", unit="percent")
+        run = self._run(MAR)
+        self.assertIn("otd", self._val(run, lib["otd"], MAR).reason)
+        self.assertIn("otd", self._val(run, late, MAR).reason)
+        self.assertFalse(self._val(run, lib["yield_pct"], MAR).reason)
+
+    # ---- RN-002: draft sources ----
+
+    def test_rn002_variance_on_draft_budget_raises(self):
+        # RN-002: a variance against a draft budget would move under a computed run: refused
+        draft = self.env["cmc.plan.version"].create(
+            {"name": "KPI draft budget", "date_from": JAN, "date_to": date(2026, 12, 31), "version_type": "budget"}
+        )
+        self._kpi("draft_bva", "variance", variance_version_id=draft.id, center_id=self.production.id)
+        with self.assertRaisesRegex(UserError, "draft_bva"):
+            self._run(JAN)
+
+    def test_rn002_draft_target_version_allowed_without_usage(self):
+        # RN-002: targets may come from a draft version (documented): read, nothing recorded
+        lib, run = self._yield_run()
+        self.assertEqual(self._val(run, lib["yield_pct"], JAN).target_source, "version")
+        self.assertNotIn(("cmc.plan.version", run.version_id.id), self._usages(run))
+
+    def test_rn002_approved_target_version_recorded(self):
+        # RN-002 / AD-002: an approved target version read by a computed run cannot be reopened under it
+        lib = self._library()
+        version = self._target_version([(lib["yield_pct"], JAN, 96.0)])
+        version.with_user(self.manager).action_approve()
+        run = self._run(JAN, version_id=version.id)
+        self.assertIn(("cmc.plan.version", version.id), self._usages(run))
+        with self.assertRaises(UserError):
+            version.with_user(self.manager).action_reset_to_draft()

@@ -11,6 +11,7 @@
                 <field name="perspective" optional="show"/>
                 <field name="name"/>
                 <field name="value" invisible="not computable"/>
+                <field name="reason" optional="show"/>
                 <field name="target"/>
                 <field name="gap_pct" invisible="not computable"/>
                 <field name="status" widget="badge"
@@ -144,6 +145,7 @@
                                     <field name="perspective"/>
                                     <field name="name"/>
                                     <field name="value" invisible="not computable"/>
+                                    <field name="reason"/>
                                     <field name="target"/>
                                     <field name="status" widget="badge"
                                            decoration-success="status == 'green'" decoration-warning="status == 'amber'"

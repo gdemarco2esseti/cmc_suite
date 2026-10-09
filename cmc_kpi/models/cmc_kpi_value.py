@@ -20,6 +20,7 @@ class CmcKpiValue(models.Model):
     date = fields.Date(string="Month", required=True, index=True)
     value = fields.Float(aggregator="avg", digits=(16, 4))
     computable = fields.Boolean()
+    reason = fields.Char(help="Why the value is not computable; empty when it is.")
     target = fields.Float(aggregator="avg", digits=(16, 4))
     target_source = fields.Selection([("version", "Plan version"), ("static", "KPI")])
     gap_pct = fields.Float(string="Gap %", aggregator="avg")

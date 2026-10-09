@@ -5,3 +5,4 @@ from . import test_kpi_performance
 from . import test_kpi_run
 from . import test_kpi_scorecard
 from . import test_kpi_security
+from . import test_kpi_snapshot

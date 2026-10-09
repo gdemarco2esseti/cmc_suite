@@ -17,3 +17,7 @@ access_cmc_kpi_value_user,cmc.kpi.value.user,model_cmc_kpi_value,cmc_base.group_
 access_cmc_kpi_value_manager,cmc.kpi.value.manager,model_cmc_kpi_value,cmc_base.group_cmc_manager,1,0,0,0
 access_cmc_kpi_scorecard_result_user,cmc.kpi.scorecard.result.user,model_cmc_kpi_scorecard_result,cmc_base.group_cmc_user,1,0,0,0
 access_cmc_kpi_scorecard_result_manager,cmc.kpi.scorecard.result.manager,model_cmc_kpi_scorecard_result,cmc_base.group_cmc_manager,1,0,0,0
+access_cmc_kpi_run_bva_user,cmc.kpi.run.bva.user,model_cmc_kpi_run_bva,cmc_base.group_cmc_user,1,0,0,0
+access_cmc_kpi_run_bva_manager,cmc.kpi.run.bva.manager,model_cmc_kpi_run_bva,cmc_base.group_cmc_manager,1,0,0,0
+access_cmc_kpi_run_ratio_user,cmc.kpi.run.ratio.user,model_cmc_kpi_run_ratio,cmc_base.group_cmc_user,1,0,0,0
+access_cmc_kpi_run_ratio_manager,cmc.kpi.run.ratio.manager,model_cmc_kpi_run_ratio,cmc_base.group_cmc_manager,1,0,0,0

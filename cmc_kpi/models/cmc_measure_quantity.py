@@ -6,7 +6,7 @@ class CmcMeasureQuantity(models.Model):
 
     @api.model
     def _cmc_feeder_profiles(self):
-        delivered = [("state", "=", "done"), ("picking_type_code", "=", "outgoing")]
+        delivered = [("state", "=", "done"), ("picking_type_code", "=", "outgoing"), ("return_id", "=", False)]
         shipments = {"model": "stock.picking", "date_field": "date_done", "quantity": "__count"}
         return super()._cmc_feeder_profiles() + [
             {

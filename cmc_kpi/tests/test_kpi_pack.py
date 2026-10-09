@@ -66,9 +66,9 @@ class TestKpiPack(KpiCase):
         self.assertAlmostEqual(ratio["value"], 2.0, places=6)
 
     def test_pack_without_budget_or_analysis(self):
-        # KPI-04: the BvA and ratio blocks are empty when the run names no source
-        self._library()
-        data = self._run(JAN)._cmc_pack_data()
+        # KPI-04 / RN-002: the BvA and ratio blocks are empty when the run names no source and reads no ratio
+        lib = self._library()
+        data = self._run(JAN, kpi_ids=[(6, 0, lib["otd"].ids)])._cmc_pack_data()
         self.assertEqual((data["bva"], data["ratios"]), ([], []))
 
     def test_pdf_renders(self):

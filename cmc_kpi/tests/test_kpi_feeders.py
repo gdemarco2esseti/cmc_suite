@@ -5,13 +5,24 @@ Data come from REAL validated transfers and scraps (fixture): Jan 4 deliveries (
 (not a delivery). Scrap done: Jan 50, Feb 60 + 40 = 100, Mar 20.
   shipments Jan 4 / Feb 5; on time Jan 3 / Feb 5 -> OTD 75 % / 100 %.
   yield = good / (good + scrap) x 100: Jan 950 / 1,000 = 95 %, Feb 900 / 1,000 = 90 %, Mar 980 / 1,000 = 98 %.
+RN-001 (April 2026, real flow, nothing rewritten after validation): on time = day of the transfer <= day of the
+deadline (else of the scheduled date), in the company timezone; returns are not shipments.
 """
 
-from datetime import date
+from datetime import date, datetime
 
+from freezegun import freeze_time
+
+from odoo import Command
 from odoo.tests import tagged
 
 from .common import FEB, JAN, MAR, KpiCase, dt
+
+APR = date(2026, 4, 1)
+
+
+def apr(day, hour, minute=0, second=0):
+    return datetime(2026, 4, day, hour, minute, second)
 
 
 @tagged("post_install", "-at_install")
@@ -82,3 +93,61 @@ class TestKpiFeeders(KpiCase):
         run = self._run(JAN, FEB)
         self.assertAlmostEqual(self._val(run, lib["otd"], JAN).value, 75.0, places=4)
         self.assertAlmostEqual(self._val(run, lib["otd"], FEB).value, 100.0, places=4)
+
+    # ---- RN-001: on time by day, deadline first, company timezone, returns excluded ----
+
+    def _refresh_april(self):
+        self.env["cmc.measure.quantity"]._cmc_refresh_feeders(APR, date(2026, 4, 30), company=self.company)
+        return self._facts("cmc_kpi.cmc_measure_shipments").get(APR, 0.0), self._facts("cmc_kpi.cmc_measure_shipments_on_time").get(APR, 0.0)
+
+    def test_default_scheduled_validated_seconds_later_is_on_time(self):
+        # RN-001: a transfer created with the default scheduled date (now) and validated 30 s later is on time
+        with freeze_time(apr(15, 10)):
+            out = self.warehouse.out_type_id
+            src, dest = out.default_location_src_id, self.env.ref("stock.stock_location_customers")
+            picking = self.env["stock.picking"].create({
+                "picking_type_id": out.id, "partner_id": self.customer.id, "location_id": src.id, "location_dest_id": dest.id,
+                "move_ids": [Command.create({"product_id": self.product.id, "product_uom": self.product.uom_id.id, "product_uom_qty": 1.0,
+                                             "location_id": src.id, "location_dest_id": dest.id})],
+            })
+            picking.action_confirm()
+        self._validate(picking, at=apr(15, 10, 0, 30))
+        self.assertGreater(picking.date_done, picking.scheduled_date, "fixture must reveal a second-level comparison")
+        self.assertTrue(picking.cmc_on_time)
+        self.assertEqual(self._refresh_april(), (1.0, 1.0))
+
+    def test_deadline_tomorrow_done_today_is_on_time(self):
+        # RN-001: the deadline wins over an earlier scheduled date: done before the deadline day = on time
+        picking = self._ship([(apr(14, 10), apr(15, 15), apr(16, 10))])
+        self.assertEqual(picking.date_deadline, apr(16, 10))
+        self.assertTrue(picking.cmc_on_time)
+
+    def test_done_after_deadline_day_is_late(self):
+        # RN-001: the deadline wins over a later scheduled date: done the day after the deadline = late
+        picking = self._ship([(apr(17, 10), apr(15, 9), apr(14, 10))])
+        self.assertEqual(picking.date_deadline, apr(14, 10))
+        self.assertFalse(picking.cmc_on_time)
+        self.assertEqual(self._refresh_april(), (1.0, 0.0))
+
+    def test_same_day_later_hour_is_on_time(self):
+        # RN-001: the promise is a day, not an hour: scheduled 10:00, done 18:00 the same day = on time
+        self.assertTrue(self._ship([(apr(20, 10), apr(20, 18))]).cmc_on_time)
+
+    def test_on_time_day_in_company_timezone(self):
+        # RN-001: the day is read in the company timezone (Rome = UTC+2 in April), not in UTC
+        self.company.partner_id.tz = "Europe/Rome"
+        # promised 23:30 Rome of the 15th (21:30 UTC), done 00:30 Rome of the 16th (22:30 UTC): late in Rome
+        late = self._ship([(apr(15, 21, 30), apr(15, 22, 30))])
+        # promised 01:30 Rome of the 16th (23:30 UTC of the 15th), done 02:30 Rome of the 16th: on time in Rome
+        on_time = self._ship([(apr(15, 23, 30), apr(16, 0, 30))])
+        self.assertEqual((late.cmc_on_time, on_time.cmc_on_time), (False, True))
+
+    def test_return_to_supplier_is_not_a_shipment(self):
+        # RN-001: a return to supplier is an outgoing transfer but no customer delivery: not counted
+        receipt = self._ship([(apr(10, 9), apr(10, 10))], picking_type=self.warehouse.in_type_id)
+        wizard = self.env["stock.return.picking"].with_context(active_id=receipt.id, active_model="stock.picking").create({})
+        wizard.product_return_moves.quantity = 1.0
+        back = self.env["stock.picking"].browse(wizard.action_create_returns()["res_id"])
+        self._validate(back, at=apr(12, 10))
+        self.assertRecordValues(back, [{"state": "done", "picking_type_code": "outgoing", "return_id": receipt.id}])
+        self.assertEqual(self._refresh_april(), (0.0, 0.0))

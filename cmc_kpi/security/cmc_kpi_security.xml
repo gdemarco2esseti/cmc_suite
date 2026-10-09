@@ -50,6 +50,18 @@
             <field name="global" eval="True"/>
             <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
         </record>
+        <record id="cmc_kpi_run_bva_company_rule" model="ir.rule">
+            <field name="name">CMC KPI run bva: multi-company</field>
+            <field name="model_id" ref="model_cmc_kpi_run_bva"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_kpi_run_ratio_company_rule" model="ir.rule">
+            <field name="name">CMC KPI run ratio: multi-company</field>
+            <field name="model_id" ref="model_cmc_kpi_run_ratio"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
         <record id="cmc_kpi_responsible_rule" model="ir.rule">
             <field name="name">CMC KPI: own responsibility</field>
             <field name="model_id" ref="model_cmc_kpi"/>

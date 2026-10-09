@@ -11,6 +11,7 @@ from odoo.tools.safe_eval import _BUILTINS, safe_eval
 from odoo.addons.cmc_base.models.cmc_utils import month_end, month_range, month_start
 
 from .cmc_kpi import PERSPECTIVES
+from .cmc_kpi_run_snapshot import BVA_KEYS
 
 TOLERANCE = 0.01  # percent points: weights are typed by hand
 TREND_EPSILON = 1e-6
@@ -61,7 +62,7 @@ class CmcKpiRun(models.Model):
     _check_company_auto = True
 
     _cmc_input_fields = ("company_id", "date_from", "date_to", "version_id", "fin_analysis_id", "bva_version_id", "kpi_ids", "scorecard_ids")
-    _cmc_result_fields = ("value_ids", "scorecard_result_ids")
+    _cmc_result_fields = ("value_ids", "scorecard_result_ids", "bva_ids", "ratio_ids")
 
     name = fields.Char(required=True, default=lambda self: self.env._("KPI measurement"))
     company_id = fields.Many2one("res.company", required=True, default=lambda self: self.env.company, index=True)
@@ -86,6 +87,8 @@ class CmcKpiRun(models.Model):
     )
     value_ids = fields.One2many("cmc.kpi.value", "run_id")
     scorecard_result_ids = fields.One2many("cmc.kpi.scorecard.result", "run_id")
+    bva_ids = fields.One2many("cmc.kpi.run.bva", "run_id")
+    ratio_ids = fields.One2many("cmc.kpi.run.ratio", "run_id")
 
     @api.constrains("date_from", "date_to")
     def _check_dates_ordered(self):
@@ -107,14 +110,58 @@ class CmcKpiRun(models.Model):
         # all the checks before the first row is written
         ordered, children, formula_names = self._cmc_kpi_plan(kpis)
         self._cmc_check_scorecards(scorecards)
-        sources = self._cmc_source_values(kpis, months)
+        analyses = self._cmc_analyses(kpis, months)
+        sources = self._cmc_source_values(kpis, months, analyses)
         rows = self._cmc_rows(ordered, children, formula_names, months, sources)
+        self._cmc_record_sources(kpis, analyses)
         # why sudo: result rows are engine output (users hold read access only)
         self.env["cmc.kpi.value"].sudo().create(list(rows.values()))
         self.env["cmc.kpi.scorecard.result"].sudo().create(self._cmc_scorecard_rows(scorecards, months, rows))
+        self.env["cmc.kpi.run.bva"].sudo().create(self._cmc_bva_rows(months))
+        self.env["cmc.kpi.run.ratio"].sudo().create(self._cmc_ratio_rows(analyses))
 
     def _cmc_kpis(self):
-        return self.kpi_ids or self.env["cmc.kpi"].search([("company_id", "=", self.company_id.id)])
+        """The selected KPIs (empty = every active one) plus, transitively, what their formulas read and their cascade children."""
+        Kpi = self.env["cmc.kpi"]
+        active = Kpi.search([("company_id", "=", self.company_id.id)])
+        by_code = {kpi.code: kpi for kpi in active}
+        kpis = todo = self.kpi_ids or active
+        while todo:
+            needed = Kpi
+            for kpi in todo:
+                if kpi.source_type == "formula":
+                    needed |= Kpi.union(*(by_code[name] for name in self._cmc_formula_names(kpi) if name in by_code))
+                elif kpi.source_type == "cascade":
+                    needed |= kpi.child_ids
+            todo = needed - kpis
+            kpis |= todo
+        return kpis
+
+    @api.model
+    def _cmc_formula_names(self, kpi):
+        return {node.id for node in ast.walk(ast.parse(kpi.formula.strip(), mode="eval")) if isinstance(node, ast.Name)} - set(_BUILTINS)
+
+    def _cmc_analyses(self, kpis, months):
+        """{year: cmc.fin.analysis} the pack and the ratio KPIs read: the one named by the run, else the latest computed one of the year."""
+        years = {month.year for month in months}
+        if not self.fin_analysis_id and not kpis.filtered(lambda kpi: kpi.source_type == "ratio"):
+            return {}
+        analyses = self.fin_analysis_id or self.env["cmc.fin.analysis"].search([
+            ("company_id", "=", self.company_id.id), ("state", "=", "done"),
+            ("year_from", "<=", max(years)), ("year_to", ">=", min(years)),
+        ], order="id desc")
+        by_year = {year: next((a for a in analyses if a.year_from <= year <= a.year_to), None) for year in years}
+        return {year: analysis for year, analysis in by_year.items() if analysis}
+
+    def _cmc_record_sources(self, kpis, analyses):
+        """Pin (AD-002) every computed source the run reads; a draft one raises."""
+        Analysis = self.env["cmc.fin.analysis"]
+        versions = kpis.filtered(lambda kpi: kpi.source_type == "variance").variance_version_id | self.bva_version_id
+        # a draft target version stays allowed: it is not pinned
+        versions |= self.version_id.filtered(lambda version: version.state == "done")
+        for origins in (self.fin_analysis_id | Analysis.union(*analyses.values()), versions):
+            if origins:
+                self._cmc_record_usage(origins)
 
     def _cmc_scorecards(self):
         return self.scorecard_ids or self.env["cmc.kpi.scorecard"].search([("company_id", "=", self.company_id.id)])
@@ -122,9 +169,9 @@ class CmcKpiRun(models.Model):
     def _cmc_kpi_plan(self, kpis):
         """Evaluation order of the KPIs and the structures it needs; unknown names, unknown engines, cascade weights and cycles raise."""
         codes = {kpi.code: kpi for kpi in kpis}
-        # archived KPIs are known names (their value is just not computable); anything else is a typo
-        known = set(codes) | {
-            code for (code,) in self.env["cmc.kpi"].with_context(active_test=False)._read_group([("company_id", "=", self.company_id.id)], ["code"])
+        archived = {
+            code for (code,) in self.env["cmc.kpi"].with_context(active_test=False)._read_group(
+                [("company_id", "=", self.company_id.id), ("active", "=", False)], ["code"])
         }
         evaluators = self._cmc_kpi_evaluators()
         children = kpis.grouped("parent_id")
@@ -132,11 +179,15 @@ class CmcKpiRun(models.Model):
         for kpi in kpis:
             graph[kpi.id] = set()
             if kpi.source_type == "formula":
-                names = {node.id for node in ast.walk(ast.parse(kpi.formula.strip(), mode="eval")) if isinstance(node, ast.Name)} - set(_BUILTINS)
-                if unknown := sorted(names - known):
+                names = self._cmc_formula_names(kpi)
+                if gone := sorted((names & archived) - set(codes)):
+                    raise UserError(self.env._("%(code)s reads the archived KPI %(names)s.", code=kpi.code, names=", ".join(gone)))
+                if unknown := sorted(names - set(codes)):
                     raise UserError(self.env._("%(code)s: unknown names in the formula: %(names)s", code=kpi.code, names=", ".join(unknown)))
                 formula_names[kpi.id] = names
                 graph[kpi.id] = {codes[name].id for name in names if name in codes}
+            elif kpi.source_type == "variance" and kpi.variance_version_id.state != "done":
+                raise UserError(self.env._("%(code)s: the budget version %(version)s is not computed.", code=kpi.code, version=kpi.variance_version_id.display_name))
             elif kpi.source_type == "hook" and kpi.hook_key not in evaluators:
                 raise UserError(self.env._("%(code)s: no engine registered for the key %(key)s.", code=kpi.code, key=kpi.hook_key))
             elif kpi.source_type == "cascade" and (kids := children.get(kpi)):
@@ -169,11 +220,11 @@ class CmcKpiRun(models.Model):
 
     # ---- sources (one batch per source type, whatever the number of KPIs) ----
 
-    def _cmc_source_values(self, kpis, months):
+    def _cmc_source_values(self, kpis, months, analyses):
         """{(kpi.id, month): float | None} of the KPIs read from the data (measure, ratio, variance, engine)."""
         values = {}
         values.update(self._cmc_measure_values(kpis.filtered(lambda kpi: kpi.source_type == "measure"), months))
-        values.update(self._cmc_ratio_values(kpis.filtered(lambda kpi: kpi.source_type == "ratio"), months))
+        values.update(self._cmc_ratio_values(kpis.filtered(lambda kpi: kpi.source_type == "ratio"), months, analyses))
         values.update(self._cmc_variance_values(kpis.filtered(lambda kpi: kpi.source_type == "variance"), months))
         hooks = kpis.filtered(lambda kpi: kpi.source_type == "hook")
         evaluators = self._cmc_kpi_evaluators()
@@ -219,29 +270,19 @@ class CmcKpiRun(models.Model):
                 values[kpi.id, month] = value * kpi.scale if value is not None else None
         return values
 
-    def _cmc_ratio_values(self, kpis, months):
+    def _cmc_ratio_values(self, kpis, months, analyses):
         if not kpis:
             return {}
-        years = {month.year for month in months}
-        analyses = self.fin_analysis_id or self.env["cmc.fin.analysis"].search([
-            ("company_id", "=", self.company_id.id), ("state", "=", "done"),
-            ("year_from", "<=", max(years)), ("year_to", ">=", min(years)),
-        ], order="id desc")
-        by_year = {year: next((a for a in analyses if a.year_from <= year <= a.year_to), None) for year in years}
         rows = self.env["cmc.fin.ratio.value"].search([
-            ("run_id", "in", analyses.ids), ("year", "in", list(years)), ("code", "in", kpis.mapped("ratio_code")),
+            ("run_id", "in", [a.id for a in analyses.values()]), ("year", "in", list(analyses)), ("code", "in", kpis.mapped("ratio_code")),
         ])
         found = {(row.run_id.id, row.year, row.code): row for row in rows if row.status != "not_computable"}
-        values, used = {}, self.env["cmc.fin.analysis"]
+        values = {}
         for kpi in kpis:
             for month in months:
-                analysis = by_year[month.year]
+                analysis = analyses.get(month.year)
                 row = found.get((analysis.id, month.year, kpi.ratio_code)) if analysis else None
                 values[kpi.id, month] = row.value if row else None
-                if row:
-                    used |= analysis
-        if used:
-            self._cmc_record_usage(used)
         return values
 
     def _cmc_variance_values(self, kpis, months):
@@ -293,6 +334,7 @@ class CmcKpiRun(models.Model):
                 else:
                     value = sources.get((kpi.id, month))
                 current[kpi.code] = value
+                reason = False if value is not None else self._cmc_reason(kpi, formula_names.get(kpi.id), current)
                 if kpi.source_type == "cascade":
                     target, source, direction = CASCADE_TARGET, "static", "higher"
                 elif (kpi.id, month) in targets:
@@ -301,14 +343,14 @@ class CmcKpiRun(models.Model):
                     target, source, direction = kpi.target_value, "static", kpi.direction
                 before = rows.get((kpi.id, previous_month))
                 before = before["value"] if before and before["computable"] else others.get((kpi.id, previous_month))
-                rows[kpi.id, month] = self._cmc_row(kpi, month, value, (target, source, direction), before)
+                rows[kpi.id, month] = self._cmc_row(kpi, month, value, (target, source, direction), before, reason)
         return rows
 
-    def _cmc_row(self, kpi, month, value, target, before):
+    def _cmc_row(self, kpi, month, value, target, before, reason):
         target, source, direction = target
         vals = {
             "run_id": self.id, "company_id": self.company_id.id, "kpi_id": kpi.id, "code": kpi.code, "perspective": kpi.perspective,
-            "responsibility_id": kpi.responsibility_id.id, "date": month, "value": value or 0.0, "computable": value is not None,
+            "responsibility_id": kpi.responsibility_id.id, "date": month, "value": value or 0.0, "computable": value is not None, "reason": reason,
             "target": target, "target_source": source, "gap_pct": 0.0, "status": "none", "score": 0.0,
             "previous_value": 0.0, "trend_delta": 0.0, "trend": "none",
         }
@@ -322,6 +364,16 @@ class CmcKpiRun(models.Model):
             trend = "stable" if abs(delta) < TREND_EPSILON else "improving" if better > 0 else "worsening"
             vals |= {"previous_value": before, "trend_delta": delta, "trend": trend}
         return vals
+
+    def _cmc_reason(self, kpi, names, current):
+        if kpi.source_type == "formula":
+            missing = sorted(name for name in names if current.get(name) is None)
+            if missing:
+                return self.env._("%s is not computable", ", ".join(missing))
+            return self.env._("the formula cannot be evaluated")
+        if kpi.source_type == "cascade":
+            return self.env._("no computable child KPI for %s", kpi.code)
+        return self.env._("no data for %s", kpi.code)
 
     def _cmc_eval_formula(self, kpi, names, current):
         namespace = {name: current.get(name) for name in names}
@@ -368,6 +420,30 @@ class CmcKpiRun(models.Model):
             "perspective": perspective, "weight": weight, "score": score or 0.0, "computable": score is not None,
         }
 
+    # ---- snapshot of the pack sources (RN-002) ----
+
+    def _cmc_bva_rows(self, months):
+        if not self.bva_version_id:
+            return []
+        return [
+            {"run_id": self.id, "company_id": self.company_id.id, "date": month, "center_id": row["center_id"].id if row["center_id"] else False}
+            | {key: row[key] for key in BVA_KEYS}
+            for month in months for row in self.bva_version_id._cmc_bva_summary(month_end(month), ("center_id",))
+        ]
+
+    def _cmc_ratio_rows(self, analyses):
+        if not analyses:
+            return []
+        by_analysis = {analysis.id: analysis for analysis in analyses.values()}
+        values = self.env["cmc.fin.ratio.value"].search([("run_id", "in", list(by_analysis)), ("year", "in", list(analyses))])
+        return [
+            {
+                "run_id": self.id, "company_id": self.company_id.id, "fin_analysis_id": row.run_id.id, "year": row.year,
+                "code": row.code, "name": row.name, "value": row.value, "status": row.status,
+            }
+            for row in values if analyses[row.year] == row.run_id
+        ]
+
     # ---- management pack ------------------------------------------------
 
     def _cmc_pack_data(self, month=None):
@@ -393,9 +469,10 @@ class CmcKpiRun(models.Model):
                     "score": row.score, "computable": row.computable,
                 } for row in rows.filtered("perspective").sorted(lambda row: rank[row.perspective])],
             })
-        bva = self.bva_version_id._cmc_bva_summary(month_end(month), ("center_id",)) if self.bva_version_id else []
-        ratios = self.env["cmc.fin.ratio.value"].search([("run_id", "=", self.fin_analysis_id.id), ("year", "=", month.year)]) if self.fin_analysis_id else []
+        bva = self.env["cmc.kpi.run.bva"].search([("run_id", "=", self.id), ("date", "=", month)])
+        ratios = self.env["cmc.kpi.run.ratio"].search([("run_id", "=", self.id), ("year", "=", month.year)])
         return {
-            "month": month, "kpis": kpis, "scorecards": scorecards, "bva": bva,
+            "month": month, "kpis": kpis, "scorecards": scorecards,
+            "bva": [{"center_id": row.center_id} | {key: row[key] for key in BVA_KEYS} for row in bva],
             "ratios": [{"code": row.code, "name": row.name, "value": row.value, "status": row.status} for row in ratios],
         }

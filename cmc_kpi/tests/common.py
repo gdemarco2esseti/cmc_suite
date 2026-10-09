@@ -27,8 +27,10 @@ the KPI-02 feeders read ``stock.scrap`` / ``stock.picking``; see the report to t
    - ``cmc_kpi.cmc_measure_shipments`` (``stock_otd_shipped``): count of ``stock.picking`` ``done`` with
      ``picking_type_code = "outgoing"``, ``date_done`` month (receipts / internal / cancelled ignored).
    - ``cmc_kpi.cmc_measure_shipments_on_time`` (``stock_otd_on_time``): same domain AND ``cmc_on_time``.
-   - ``stock.picking.cmc_on_time`` Boolean, computed STORED = ``date_done <= scheduled_date`` (False while not
-     done), so the feeder stays a ``_read_group`` (query count independent of the number of pickings).
+   - ``stock.picking.cmc_on_time`` Boolean, computed STORED (False while not done), so the feeder stays a
+     ``_read_group`` (query count independent of the number of pickings); rule in RN-001 below.
+   - Both shipment measures exclude returns (``return_id`` set): a return to supplier is an outgoing transfer
+     but not a delivery (RN-001).
    OTD % = KPI on ``shipments_on_time`` / ``shipments`` x 100; yield % = formula good / (good + scrap) x 100
    (good = produced units: the ``cmc_mrp`` produced measure when installed, or any manual measure).
 
@@ -119,6 +121,7 @@ the KPI-02 feeders read ``stock.scrap`` / ``stock.picking``; see the report to t
    of the month or []}``. Report ``cmc_kpi.action_report_cmc_kpi_pack`` (qweb-pdf, model + binding
    ``cmc.kpi.run``) prints KPI names and traffic lights, scorecard names, BvA center names, ratio names.
    Query count of compute and pack independent of the number of facts / pickings (AD-114).
+   The "bva" and "ratios" blocks are read from the run's own snapshot rows (RN-002), never live.
 
 7. Security (ACL r,w,c,u): ``cmc.kpi`` / ``cmc.kpi.scorecard`` (+ lines, perspectives): responsible 1000 (kpi
    only), user 1000, manager 1111; ``cmc.kpi.target``: user 1111, manager 1111; ``cmc.kpi.run``: user 1110,
@@ -126,17 +129,47 @@ the KPI-02 feeders read ``stock.scrap`` / ``stock.picking``; see the report to t
    user 1000, manager 1000. Rules for ``group_cmc_responsible``: ``cmc.kpi`` and ``cmc.kpi.value`` whose
    ``responsibility_id.owner_id = user``; ``group_cmc_user``: all. Internal user without CMC group: AccessError.
 
+8. Amendments from the ronin review (binding; they override the points above where they differ)
+   RN-001 OTD. ``cmc_on_time`` = done AND day(``date_done``) <= day(``date_deadline`` or ``scheduled_date``),
+     both days taken in the company timezone (``company_id.partner_id.tz``, UTC when empty). ``@api.depends``
+     covers ``state``, ``date_done``, ``date_deadline``, ``scheduled_date``. A transfer created with the default
+     scheduled date and validated seconds later is on time; the deadline, when set, wins over the scheduled
+     date (later or earlier). Shipments (both measures) = done, outgoing, ``return_id`` False.
+   RN-002 snapshot + usages. At compute the run copies into its own result rows (result mixin, deleted by reset,
+     both in ``_cmc_result_fields``):
+     - ``bva_ids`` -> ``cmc.kpi.run.bva`` (``run_id``, ``company_id`` related stored, ``date`` month,
+       ``center_id``, ``plan_month``, ``actual_month``, ``variance_month``, ``variance_month_pct``, ``plan_ytd``,
+       ``actual_ytd``, ``variance_ytd``, ``variance_ytd_pct``): one row per month of the span x row of
+       ``bva_version_id._cmc_bva_summary(last day of month, ("center_id",))``;
+     - ``ratio_ids`` -> ``cmc.kpi.run.ratio`` (``run_id``, ``company_id``, ``fin_analysis_id``, ``year``,
+       ``code``, ``name``, ``value``, ``status``): every ``cmc.fin.ratio.value`` of each year of the span of the
+       analysis used = ``fin_analysis_id``, else the analysis the ratio KPIs read for that year (none -> no row).
+     ``_cmc_pack_data`` builds "bva" (dicts with the keys above, ``center_id`` a record) and "ratios" ONLY from
+     these rows: a later posting / ratio change leaves the pack of a computed run as it was.
+     Usages (AD-002, ``_cmc_record_usage``) recorded at compute on: ``fin_analysis_id`` (always, when set) and
+     every analysis read; ``bva_version_id``; every ``variance_version_id`` read; ``version_id`` when approved
+     (a draft target version stays allowed and records nothing). A ``variance`` KPI whose
+     ``variance_version_id`` is draft -> UserError at compute naming the KPI code (checked before any row).
+     The fixture budget is therefore APPROVED.
+   RN-003 inputs. The KPIs a selected formula names (codes of active KPIs) and the children of a selected
+     cascade are added to the run, transitively (rows written for them too). An ARCHIVED KPI named by an active
+     formula of the run -> UserError naming the formula code and the archived code (before any row).
+     ``cmc.kpi.value.reason`` Char: empty when computable; otherwise why, naming the KPI code whose data is
+     missing (e.g. "no data for otd"; for a formula: the code of the input that is not computable).
+
 Fixture (company A = env company, 2026; hand numbers in each test module docstring)
   good units (manual facts): Jan 500 + 450 = 950, Feb 900, Mar 980. scrap (stock.scrap done, real feeder): Jan
   50, Feb 100, Mar 20 -> yield 95.0 / 90.0 / 98.0. cycle time days (manual facts, avg): Jan 4.0 and 6.0 -> 5.0.
   Outgoing pickings done: Jan 4 (3 on time, 1 late), Feb 5 on time, Mar none (+ 1 receipt in Jan, ignored)
   -> OTD 75.0 / 100.0 / not computable. Financial analysis 2025-2026 from history: current_ratio 2025 = 4.0,
   2026 = 2.0. Budget 2026 center "KPI production", rent: plan 1,000 Jan/Feb/Mar, actual 900 / 1,200 / 1,050 ->
-  BvA month +10% / -20% / -5%, YTD Feb -5%. Rate published by a computed closing run: center "KPI assembly"
+  BvA month +10% / -20% / -5%, YTD Feb -5% (budget approved, RN-002). Rate published by a computed closing run: center "KPI assembly"
   EUR/h (driver "KPI hours") Jan 45.0.
 """
 
 from datetime import date, datetime
+
+from freezegun import freeze_time
 
 from odoo import Command
 from odoo.tests.common import TransactionCase, new_test_user
@@ -223,26 +256,37 @@ class KpiCase(TransactionCase):
 
     @classmethod
     def _ship(cls, rows, picking_type=None):
-        """rows = [(scheduled_date, date_done)]: real validated transfers, the transfer date set afterwards."""
+        """rows = [(scheduled_date, date_done[, date_deadline])]: real transfers, the dates set BEFORE validation
+        and the validation run at ``date_done`` (frozen clock), never rewritten afterwards (RN-001)."""
         picking_type = picking_type or cls.warehouse.out_type_id
         src = picking_type.default_location_src_id or cls.env.ref("stock.stock_location_suppliers")
         dest = picking_type.default_location_dest_id or cls.env.ref("stock.stock_location_customers")
         pickings = cls.env["stock.picking"].create([{
-            "picking_type_id": picking_type.id, "partner_id": cls.customer.id, "scheduled_date": scheduled,
+            "picking_type_id": picking_type.id, "partner_id": cls.customer.id, "scheduled_date": row[0],
             "location_id": src.id, "location_dest_id": dest.id,
             "move_ids": [Command.create({
                 "product_id": cls.product.id, "product_uom": cls.product.uom_id.id, "product_uom_qty": 1.0,
                 "location_id": src.id, "location_dest_id": dest.id,
+                **({"date_deadline": row[2]} if len(row) > 2 else {}),
             })],
-        } for scheduled, _done in rows])
+        } for row in rows])
         pickings.action_confirm()
-        for move in pickings.move_ids:
+        for picking, row in zip(pickings, rows):
+            cls._validate(picking, at=row[1])
+        return pickings
+
+    @classmethod
+    def _validate(cls, picking, at=None):
+        """Validate a transfer as a user would, the clock frozen at ``at`` (None = now)."""
+        for move in picking.move_ids:
             move.quantity = move.product_uom_qty
             move.picked = True
-        pickings.button_validate()
-        for picking, (scheduled, done) in zip(pickings, rows):
-            picking.write({"scheduled_date": scheduled, "date_done": done})
-        return pickings
+        if at is None:
+            picking.button_validate()
+            return picking
+        with freeze_time(at):
+            picking.button_validate()
+        return picking
 
     @classmethod
     def _scrap(cls, qty, done):
@@ -287,6 +331,8 @@ class KpiCase(TransactionCase):
         ])
         for day, amount in ((date(2026, 1, 10), 900.0), (date(2026, 2, 10), 1200.0), (date(2026, 3, 10), 1050.0)):
             cls._cost(cls.production, amount, day)
+        # RN-002: a variance KPI / the pack read an approved budget only (and record their usage on it)
+        cls.budget.action_approve()
 
     @classmethod
     def _cost(cls, center, amount, day):
@@ -360,6 +406,11 @@ class KpiCase(TransactionCase):
         if compute:
             run.action_compute()
         return run
+
+    def _usages(self, run):
+        """{(origin_model, origin_id)} recorded by the run (AD-002)."""
+        usages = self.env["cmc.run.usage"].sudo().search([("consumer_model", "=", run._name), ("consumer_id", "=", run.id)])
+        return {(usage.origin_model, usage.origin_id) for usage in usages}
 
     def _val(self, run, kpi, month):
         rows = run.value_ids.filtered(lambda row: row.kpi_id == kpi and row.date == month)

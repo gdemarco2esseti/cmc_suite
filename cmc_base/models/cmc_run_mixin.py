@@ -25,6 +25,8 @@ class CmcRunMixin(models.AbstractModel):
     # One2many fields holding the computed results, emptied on reset; their
     # comodels inherit cmc.run.result.mixin
     _cmc_result_fields = ()
+    # a plan version keeps its rates (they are inputs) when reset
+    _cmc_rates_are_inputs = False
 
     state = fields.Selection(
         selection=[("draft", "Draft"), ("done", "Computed")],
@@ -61,6 +63,7 @@ class CmcRunMixin(models.AbstractModel):
 
     def unlink(self):
         self._cmc_check_no_dependents()
+        self._cmc_release_published(rates=True)
         return super().unlink()
 
     # ---- actions --------------------------------------------------------
@@ -93,6 +96,7 @@ class CmcRunMixin(models.AbstractModel):
         self.check_access("write")
         self._cmc_lock_rows()
         self._cmc_check_no_dependents()
+        self._cmc_release_published(rates=not self._cmc_rates_are_inputs)
         unlocked = self.with_context(cmc_run_state=CMC_RUN_STATE)
         for fname in self._cmc_result_fields:
             # why: results are written by the engine only (some result models
@@ -116,7 +120,63 @@ class CmcRunMixin(models.AbstractModel):
 
     def _cmc_check_no_dependents(self):
         """Raise UserError when another computed document reads these runs and
-        would be left pointing at results that no longer exist (AD-002)."""
+        would be left pointing at results that no longer exist (AD-002).
+        Generic part: the usages recorded by `_cmc_record_usage`."""
+        if not self.ids:
+            return
+        # why sudo: the dependency must be seen whole whatever the user's rules
+        usages = self.env["cmc.run.usage"].sudo().search(
+            [("origin_model", "=", self._name), ("origin_id", "in", self.ids)]
+        )
+        if not usages:
+            return
+        consumers = []
+        for model in set(usages.mapped("consumer_model")):
+            ids = usages.filtered(lambda u: u.consumer_model == model).mapped("consumer_id")
+            consumers += self.env[model].sudo().browse(ids).exists().mapped("display_name")
+        raise UserError(
+            self.env._(
+                "%(origins)s is read by the computed runs %(runs)s. Reset them to draft first.",
+                origins=", ".join(self.browse(usages.mapped("origin_id")).mapped("display_name")),
+                runs=", ".join(consumers),
+            )
+        )
+
+    def _cmc_record_usage(self, origins):
+        """Register that these (computed) runs read `origins`: until the
+        consumer is reset the origins cannot be reset or deleted (AD-002)."""
+        if not self._cmc_state_unlocked():
+            raise UserError(self.env._("Usages are recorded by Compute only."))
+        Usage = self.env["cmc.run.usage"].sudo()
+        known = {
+            (u.consumer_id, u.origin_model, u.origin_id)
+            for u in Usage.search([("consumer_model", "=", self._name), ("consumer_id", "in", self.ids)])
+        }
+        Usage.create([
+            {
+                "consumer_model": self._name,
+                "consumer_id": run.id,
+                "origin_model": origin._name,
+                "origin_id": origin.id,
+                "company_id": run.company_id.id,
+            }
+            for run in self
+            for origin in origins
+            if (run.id, origin._name, origin.id) not in known
+        ])
+
+    def _cmc_release_published(self, rates):
+        """Drop what these runs registered as consumers (usages) and, when
+        asked, the rates they published as producers."""
+        # why sudo: usages and run rates are engine rows (sentinel for rates)
+        engine = self.with_context(cmc_run_state=CMC_RUN_STATE).sudo()
+        engine.env["cmc.run.usage"].search(
+            [("consumer_model", "=", self._name), ("consumer_id", "in", self.ids)]
+        ).unlink()
+        if rates:
+            engine.env["cmc.rate"].search(
+                [("origin_model", "=", self._name), ("origin_id", "in", self.ids)]
+            ).unlink()
 
     # ---- helpers --------------------------------------------------------
 
@@ -161,6 +221,9 @@ class CmcRunLineMixin(models.AbstractModel):
     _name = "cmc.run.line.mixin"
     _description = "CMC run input line"
 
+    # name of the Many2one to the run the line belongs to
+    _cmc_run_field = "run_id"
+
     def _cmc_guard_runs(self, runs):
         # the run row lock serializes the edit against a concurrent Compute
         runs._cmc_lock_rows()
@@ -169,18 +232,18 @@ class CmcRunLineMixin(models.AbstractModel):
     @api.model_create_multi
     def create(self, vals_list):
         lines = super().create(vals_list)
-        self._cmc_guard_runs(lines.run_id)
+        self._cmc_guard_runs(lines[self._cmc_run_field])
         return lines
 
     def write(self, vals):
-        self._cmc_guard_runs(self.run_id)
+        self._cmc_guard_runs(self[self._cmc_run_field])
         res = super().write(vals)
-        if "run_id" in vals:
-            self._cmc_guard_runs(self.run_id)
+        if self._cmc_run_field in vals:
+            self._cmc_guard_runs(self[self._cmc_run_field])
         return res
 
     def unlink(self):
-        self._cmc_guard_runs(self.run_id)
+        self._cmc_guard_runs(self[self._cmc_run_field])
         return super().unlink()
 
 

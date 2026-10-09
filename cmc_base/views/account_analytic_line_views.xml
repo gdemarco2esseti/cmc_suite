@@ -31,6 +31,7 @@
                 <field name="cmc_cost_element_id" optional="show"/>
                 <field name="cmc_behavior" optional="hide"/>
                 <field name="cmc_directness" optional="hide"/>
+                <field name="cmc_cost_object_id" optional="hide"/>
             </field>
         </field>
     </record>

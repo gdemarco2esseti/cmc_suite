@@ -15,6 +15,20 @@ class CmcCostDriver(models.Model):
     )
     active = fields.Boolean(default=True)
     note = fields.Text()
+    measure_kind = fields.Selection(
+        selection=[("allocation", "Allocation base"), ("statistical", "Statistical measure")],
+        required=True,
+        default="allocation",
+    )
+    measure_type = fields.Selection(
+        selection=[("transaction", "Transaction"), ("duration", "Duration"), ("intensity", "Intensity")],
+    )
+    source = fields.Selection(
+        selection=[("manual", "Manual"), ("feeder", "Feeder")],
+        required=True,
+        default="manual",
+    )
+    feeder_key = fields.Char(help="Key of the bridge feeder that loads the quantities of this measure.")
 
     _code_company_uniq = models.UniqueIndex(
         "(code, COALESCE(company_id, 0)) WHERE code IS NOT NULL",

@@ -18,3 +18,15 @@ access_cmc_cost_element_manager,cmc.cost.element.manager,model_cmc_cost_element,
 access_cmc_cost_analysis_user,cmc.cost.analysis.line.user,model_cmc_cost_analysis_line,cmc_base.group_cmc_user,1,0,1,1
 access_cmc_cost_analysis_manager,cmc.cost.analysis.line.manager,model_cmc_cost_analysis_line,cmc_base.group_cmc_manager,1,1,1,1
 access_cmc_cockpit_user,cmc.cockpit.user,model_cmc_cockpit,cmc_base.group_cmc_user,1,0,0,0
+access_cmc_plan_version_user,cmc.plan.version.user,model_cmc_plan_version,cmc_base.group_cmc_user,1,1,1,1
+access_cmc_plan_version_manager,cmc.plan.version.manager,model_cmc_plan_version,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_plan_version_assumption_user,cmc.plan.version.assumption.user,model_cmc_plan_version_assumption,cmc_base.group_cmc_user,1,1,1,1
+access_cmc_plan_version_assumption_manager,cmc.plan.version.assumption.manager,model_cmc_plan_version_assumption,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_measure_quantity_user,cmc.measure.quantity.user,model_cmc_measure_quantity,cmc_base.group_cmc_user,1,1,1,1
+access_cmc_measure_quantity_manager,cmc.measure.quantity.manager,model_cmc_measure_quantity,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_rate_user,cmc.rate.user,model_cmc_rate,cmc_base.group_cmc_user,1,1,1,0
+access_cmc_rate_manager,cmc.rate.manager,model_cmc_rate,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_cost_object_user,cmc.cost.object.user,model_cmc_cost_object,cmc_base.group_cmc_user,1,0,0,0
+access_cmc_cost_object_manager,cmc.cost.object.manager,model_cmc_cost_object,cmc_base.group_cmc_manager,1,1,1,0
+access_cmc_run_usage_user,cmc.run.usage.user,model_cmc_run_usage,cmc_base.group_cmc_user,1,0,0,0
+access_cmc_run_usage_manager,cmc.run.usage.manager,model_cmc_run_usage,cmc_base.group_cmc_manager,1,0,0,0

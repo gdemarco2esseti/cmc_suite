@@ -1,5 +1,8 @@
 from . import cmc_run_mixin
 from . import cmc_cost_driver
+from . import cmc_month_mixin
+from . import cmc_run_usage
+from . import cmc_cost_object
 from . import account_analytic_account
 from . import account_analytic_line
 from . import cmc_allocation
@@ -9,3 +12,6 @@ from . import cmc_capacity
 from . import cmc_cost_analysis
 from . import cmc_cockpit
 from . import cmc_reclass_mixin
+from . import cmc_plan_version
+from . import cmc_measure_quantity
+from . import cmc_rate

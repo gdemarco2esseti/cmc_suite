@@ -79,6 +79,13 @@ class AccountAnalyticLine(models.Model):
         help="The object this cost is referred to (product, line, project, cost "
         "center, customer, channel).",
     )
+    cmc_cost_object_id = fields.Many2one(
+        "cmc.cost.object",
+        string="Cost Object (registry)",
+        index=True,
+        ondelete="restrict",
+        help="Registry key of the object this cost is referred to: groupable, unlike the Reference.",
+    )
     cmc_cost_traceability = fields.Selection(
         selection=[("special", "Special"), ("common", "Common")],
         string="Traceability",

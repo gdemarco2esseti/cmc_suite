@@ -8,6 +8,8 @@
                 <field name="code"/>
                 <field name="name"/>
                 <field name="uom_id"/>
+                <field name="measure_kind" optional="show"/>
+                <field name="source" optional="show"/>
                 <field name="company_id" groups="base.group_multi_company"/>
             </list>
         </field>
@@ -27,6 +29,11 @@
                         <group>
                             <field name="code"/>
                             <field name="uom_id"/>
+                            <field name="measure_kind"/>
+                            <field name="measure_type"/>
+                            <field name="source"/>
+                            <field name="feeder_key" invisible="source != 'feeder'"
+                                   required="source == 'feeder'"/>
                         </group>
                         <group>
                             <field name="company_id" groups="base.group_multi_company"/>

@@ -1,3 +1,6 @@
+import calendar
+from datetime import timedelta
+
 from odoo.tools import float_round
 
 
@@ -34,3 +37,34 @@ def spread(total, weights, rounding):
     coeff = total / sum(weights.values())
     raw = {key: coeff * weight for key, weight in weights.items()}
     return largest_remainder(float_round(total, precision_rounding=rounding), raw, rounding)
+
+
+def month_start(day):
+    return day.replace(day=1)
+
+
+def month_end(day):
+    return day.replace(day=calendar.monthrange(day.year, day.month)[1])
+
+
+def month_range(date_from, date_to):
+    """First day of every calendar month touched by the span, both ends inclusive."""
+    if date_to < date_from:
+        raise ValueError("date_to is before date_from")
+    months = []
+    month = month_start(date_from)
+    while month <= date_to:
+        months.append(month)
+        month = month_start(month_end(month) + timedelta(days=1))
+    return months
+
+
+def phase_by_month(total, date_from, date_to, rounding, weights=None):
+    """Split `total` over the months of the span (`spread`, so the parts re-sum to
+    `total`). `weights` = {calendar month number: weight}, a missing month weighs 0;
+    None = one equal weight per month."""
+    months = month_range(date_from, date_to)
+    month_weights = {m: 1 if weights is None else weights.get(m.month, 0) for m in months}
+    if not sum(month_weights.values()):
+        raise ValueError("the weights of the span sum to zero")
+    return spread(total, month_weights, rounding)

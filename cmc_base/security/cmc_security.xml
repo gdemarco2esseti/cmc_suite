@@ -90,5 +90,47 @@
             <field name="global" eval="True"/>
             <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
         </record>
+
+        <record id="cmc_plan_version_company_rule" model="ir.rule">
+            <field name="name">CMC plan version: multi-company</field>
+            <field name="model_id" ref="model_cmc_plan_version"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_plan_version_assumption_company_rule" model="ir.rule">
+            <field name="name">CMC plan version assumption: multi-company</field>
+            <field name="model_id" ref="model_cmc_plan_version_assumption"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_measure_quantity_company_rule" model="ir.rule">
+            <field name="name">CMC measure quantity: multi-company</field>
+            <field name="model_id" ref="model_cmc_measure_quantity"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_rate_company_rule" model="ir.rule">
+            <field name="name">CMC rate: multi-company</field>
+            <field name="model_id" ref="model_cmc_rate"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_cost_object_company_rule" model="ir.rule">
+            <field name="name">CMC cost object: multi-company</field>
+            <field name="model_id" ref="model_cmc_cost_object"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_run_usage_company_rule" model="ir.rule">
+            <field name="name">CMC run usage: multi-company</field>
+            <field name="model_id" ref="model_cmc_run_usage"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
     </data>
 </odoo>

@@ -26,6 +26,12 @@ class MrpProduction(models.Model):
                 continue
             production.cmc_lead_time = max((production.date_finished - start).total_seconds() / 60, 0.0)
 
+    def _get_backorder_mo_vals(self):
+        # why: a backorder is the same job, so rework flag and release date (lead time) carry over
+        vals = super()._get_backorder_mo_vals()
+        vals.update(cmc_is_rework=self.cmc_is_rework, cmc_date_released=self.cmc_date_released)
+        return vals
+
     def action_confirm(self):
         # why not date_start: core rewrites it at the first work-order start/finish, so it is not a release
         self.filtered(lambda mo: not mo.cmc_date_released).cmc_date_released = fields.Datetime.now()

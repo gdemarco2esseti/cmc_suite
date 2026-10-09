@@ -19,6 +19,8 @@ LIBRARY = {
     "mrp_value_added": ("measure", "number", "higher", "internal"),
     "mrp_lead_minutes": ("measure", "number", "lower", "internal"),
     "mrp_mo_done": ("measure", "number", "higher", "internal"),
+    "mrp_routed_lead_minutes": ("measure", "number", "lower", "internal"),
+    "mrp_routed_produced": ("measure", "number", "higher", "internal"),
     "mrp_first_pass": ("formula", "number", "higher", "internal"),
     "mrp_cycle_time": ("formula", "number", "lower", "internal"),
     "mrp_lead_time": ("formula", "days", "lower", "internal"),
@@ -37,6 +39,8 @@ MEASURE_DRIVERS = {
     "mrp_value_added": "cmc_kpi_mrp.cmc_measure_value_added_minutes",
     "mrp_lead_minutes": "cmc_kpi_mrp.cmc_measure_mo_lead_minutes",
     "mrp_mo_done": "cmc_kpi_mrp.cmc_measure_mo_done",
+    "mrp_routed_lead_minutes": "cmc_kpi_mrp.cmc_measure_routed_mo_lead_minutes",
+    "mrp_routed_produced": "cmc_kpi_mrp.cmc_measure_routed_produced_qty",
     "delivery_shipments": "cmc_kpi.cmc_measure_shipments",
     "delivery_lead_minutes": "cmc_kpi_mrp.cmc_measure_delivery_lead_minutes",
 }

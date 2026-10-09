@@ -45,6 +45,24 @@
         <field name="source">feeder</field>
         <field name="feeder_key">mrp_rework_qty</field>
     </record>
+    <record id="cmc_measure_routed_mo_lead_minutes" model="cmc.cost.driver">
+        <field name="name">Routed manufacturing lead minutes</field>
+        <field name="code">KPI_MRP_ROUTED_MO_LEAD_MINUTES</field>
+        <field name="measure_kind">statistical</field>
+        <field name="measure_type">transaction</field>
+        <field name="company_id" eval="False"/>
+        <field name="source">feeder</field>
+        <field name="feeder_key">mrp_routed_mo_lead_minutes</field>
+    </record>
+    <record id="cmc_measure_routed_produced_qty" model="cmc.cost.driver">
+        <field name="name">Routed produced quantity</field>
+        <field name="code">KPI_MRP_ROUTED_PRODUCED_QTY</field>
+        <field name="measure_kind">statistical</field>
+        <field name="measure_type">transaction</field>
+        <field name="company_id" eval="False"/>
+        <field name="source">feeder</field>
+        <field name="feeder_key">mrp_routed_produced_qty</field>
+    </record>
     <record id="cmc_measure_delivery_lead_minutes" model="cmc.cost.driver">
         <field name="name">Delivery lead minutes</field>
         <field name="code">KPI_DELIVERY_LEAD_MINUTES</field>

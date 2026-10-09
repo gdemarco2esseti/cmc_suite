@@ -77,6 +77,28 @@ of ``mrp.production.date_finished`` of the MO (its close), also for the work-ord
 4. Security / multi-company: the feeders run as engine (sudo, cmc_base): a CMC user without MRP rights refreshes
    and computes a run. Facts and KPIs are per company; codes unique per company only.
 5. Cost of access (AD-114): refresh of the new keys costs the same number of queries with 3 or 18 MOs.
+6. Ronin amendments (binding, override the lines above where they differ):
+   RN-001 backorders. A partial close (``button_mark_done`` with ``mo_ids_to_backorder``, core ``_split_productions``)
+     creates a backorder that INHERITS ``cmc_is_rework`` and ``cmc_date_released`` of the original MO (the
+     ``copy=False`` of section 1 still holds for a plain ``copy()``: only the backorder split propagates them). The
+     lead time of the backorder units runs from the ORIGINAL release. ``mrp_mo_done`` counts each backorder as a
+     separate done MO (pinned). A rework MO of 5 split 3 + 2 feeds rework 5, so FPY stays the same as unsplit.
+   RN-002 overlapping timers. ``mrp.workorder.cmc_productive_minutes`` Float, computed STORED: the MERGED duration
+     of the productive time entries (``loss_type`` "productive"), overlapping intervals counted once - the same rule
+     as core ``_intervals_duration`` / ``get_duration``, restricted to the productive loss type. The feeder
+     ``mrp_value_added_minutes`` sums it on ``mrp.workorder`` (grain and domain as ``mrp_wo_minutes``). Two
+     operators timing the same work order 08:00-08:08 are 8 value-added minutes, not 16: MCE never exceeds 100 %
+     because of concurrent operators.
+   RN-003 routed denominators. An MO is "routed" when it has at least one work order. New measures / feeders,
+     same grain and rules as their unrestricted twins but only routed MOs:
+       ``cmc_measure_routed_mo_lead_minutes``  ``mrp_routed_mo_lead_minutes``  sum ``cmc_lead_time`` of routed MOs
+       ``cmc_measure_routed_produced_qty``     ``mrp_routed_produced_qty``     produced qty of routed MOs (same
+                                                                              moves / UoM / unbuild netting as
+                                                                              ``mrp_produced_qty``)
+     New library KPIs: ``mrp_routed_lead_minutes`` (measure, number, lower, internal) and ``mrp_routed_produced``
+     (measure, number, higher, internal). Formulas changed: ``mrp_cycle_time`` = mrp_wo_minutes /
+     mrp_routed_produced; ``mrp_mce`` = mrp_value_added / mrp_routed_lead_minutes x 100. ``mrp_lead_time`` keeps
+     ALL done MOs (mrp_lead_minutes / mrp_mo_done). On the fixture every centered MO is routed: Jan/Feb unchanged.
 
 Fixture (company A = env company, 2026; product P "KPIMRP gear" in Units, BoM with Cut 30 min/unit on WC cut and
 Assemble 12 min/unit on WC assembly; times logged as an operator does, ``mrp.workorder.duration`` at close):
@@ -111,7 +133,8 @@ FEB = date(2026, 2, 1)
 MAR = date(2026, 3, 1)
 MAR_END = date(2026, 3, 31)
 
-MRP_KEYS = ["mrp_wo_minutes", "mrp_value_added_minutes", "mrp_mo_lead_minutes", "mrp_mo_done", "mrp_rework_qty"]
+MRP_KEYS = ["mrp_wo_minutes", "mrp_value_added_minutes", "mrp_mo_lead_minutes", "mrp_mo_done", "mrp_rework_qty",
+            "mrp_routed_mo_lead_minutes", "mrp_routed_produced_qty"]
 DELIVERY_KEY = "stock_delivery_lead_minutes"
 MEASURES = {
     "cmc_kpi_mrp.cmc_measure_wo_minutes": "mrp_wo_minutes",
@@ -119,6 +142,8 @@ MEASURES = {
     "cmc_kpi_mrp.cmc_measure_mo_lead_minutes": "mrp_mo_lead_minutes",
     "cmc_kpi_mrp.cmc_measure_mo_done": "mrp_mo_done",
     "cmc_kpi_mrp.cmc_measure_rework_qty": "mrp_rework_qty",
+    "cmc_kpi_mrp.cmc_measure_routed_mo_lead_minutes": "mrp_routed_mo_lead_minutes",
+    "cmc_kpi_mrp.cmc_measure_routed_produced_qty": "mrp_routed_produced_qty",
     "cmc_kpi_mrp.cmc_measure_delivery_lead_minutes": "stock_delivery_lead_minutes",
 }
 
@@ -266,6 +291,18 @@ class KpiMrpCase(KpiMrpBase):
             move.picked = True
         mo.with_context(skip_consumption=True).button_mark_done()
         mo.invalidate_recordset()
+
+    @classmethod
+    def _close_partial(cls, mo, qty):
+        """Partial close keeping the rest as a backorder (core path of the backorder wizard); returns the backorder."""
+        mo.qty_producing = qty
+        for move in mo.move_raw_ids:
+            move.quantity = qty * move.product_uom_qty / mo.product_qty
+            move.picked = True
+        before = mo.production_group_id.production_ids
+        mo.with_context(skip_backorder=True, mo_ids_to_backorder=mo.ids, skip_consumption=True).button_mark_done()
+        mo.invalidate_recordset()
+        return mo.production_group_id.production_ids - before
 
     @classmethod
     def _scrap(cls, mo, qty, when):

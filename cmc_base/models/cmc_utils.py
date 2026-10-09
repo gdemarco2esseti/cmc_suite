@@ -1,5 +1,9 @@
 import calendar
 import math
+
+
+
+import statistics
 from datetime import timedelta
 
 from odoo.tools import float_round
@@ -290,3 +294,116 @@ def rule_of_seven(values, center=0.0, run=7):
         if streak >= run:
             return True
     return False
+
+
+# ---- sampling and rank statistics (stdlib only, AD-119) ----------------------
+
+_DISTRIBUTION_KEYS = {"normal": ("mean", "stdev"), "triangular": ("low", "mode", "high"), "uniform": ("low", "high")}
+
+
+def _check_distribution(distribution, params):
+    keys = _DISTRIBUTION_KEYS.get(distribution)
+    if keys is None:
+        raise ValueError("Unknown distribution %s." % distribution)
+    p = [params[key] for key in keys]
+    if distribution == "normal" and p[1] < 0:
+        raise ValueError("The standard deviation cannot be negative.")
+    if distribution == "triangular" and not (p[0] <= p[1] <= p[2] and p[0] < p[2]):
+        raise ValueError("A triangular distribution needs low <= mode <= high and low < high.")
+    if distribution == "uniform" and p[0] >= p[1]:
+        raise ValueError("A uniform distribution needs low < high.")
+    return p
+
+
+def inverse_cdf(distribution, params, p):
+    values = _check_distribution(distribution, params)
+    if not 0.0 <= p <= 1.0:
+        raise ValueError("A probability lies in [0, 1].")
+    if distribution == "normal":
+        mean, stdev = values
+        # why: inv_cdf is undefined at 0 and 1 and for a zero deviation (a constant)
+        return mean if not stdev else statistics.NormalDist(mean, stdev).inv_cdf(min(max(p, 1e-12), 1 - 1e-12))
+    if distribution == "uniform":
+        return values[0] + p * (values[1] - values[0])
+    low, mode, high = values
+    if p < (mode - low) / (high - low):
+        return low + math.sqrt(p * (high - low) * (mode - low))
+    return high - math.sqrt((1 - p) * (high - low) * (high - mode))
+
+
+def draw(distribution, params, n, rng, lhs=False):
+    _check_distribution(distribution, params)
+    if n < 1:
+        raise ValueError("At least one sample is needed.")
+    if lhs:
+        # one sample in each of the n equal-probability strata, in shuffled order
+        probabilities = [(i + rng.random()) / n for i in range(n)]
+        rng.shuffle(probabilities)
+    else:
+        probabilities = [rng.random() for _i in range(n)]
+    return [inverse_cdf(distribution, params, p) for p in probabilities]
+
+
+def percentile(values, q):
+    if not values:
+        raise ValueError("No values.")
+    if not 0 <= q <= 100:
+        raise ValueError("A percentile lies in [0, 100].")
+    ordered = sorted(values)
+    position = (len(ordered) - 1) * q / 100
+    low = int(position)
+    high = min(low + 1, len(ordered) - 1)
+    return ordered[low] + (ordered[high] - ordered[low]) * (position - low)
+
+
+def ranks(values):
+    order = sorted(range(len(values)), key=values.__getitem__)
+    out = [0.0] * len(values)
+    i = 0
+    while i < len(order):
+        j = i
+        while j + 1 < len(order) and values[order[j + 1]] == values[order[i]]:
+            j += 1
+        for k in range(i, j + 1):
+            out[order[k]] = (i + j) / 2 + 1.0
+        i = j + 1
+    return out
+
+
+def spearman(xs, ys):
+    if len(xs) != len(ys) or len(xs) < 2:
+        raise ValueError("Two series of the same length, at least 2 points.")
+    rx, ry = ranks(list(xs)), ranks(list(ys))
+    mx, my = statistics.fmean(rx), statistics.fmean(ry)
+    sxx = sum((a - mx) ** 2 for a in rx)
+    syy = sum((b - my) ** 2 for b in ry)
+    if not sxx or not syy:
+        return 0.0
+    sxy = sum((a - mx) * (b - my) for a, b in zip(rx, ry, strict=True))
+    return max(-1.0, min(1.0, sxy / math.sqrt(sxx * syy)))
+
+
+def histogram(values, bins):
+    if bins < 1 or not values:
+        raise ValueError("At least one bin and one value.")
+    low, high = min(values), max(values)
+    if low == high:
+        return [(low, high, len(values))]
+    width = (high - low) / bins
+    counts = [0] * bins
+    for value in values:
+        counts[min(int((value - low) / width), bins - 1)] += 1
+    return [(low + i * width, high if i == bins - 1 else low + (i + 1) * width, count) for i, count in enumerate(counts)]
+
+
+def describe(values):
+    return {
+        "mean": statistics.fmean(values),
+        "stdev": statistics.stdev(values) if len(values) > 1 else 0.0,
+        "min": min(values),
+        "max": max(values),
+        "p5": percentile(values, 5),
+        "p50": percentile(values, 50),
+        "p95": percentile(values, 95),
+        "prob_positive": sum(1 for value in values if value > 0) / len(values),
+    }

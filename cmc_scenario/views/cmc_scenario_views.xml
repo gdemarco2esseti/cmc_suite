@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_cmc_sec_scenario" name="Scenarios &amp; Risk" parent="cmc_base.menu_cmc_operations" sequence="50"/>
+
+    <!-- FCS-02: scenario creation from a version -->
+    <record id="view_cmc_plan_version_form_scenario" model="ir.ui.view">
+        <field name="name">cmc.plan.version.form.scenario</field>
+        <field name="model">cmc.plan.version</field>
+        <field name="inherit_id" ref="cmc_base.view_cmc_plan_version_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_cmc_create_scenario" type="object" string="Create Scenario" invisible="not id"
+                        groups="cmc_base.group_cmc_user"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- FCS-02: comparison -->
+    <record id="view_cmc_scenario_comparison_list" model="ir.ui.view">
+        <field name="name">cmc.scenario.comparison.list</field>
+        <field name="model">cmc.scenario.comparison</field>
+        <field name="arch" type="xml">
+            <list string="Scenario Comparisons">
+                <field name="name"/>
+                <field name="scenario_id"/>
+                <field name="baseline_id"/>
+                <field name="baseline_profit"/>
+                <field name="scenario_profit"/>
+                <field name="delta_profit" decoration-danger="delta_profit &lt; 0" decoration-success="delta_profit &gt; 0"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_scenario_comparison_form" model="ir.ui.view">
+        <field name="name">cmc.scenario.comparison.form</field>
+        <field name="model">cmc.scenario.comparison</field>
+        <field name="arch" type="xml">
+            <form string="Scenario Comparison">
+                <header>
+                    <button name="action_compute" type="object" string="Compute" class="btn-primary" invisible="state == 'done'"/>
+                    <button name="action_reset_to_draft" type="object" string="Reset to Draft" invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><label for="name"/><h1><field name="name"/></h1></div>
+                    <group>
+                        <group string="Inputs">
+                            <field name="scenario_id" readonly="state == 'done'"/>
+                            <field name="baseline_id" readonly="state == 'done'"/>
+                            <field name="evaluator_key" readonly="state == 'done'"/>
+                            <field name="company_id" groups="base.group_multi_company" readonly="state == 'done'"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group string="Profit" invisible="state == 'draft'">
+                            <field name="baseline_profit"/>
+                            <field name="scenario_profit"/>
+                            <field name="delta_profit" decoration-danger="delta_profit &lt; 0" decoration-success="delta_profit &gt; 0"/>
+                        </group>
+                    </group>
+                    <field name="line_ids" invisible="state == 'draft'">
+                        <list>
+                            <field name="date"/>
+                            <field name="center_id"/>
+                            <field name="element_id"/>
+                            <field name="baseline_amount" sum="Total"/>
+                            <field name="scenario_amount" sum="Total"/>
+                            <field name="delta" sum="Total" decoration-danger="delta &lt; 0" decoration-success="delta &gt; 0"/>
+                            <field name="delta_pct"/>
+                            <field name="currency_id" column_invisible="1"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_scenario_comparison" model="ir.actions.act_window">
+        <field name="name">Scenario Comparisons</field>
+        <field name="res_model">cmc.scenario.comparison</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_cmc_scenario_comparison" name="Scenario Comparison" parent="menu_cmc_sec_scenario"
+              action="action_cmc_scenario_comparison" sequence="10"/>
+
+    <!-- result views: histogram, tornado, Spearman -->
+    <record id="view_cmc_scenario_bin_search" model="ir.ui.view">
+        <field name="name">cmc.scenario.bin.search</field>
+        <field name="model">cmc.scenario.bin</field>
+        <field name="arch" type="xml">
+            <search><field name="simulation_id"/></search>
+        </field>
+    </record>
+    <record id="view_cmc_scenario_bin_list" model="ir.ui.view">
+        <field name="name">cmc.scenario.bin.list</field>
+        <field name="model">cmc.scenario.bin</field>
+        <field name="arch" type="xml">
+            <list string="Histogram" create="false" edit="false" delete="false">
+                <field name="simulation_id"/>
+                <field name="sequence"/>
+                <field name="lower"/>
+                <field name="upper"/>
+                <field name="count" sum="Trials"/>
+                <field name="frequency_pct"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_cmc_scenario_bin_graph" model="ir.ui.view">
+        <field name="name">cmc.scenario.bin.graph</field>
+        <field name="model">cmc.scenario.bin</field>
+        <field name="arch" type="xml">
+            <graph string="Profit Histogram" type="bar" sample="1">
+                <field name="sequence"/>
+                <field name="count" type="measure"/>
+            </graph>
+        </field>
+    </record>
+    <record id="action_cmc_scenario_bin" model="ir.actions.act_window">
+        <field name="name">Profit Histogram</field>
+        <field name="res_model">cmc.scenario.bin</field>
+        <field name="view_mode">graph,list</field>
+    </record>
+
+    <record id="view_cmc_scenario_tornado_search" model="ir.ui.view">
+        <field name="name">cmc.scenario.tornado.search</field>
+        <field name="model">cmc.scenario.tornado</field>
+        <field name="arch" type="xml">
+            <search><field name="simulation_id"/></search>
+        </field>
+    </record>
+    <record id="view_cmc_scenario_tornado_list" model="ir.ui.view">
+        <field name="name">cmc.scenario.tornado.list</field>
+        <field name="model">cmc.scenario.tornado</field>
+        <field name="arch" type="xml">
+            <list string="Tornado" create="false" edit="false" delete="false">
+                <field name="simulation_id"/>
+                <field name="rank"/>
+                <field name="input_path"/>
+                <field name="base_value"/>
+                <field name="output_low"/>
+                <field name="output_high"/>
+                <field name="swing"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_cmc_scenario_tornado_graph" model="ir.ui.view">
+        <field name="name">cmc.scenario.tornado.graph</field>
+        <field name="model">cmc.scenario.tornado</field>
+        <field name="arch" type="xml">
+            <graph string="Tornado" type="bar" order="DESC" sample="1">
+                <field name="input_path"/>
+                <field name="swing" type="measure"/>
+            </graph>
+        </field>
+    </record>
+    <record id="action_cmc_scenario_tornado" model="ir.actions.act_window">
+        <field name="name">Tornado</field>
+        <field name="res_model">cmc.scenario.tornado</field>
+        <field name="view_mode">list,graph</field>
+    </record>
+
+    <record id="view_cmc_scenario_sensitivity_search" model="ir.ui.view">
+        <field name="name">cmc.scenario.sensitivity.search</field>
+        <field name="model">cmc.scenario.sensitivity</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="simulation_id"/>
+                <filter name="significant" string="Significant" domain="[('is_significant', '=', True)]"/>
+                <filter name="dominant" string="Dominant" domain="[('is_dominant', '=', True)]"/>
+            </search>
+        </field>
+    </record>
+    <record id="view_cmc_scenario_sensitivity_list" model="ir.ui.view">
+        <field name="name">cmc.scenario.sensitivity.list</field>
+        <field name="model">cmc.scenario.sensitivity</field>
+        <field name="arch" type="xml">
+            <list string="Rank Correlation" create="false" edit="false" delete="false"
+                  decoration-bf="is_dominant" decoration-muted="not is_significant">
+                <field name="simulation_id"/>
+                <field name="rank"/>
+                <field name="input_path"/>
+                <field name="rank_correlation"/>
+                <field name="is_significant"/>
+                <field name="is_dominant"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_cmc_scenario_sensitivity" model="ir.actions.act_window">
+        <field name="name">Rank Correlation</field>
+        <field name="res_model">cmc.scenario.sensitivity</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <!-- RSK-01 / RSK-02: simulation -->
+    <record id="view_cmc_scenario_simulation_list" model="ir.ui.view">
+        <field name="name">cmc.scenario.simulation.list</field>
+        <field name="model">cmc.scenario.simulation</field>
+        <field name="arch" type="xml">
+            <list string="Simulations">
+                <field name="name"/>
+                <field name="version_id"/>
+                <field name="trials"/>
+                <field name="sampling"/>
+                <field name="mean_output"/>
+                <field name="prob_positive_pct"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_scenario_simulation_form" model="ir.ui.view">
+        <field name="name">cmc.scenario.simulation.form</field>
+        <field name="model">cmc.scenario.simulation</field>
+        <field name="arch" type="xml">
+            <form string="Simulation">
+                <header>
+                    <button name="action_compute" type="object" string="Compute" class="btn-primary" invisible="state == 'done'"/>
+                    <button name="action_rerun_without_dominant" type="object" string="Re-run without Dominant Inputs" invisible="state == 'draft'"/>
+                    <button name="action_reset_to_draft" type="object" string="Reset to Draft" invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box" invisible="state == 'draft'">
+                        <button name="%(action_cmc_scenario_bin)d" type="action" string="Histogram" icon="fa-bar-chart"
+                                context="{'search_default_simulation_id': id}"/>
+                        <button name="%(action_cmc_scenario_tornado)d" type="action" string="Tornado" icon="fa-align-left"
+                                context="{'search_default_simulation_id': id}"/>
+                        <button name="%(action_cmc_scenario_sensitivity)d" type="action" string="Rank Correlation" icon="fa-line-chart"
+                                context="{'search_default_simulation_id': id}"/>
+                    </div>
+                    <div class="oe_title"><label for="name"/><h1><field name="name"/></h1></div>
+                    <group>
+                        <group string="Inputs">
+                            <field name="version_id" readonly="state == 'done'"/>
+                            <field name="evaluator_key" readonly="state == 'done'"/>
+                            <field name="trials" readonly="state == 'done'"/>
+                            <field name="seed" readonly="state == 'done'"/>
+                            <field name="sampling" readonly="state == 'done'"/>
+                            <field name="swing_pct" readonly="state == 'done'"/>
+                            <field name="significance_threshold" readonly="state == 'done'"/>
+                            <field name="dominant_threshold" readonly="state == 'done'"/>
+                            <field name="bin_count" readonly="state == 'done'"/>
+                            <field name="parent_simulation_id" invisible="not parent_simulation_id"/>
+                            <field name="company_id" groups="base.group_multi_company" readonly="state == 'done'"/>
+                        </group>
+                        <group string="Profit Statistics" invisible="state == 'draft'">
+                            <field name="base_output"/>
+                            <field name="mean_output"/>
+                            <field name="stdev_output"/>
+                            <field name="min_output"/>
+                            <field name="p5_output"/>
+                            <field name="p50_output"/>
+                            <field name="p95_output"/>
+                            <field name="max_output"/>
+                            <field name="prob_positive_pct"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="variables" string="Uncertain Inputs">
+                            <field name="variable_ids" readonly="state == 'done'">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="input_path"/>
+                                    <field name="distribution"/>
+                                    <field name="mean" readonly="distribution != 'normal'"/>
+                                    <field name="stdev" readonly="distribution != 'normal'"/>
+                                    <field name="low" readonly="distribution == 'normal'"/>
+                                    <field name="mode" readonly="distribution != 'triangular'"/>
+                                    <field name="high" readonly="distribution == 'normal'"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="tornado" string="Tornado" invisible="state == 'draft'">
+                            <field name="tornado_ids">
+                                <list>
+                                    <field name="rank"/>
+                                    <field name="input_path"/>
+                                    <field name="base_value"/>
+                                    <field name="output_low"/>
+                                    <field name="output_high"/>
+                                    <field name="swing"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="sensitivity" string="Rank Correlation" invisible="state == 'draft'">
+                            <field name="sensitivity_ids">
+                                <list decoration-bf="is_dominant" decoration-muted="not is_significant">
+                                    <field name="rank"/>
+                                    <field name="input_path"/>
+                                    <field name="rank_correlation"/>
+                                    <field name="is_significant"/>
+                                    <field name="is_dominant"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="bins" string="Histogram" invisible="state == 'draft'">
+                            <field name="bin_ids">
+                                <list>
+                                    <field name="sequence"/>
+                                    <field name="lower"/>
+                                    <field name="upper"/>
+                                    <field name="count" sum="Trials"/>
+                                    <field name="frequency_pct"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_scenario_simulation" model="ir.actions.act_window">
+        <field name="name">Simulations</field>
+        <field name="res_model">cmc.scenario.simulation</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_cmc_scenario_simulation" name="Simulation" parent="menu_cmc_sec_scenario"
+              action="action_cmc_scenario_simulation" sequence="20"/>
+
+    <!-- INT-04: consolidation -->
+    <record id="view_cmc_scenario_consolidation_list" model="ir.ui.view">
+        <field name="name">cmc.scenario.consolidation.list</field>
+        <field name="model">cmc.scenario.consolidation</field>
+        <field name="arch" type="xml">
+            <list string="Consolidations">
+                <field name="name"/>
+                <field name="version_id"/>
+                <field name="total_amount"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_scenario_consolidation_form" model="ir.ui.view">
+        <field name="name">cmc.scenario.consolidation.form</field>
+        <field name="model">cmc.scenario.consolidation</field>
+        <field name="arch" type="xml">
+            <form string="Version Consolidation">
+                <header>
+                    <button name="action_compute" type="object" string="Compute" class="btn-primary" invisible="state == 'done'"/>
+                    <button name="action_reset_to_draft" type="object" string="Reset to Draft" invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title"><label for="name"/><h1><field name="name"/></h1></div>
+                    <group>
+                        <group string="Inputs">
+                            <field name="version_id" readonly="state == 'done'"/>
+                            <field name="child_version_ids" widget="many2many_tags" readonly="state == 'done'"/>
+                            <field name="evaluator_key" readonly="state == 'done'"/>
+                            <field name="company_id" groups="base.group_multi_company" readonly="state == 'done'"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group string="Result" invisible="state == 'draft'">
+                            <field name="total_amount"/>
+                        </group>
+                    </group>
+                    <field name="line_ids" invisible="state == 'draft'">
+                        <list>
+                            <field name="date"/>
+                            <field name="center_id"/>
+                            <field name="element_id"/>
+                            <field name="amount" sum="Total"/>
+                            <field name="currency_id" column_invisible="1"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_scenario_consolidation" model="ir.actions.act_window">
+        <field name="name">Version Consolidations</field>
+        <field name="res_model">cmc.scenario.consolidation</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_cmc_scenario_consolidation" name="Consolidation" parent="menu_cmc_sec_scenario"
+              action="action_cmc_scenario_consolidation" sequence="30"/>
+</odoo>

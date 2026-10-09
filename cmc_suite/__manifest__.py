@@ -24,6 +24,7 @@
         "cmc_target_lcc",
         "cmc_process_costing",
         "cmc_abb",
+        "cmc_scenario",
     ],
     "installable": True,
     "application": True,

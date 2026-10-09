@@ -34,7 +34,8 @@ class TestFullCostingConservation(TransactionCase):
 
     def _closing(self):
         closing = self.env["cmc.closing.run"].create(
-            {"name": "cl", "method": "direct"}
+            {"name": "cl", "method": "direct",
+             "date_from": date(self.year, 1, 1), "date_to": date(self.year, 12, 31)}
         )
         closing.action_compute()
         return closing

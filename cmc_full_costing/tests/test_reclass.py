@@ -17,7 +17,8 @@ class TestFullReclass(TransactionCase):
         drv = self.env["cmc.cost.driver"].create({"name": "H", "code": "H"})
         p1 = self.env["product.product"].create({"name": "P1"})
         closing = self.env["cmc.closing.run"].create(
-            {"name": "cl", "method": "direct"})
+            {"name": "cl", "method": "direct",
+             "date_from": date(2026, 1, 1), "date_to": date(2026, 12, 31)})
         closing.action_compute()
         run = self.env["cmc.costing.run"].create(
             {"name": "FC", "closing_run_id": closing.id, "base": "multiple",

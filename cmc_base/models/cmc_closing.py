@@ -42,8 +42,8 @@ class CmcClosingRun(models.Model):
         "res.company", required=True, default=lambda self: self.env.company, index=True
     )
     currency_id = fields.Many2one(related="company_id.currency_id")
-    date_from = fields.Date()
-    date_to = fields.Date()
+    date_from = fields.Date(required=True)
+    date_to = fields.Date(required=True)
     method = fields.Selection(
         selection=[
             ("direct", "Direct"),
@@ -116,7 +116,7 @@ class CmcClosingRun(models.Model):
     @api.constrains("date_from", "date_to")
     def _check_dates_ordered(self):
         for run in self:
-            if run.date_from and run.date_to and run.date_to < run.date_from:
+            if run.date_to < run.date_from:
                 raise ValidationError(
                     self.env._("The period end date cannot precede its start date.")
                 )

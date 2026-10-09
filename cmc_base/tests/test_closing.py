@@ -1,3 +1,5 @@
+from datetime import date
+
 from odoo.exceptions import ValidationError
 from odoo.tests.common import TransactionCase, new_test_user, tagged
 
@@ -14,6 +16,9 @@ class TestClosing(TransactionCase):
         cls.Run = cls.env["cmc.closing.run"]
         cls.plan = cls.env["account.analytic.plan"].search([("parent_id", "=", False)]).filtered(lambda p: p._column_name() == "account_id")[:1]
         cls.driver = cls.env["cmc.cost.driver"].create({"name": "Ore", "code": "H"})
+        # closing runs always carry a period: the whole current year covers
+        # the analytic lines below (dated today by default)
+        cls.period = {"date_from": date(date.today().year, 1, 1), "date_to": date(date.today().year, 12, 31)}
 
     @classmethod
     def _center(cls, name, ctype):
@@ -48,7 +53,7 @@ class TestClosing(TransactionCase):
         self._cost(aux, 3600)
         self._service(aux, z, 60)
         self._service(aux, y, 60)
-        run = self.Run.create({"method": "direct"})
+        run = self.Run.create({**self.period, "method": "direct"})
         run.action_compute()
         self.assertEqual(self._line(run, z).cost_received, 1800.0)
         self.assertEqual(self._line(run, y).cost_received, 1800.0)
@@ -62,7 +67,7 @@ class TestClosing(TransactionCase):
         self._cost(aux, 3600)
         self._service(aux, z, 60)
         self._service(aux, y, 60)
-        run = self.Run.create({"method": "direct"})
+        run = self.Run.create({**self.period, "method": "direct"})
         run.action_compute()
         finals_received = sum(
             run.line_ids.filtered(
@@ -85,7 +90,7 @@ class TestClosing(TransactionCase):
         # aux2 serves the two finals
         self._service(aux2, z, 1)
         self._service(aux2, y, 1)
-        run = self.Run.create({"method": "step_down"})
+        run = self.Run.create({**self.period, "method": "step_down"})
         run.action_compute()
         # both auxiliaries fully closed
         self.assertEqual(self._line(run, aux1).cost_residual, 0.0)
@@ -113,7 +118,7 @@ class TestClosing(TransactionCase):
         self._service(aux2, aux1, 10)
         self._service(aux2, z, 45)
         self._service(aux2, y, 45)
-        run = self.Run.create({"method": "reciprocal"})
+        run = self.Run.create({**self.period, "method": "reciprocal"})
         run.action_compute()
         self.assertEqual(self._line(run, aux1).cost_residual, 0.0)
         self.assertEqual(self._line(run, aux2).cost_residual, 0.0)
@@ -132,7 +137,7 @@ class TestClosing(TransactionCase):
         self._cost(aux, 3600)
         self._service(aux, z, 60)
         self._service(aux, y, 60)
-        run = self.Run.create({"method": "direct"})
+        run = self.Run.create({**self.period, "method": "direct"})
         run.action_compute()
         n1 = len(run.line_ids)
         z1 = self._line(run, z).cost_received
@@ -145,7 +150,7 @@ class TestClosing(TransactionCase):
         aux = self._center("Aux senza base", "auxiliary")
         self._center("Z", "final")
         self._cost(aux, 1000)  # ha costo ma nessun servizio erogato
-        run = self.Run.create({"method": "direct"})
+        run = self.Run.create({**self.period, "method": "direct"})
         with self.assertRaises(ValidationError):
             run.action_compute()
 
@@ -162,7 +167,7 @@ class TestClosing(TransactionCase):
         self._cost(aux, 3600)
         self._service(aux, z, 60)
         self._service(aux, y, 60)
-        run = self.Run.create({"method": "direct"})
+        run = self.Run.create({**self.period, "method": "direct"})
         run.with_user(user).action_compute()
         self.assertTrue(run.line_ids)
         self.assertEqual(run.state, "done")
@@ -176,6 +181,6 @@ class TestClosing(TransactionCase):
         self._cost(aux2, 1000)
         self._service(aux1, aux2, 50)
         self._service(aux2, aux1, 50)
-        run = self.Run.create({"method": "reciprocal"})
+        run = self.Run.create({**self.period, "method": "reciprocal"})
         with self.assertRaises(ValidationError):
             run.action_compute()

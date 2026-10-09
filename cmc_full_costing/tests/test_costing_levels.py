@@ -25,7 +25,8 @@ class TestCostingLevels(TransactionCase):
         )
         cls._cost(cls.comm, 200)
         cls.closing = cls.env["cmc.closing.run"].create(
-            {"name": "Chiusura", "method": "direct"}
+            {"name": "Chiusura", "method": "direct",
+             "date_from": date(date.today().year, 1, 1), "date_to": date(date.today().year, 12, 31)}
         )
         cls.closing.action_compute()
         cls.p1 = cls.env["product.product"].create({"name": "P1", "standard_price": 50})
@@ -157,8 +158,8 @@ class TestCostingLevels(TransactionCase):
                 "name": "Costing 2026",
                 "closing_run_id": self.closing.id,
                 "base": "multiple",
-                "date_from": date(2026, 1, 1),
-                "date_to": date(2026, 1, 31),
+                "date_from": date(date.today().year, 1, 1),
+                "date_to": date(date.today().year, 1, 31),
                 "product_ids": [(6, 0, (self.p1 | self.p2).ids)],
                 "line_ids": [
                     (0, 0, {"center_id": self.z.id, "product_id": self.p1.id,

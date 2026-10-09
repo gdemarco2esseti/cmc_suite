@@ -22,7 +22,8 @@ class TestCosting(TransactionCase):
         cls._cost(cls.w, 600)
         # closing run -> final centers absorb their own cost (no auxiliaries)
         cls.closing = cls.env["cmc.closing.run"].create(
-            {"name": "Chiusura", "method": "direct"}
+            {"name": "Chiusura", "method": "direct",
+             "date_from": date(date.today().year, 1, 1), "date_to": date(date.today().year, 12, 31)}
         )
         cls.closing.action_compute()
         # products with a direct (primo) cost

@@ -63,7 +63,7 @@ class CmcCostingRun(models.Model):
         closing must not be combined with Q3 period costs."""
         for run in self:
             closing = run.closing_run_id
-            if closing.date_from and run.date_from < closing.date_from:
+            if run.date_from < closing.date_from:
                 raise ValidationError(
                     self.env._(
                         "The costing period of %(name)s starts before its closing "
@@ -72,7 +72,7 @@ class CmcCostingRun(models.Model):
                         start=closing.date_from,
                     )
                 )
-            if closing.date_to and run.date_to > closing.date_to:
+            if run.date_to > closing.date_to:
                 raise ValidationError(
                     self.env._(
                         "The costing period of %(name)s ends after its closing "

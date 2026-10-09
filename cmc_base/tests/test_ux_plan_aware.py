@@ -1,3 +1,5 @@
+from datetime import date
+
 from odoo.tests.common import TransactionCase, tagged
 
 
@@ -11,6 +13,9 @@ class TestPlanAware(TransactionCase):
         cls.AA = cls.env["account.analytic.account"]
         cls.AL = cls.env["account.analytic.line"]
         cls.driver = cls.env["cmc.cost.driver"].create({"name": "Ore", "code": "H"})
+        # closing runs always carry a period: the whole current year covers
+        # the analytic lines below (dated today by default)
+        cls.period = {"date_from": date(date.today().year, 1, 1), "date_to": date(date.today().year, 12, 31)}
         # a root plan whose cost column is NOT the default account_id
         roots = cls.env["account.analytic.plan"].search([("parent_id", "=", False)])
         cls.plan_alt = roots.filtered(lambda p: p._column_name() != "account_id")[:1]
@@ -36,7 +41,7 @@ class TestPlanAware(TransactionCase):
             {"provider_id": aux.id, "receiver_id": z.id,
              "driver_id": self.driver.id, "quantity": 10}
         )
-        run = self.env["cmc.closing.run"].create({"name": "r", "method": "direct"})
+        run = self.env["cmc.closing.run"].create({"name": "r", "method": "direct", **self.period})
         run.action_compute()
         zline = run.line_ids.filtered(lambda l: l.center_id == z)
         aline = run.line_ids.filtered(lambda l: l.center_id == aux)
@@ -50,7 +55,7 @@ class TestPlanAware(TransactionCase):
         )
         el = self.env["cmc.cost.element"].create({"name": "Mat", "code": "MZ"})
         self._make_cost(z, 700, element=el)
-        run = self.env["cmc.closing.run"].create({"name": "rq", "method": "direct"})
+        run = self.env["cmc.closing.run"].create({"name": "rq", "method": "direct", **self.period})
         run.action_compute()
         pre = run.cost_analysis_ids.filtered(
             lambda l: l.center_id == z and l.state == "pre"

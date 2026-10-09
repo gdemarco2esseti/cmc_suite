@@ -1,3 +1,5 @@
+from datetime import date
+
 from odoo.tests.common import TransactionCase, tagged
 
 
@@ -26,7 +28,8 @@ class TestCostAnalysis(TransactionCase):
         cls._service(cls.manut, cls.y, 60)
 
         cls.crun = cls.env["cmc.closing.run"].create(
-            {"name": "Chiusura", "method": "direct"}
+            {"name": "Chiusura", "method": "direct",
+             "date_from": date(date.today().year, 1, 1), "date_to": date(date.today().year, 12, 31)}
         )
         cls.crun.action_compute()
 

@@ -14,6 +14,9 @@ class TestFullCostingExtra(TransactionCase):
         cls.AA = cls.env["account.analytic.account"]
         cls.AL = cls.env["account.analytic.line"]
         cls.driver = cls.env["cmc.cost.driver"].create({"name": "Ore", "code": "H"})
+        # closing runs always carry a period: the whole current year covers
+        # the analytic lines below (dated today by default)
+        cls.period = {"date_from": date(date.today().year, 1, 1), "date_to": date(date.today().year, 12, 31)}
         roots = cls.env["account.analytic.plan"].search([("parent_id", "=", False)])
         cls.plan_alt = roots.filtered(lambda p: p._column_name() != "account_id")[:1]
 
@@ -33,7 +36,7 @@ class TestFullCostingExtra(TransactionCase):
             {"name": "Zf", "plan_id": self.plan_alt.id, "cmc_center_type": "final"}
         )
         self._make_cost(z, 1000)
-        closing = self.env["cmc.closing.run"].create({"name": "rc", "method": "direct"})
+        closing = self.env["cmc.closing.run"].create({"name": "rc", "method": "direct", **self.period})
         closing.action_compute()
         p1 = self.env["product.product"].create({"name": "P1", "standard_price": 10})
         run = self.env["cmc.costing.run"].create(
@@ -54,7 +57,7 @@ class TestFullCostingExtra(TransactionCase):
             {"name": "Zd", "plan_id": self.plan_alt.id, "cmc_center_type": "final"}
         )
         self._make_cost(z, 100)
-        closing = self.env["cmc.closing.run"].create({"name": "rd", "method": "direct"})
+        closing = self.env["cmc.closing.run"].create({"name": "rd", "method": "direct", **self.period})
         closing.action_compute()
         p = self.env["product.product"].create({"name": "Pd", "standard_price": 5})
         with self.assertRaises(Exception):

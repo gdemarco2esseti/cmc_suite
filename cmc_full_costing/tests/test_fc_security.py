@@ -66,7 +66,8 @@ class TestFullCostingSecurity(TransactionCase):
             {"name": "FC product %s" % company.name, "standard_price": 10}
         )
         closing = env["cmc.closing.run"].create(
-            {"name": "cl", "method": "direct", "company_id": company.id}
+            {"name": "cl", "method": "direct", "company_id": company.id,
+             "date_from": date(date.today().year, 1, 1), "date_to": date(date.today().year, 12, 31)}
         )
         closing.action_compute()
         run = env["cmc.costing.run"].create(

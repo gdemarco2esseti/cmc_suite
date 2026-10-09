@@ -27,3 +27,4 @@ from . import test_wp01_step_down
 from . import test_wp01_capacity_levels
 from . import test_wp01_data_checks
 from . import test_wp01_responsible_security
+from . import test_attribute

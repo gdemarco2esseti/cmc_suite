@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_transfer_charge_list" model="ir.ui.view">
+        <field name="name">cmc.transfer.charge.list</field>
+        <field name="model">cmc.transfer.charge</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="provider_id"/>
+                <field name="criterion"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="transfer_price"/>
+                <field name="internal_margin_total"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_transfer_charge_form" model="ir.ui.view">
+        <field name="name">cmc.transfer.charge.form</field>
+        <field name="model">cmc.transfer.charge</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_compute" string="Compute" type="object" class="oe_highlight" invisible="state == 'done'"/>
+                    <button name="action_reset_to_draft" string="Reset to Draft" type="object" invisible="state != 'done'"
+                            confirm="Resetting deletes the posted chargeback lines. Continue?"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <h1><field name="name" readonly="state == 'done'"/></h1>
+                    <group>
+                        <group string="Service">
+                            <field name="company_id" groups="base.group_multi_company" readonly="state == 'done'"/>
+                            <field name="provider_id" readonly="state == 'done'"/>
+                            <field name="driver_id" readonly="state == 'done'"/>
+                            <field name="element_id" readonly="state == 'done'"/>
+                            <field name="date_from" readonly="state == 'done'"/>
+                            <field name="date_to" readonly="state == 'done'"/>
+                        </group>
+                        <group string="Transfer price">
+                            <field name="criterion" readonly="state == 'done'"/>
+                            <field name="markup_percent" invisible="criterion != 'cost_plus'" readonly="state == 'done'"/>
+                            <field name="market_price" invisible="criterion != 'market'" readonly="state == 'done'"/>
+                            <field name="negotiated_price" invisible="criterion != 'negotiated'" readonly="state == 'done'"/>
+                            <field name="abc_activity_id" invisible="criterion != 'abc'" required="criterion == 'abc'" readonly="state == 'done'"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <group string="Outcome" invisible="state != 'done'">
+                        <group>
+                            <field name="provider_cost"/>
+                            <field name="provider_variable_cost"/>
+                            <field name="service_units"/>
+                        </group>
+                        <group>
+                            <field name="unit_cost"/>
+                            <field name="unit_variable_cost"/>
+                            <field name="transfer_price"/>
+                            <field name="internal_margin_total"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Receivers" name="receivers">
+                            <field name="line_ids" readonly="state == 'done'">
+                                <list editable="bottom">
+                                    <field name="receiver_id"/>
+                                    <field name="quantity"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Results" name="results" invisible="state != 'done'">
+                            <field name="result_ids">
+                                <list>
+                                    <field name="receiver_id"/>
+                                    <field name="quantity"/>
+                                    <field name="cost_amount" sum="Cost"/>
+                                    <field name="charge_amount" sum="Charge"/>
+                                    <field name="internal_margin" sum="Internal margin"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Posted lines" name="posted" invisible="state != 'done'">
+                            <field name="posted_line_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_transfer_charge" model="ir.actions.act_window">
+        <field name="name">Chargeback Runs</field>
+        <field name="res_model">cmc.transfer.charge</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Price waterfall elements (configuration) -->
+    <record id="view_cmc_profit_price_element_list" model="ir.ui.view">
+        <field name="name">cmc.profit.price.element.list</field>
+        <field name="model">cmc.profit.price.element</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="account_ids" widget="many2many_tags"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cmc_profit_price_element" model="ir.actions.act_window">
+        <field name="name">Price Waterfall Elements</field>
+        <field name="res_model">cmc.profit.price.element</field>
+        <field name="view_mode">list</field>
+    </record>
+</odoo>

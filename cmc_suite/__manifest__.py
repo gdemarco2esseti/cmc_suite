@@ -18,6 +18,7 @@
         "cmc_hr_timesheet",
         "cmc_mrp",
         "cmc_budget",
+        "cmc_profitability",
     ],
     "installable": True,
     "application": True,

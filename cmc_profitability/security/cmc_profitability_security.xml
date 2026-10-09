@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- record rules live OUTSIDE noupdate: a domain fix must reach installed databases -->
+    <data>
+        <record id="cmc_profit_run_company_rule" model="ir.rule">
+            <field name="name">CMC profitability cmc.profit.run: multi-company</field>
+            <field name="model_id" ref="model_cmc_profit_run"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_profit_price_element_company_rule" model="ir.rule">
+            <field name="name">CMC profitability cmc.profit.price.element: multi-company</field>
+            <field name="model_id" ref="model_cmc_profit_price_element"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_profit_sbu_input_company_rule" model="ir.rule">
+            <field name="name">CMC profitability cmc.profit.sbu.input: multi-company</field>
+            <field name="model_id" ref="model_cmc_profit_sbu_input"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_profit_fact_company_rule" model="ir.rule">
+            <field name="name">CMC profitability cmc.profit.fact: multi-company</field>
+            <field name="model_id" ref="model_cmc_profit_fact"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_profit_product_company_rule" model="ir.rule">
+            <field name="name">CMC profitability cmc.profit.product: multi-company</field>
+            <field name="model_id" ref="model_cmc_profit_product"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_profit_customer_company_rule" model="ir.rule">
+            <field name="name">CMC profitability cmc.profit.customer: multi-company</field>
+            <field name="model_id" ref="model_cmc_profit_customer"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_profit_channel_company_rule" model="ir.rule">
+            <field name="name">CMC profitability cmc.profit.channel: multi-company</field>
+            <field name="model_id" ref="model_cmc_profit_channel"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_profit_waterfall_company_rule" model="ir.rule">
+            <field name="name">CMC profitability cmc.profit.waterfall: multi-company</field>
+            <field name="model_id" ref="model_cmc_profit_waterfall"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_profit_supplier_company_rule" model="ir.rule">
+            <field name="name">CMC profitability cmc.profit.supplier: multi-company</field>
+            <field name="model_id" ref="model_cmc_profit_supplier"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_profit_sbu_company_rule" model="ir.rule">
+            <field name="name">CMC profitability cmc.profit.sbu: multi-company</field>
+            <field name="model_id" ref="model_cmc_profit_sbu"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_transfer_charge_company_rule" model="ir.rule">
+            <field name="name">CMC profitability cmc.transfer.charge: multi-company</field>
+            <field name="model_id" ref="model_cmc_transfer_charge"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_transfer_charge_line_company_rule" model="ir.rule">
+            <field name="name">CMC profitability cmc.transfer.charge.line: multi-company</field>
+            <field name="model_id" ref="model_cmc_transfer_charge_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_transfer_charge_result_company_rule" model="ir.rule">
+            <field name="name">CMC profitability cmc.transfer.charge.result: multi-company</field>
+            <field name="model_id" ref="model_cmc_transfer_charge_result"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+    </data>
+</odoo>

@@ -19,14 +19,14 @@ class TestFinEngine(FinAnalysisCommon):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.run = cls._run(2024, 2026, ateco_code="25.62")
-        cls.run.action_compute()
+        cls.analysis = cls._run(2024, 2026, ateco_code="25.62")
+        cls.analysis.action_compute()
 
     # ---- FIN-01 balance sheet -------------------------------------------------------------------
 
     def test_bs_financial_criterion_2026(self):
         # FIN-01: SP finanziario, current = within 12 months; PN includes the year and undistributed results
-        self.assertValues(self.run, 2026, {
+        self.assertValues(self.analysis, 2026, {
             "intangible": 6000, "tangible": 220000, "other_op_nc": 0, "fin_assets_nc": 25000,
             "inv_raw": 33000, "inv_finished": 30000, "inventory": 63000, "receivables": 150000,
             "other_op_c": 11000, "fin_assets_c": 5000, "cash": 77000,
@@ -47,26 +47,26 @@ class TestFinEngine(FinAnalysisCommon):
                    "pfn": 3000, "pfn_nc": 65000, "pfn_c": -62000},
         }
         for year, values in expected.items():
-            self.assertValues(self.run, year, values)
-            self.assertAlmostEqual(self._val(self.run, "coin", year),
-                                   self._val(self.run, "equity", year) + self._val(self.run, "pfn", year), places=2)
-            self.assertAlmostEqual(self._val(self.run, "total_assets", year), self._val(self.run, "total_sources", year), places=2)
+            self.assertValues(self.analysis, year, values)
+            self.assertAlmostEqual(self._val(self.analysis, "coin", year),
+                                   self._val(self.analysis, "equity", year) + self._val(self.analysis, "pfn", year), places=2)
+            self.assertAlmostEqual(self._val(self.analysis, "total_assets", year), self._val(self.analysis, "total_sources", year), places=2)
 
     def test_every_account_line_has_a_row_every_year(self):
         # result snapshot: an empty line is a 0 row, not a missing row (stable multi-year table)
         bs = self.schemes["scheme_bs_functional"]
         for year in (2024, 2025, 2026):
             for line in bs.line_ids.filtered(lambda line: line.line_type == "account"):
-                self._row(self.run, line.code, year)
-        self.assertEqual(self._val(self.run, "provisions", 2026), 0.0)
+                self._row(self.analysis, line.code, year)
+        self.assertEqual(self._val(self.analysis, "provisions", 2026), 0.0)
 
     # ---- AD-116 historical import ---------------------------------------------------------------
 
     def test_history_year_wins_over_gl(self):
         # AD-116: a year with imported balances ignores the GL (the 999 noise entry of 2024)
-        self.assertEqual(self._row(self.run, "revenue", 2024).source, "history")
-        self.assertEqual(self._row(self.run, "revenue", 2025).source, "gl")
-        self.assertValues(self.run, 2024, {"revenue": 1000000, "services": 200000})
+        self.assertEqual(self._row(self.analysis, "revenue", 2024).source, "history")
+        self.assertEqual(self._row(self.analysis, "revenue", 2025).source, "gl")
+        self.assertValues(self.analysis, 2024, {"revenue": 1000000, "services": 200000})
 
     def test_history_import_through_standard_load(self):
         # AD-116: prior years come from a file through the standard import (account by code)
@@ -92,7 +92,7 @@ class TestFinEngine(FinAnalysisCommon):
 
     def test_pl_value_added_2026(self):
         # FIN-03: VP - external costs = VA - personnel = MOL - non-cash = MON +/- financial = ... = net income
-        self.assertValues(self.run, 2026, {
+        self.assertValues(self.analysis, 2026, {
             "revenue": 1200000, "fg_inv_change": 6000, "production_value": 1206000, "purchases": 480000,
             "raw_inv_change": 3000, "services": 220000, "external_costs": 703000, "value_added": 503000,
             "personnel": 270000, "ebitda": 233000, "severance": 24000, "depreciation": 47000, "non_cash": 71000,
@@ -103,20 +103,20 @@ class TestFinEngine(FinAnalysisCommon):
 
     def test_pl_value_added_earlier_years(self):
         # FIN-03 / FIN-05: same scheme on the history year and on the first GL year
-        self.assertValues(self.run, 2024, {"value_added": 400000, "ebitda": 150000, "mon": 90000, "net_income": 60000})
-        self.assertValues(self.run, 2025, {"raw_inv_change": -6000, "value_added": 450000, "ebitda": 190000,
+        self.assertValues(self.analysis, 2024, {"value_added": 400000, "ebitda": 150000, "mon": 90000, "net_income": 60000})
+        self.assertValues(self.analysis, 2025, {"raw_inv_change": -6000, "value_added": 450000, "ebitda": 190000,
                                            "mon": 126000, "net_income": 88000})
 
     def test_pl_cost_of_sales_2026(self):
         # FIN-04: R - COGS = industrial margin - overheads = operating result; reconciles to net income
-        self.assertValues(self.run, 2026, {
+        self.assertValues(self.analysis, 2026, {
             "cs_revenue": 1200000, "cs_cogs": 818000, "cs_industrial_margin": 382000, "cs_overheads": 220000,
             "cs_operating_result": 162000, "cs_other": -46000, "cs_net_income": 116000,
         })
 
     def test_pl_contribution_uses_account_behavior_2026(self):
         # FIN-04 / AD-116: variable vs fixed from the cmc_account classification rules
-        self.assertValues(self.run, 2026, {
+        self.assertValues(self.analysis, 2026, {
             "cm_revenue": 1206000, "cm_variable": 483000, "cm_margin": 723000, "cm_fixed": 561000,
             "cm_operating_result": 162000, "cm_other": -46000, "cm_net_income": 116000,
         })
@@ -125,22 +125,22 @@ class TestFinEngine(FinAnalysisCommon):
 
     def test_common_size_and_year_on_year(self):
         # FIN-05: row / base of its scheme; var% = (X_t - X_t-1) / X_t-1
-        self.assertAlmostEqual(self._row(self.run, "value_added", 2026).common_size_pct, 503000 / 1200000 * 100, places=4)
-        self.assertAlmostEqual(self._row(self.run, "revenue", 2026).common_size_pct, 100.0, places=4)
-        self.assertAlmostEqual(self._row(self.run, "receivables", 2026).common_size_pct, 150000 / 557000 * 100, places=4)
-        revenue_2026 = self._row(self.run, "revenue", 2026)
+        self.assertAlmostEqual(self._row(self.analysis, "value_added", 2026).common_size_pct, 503000 / 1200000 * 100, places=4)
+        self.assertAlmostEqual(self._row(self.analysis, "revenue", 2026).common_size_pct, 100.0, places=4)
+        self.assertAlmostEqual(self._row(self.analysis, "receivables", 2026).common_size_pct, 150000 / 557000 * 100, places=4)
+        revenue_2026 = self._row(self.analysis, "revenue", 2026)
         self.assertTrue(revenue_2026.yoy_computable)
         self.assertAlmostEqual(revenue_2026.yoy_pct, 100000 / 1100000 * 100, places=4)
-        self.assertAlmostEqual(self._row(self.run, "revenue", 2025).yoy_pct, 10.0, places=4)
-        self.assertFalse(self._row(self.run, "revenue", 2024).yoy_computable)
-        self.assertFalse(self._row(self.run, "other_op_nc", 2026).yoy_computable)
+        self.assertAlmostEqual(self._row(self.analysis, "revenue", 2025).yoy_pct, 10.0, places=4)
+        self.assertFalse(self._row(self.analysis, "revenue", 2024).yoy_computable)
+        self.assertFalse(self._row(self.analysis, "other_op_nc", 2026).yoy_computable)
 
     def test_sector_benchmark_attached_to_ratio(self):
         # FIN-05: imported ATECO benchmark sits next to the company ratio
-        roe = self._ratio(self.run, "roe", 2026)
+        roe = self._ratio(self.analysis, "roe", 2026)
         self.assertTrue(roe.has_benchmark)
         self.assertAlmostEqual(roe.benchmark, 0.15)
-        self.assertFalse(self._ratio(self.run, "roe", 2025).has_benchmark)
+        self.assertFalse(self._ratio(self.analysis, "roe", 2025).has_benchmark)
 
     # ---- FIN-06..FIN-08 ratios ----------------------------------------------------------------------
 
@@ -148,7 +148,7 @@ class TestFinEngine(FinAnalysisCommon):
         # FIN-06: margine di tesoreria, CCN, quick/current ratio, DSO/DPO/DIO and commercial cycle
         dso, dpo = 45.0, 360 * 95000 / 700000
         dio_raw, dio_finished = 360 * 33000 / 483000, 360 * 30000 / 818000
-        self.assertRatios(self.run, 2026, {
+        self.assertRatios(self.analysis, 2026, {
             "treasury_margin": 100000, "quick_ratio": 243000 / 143000, "nwc": 163000,
             "current_ratio": 306000 / 143000, "dso": dso, "dpo": dpo, "dio_raw": dio_raw,
             "dio_finished": dio_finished, "commercial_cycle": dso + dio_raw + dio_finished - dpo,
@@ -157,7 +157,7 @@ class TestFinEngine(FinAnalysisCommon):
 
     def test_solidity_ratios_2026(self):
         # FIN-07: autonomy, D/E on PFN, structure margin, coverage of fixed assets and of interest
-        self.assertRatios(self.run, 2026, {
+        self.assertRatios(self.analysis, 2026, {
             "autonomy": 274000 / 557000, "debt_equity": 3000 / 274000, "structure_margin": 23000,
             "fixed_asset_coverage": 274000 / 251000, "interest_coverage": 29.125, "debt_coverage": 233000 / 110000,
             "financing_intensity": 110000 / 1200000, "nc_asset_weight": 251000 / 557000,
@@ -165,50 +165,50 @@ class TestFinEngine(FinAnalysisCommon):
 
     def test_profitability_dupont_and_leverage_2026(self):
         # FIN-08: ROE/ROA/ROI/ROIop/ROS/ROD; ROIop = ROS x turnover; ROE = [ROI+(ROI-ROD)D/E] x S x I
-        self.assertRatios(self.run, 2026, {
+        self.assertRatios(self.analysis, 2026, {
             "roe": 116000 / 274000, "roe_avg": 116000 / 231000, "roa": 162000 / 557000, "roi": 164000 / 384000,
             "roi_op": 162000 / 277000, "ros": 0.135, "op_turnover": 1200000 / 277000, "rod": 8000 / 110000,
             "lev_s": 1.0, "lev_i": 116000 / 156000, "va_per_employee": 50300,
         })
-        ratio = {code: self._ratio(self.run, code, 2026).value for code in ("roi_op", "ros", "op_turnover", "roe", "roe_leverage")}
+        ratio = {code: self._ratio(self.analysis, code, 2026).value for code in ("roi_op", "ros", "op_turnover", "roe", "roe_leverage")}
         self.assertAlmostEqual(ratio["roi_op"], ratio["ros"] * ratio["op_turnover"], places=9)
         self.assertAlmostEqual(ratio["roe_leverage"], ratio["roe"], places=9)
 
     def test_ratio_without_previous_year_or_input_is_not_computable(self):
         # FIN-08 / FIN-11: missing prev year or typed input never yields a fake 0
         for code, year in (("roe_avg", 2024), ("wacc", 2025), ("va_per_employee", 2025)):
-            row = self._ratio(self.run, code, year)
+            row = self._ratio(self.analysis, code, year)
             self.assertEqual(row.status, "not_computable", "%s %s" % (code, year))
             self.assertEqual(row.value, 0.0)
-        self.assertEqual(self._ratio(self.run, "roe", 2024).status, "ok")
+        self.assertEqual(self._ratio(self.analysis, "roe", 2024).status, "ok")
 
     # ---- FIN-09 cash flow --------------------------------------------------------------------------
 
     def test_functional_cash_flow_reconciles_to_cash(self):
         # FIN-09: FCOC, FCO, FCFE by management area; delta cash reconciles with the balance sheet
-        self.assertValues(self.run, 2026, {
+        self.assertValues(self.analysis, 2026, {
             "cf_gross_self_financing": 209000, "cf_net_self_financing": 169000, "cf_fcoc": 162000,
             "cf_op_investment": 55000, "cf_fco": 107000, "cf_ordinary": 104000, "cf_debt_service": 104000,
             "cf_fcfe": 66000, "cf_cash_change": 36000, "cf_check": 0,
         })
         # 2025 reads 2024 from the history import as previous year
-        self.assertValues(self.run, 2025, {"cf_fcoc": 134000, "cf_fco": 84000, "cf_fcfe": 46000, "cf_cash_change": 26000, "cf_check": 0})
-        self.assertFalse(self.run.value_ids.filtered(lambda row: row.code == "cf_fco" and row.year == 2024))
+        self.assertValues(self.analysis, 2025, {"cf_fcoc": 134000, "cf_fco": 84000, "cf_fcfe": 46000, "cf_cash_change": 26000, "cf_check": 0})
+        self.assertFalse(self.analysis.value_ids.filtered(lambda row: row.code == "cf_fco" and row.year == 2024))
 
     def test_oic10_indirect_cash_flow_reconciles_to_cash(self):
         # FIN-09: OIC 10 indirect A (operating) + B (investing) + C (financing) = delta cash
-        self.assertValues(self.run, 2026, {
+        self.assertValues(self.analysis, 2026, {
             "oic_a1": 162000, "oic_a2": 233000, "oic_a3": 221000, "oic_a": 156000, "oic_b": -60000,
             "oic_c": -60000, "oic_delta": 36000, "oic_check": 0,
         })
-        self.assertValues(self.run, 2025, {"oic_a": 126000, "oic_b": -50000, "oic_c": -50000, "oic_delta": 26000, "oic_check": 0})
-        self.assertRatios(self.run, 2026, {"st_debt_coverage": 187000 / 20000})
+        self.assertValues(self.analysis, 2025, {"oic_a": 126000, "oic_b": -50000, "oic_c": -50000, "oic_delta": 26000, "oic_check": 0})
+        self.assertRatios(self.analysis, 2026, {"st_debt_coverage": 187000 / 20000})
 
     # ---- FIN-10 crisis -----------------------------------------------------------------------------
 
     def test_crisis_indicators_with_thresholds(self):
         # FIN-10: equity, economic and financial area; autonomy < 50% raises the alert
-        statuses = {code: self._ratio(self.run, code, 2026) for code in (
+        statuses = {code: self._ratio(self.analysis, code, 2026) for code in (
             "crisis_balance", "crisis_ccnop", "crisis_autonomy", "crisis_mon", "crisis_ebit_charges",
             "crisis_spread", "crisis_fco_debt",
         )}
@@ -218,7 +218,7 @@ class TestFinEngine(FinAnalysisCommon):
             "crisis_balance": "ok", "crisis_ccnop": "ok", "crisis_autonomy": "alert", "crisis_mon": "ok",
             "crisis_ebit_charges": "ok", "crisis_spread": "ok", "crisis_fco_debt": "ok",
         })
-        self.assertEqual(self._ratio(self.run, "crisis_fco_debt", 2024).status, "not_computable")
+        self.assertEqual(self._ratio(self.analysis, "crisis_fco_debt", 2024).status, "not_computable")
 
     # ---- FIN-11 value ------------------------------------------------------------------------------
 
@@ -226,8 +226,8 @@ class TestFinEngine(FinAnalysisCommon):
         # FIN-11: Ke = rf + beta (rm - rf); WACC on E = PN, D = PFN, Kd = ROD; EVA = NOPAT - WACC x COIN
         rod = 8000 / 110000
         wacc = 0.09 * 274000 / 277000 + rod * (1 - 0.24) * 3000 / 277000
-        self.assertRatios(self.run, 2026, {"ke": 0.09, "wacc": wacc, "nopat": 123120})
-        self.assertRatios(self.run, 2026, {"eva": 123120 - wacc * 277000}, places=2)
+        self.assertRatios(self.analysis, 2026, {"ke": 0.09, "wacc": wacc, "nopat": 123120})
+        self.assertRatios(self.analysis, 2026, {"eva": 123120 - wacc * 277000}, places=2)
 
     # ---- FIN-02 overrides / reduced mode -----------------------------------------------------------
 

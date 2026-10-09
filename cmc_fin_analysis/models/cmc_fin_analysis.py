@@ -9,6 +9,8 @@ from odoo.fields import Domain
 from odoo.tools import float_is_zero
 from odoo.tools.safe_eval import safe_eval
 
+from .cmc_fin_utils import split_codes
+
 THRESHOLD_OPS = {">": operator.gt, ">=": operator.ge, "<": operator.lt, "<=": operator.le}
 
 
@@ -114,11 +116,12 @@ class CmcFinAnalysis(models.Model):
         years = list(range(self.year_from, self.year_to + 1))
         schemes = self.scheme_ids.sorted(lambda scheme: (scheme.sequence, scheme.id))
         ratios = self._fin_ratios()
-        self._fin_check_codes(schemes, ratios)
+        inputs = self._fin_inputs(years)
+        self._fin_check_codes(schemes, ratios, inputs)
+        breaks = self._fin_breaks(years)
         balances = self._fin_balances(years)
         mapper = _Mapper(self, schemes, {acc for accounts, _source in balances.values() for acc in accounts})
         overrides = self._fin_overrides(schemes, years)
-        inputs = self._fin_inputs(years)
         benchmarks = self._fin_benchmarks(years)
         value_vals, ratio_vals = [], []
         prev = {}
@@ -150,6 +153,7 @@ class CmcFinAnalysis(models.Model):
                     "code": line.code, "sequence": line.sequence, "value": value, "source": source,
                     "common_size_pct": value / base * 100 if base else 0.0,
                     "yoy_computable": computable, "yoy_pct": (value - before) / before * 100 if computable else 0.0,
+                    "comparability_break": line.code in breaks.get(year, ()),
                 })
             prev = {line.code: value for _scheme, line, value in entries}
             ratio_vals += self._fin_ratio_vals(ratios, year, namespace, benchmarks)
@@ -161,8 +165,9 @@ class CmcFinAnalysis(models.Model):
         company_domain = Domain("company_id", "=", False) | Domain("company_id", "parent_of", self.company_id.id)
         return self.env["cmc.fin.ratio"].search(company_domain)
 
-    def _fin_check_codes(self, schemes, ratios):
+    def _fin_check_codes(self, schemes, ratios, inputs):
         counts = Counter(line.code for scheme in schemes for line in scheme.line_ids) + Counter(ratios.mapped("code"))
+        counts += Counter(code for year_inputs in inputs.values() for code in year_inputs)
         duplicates = sorted(code for code, count in counts.items() if count > 1)
         if duplicates:
             raise UserError(self.env._("These codes are defined more than once: %s", ", ".join(duplicates)))
@@ -249,6 +254,13 @@ class CmcFinAnalysis(models.Model):
             grouped[row["year"]][row["code"]] = row["value"]
         return grouped
 
+    def _fin_breaks(self, years):
+        """{year: {line code}} of the valuation-criteria changes of the run company."""
+        breaks = defaultdict(set)
+        for row in self.env["cmc.fin.criteria.change"].search_read([("company_id", "=", self.company_id.id), ("year", "in", years)], ["year", "line_codes"]):
+            breaks[row["year"]].update(split_codes(row["line_codes"]))
+        return breaks
+
     def _fin_benchmarks(self, years):
         if not self.ateco_code:
             return {}
@@ -273,6 +285,42 @@ class CmcFinAnalysis(models.Model):
             })
         return vals
 
+    # ---- report ---------------------------------------------------------
+
+    def _fin_report_data(self):
+        """Data of the QWeb report, built from the run's own rows in one read each (AD-114)."""
+        self.ensure_one()
+        values = defaultdict(lambda: defaultdict(dict))  # code -> field -> {year: x}
+        years = set()
+        for row in self.env["cmc.fin.analysis.value"].search_read([("run_id", "=", self.id)], ["code", "year", "value", "common_size_pct", "comparability_break"]):
+            years.add(row["year"])
+            values[row["code"]]["values"][row["year"]] = row["value"]
+            values[row["code"]]["common_size"][row["year"]] = row["common_size_pct"]
+            if row["comparability_break"]:
+                values[row["code"]]["breaks"][row["year"]] = True
+        schemes = [{
+            "scheme": scheme,
+            "lines": [{
+                "code": line.code, "name": line.name, "line_type": line.line_type,
+                "values": values[line.code]["values"], "common_size": values[line.code]["common_size"],
+                "breaks": sorted(values[line.code]["breaks"]),
+            } for line in scheme.line_ids.sorted(lambda line: (line.sequence, line.id))],
+        } for scheme in self.scheme_ids.sorted(lambda scheme: (scheme.sequence, scheme.id))]
+        rows = self.env["cmc.fin.ratio.value"].search_read([("run_id", "=", self.id)], ["ratio_id", "year", "value", "status", "benchmark", "has_benchmark"])
+        by_ratio = defaultdict(dict)
+        for row in rows:
+            years.add(row["year"])
+            by_ratio[row["ratio_id"][0]][row["year"]] = {
+                "value": row["value"], "status": row["status"], "benchmark": row["benchmark"] if row["has_benchmark"] else None,
+            }
+        Ratio = self.env["cmc.fin.ratio"]
+        labels = dict(Ratio._fields["area"]._description_selection(self.env))
+        by_area = defaultdict(list)
+        for ratio in Ratio.browse(by_ratio).sorted(lambda ratio: (ratio.sequence, ratio.id)):
+            by_area[ratio.area].append({"code": ratio.code, "name": ratio.name, "unit": ratio.unit, "values": by_ratio[ratio.id]})
+        ratios = [{"area": area, "area_label": label, "rows": by_area[area]} for area, label in labels.items() if by_area[area]]
+        return {"years": sorted(years), "schemes": schemes, "ratios": ratios}
+
 
 class CmcFinAnalysisValue(models.Model):
     _name = "cmc.fin.analysis.value"
@@ -288,11 +336,12 @@ class CmcFinAnalysisValue(models.Model):
     code = fields.Char(required=True)
     name = fields.Char(related="line_id.name")
     sequence = fields.Integer()
-    value = fields.Float()
+    value = fields.Float(aggregator="sum")
     source = fields.Selection([("gl", "General ledger"), ("history", "Imported history")])
     common_size_pct = fields.Float(aggregator="avg")
     yoy_pct = fields.Float(aggregator="avg")
     yoy_computable = fields.Boolean()
+    comparability_break = fields.Boolean(help="A valuation-criteria change makes this year, and its YoY, not comparable.")
 
 
 class CmcFinRatioValue(models.Model):

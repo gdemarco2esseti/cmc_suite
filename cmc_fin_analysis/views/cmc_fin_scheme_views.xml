@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_fin_scheme_list" model="ir.ui.view">
+        <field name="name">cmc.fin.scheme.list</field>
+        <field name="model">cmc.fin.scheme</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="scheme_type"/>
+                <field name="base_code"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_fin_scheme_form" model="ir.ui.view">
+        <field name="name">cmc.fin.scheme.form</field>
+        <field name="model">cmc.fin.scheme</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="scheme_type"/>
+                            <field name="base_code"/>
+                        </group>
+                        <group>
+                            <field name="sequence"/>
+                            <field name="active"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Lines" name="lines">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                    <field name="line_type"/>
+                                    <field name="formula" invisible="line_type != 'formula'"/>
+                                    <field name="sign"/>
+                                    <field name="result_line"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Mapping Rules" name="rules" invisible="scheme_type == 'cash_flow'">
+                            <field name="rule_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="line_id" domain="[('scheme_id', '=', parent.id), ('line_type', '=', 'account')]"/>
+                                    <field name="account_id"/>
+                                    <field name="account_code_prefix"/>
+                                    <field name="account_type"/>
+                                    <field name="cmc_behavior"/>
+                                    <field name="company_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cmc_fin_scheme_search" model="ir.ui.view">
+        <field name="name">cmc.fin.scheme.search</field>
+        <field name="model">cmc.fin.scheme</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="code"/>
+                <filter name="balance_sheet" string="Balance sheet" domain="[('scheme_type', '=', 'balance_sheet')]"/>
+                <filter name="income_statement" string="Income statement" domain="[('scheme_type', '=', 'income_statement')]"/>
+                <filter name="cash_flow" string="Cash flow" domain="[('scheme_type', '=', 'cash_flow')]"/>
+                <filter name="inactive" string="Archived" domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cmc_fin_scheme" model="ir.actions.act_window">
+        <field name="name">Schemes</field>
+        <field name="res_model">cmc.fin.scheme</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_cmc_fin_mapping_rule_list" model="ir.ui.view">
+        <field name="name">cmc.fin.mapping.rule.list</field>
+        <field name="model">cmc.fin.mapping.rule</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="scheme_id"/>
+                <field name="sequence" widget="handle"/>
+                <field name="line_id" domain="[('scheme_id', '=', scheme_id), ('line_type', '=', 'account')]"/>
+                <field name="account_id"/>
+                <field name="account_code_prefix"/>
+                <field name="account_type"/>
+                <field name="cmc_behavior"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_fin_mapping_rule_search" model="ir.ui.view">
+        <field name="name">cmc.fin.mapping.rule.search</field>
+        <field name="model">cmc.fin.mapping.rule</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="line_id"/>
+                <field name="account_id"/>
+                <field name="account_code_prefix"/>
+                <group>
+                    <filter name="group_scheme" string="Scheme" context="{'group_by': 'scheme_id'}"/>
+                    <filter name="group_line" string="Line" context="{'group_by': 'line_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cmc_fin_mapping_rule" model="ir.actions.act_window">
+        <field name="name">Mapping Rules</field>
+        <field name="res_model">cmc.fin.mapping.rule</field>
+        <field name="view_mode">list</field>
+    </record>
+</odoo>

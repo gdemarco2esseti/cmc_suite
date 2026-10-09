@@ -395,4 +395,84 @@
             <field name="threshold_op">&gt;</field>
             <field name="threshold">0</field>
         </record>
+        <record id="ratio_whatif_cycle" model="cmc.fin.ratio">
+            <field name="name">Target commercial cycle (what-if)</field>
+            <field name="code">whatif_cycle</field>
+            <field name="sequence">95</field>
+            <field name="area">liquidity</field>
+            <field name="unit">days</field>
+            <field name="expression">target_dso+target_dio_raw+target_dio_finished-target_dpo</field>
+            <field name="company_id" eval="False"/>
+            <field name="full_only" eval="True"/>
+        </record>
+        <record id="ratio_whatif_cash_release" model="cmc.fin.ratio">
+            <field name="name">Cash released by the target cycle (what-if)</field>
+            <field name="code">whatif_cash_release</field>
+            <field name="sequence">96</field>
+            <field name="area">liquidity</field>
+            <field name="unit">amount</field>
+            <field name="expression">(dso-target_dso)*revenue/360+(dio_raw-target_dio_raw)*raw_consumption/360+(dio_finished-target_dio_finished)*cs_cogs/360-(dpo-target_dpo)*(purchases+services)/360</field>
+            <field name="company_id" eval="False"/>
+            <field name="full_only" eval="True"/>
+        </record>
+        <record id="ratio_mva_cov" model="cmc.fin.ratio">
+            <field name="name">Market value added (current EVA / WACC)</field>
+            <field name="code">mva_cov</field>
+            <field name="sequence">352</field>
+            <field name="area">value</field>
+            <field name="unit">amount</field>
+            <field name="expression">eva/wacc</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_ev" model="cmc.fin.ratio">
+            <field name="name">Enterprise value</field>
+            <field name="code">ev</field>
+            <field name="sequence">353</field>
+            <field name="area">value</field>
+            <field name="unit">amount</field>
+            <field name="expression">coin+mva_cov</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_equity_value" model="cmc.fin.ratio">
+            <field name="name">Equity value</field>
+            <field name="code">equity_value</field>
+            <field name="sequence">354</field>
+            <field name="area">value</field>
+            <field name="unit">amount</field>
+            <field name="expression">ev-pfn</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="ratio_dq_intangible_growth" model="cmc.fin.ratio">
+            <field name="name">Intangible assets growth</field>
+            <field name="code">dq_intangible_growth</field>
+            <field name="sequence">430</field>
+            <field name="area">data_quality</field>
+            <field name="unit">amount</field>
+            <field name="expression">intangible-prev_intangible</field>
+            <field name="company_id" eval="False"/>
+            <field name="threshold_op">&lt;=</field>
+            <field name="threshold">0</field>
+        </record>
+        <record id="ratio_dq_inventory_vs_revenue" model="cmc.fin.ratio">
+            <field name="name">Inventory growth vs revenue growth</field>
+            <field name="code">dq_inventory_vs_revenue</field>
+            <field name="sequence">431</field>
+            <field name="area">data_quality</field>
+            <field name="unit">ratio</field>
+            <field name="expression">inventory/prev_inventory-revenue/prev_revenue</field>
+            <field name="company_id" eval="False"/>
+            <field name="threshold_op">&lt;=</field>
+            <field name="threshold">0</field>
+        </record>
+        <record id="ratio_dq_receivables_vs_revenue" model="cmc.fin.ratio">
+            <field name="name">Receivables growth vs revenue growth</field>
+            <field name="code">dq_receivables_vs_revenue</field>
+            <field name="sequence">432</field>
+            <field name="area">data_quality</field>
+            <field name="unit">ratio</field>
+            <field name="expression">receivables/prev_receivables-revenue/prev_revenue</field>
+            <field name="company_id" eval="False"/>
+            <field name="threshold_op">&lt;=</field>
+            <field name="threshold">0</field>
+        </record>
 </odoo>

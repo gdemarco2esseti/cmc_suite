@@ -1,6 +1,8 @@
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 
+from .cmc_fin_utils import split_codes
+
 
 class CmcFinOverride(models.Model):
     _name = "cmc.fin.override"
@@ -64,3 +66,24 @@ class CmcFinBenchmark(models.Model):
     year = fields.Integer(required=True, aggregator=False)
     ratio_id = fields.Many2one("cmc.fin.ratio", required=True, ondelete="cascade", check_company=True)
     value = fields.Float(aggregator="avg")
+
+
+class CmcFinCriteriaChange(models.Model):
+    _name = "cmc.fin.criteria.change"
+    _description = "Financial Analysis Valuation Criteria Change"
+    _order = "year desc, id"
+    _check_company_auto = True
+
+    company_id = fields.Many2one("res.company", required=True, default=lambda self: self.env.company, index=True)
+    year = fields.Integer(required=True, aggregator=False)
+    name = fields.Char(required=True)
+    reason = fields.Text()
+    line_codes = fields.Char(required=True, help="Comma-separated codes of the scheme lines whose value is not comparable.")
+
+    @api.constrains("line_codes")
+    def _check_line_codes(self):
+        known = {code for [code] in self.env["cmc.fin.scheme.line"]._read_group([], ["code"])}
+        for change in self:
+            unknown = [code for code in split_codes(change.line_codes) if code not in known]
+            if unknown:
+                raise ValidationError(self.env._("Unknown scheme line codes: %s", ", ".join(unknown)))

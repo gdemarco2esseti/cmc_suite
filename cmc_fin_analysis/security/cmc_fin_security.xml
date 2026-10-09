@@ -50,6 +50,12 @@
             <field name="global" eval="True"/>
             <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
         </record>
+        <record id="cmc_fin_criteria_change_company_rule" model="ir.rule">
+            <field name="name">CMC financial analysis criteria change: multi-company</field>
+            <field name="model_id" ref="model_cmc_fin_criteria_change"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
         <record id="cmc_fin_analysis_company_rule" model="ir.rule">
             <field name="name">CMC financial analysis analysis: multi-company</field>
             <field name="model_id" ref="model_cmc_fin_analysis"/>

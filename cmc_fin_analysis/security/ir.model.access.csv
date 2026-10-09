@@ -21,3 +21,5 @@ access_cmc_fin_analysis_value_user,cmc.fin.analysis.value.user,model_cmc_fin_ana
 access_cmc_fin_analysis_value_manager,cmc.fin.analysis.value.manager,model_cmc_fin_analysis_value,cmc_base.group_cmc_manager,1,0,0,0
 access_cmc_fin_ratio_value_user,cmc.fin.ratio.value.user,model_cmc_fin_ratio_value,cmc_base.group_cmc_user,1,0,0,0
 access_cmc_fin_ratio_value_manager,cmc.fin.ratio.value.manager,model_cmc_fin_ratio_value,cmc_base.group_cmc_manager,1,0,0,0
+access_cmc_fin_criteria_change_user,cmc.fin.criteria.change.user,model_cmc_fin_criteria_change,cmc_base.group_cmc_user,1,1,1,1
+access_cmc_fin_criteria_change_manager,cmc.fin.criteria.change.manager,model_cmc_fin_criteria_change,cmc_base.group_cmc_manager,1,1,1,1

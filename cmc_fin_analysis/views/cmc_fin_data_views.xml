@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Choices register -->
+    <record id="view_cmc_fin_override_list" model="ir.ui.view">
+        <field name="name">cmc.fin.override.list</field>
+        <field name="model">cmc.fin.override</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="year"/>
+                <field name="scheme_id"/>
+                <field name="account_id"/>
+                <field name="line_id" domain="[('scheme_id', '=', scheme_id), ('line_type', '=', 'account')]"/>
+                <field name="amount"/>
+                <field name="reason"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_fin_override_search" model="ir.ui.view">
+        <field name="name">cmc.fin.override.search</field>
+        <field name="model">cmc.fin.override</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="account_id"/>
+                <field name="line_id"/>
+                <field name="year"/>
+                <group>
+                    <filter name="group_year" string="Year" context="{'group_by': 'year'}"/>
+                    <filter name="group_scheme" string="Scheme" context="{'group_by': 'scheme_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cmc_fin_override" model="ir.actions.act_window">
+        <field name="name">Choices Register</field>
+        <field name="res_model">cmc.fin.override</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <!-- Historical balances -->
+    <record id="view_cmc_fin_history_list" model="ir.ui.view">
+        <field name="name">cmc.fin.history.list</field>
+        <field name="model">cmc.fin.history</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="year"/>
+                <field name="account_id"/>
+                <field name="balance" sum="Total"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_fin_history_search" model="ir.ui.view">
+        <field name="name">cmc.fin.history.search</field>
+        <field name="model">cmc.fin.history</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="account_id"/>
+                <field name="year"/>
+                <group>
+                    <filter name="group_year" string="Year" context="{'group_by': 'year'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cmc_fin_history" model="ir.actions.act_window">
+        <field name="name">Historical Balances</field>
+        <field name="res_model">cmc.fin.history</field>
+        <field name="view_mode">list</field>
+        <field name="context">{'search_default_group_year': 1}</field>
+    </record>
+
+    <!-- Reference inputs -->
+    <record id="view_cmc_fin_input_list" model="ir.ui.view">
+        <field name="name">cmc.fin.input.list</field>
+        <field name="model">cmc.fin.input</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="year"/>
+                <field name="code"/>
+                <field name="value"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_fin_input_search" model="ir.ui.view">
+        <field name="name">cmc.fin.input.search</field>
+        <field name="model">cmc.fin.input</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="code"/>
+                <field name="year"/>
+                <group>
+                    <filter name="group_year" string="Year" context="{'group_by': 'year'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cmc_fin_input" model="ir.actions.act_window">
+        <field name="name">Reference Inputs</field>
+        <field name="res_model">cmc.fin.input</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <!-- Sector benchmarks -->
+    <record id="view_cmc_fin_benchmark_list" model="ir.ui.view">
+        <field name="name">cmc.fin.benchmark.list</field>
+        <field name="model">cmc.fin.benchmark</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="ateco_code"/>
+                <field name="year"/>
+                <field name="ratio_id"/>
+                <field name="value"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_fin_benchmark_search" model="ir.ui.view">
+        <field name="name">cmc.fin.benchmark.search</field>
+        <field name="model">cmc.fin.benchmark</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="ateco_code"/>
+                <field name="ratio_id"/>
+                <field name="year"/>
+                <group>
+                    <filter name="group_ateco" string="Sector (ATECO)" context="{'group_by': 'ateco_code'}"/>
+                    <filter name="group_year" string="Year" context="{'group_by': 'year'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cmc_fin_benchmark" model="ir.actions.act_window">
+        <field name="name">Sector Benchmarks</field>
+        <field name="res_model">cmc.fin.benchmark</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <!-- Valuation-criteria changes -->
+    <record id="view_cmc_fin_criteria_change_list" model="ir.ui.view">
+        <field name="name">cmc.fin.criteria.change.list</field>
+        <field name="model">cmc.fin.criteria.change</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="year"/>
+                <field name="name"/>
+                <field name="line_codes"/>
+                <field name="reason"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cmc_fin_criteria_change" model="ir.actions.act_window">
+        <field name="name">Criteria Changes</field>
+        <field name="res_model">cmc.fin.criteria.change</field>
+        <field name="view_mode">list</field>
+    </record>
+</odoo>

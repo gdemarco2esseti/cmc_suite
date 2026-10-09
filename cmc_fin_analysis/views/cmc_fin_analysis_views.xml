@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Values (year = column, never summed) -->
+    <record id="view_cmc_fin_value_list" model="ir.ui.view">
+        <field name="name">cmc.fin.analysis.value.list</field>
+        <field name="model">cmc.fin.analysis.value</field>
+        <field name="arch" type="xml">
+            <list create="false" edit="false" delete="false">
+                <field name="run_id"/>
+                <field name="scheme_id"/>
+                <field name="name"/>
+                <field name="year"/>
+                <field name="value"/>
+                <field name="common_size_pct"/>
+                <field name="yoy_pct" invisible="not yoy_computable"/>
+                <field name="yoy_computable" column_invisible="1"/>
+                <field name="comparability_break" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_fin_value_pivot" model="ir.ui.view">
+        <field name="name">cmc.fin.analysis.value.pivot</field>
+        <field name="model">cmc.fin.analysis.value</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="scheme_id" type="row"/>
+                <field name="line_id" type="row"/>
+                <field name="year" type="col"/>
+                <field name="value" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_cmc_fin_value_graph" model="ir.ui.view">
+        <field name="name">cmc.fin.analysis.value.graph</field>
+        <field name="model">cmc.fin.analysis.value</field>
+        <field name="arch" type="xml">
+            <graph type="line">
+                <field name="year"/>
+                <field name="line_id"/>
+                <field name="value" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_cmc_fin_value_search" model="ir.ui.view">
+        <field name="name">cmc.fin.analysis.value.search</field>
+        <field name="model">cmc.fin.analysis.value</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="run_id"/>
+                <field name="line_id"/>
+                <field name="scheme_id"/>
+                <field name="year"/>
+                <filter name="breaks" string="Comparability breaks" domain="[('comparability_break', '=', True)]"/>
+                <group>
+                    <filter name="group_scheme" string="Scheme" context="{'group_by': 'scheme_id'}"/>
+                    <filter name="group_year" string="Year" context="{'group_by': 'year'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cmc_fin_value" model="ir.actions.act_window">
+        <field name="name">Values</field>
+        <field name="res_model">cmc.fin.analysis.value</field>
+        <field name="view_mode">pivot,graph,list</field>
+    </record>
+
+    <!-- Ratio values -->
+    <record id="view_cmc_fin_ratio_value_list" model="ir.ui.view">
+        <field name="name">cmc.fin.ratio.value.list</field>
+        <field name="model">cmc.fin.ratio.value</field>
+        <field name="arch" type="xml">
+            <list create="false" edit="false" delete="false"
+                  decoration-danger="status == 'alert'" decoration-muted="status == 'not_computable'">
+                <field name="run_id"/>
+                <field name="name"/>
+                <field name="area" column_invisible="1"/>
+                <field name="year"/>
+                <field name="value" invisible="status == 'not_computable'"/>
+                <field name="status" widget="badge"
+                       decoration-success="status == 'ok'" decoration-danger="status == 'alert'"
+                       decoration-muted="status == 'not_computable'"/>
+                <field name="threshold_op"/>
+                <field name="threshold" invisible="not threshold_op"/>
+                <field name="benchmark" invisible="not has_benchmark"/>
+                <field name="has_benchmark" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_fin_ratio_value_pivot" model="ir.ui.view">
+        <field name="name">cmc.fin.ratio.value.pivot</field>
+        <field name="model">cmc.fin.ratio.value</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="area" type="row"/>
+                <field name="ratio_id" type="row"/>
+                <field name="year" type="col"/>
+                <field name="value" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_cmc_fin_ratio_value_search" model="ir.ui.view">
+        <field name="name">cmc.fin.ratio.value.search</field>
+        <field name="model">cmc.fin.ratio.value</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="run_id"/>
+                <field name="ratio_id"/>
+                <field name="year"/>
+                <filter name="alert" string="Alerts" domain="[('status', '=', 'alert')]"/>
+                <filter name="not_computable" string="Not computable" domain="[('status', '=', 'not_computable')]"/>
+                <group>
+                    <filter name="group_area" string="Area" context="{'group_by': 'area'}"/>
+                    <filter name="group_status" string="Status" context="{'group_by': 'status'}"/>
+                    <filter name="group_year" string="Year" context="{'group_by': 'year'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cmc_fin_ratio_value" model="ir.actions.act_window">
+        <field name="name">Ratio Values</field>
+        <field name="res_model">cmc.fin.ratio.value</field>
+        <field name="view_mode">list,pivot</field>
+        <field name="context">{'search_default_group_area': 1}</field>
+    </record>
+
+    <record id="action_cmc_fin_crisis" model="ir.actions.act_window">
+        <field name="name">Crisis Panel</field>
+        <field name="res_model">cmc.fin.ratio.value</field>
+        <field name="view_mode">list,pivot</field>
+        <field name="domain">[('area', 'in', ['crisis', 'data_quality'])]</field>
+        <field name="context">{'search_default_group_area': 1}</field>
+    </record>
+
+    <!-- Run -->
+    <record id="view_cmc_fin_analysis_list" model="ir.ui.view">
+        <field name="name">cmc.fin.analysis.list</field>
+        <field name="model">cmc.fin.analysis</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="year_from"/>
+                <field name="year_to"/>
+                <field name="state" widget="badge"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_fin_analysis_form" model="ir.ui.view">
+        <field name="name">cmc.fin.analysis.form</field>
+        <field name="model">cmc.fin.analysis</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_compute" string="Compute" type="object"
+                            class="oe_highlight" invisible="state == 'done'"/>
+                    <button name="action_reset_to_draft" string="Reset to Draft" type="object"
+                            invisible="state != 'done'"
+                            confirm="Resetting deletes the computed results. Continue?"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box" invisible="state != 'done'">
+                        <button name="%(action_cmc_fin_value)d" type="action" class="oe_stat_button"
+                                icon="fa-table" string="Values"
+                                context="{'search_default_run_id': id}"/>
+                        <button name="%(action_cmc_fin_ratio_value)d" type="action" class="oe_stat_button"
+                                icon="fa-percent" string="Ratios"
+                                context="{'search_default_run_id': id}"/>
+                        <button name="%(action_cmc_fin_crisis)d" type="action" class="oe_stat_button"
+                                icon="fa-exclamation-triangle" string="Crisis Panel"
+                                context="{'search_default_run_id': id}"/>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" readonly="state == 'done'"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="year_from" readonly="state == 'done'"/>
+                            <field name="year_to" readonly="state == 'done'"/>
+                            <field name="scheme_ids" widget="many2many_tags" readonly="state == 'done'"/>
+                        </group>
+                        <group>
+                            <field name="reduced_mode" readonly="state == 'done'"/>
+                            <field name="ateco_code" readonly="state == 'done'"/>
+                            <field name="company_id" readonly="state == 'done'" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Values" name="values" invisible="state != 'done'">
+                            <field name="value_ids" readonly="1">
+                                <list create="false" edit="false" default_order="scheme_id, sequence, year">
+                                    <field name="scheme_id"/>
+                                    <field name="name"/>
+                                    <field name="year"/>
+                                    <field name="value"/>
+                                    <field name="common_size_pct"/>
+                                    <field name="yoy_pct" invisible="not yoy_computable"/>
+                                    <field name="yoy_computable" column_invisible="1"/>
+                                    <field name="comparability_break" widget="boolean_toggle"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Ratios" name="ratios" invisible="state != 'done'">
+                            <field name="ratio_value_ids" readonly="1">
+                                <list create="false" edit="false" default_group_by="area"
+                                      decoration-danger="status == 'alert'" decoration-muted="status == 'not_computable'">
+                                    <field name="name"/>
+                                    <field name="year"/>
+                                    <field name="value" invisible="status == 'not_computable'"/>
+                                    <field name="status" widget="badge"
+                                           decoration-success="status == 'ok'" decoration-danger="status == 'alert'"
+                                           decoration-muted="status == 'not_computable'"/>
+                                    <field name="threshold_op"/>
+                                    <field name="threshold" invisible="not threshold_op"/>
+                                    <field name="benchmark" invisible="not has_benchmark"/>
+                                    <field name="has_benchmark" column_invisible="1"/>
+                                    <field name="area" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cmc_fin_analysis_search" model="ir.ui.view">
+        <field name="name">cmc.fin.analysis.search</field>
+        <field name="model">cmc.fin.analysis</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="done" string="Done" domain="[('state', '=', 'done')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cmc_fin_analysis" model="ir.actions.act_window">
+        <field name="name">Financial Analyses</field>
+        <field name="res_model">cmc.fin.analysis</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

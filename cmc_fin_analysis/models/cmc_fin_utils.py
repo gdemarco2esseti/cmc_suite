@@ -10,3 +10,8 @@ def check_expression(env, expression, label):
         error = str(exc)
     if error or not (expression or "").strip():
         raise ValidationError(env._("Invalid expression for %(label)s: %(error)s", label=label, error=error or env._("empty")))
+
+
+def split_codes(text):
+    """Comma-separated codes, blanks around the commas ignored."""
+    return [code.strip() for code in (text or "").split(",") if code.strip()]

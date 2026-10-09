@@ -7,8 +7,9 @@ CONTRACT
   ``[('owner_id', '=', user.id)]``; group_cmc_user gets an unrestricted rule (``[(1, '=', 1)]``) so the
   union lifts the filter; global company rule ``company_id parent_of company_ids``.
 - ``cmc.center.cost.report`` (hierarchical pivot, actuals): responsible group ACL read only; rule for the
-  group ``[('center_id.cmc_responsibility_ids.owner_id', '=', user.id)]`` (rows of centers mapped to a
-  responsibility center the user owns); group_cmc_user unrestricted.
+  group ``[('rollup_center_id.cmc_responsibility_ids.owner_id', '=', user.id)]`` (C-4: every row ROLLED UP
+  into a center mapped to a responsibility center the user owns - own rows at depth 0, rows booked on the
+  CMC sub-centers at depth >= 1 - so pivot = ``_cmc_responsibility_summary``); group_cmc_user unrestricted.
 - A responsible-only user has no access to runs/configuration (closing runs, allocations, cost functions):
   AccessError on create.
 - ``_cmc_responsibility_summary`` called by a responsible user on a responsibility center he does not own:
@@ -83,6 +84,15 @@ class TestResponsibleSecurity(TransactionCase):
         # BUD-05: actuals of the hierarchical pivot restricted to the owner's centers
         self.assertEqual(self._report_centers(self.responsible), self.mine)
         self.assertEqual(self._report_centers(self.other_responsible), self.theirs)
+
+    def test_owner_of_parent_sees_sub_center_rows(self):
+        # C-4 / AD-115: the owner of a parent center sees the rows booked on its sub-centers, rolled up into it
+        sub = self.AA.create({"name": "WP01 Sec mine sub", "plan_id": self.plan.id, "cmc_center_type": "final",
+                              "cmc_parent_id": self.mine.id, "company_id": self.company.id})
+        self.AL.create({"name": "sub cost", "account_id": sub.id, "amount": -40.0, "date": date(2031, 3, 12)})
+        rows = self.Report.with_user(self.responsible).search([("center_id", "=", sub.id)])
+        self.assertRecordValues(rows, [{"center_id": sub.id, "rollup_center_id": self.mine.id, "depth": 1, "cost": 40.0}])
+        self.assertFalse(self.Report.with_user(self.other_responsible).search([("center_id", "=", sub.id)]))
 
     def test_cmc_user_sees_everything(self):
         # AD-115: group_cmc_user's unrestricted rule lifts the responsible filter

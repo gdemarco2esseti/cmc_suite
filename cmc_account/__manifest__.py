@@ -13,6 +13,7 @@
         "views/cmc_classification_rule_views.xml",
         "views/account_account_views.xml",
         "views/cmc_exception_views.xml",
+        "views/cmc_coge_reconciliation_views.xml",
     ],
     "installable": True,
     "application": False,

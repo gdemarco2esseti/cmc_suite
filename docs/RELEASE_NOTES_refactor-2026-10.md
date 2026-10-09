@@ -75,7 +75,51 @@ It lets CMC controllers classify **validated** timesheets, through the same sing
 gate used by every other CMC controller. Nothing to migrate. On an existing database with Enterprise, install it explicitly
 (`-i cmc_timesheet_grid`).
 
-## 6. Upgrade procedure
+## 6. One lifecycle for every run (AD-001, AD-002)
+
+Closing, full costing, ABC, joint costs and TDABC runs share `cmc.run.mixin`:
+
+- **A computed run is locked.** Its header inputs (period, method, company, joint cost, closing,
+  base, products) and its input lines cannot change; the form shows them read-only. Writes over
+  RPC, including as superuser, raise an error.
+- **Its results are locked too.** Result rows are written only by *Compute* and deleted only by
+  *Reset to Draft*; nobody can add, change or delete them by hand, on a computed run or on a draft one.
+- **Compute starts from draft only.** To recompute: *Reset to Draft* (it **deletes the results**,
+  after a confirmation), change what is needed, *Compute*.
+- **A closing run cannot be reset or deleted while a computed costing run reads it.** Reset the
+  costing runs first (the error names them). No cascade.
+- Behaviour changes: joint runs no longer reopen themselves when a line changes (the change is
+  refused); a full-costing reset now deletes its results; closing and TDABC runs gained the reset;
+  a cost center used by a computed closing cannot be deleted.
+
+`cmc_full_costing` 19.0.1.2.0 post-migrate deletes the stale results of draft costing runs (the
+old reset kept them). Log: `Removed N stale results of draft costing runs.`
+
+## 7. Bridges declare profiles; a bridge withdraws what it set
+
+The operational bridges (timesheet MOD, MRP labour) declare a profile (`_cmc_bridge_profiles()`);
+one engine in `cmc_account` applies them. The new field `cmc_bridge_source` records which profile
+classified a line and which fields it filled. When the line stops matching (hours moved to an
+auxiliary or period center, hours zeroed, an MO line that is not labour) those fields are cleared
+and the classification rules decide again. Values set by a rule, by hand or by MRP adoption are kept.
+
+Migrations `cmc_hr_timesheet` / `cmc_mrp` 19.0.1.2.0 tag the lines already carrying the bridge
+values (log: `Tagged N lines classified by the ... bridge`). **The history is corrected on first
+touch, not during the upgrade:** a past line that no longer matches its profile keeps its MOD
+classification until something re-classifies it (a trigger field written, *Re-apply
+Classification Rules*). Re-applying rules on a closed period can therefore change it: recompute
+the runs of that period afterwards.
+
+## 8. Other changes
+
+- The Unclassified Cost Lines queue opens on its own list (cost amount, editable classification
+  columns), also with `hr_timesheet` installed.
+- Engine internals split into steps; one `spread()` for every proportional split. Figures are the
+  same; a residual cent may land on a different product only in exact ties.
+- `cmc.cvr.analysis.leverage_impact()` removed (unused).
+- Italian translations regenerated.
+
+## 9. Upgrade procedure
 
 1. **Backup** the database (and filestore) first. Rehearse on a copy.
 2. Update **all** CMC modules together, not only the ones you depend on directly:
@@ -84,8 +128,14 @@ gate used by every other CMC controller. Nothing to migrate. On an existing data
    ```
    (add `cmc_timesheet_grid` where Enterprise is available). Migrations of one module read the
    models of the others.
-3. Read the log: `grep -E "upgrade\.cmc|WARNING|ERROR"`. Every warning in section 1 and 3 needs a decision.
-4. For each run listed as computed on the old sign: **reset it to draft and recompute it**, in this
-   order: closing runs, costing runs, then CVR analyses and ABC runs. Do the same for closing runs
-   whose labour figures changed because of the MRP backfill.
+3. Read the log: `grep -E "upgrade\.cmc|cmc_.*migrate|WARNING|ERROR"`. Every warning in sections 1
+   and 3 needs a decision.
+4. For each run listed as computed on the old sign, and for closings whose labour changed with the
+   MRP backfill:
+   1. reset to draft the **costing runs** (and ABC runs, actual-mode CVR analyses) of the period;
+   2. reset to draft the **closing runs** (refused while a computed costing reads them);
+   3. compute the closing runs, then the costing runs, then CVR analyses and ABC runs.
 5. Check the Unclassified queue and the Cost Entries screen for the lines flagged by the warnings.
+
+Rehearsed on a copy of the `cmc_all` demo (2026-10-09): upgrade from 19.0.1.0.0 without errors,
+15 runs listed, 120 timesheet lines tagged, reset + recompute of all 15 completed.

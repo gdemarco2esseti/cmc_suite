@@ -1,0 +1,20 @@
+{
+    "name": "CMC - Job Costing (Commesse)",
+    "summary": "Job cost sheet per project: direct costs, hours x resource rate, applied overhead, WIP, job margin",
+    "version": "19.0.1.1.0",
+    "category": "Accounting/Management Control",
+    "license": "LGPL-3",
+    "author": "EsseTech by DueEsseTi Srl",
+    "depends": ["cmc_hr_timesheet"],
+    "data": [
+        "security/ir.model.access.csv",
+        "security/cmc_job_costing_security.xml",
+        "views/cmc_job_rate_views.xml",
+        "views/cmc_job_cost_run_views.xml",
+        "views/project_project_views.xml",
+        "views/cmc_job_costing_menus.xml",
+        "report/report_job_cost_sheet.xml",
+    ],
+    "installable": True,
+    "auto_install": False,
+}

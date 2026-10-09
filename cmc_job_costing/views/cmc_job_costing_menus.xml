@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_cmc_sec_job_costing"
+              name="Job Costing"
+              parent="cmc_base.menu_cmc_operations"
+              sequence="35"/>
+    <menuitem id="menu_cmc_job_cost_run"
+              name="Job Cost Runs"
+              parent="menu_cmc_sec_job_costing"
+              action="action_cmc_job_cost_run"
+              sequence="10"/>
+    <menuitem id="menu_cmc_job_sheet"
+              name="Job Cost Sheets"
+              parent="menu_cmc_sec_job_costing"
+              action="action_cmc_job_sheet"
+              sequence="20"/>
+    <menuitem id="menu_cmc_job_rate"
+              name="Resource Center Rates"
+              parent="menu_cmc_sec_job_costing"
+              action="action_cmc_job_rate"
+              sequence="30"/>
+</odoo>

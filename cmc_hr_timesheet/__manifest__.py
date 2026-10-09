@@ -1,7 +1,7 @@
 {
     "name": "CMC - Timesheet Bridge (MOD)",
     "summary": "Feed direct labor (MOD) cost from timesheets into management control",
-    "version": "19.0.1.2.0",
+    "version": "19.0.1.3.0",
     "category": "Accounting/Management Control",
     "license": "LGPL-3",
     "author": "2ST",

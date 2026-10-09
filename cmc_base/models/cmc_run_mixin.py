@@ -124,6 +124,9 @@ class CmcRunMixin(models.AbstractModel):
         Generic part: the usages recorded by `_cmc_record_usage`."""
         if not self.ids:
             return
+        # why: lock the origin rows first, so a consumer recording its usage (it locks the same
+        # rows) and this reset/unlink serialize and cannot both commit
+        self._cmc_lock_rows()
         # why sudo: the dependency must be seen whole whatever the user's rules
         usages = self.env["cmc.run.usage"].sudo().search(
             [("origin_model", "=", self._name), ("origin_id", "in", self.ids)]
@@ -147,6 +150,17 @@ class CmcRunMixin(models.AbstractModel):
         consumer is reset the origins cannot be reset or deleted (AD-002)."""
         if not self._cmc_state_unlocked():
             raise UserError(self.env._("Usages are recorded by Compute only."))
+        # why: lock the origins and re-read their state under the lock, so a concurrent reset cannot
+        # slip between this check and the insert; a draft origin is no certified source
+        origins._cmc_lock_rows()
+        draft = origins.filtered(lambda origin: origin.state != "done")
+        if draft:
+            raise UserError(
+                self.env._(
+                    "%(origins)s is not computed: a computed run can only read computed sources.",
+                    origins=", ".join(draft.mapped("display_name")),
+                )
+            )
         Usage = self.env["cmc.run.usage"].sudo()
         known = {
             (u.consumer_id, u.origin_model, u.origin_id)

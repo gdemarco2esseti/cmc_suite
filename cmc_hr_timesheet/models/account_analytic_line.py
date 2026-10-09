@@ -7,11 +7,34 @@ MOD_XMLID = "cmc_base.cmc_element_mod"
 class AccountAnalyticLine(models.Model):
     _inherit = "account.analytic.line"
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        lines = super().create(vals_list)
+        lines._cmc_stamp_project_object()
+        return lines
+
     def write(self, vals):
         # must sit above hr_timesheet in the MRO: its checks refuse foreign writes
         if self._cmc_classification_gate(vals):
             return True
-        return super().write(vals)
+        res = super().write(vals)
+        # why task_id: project_id is a stored compute on task_id, a task-only write moves the line
+        if "project_id" in vals or "task_id" in vals:
+            self._cmc_stamp_project_object()
+        return res
+
+    def _cmc_stamp_project_object(self):
+        """Hours on a project are cost of that project (AD-106); one batch per company."""
+        # why sudo: employees logging hours have no CMC group nor rights on the registry
+        lines = self.sudo().filtered("project_id")
+        for company in lines.company_id:
+            company_lines = lines.filtered(lambda line: line.company_id == company)
+            objects = self.env["cmc.cost.object"]._cmc_ensure_objects(
+                company_lines.project_id, company=company, object_type="project"
+            )
+            by_project = dict(zip(company_lines.project_id.ids, objects.ids, strict=True))
+            for project, group in company_lines.grouped("project_id").items():
+                group.write({"cmc_cost_object_id": by_project[project.id]})
 
     @api.model
     def _cmc_classify_trigger_fields(self):

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="cmc_measure_produced_qty" model="cmc.cost.driver">
+        <field name="name">Produced quantity</field>
+        <field name="code">MRP_PRODUCED_QTY</field>
+        <field name="measure_kind">statistical</field>
+        <field name="measure_type">transaction</field>
+        <field name="company_id" eval="False"/>
+        <field name="source">feeder</field>
+        <field name="feeder_key">mrp_produced_qty</field>
+    </record>
+</odoo>

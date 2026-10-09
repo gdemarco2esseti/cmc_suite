@@ -4,6 +4,8 @@ CONTRACT
 - Every timesheet line (``project_id`` set) carries ``account.analytic.line.cmc_cost_object_id`` =
   ``cmc.cost.object`` of type ``project`` for ``project_id``, in the line's company; re-stamped when the
   project changes; a line without project is not stamped by this bridge.
+- RN-002: the project of a timesheet line also changes INDIRECTLY (core recomputes ``project_id`` from
+  ``task_id``): moving the task to another project, or writing only ``task_id``, must re-stamp too.
 - A timesheet user without any CMC group gets the line stamped (object created by the system).
 """
 
@@ -47,6 +49,33 @@ class TestTimesheetCostObject(TransactionCase):
         line = self._ts()
         line.write({"project_id": self.project_2.id})
         self.assertEqual(line.cmc_cost_object_id.res_id, self.project_2.id)
+
+    def _object_of(self, project, line):
+        return self.env["cmc.cost.object"].search(
+            [("res_model", "=", "project.project"), ("res_id", "=", project.id), ("company_id", "=", line.company_id.id)]
+        )
+
+    def test_task_moved_to_other_project_restamps(self):
+        # RN-002: moving the task moves its hours, and their cost object follows
+        task = self.env["project.task"].create({"name": "Task CO", "project_id": self.project.id})
+        line = self._ts(task_id=task.id)
+        self.assertEqual(line.cmc_cost_object_id.res_id, self.project.id, "precondition: stamped on P1")
+        task.project_id = self.project_2
+        line.invalidate_recordset()
+        self.assertEqual(line.project_id, self.project_2, "precondition: core moves the line with its task")
+        self.assertEqual(line.cmc_cost_object_id.res_id, self.project_2.id)
+        self.assertEqual(line.cmc_cost_object_id, self._object_of(self.project_2, line))
+
+    def test_write_task_only_restamps(self):
+        # RN-002: writing only the task changes the project of the line, the stamp follows
+        task = self.env["project.task"].create({"name": "Task CO P1", "project_id": self.project.id})
+        line = self._ts(project_id=self.project_2.id)
+        self.assertEqual(line.cmc_cost_object_id.res_id, self.project_2.id, "precondition: stamped on P2")
+        line.write({"task_id": task.id})
+        line.invalidate_recordset()
+        self.assertEqual(line.project_id, self.project, "precondition: core derives the project from the task")
+        self.assertEqual(line.cmc_cost_object_id.res_id, self.project.id)
+        self.assertEqual(line.cmc_cost_object_id, self._object_of(self.project, line))
 
     def test_same_project_same_object(self):
         # AD-106 inv.(1): one object per project and company

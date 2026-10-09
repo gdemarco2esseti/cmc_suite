@@ -52,7 +52,10 @@ class CmcMeasureQuantity(models.Model):
         ``key``, ``model``, ``domain``, ``date_field``, ``quantity`` ("__count" or
         a field summed), ``driver`` (xmlid or record), ``center_field`` /
         ``object_field`` (Many2one path or False), ``object_type`` and an
-        optional ``sign`` (1/-1). Profiles sharing a key are summed."""
+        optional ``sign`` (1/-1) and ``uom_field`` (Many2one to the UoM of the
+        summed quantity: it is grouped too and each group converted to the
+        ``uom_id`` of the object, so the query count stays independent of the
+        source rows). Profiles sharing a key are summed."""
         return []
 
     @api.model
@@ -77,7 +80,7 @@ class CmcMeasureQuantity(models.Model):
             if isinstance(driver, str):
                 driver = self.env.ref(driver)
             groupby = [f"{profile['date_field']}:month"]
-            groupby += [profile[name] for name in ("center_field", "object_field") if profile.get(name)]
+            groupby += [profile[name] for name in ("center_field", "object_field", "uom_field") if profile.get(name)]
             domain = Domain(profile["domain"]) & Domain.AND([
                 [(profile["date_field"], ">=", start)],
                 [(profile["date_field"], "<", stop)],
@@ -89,8 +92,11 @@ class CmcMeasureQuantity(models.Model):
                 month = fields.Date.to_date(next(group))
                 center = next(group) if profile.get("center_field") else False
                 obj = next(group) if profile.get("object_field") else False
+                qty = qty or 0.0
+                if profile.get("uom_field"):
+                    qty = next(group)._compute_quantity(qty, obj.uom_id)
                 totals[(profile["key"], driver, month, center, obj, profile.get("object_type"))] += (
-                    (qty or 0.0) * profile.get("sign", 1)
+                    qty * profile.get("sign", 1)
                 )
                 if obj:
                     key = (profile.get("object_type"), obj._name)

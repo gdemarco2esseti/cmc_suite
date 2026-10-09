@@ -1,6 +1,6 @@
 {
     "name": "CMC - Accounting Bridge",
-    "version": "19.0.1.3.0",
+    "version": "19.0.1.4.0",
     "category": "Accounting/Accounting",
     "summary": "Feed accounting analytic lines into cost management with auto-classification",
     "author": "2ST",
@@ -9,6 +9,7 @@
     "data": [
         "security/ir.model.access.csv",
         "security/cmc_account_security.xml",
+        "data/cmc_measure_data.xml",
         "views/cmc_classification_rule_views.xml",
         "views/account_account_views.xml",
         "views/cmc_exception_views.xml",

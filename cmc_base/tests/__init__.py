@@ -18,3 +18,4 @@ from . import test_plan_version
 from . import test_cost_object
 from . import test_measure_quantity
 from . import test_rate_registry
+from . import test_run_usage

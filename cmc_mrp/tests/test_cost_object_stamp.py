@@ -7,6 +7,9 @@ CONTRACT
   FINISHED product of the MO (``mrp.production.product_id``), in the MO's company.
 - ``account.analytic.line.product_id`` keeps the raw material on MP lines (inv. 4: it is NOT the cost
   object). The shop-floor user closing the order needs no CMC right (object created in sudo).
+- RN-003 (owner decision): the stamp applies ONLY to MOs with ``cmc_center_id`` (same rule as MP lines
+  and the produced-qty feeder): the workcenter line of an MO without center keeps no cost object, and
+  that MO feeds no produced quantity.
 """
 
 from unittest.mock import patch
@@ -50,7 +53,9 @@ class TestMrpCostObjectStamp(TransactionCase):
         if with_operation:
             bom_vals["operation_ids"] = [(0, 0, {"name": "Assembly", "workcenter_id": self.workcenter.id, "time_cycle_manual": 60.0})]
         bom = env["mrp.bom"].create(bom_vals)
-        vals = {"product_id": finished.id, "product_qty": 1.0, "bom_id": bom.id, "cmc_center_id": (center or self.center).id}
+        vals = {"product_id": finished.id, "product_qty": 1.0, "bom_id": bom.id}
+        if center is not False:
+            vals["cmc_center_id"] = (center or self.center).id
         if company:
             vals["company_id"] = company.id
         return env["mrp.production"].create(vals)
@@ -103,6 +108,20 @@ class TestMrpCostObjectStamp(TransactionCase):
         for line in lines:
             self.assertEqual(line.cmc_cost_object_id.res_model, "product.product")
             self.assertEqual(line.cmc_cost_object_id.res_id, mo.product_id.id)
+
+    def test_mod_line_of_mo_without_center_not_stamped(self):
+        # RN-003: no MO center, no CMC costing: the workcenter line keeps no cost object, no produced qty
+        mo = self._mark_done(self._mo("nocenter", center=False, with_operation=True), duration=60.0)
+        self.assertFalse(mo.cmc_center_id, "precondition: MO without CMC center")
+        lines = mo.workorder_ids.wc_analytic_account_line_ids
+        self.assertTrue(lines, "precondition: core books the workcenter time on the workcenter distribution")
+        self.assertFalse(lines.cmc_cost_object_id)
+        today = mo.date_finished.date()
+        Fact = self.env["cmc.measure.quantity"]
+        Fact._cmc_refresh_feeders(today.replace(day=1), today, company=mo.company_id, keys=["mrp_produced_qty"])
+        facts = Fact.search([("feeder_key", "=", "mrp_produced_qty"), ("cost_object_id.res_id", "=", mo.product_id.id),
+                             ("cost_object_id.res_model", "=", "product.product")])
+        self.assertFalse(facts)
 
     def test_two_mos_same_product_share_one_object(self):
         # AD-106 inv.(1): groupable cost per product

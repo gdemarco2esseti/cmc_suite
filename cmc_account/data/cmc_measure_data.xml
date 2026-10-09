@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="cmc_measure_customer_invoice_lines" model="cmc.cost.driver">
+        <field name="name">Customer invoice lines</field>
+        <field name="code">INVOICE_LINES</field>
+        <field name="company_id" eval="False"/>
+        <field name="measure_kind">statistical</field>
+        <field name="measure_type">transaction</field>
+        <field name="source">feeder</field>
+        <field name="feeder_key">account_customer_invoice_lines</field>
+    </record>
+</odoo>

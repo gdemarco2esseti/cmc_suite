@@ -120,6 +120,7 @@ class MrpProduction(models.Model):
         )
         vals_list = []
         adopted_vals = []
+        object_ids = self._cmc_product_object_ids()
         for production in self:
             center = production.cmc_center_id
             if not center:
@@ -151,7 +152,10 @@ class MrpProduction(models.Model):
                 if core_lines:
                     for line in core_lines:
                         adopted_vals.append(
-                            (line.id, self._cmc_adopt_vals(line, move, mp))
+                            (line.id, {
+                                **self._cmc_adopt_vals(line, move, mp),
+                                "cmc_cost_object_id": object_ids[production.id],
+                            })
                         )
                     continue
                 vals_list.append({
@@ -164,6 +168,7 @@ class MrpProduction(models.Model):
                     "product_id": move.product_id.id,
                     "ref": production.name,
                     "cmc_mrp_move_id": move.id,
+                    "cmc_cost_object_id": object_ids[production.id],
                     "cmc_cost_element_id": mp.id if mp else False,
                     "cmc_behavior": "variable",
                     "cmc_directness": "direct",
@@ -177,6 +182,16 @@ class MrpProduction(models.Model):
             # rights on account.analytic.line; the lines are system-derived.
             AL.sudo().with_context(cmc_auto_classify=CMC_AUTO).create(vals_list)
         return True
+
+    def _cmc_product_object_ids(self):
+        """{production id: cost object id} of the finished product, in the MO company (AD-106)."""
+        Object = self.env["cmc.cost.object"]
+        result = {}
+        for company, productions in self.grouped("company_id").items():
+            objects = Object._cmc_ensure_objects(productions.product_id, company=company)
+            by_product = dict(zip(productions.product_id.ids, objects.ids))
+            result.update({mo.id: by_product[mo.product_id.id] for mo in productions})
+        return result
 
     @api.model
     def _cmc_adopt_vals(self, line, move, element):

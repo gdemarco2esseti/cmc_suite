@@ -36,8 +36,13 @@ class AccountAnalyticLine(models.Model):
             for vals in vals_list
         ]
         # why sudo: cmc_excluded is superuser-only; the value is derived from
-        # the journal item, never taken from the caller.
-        return super(AccountAnalyticLine, self.sudo()).create(vals_list).with_env(self.env)
+        # the journal item, never taken from the caller. The caller's own create
+        # rights are checked before (ACL) and on the records created (rules):
+        # the shortcut must not let a user create lines they could not create.
+        self.check_access("create")
+        records = super(AccountAnalyticLine, self.sudo()).create(vals_list).with_env(self.env)
+        records.check_access("create")
+        return records
 
     @api.model
     def _cmc_classify_trigger_fields(self):

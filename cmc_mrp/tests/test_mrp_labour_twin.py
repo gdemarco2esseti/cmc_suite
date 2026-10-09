@@ -396,3 +396,20 @@ class TestMrpLabourTwin(TransactionCase):
             large, small,
             "twin detection/exclusion must be batched (N+1 on analytic lines)",
         )
+
+    # ------------------------------------------------------------------
+    # the twin shortcut must not become a way around ACL and record rules
+    # ------------------------------------------------------------------
+
+    def test_twin_creation_keeps_the_callers_create_rights(self):
+        self._distribution_model(self.wip_account)
+        item = self._labour_entry(self._complete(self._mo("acl"))).line_ids[:1]
+        self.assertTrue(item.cmc_excluded)
+        nobody = new_test_user(self.env, login="cmc_twin_nobody", groups="base.group_user")
+        before = self.AL.search_count([])
+        with self.assertRaises(AccessError):
+            self.AL.with_user(nobody).create({
+                "name": "forged", "account_id": self.center.id, "amount": -999.0,
+                "move_line_id": item.id,
+            })
+        self.assertEqual(self.AL.search_count([]), before)

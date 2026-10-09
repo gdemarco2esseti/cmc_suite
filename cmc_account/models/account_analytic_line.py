@@ -6,6 +6,8 @@ from odoo import api, fields, models
 _logger = logging.getLogger(__name__)
 
 CLASSIFICATION_FIELDS = ("cmc_behavior", "cmc_directness", "cmc_cost_element_id")
+# the center is NOT here: changing it moves the accounting allocation
+CMC_CLASSIFICATION_FIELDS = {*CLASSIFICATION_FIELDS, "cmc_classified_manually"}
 
 
 class AccountAnalyticLine(models.Model):
@@ -113,29 +115,37 @@ class AccountAnalyticLine(models.Model):
     # ------------------------------------------------------------------
 
     def _cmc_store_manual_classification(self):
-        """Mirror the manual classification onto the journal item."""
-        vals_by_move_line = []
-        for line in self:
-            move_line = line.move_line_id
-            if not move_line:
+        """Persist the manual classification per (journal item, cost center)."""
+        lines = self.filtered(lambda line: line.move_line_id and line.cmc_center_id)
+        if not lines:
+            return
+        # why sudo: the controller classifying a cost line may have no access to
+        # journal items; the stored fields are CMC-only metadata, never
+        # accounting figures.
+        Manual = self.env["cmc.manual.classification"].sudo()
+        existing = {
+            (rec.move_line_id.id, rec.center_id.id): rec
+            for rec in Manual.search([("move_line_id", "in", lines.move_line_id.ids)])
+        }
+        to_create = []
+        for line in lines:
+            key = (line.move_line_id.id, line.cmc_center_id.id)
+            record = existing.get(key)
+            if not line.cmc_classified_manually:
+                if record:
+                    record.unlink()
                 continue
-            vals_by_move_line.append((move_line.id, {
-                "cmc_classified_manually": line.cmc_classified_manually,
+            vals = {
                 "cmc_behavior": line.cmc_behavior or False,
                 "cmc_directness": line.cmc_directness or False,
                 "cmc_cost_element_id": line.cmc_cost_element_id.id,
-            }))
-        if not vals_by_move_line:
-            return
-        batches = defaultdict(list)
-        for move_line_id, vals in vals_by_move_line:
-            batches[tuple(sorted(vals.items()))].append(move_line_id)
-        # why sudo: the controller classifying a cost line may have no write
-        # access to journal items; the written fields are CMC-only metadata,
-        # never accounting figures.
-        AML = self.env["account.move.line"].sudo()
-        for key, ids in batches.items():
-            AML.browse(ids).write(dict(key))
+            }
+            if record:
+                record.write(vals)
+            else:
+                to_create.append(dict(vals, move_line_id=key[0], center_id=key[1]))
+        if to_create:
+            Manual.create(to_create)
 
     # ------------------------------------------------------------------
     # classification engine
@@ -143,7 +153,7 @@ class AccountAnalyticLine(models.Model):
 
     def _cmc_auto_classify(self):
         """Fill-only auto-classification: restore any manual override persisted
-        on the journal item, then derive the element from the financial account
+        for its (journal item, center), then derive the element from the financial account
         mapping and apply the first matching rule. Never touches manually
         classified lines; never creates new lines."""
         self = self.filtered(lambda line: not line.cmc_excluded)
@@ -151,13 +161,14 @@ class AccountAnalyticLine(models.Model):
             return True
         Rule = self.env["cmc.classification.rule"]
         rules_by_company = {}
-        # why sudo: read-only lookup of the CMC override stored on the journal
-        # item; a warehouse or shop-floor user posting a cost line has no read
-        # access to account.move.line.
-        manual_move_lines = {
-            move_line.id: move_line
-            for move_line in self.move_line_id.sudo()
-            if move_line.cmc_classified_manually
+        # why sudo: read-only lookup of the stored CMC override; a warehouse or
+        # shop-floor user posting a cost line has no read access to the
+        # journal items it hangs from.
+        manual_by_key = {
+            (rec.move_line_id.id, rec.center_id.id): rec
+            for rec in self.env["cmc.manual.classification"].sudo().search(
+                [("move_line_id", "in", self.move_line_id.ids)]
+            )
         }
         # why sudo: read-only read of the account -> cost-element mapping, which
         # any user posting a cost line must be able to trigger. Resolved ONCE
@@ -170,7 +181,8 @@ class AccountAnalyticLine(models.Model):
         }
         vals_by_line = []
         for line in self:
-            source = manual_move_lines.get(line.move_line_id.id)
+            center = line.cmc_center_id  # non-stored compute: read once per line
+            source = manual_by_key.get((line.move_line_id.id, center.id))
             if source is not None:
                 if not line.cmc_classified_manually:
                     vals_by_line.append((line.id, {
@@ -189,7 +201,6 @@ class AccountAnalyticLine(models.Model):
             mapped_element = element_by_account.get(line.general_account_id.id)
             if not line.cmc_cost_element_id and mapped_element:
                 vals["cmc_cost_element_id"] = mapped_element
-            center = line.cmc_center_id  # non-stored compute: read once per line
             rule = next(
                 (r for r in rules_by_company[company.id] if r._matches(line, center=center)),
                 False,

@@ -41,7 +41,7 @@ class CmcFeatureCosting(models.Model):
 
     _cmc_input_fields = ( "company_id", "date", "target_cost_id", "alternative_ids", "variable_ids")
     _cmc_result_fields = ("result_ids", "violation_ids")
-    _tlc_outputs = ("best_alternative_id",)
+    _cmc_output_fields = ("best_alternative_id",)
 
     def _cmc_compute(self):
         for costing in self:

@@ -61,7 +61,7 @@ class CmcLccModel(models.Model):
         "rate_basis", "flows_basis", "rate_date", "previous_id", "baseline_id", "year_ids", "cost_line_ids",
     )
     _cmc_result_fields = ("year_result_ids", "phase_result_ids")
-    _tlc_outputs = (
+    _cmc_output_fields = (
         "effective_rate", "lc_cost", "lc_cost_npv", "recurring_cost", "non_recurring_cost", "lifetime_volume", "lc_unit_cost",
         "lc_revenue", "lc_profit", "lc_profit_npv", "has_breakeven", "breakeven_year", "has_actuals", "absorbed_to_date",
         "residual_cost", "residual_volume", "residual_unit_cost", "incremental_npv",

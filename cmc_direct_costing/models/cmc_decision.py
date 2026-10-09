@@ -104,14 +104,7 @@ class CmcDecision(models.Model):
         "fixed_cost", "mix_ranking", "discount_rate", "inflation_rate", "tax_rate", "rate_basis", "flows_basis",
     )
     _cmc_result_fields = ("mix_result_ids", "cash_flow_result_ids")
-
-    def write(self, vals):
-        if not self._cmc_state_unlocked() and not set(OUTPUTS).isdisjoint(vals):
-            raise UserError(self.env._("The outcome of a decision is written by Compute only."))
-        return super().write(vals)
-
-    def _cmc_reset_values(self):
-        return {**super()._cmc_reset_values(), **dict.fromkeys(OUTPUTS, False)}
+    _cmc_output_fields = OUTPUTS
 
     # ---- engine ---------------------------------------------------------
 
@@ -158,19 +151,8 @@ class CmcDecision(models.Model):
         if not activities:
             return {}
         # rates of the decision company and month only, whatever the producing run
-        rates = self.env["cmc.rate"].search([
-            ("holder_model", "in", activities.mapped("holder_model")),
-            ("holder_id", "in", activities.mapped("holder_id")),
-            ("driver_id", "in", activities.driver_id.ids),
-            ("component", "=", "total"),
-            ("date", "=", cmc_utils.month_start(self.date)),
-            ("company_id", "=", self.company_id.id),
-            ("origin_model", "!=", "cmc.plan.version"),
-        ], order="id desc")
-        found = {}
-        for rate in rates:
-            found.setdefault((rate.holder_model, rate.holder_id, rate.driver_id.id), rate)
-        keys = {act: (act.holder_model, act.holder_id, act.driver_id.id) for act in activities}
+        keys = {act: (act.holder_model, act.holder_id, act.driver_id.id, self.date) for act in activities}
+        found = self.env["cmc.rate"]._cmc_lookup_batch(keys.values(), company=self.company_id)
         missing = activities.filtered(lambda act: keys[act] not in found)
         if missing:
             raise UserError(self.env._("No rate published for: %(lines)s", lines=", ".join(missing.mapped("name"))))

@@ -12,7 +12,7 @@ class CmcScenarioConsolidation(models.Model):
 
     _cmc_input_fields = ("company_id", "evaluator_key", "version_id", "child_version_ids")
     _cmc_result_fields = ("line_ids",)
-    _scenario_outputs = ("total_amount",)
+    _cmc_output_fields = ("total_amount",)
 
     version_id = fields.Many2one("cmc.plan.version", string="Parent Version", required=True, check_company=True, index=True)
     child_version_ids = fields.Many2many(

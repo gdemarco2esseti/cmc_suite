@@ -27,6 +27,9 @@ class CmcRunMixin(models.AbstractModel):
     _cmc_result_fields = ()
     # stored fields a computed run still accepts (no figure depends on them)
     _cmc_editable_when_done = ("name",)
+    # stored header outputs: written by Compute only (a user write is refused in any
+    # state), cleared by Reset
+    _cmc_output_fields = ()
     # a plan version keeps its rates (they are inputs) when reset
     _cmc_rates_are_inputs = False
 
@@ -56,7 +59,7 @@ class CmcRunMixin(models.AbstractModel):
             raise UserError(
                 self.env._("Use Compute or Reset to Draft to change the state of a run.")
             )
-        if not set(self._cmc_result_fields).isdisjoint(vals) and not self._cmc_state_unlocked():
+        if not set(self._cmc_result_fields + self._cmc_output_fields).isdisjoint(vals) and not self._cmc_state_unlocked():
             raise UserError(self.env._("The results of a run are written by Compute only."))
         if not self._cmc_state_unlocked() and self._cmc_locked_fields(vals):
             # no env.su bypass: the classification gate writes as superuser
@@ -118,7 +121,7 @@ class CmcRunMixin(models.AbstractModel):
 
     def _cmc_reset_values(self):
         """Header outputs of the engine to clear on reset, as write() vals."""
-        return {}
+        return dict.fromkeys(self._cmc_output_fields, False)
 
     def _cmc_check_no_dependents(self):
         """Raise UserError when another computed document reads these runs and

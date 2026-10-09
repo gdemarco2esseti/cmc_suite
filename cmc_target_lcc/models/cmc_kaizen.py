@@ -36,7 +36,7 @@ class CmcKaizenTarget(models.Model):
         "fixed_budget", "variable_budget", "actual_cost",
     )
     _cmc_result_fields = ("line_ids",)
-    _tlc_outputs = ("base_unit_cost", "target_unit_cost", "target_total", "achieved_pct", "variance", "target_met")
+    _cmc_output_fields = ("base_unit_cost", "target_unit_cost", "target_total", "achieved_pct", "variance", "target_met")
 
     @api.constrains("basis", "product_id", "unit_driver_id", "base_date", "date_from", "date_to")
     def _check_unit_basis(self):

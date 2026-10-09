@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import ValidationError
 from odoo.fields import Domain
 
 from .account_move_line import EXPENSE_TYPES, REVENUE_TYPES
@@ -14,6 +14,7 @@ class CmcCogeReconciliation(models.Model):
     _order = "date_to desc, id desc"
 
     _cmc_input_fields = ("company_id", "date_from", "date_to")
+    _cmc_output_fields = RESULT_FIELDS
 
     name = fields.Char(required=True)
     company_id = fields.Many2one("res.company", required=True, default=lambda self: self.env.company, index=True)
@@ -31,11 +32,6 @@ class CmcCogeReconciliation(models.Model):
     def _check_dates(self):
         if any(rec.date_from > rec.date_to for rec in self):
             raise ValidationError(self.env._("The start date must not be after the end date."))
-
-    def write(self, vals):
-        if not self._cmc_state_unlocked() and not set(RESULT_FIELDS).isdisjoint(vals):
-            raise UserError(self.env._("The results of a run are written by Compute only."))
-        return super().write(vals)
 
     def _cmc_compute(self):
         Line = self.env["account.move.line"]
@@ -66,6 +62,3 @@ class CmcCogeReconciliation(models.Model):
                 "coge_amount": coge, "coan_amount": coan, "figurative_amount": figurative,
                 "neutral_amount": neutral_amount, "coan_no_gl": coan_no_gl, "unexplained_amount": coge - (coan - figurative + neutral_amount),
             })
-
-    def _cmc_reset_values(self):
-        return dict.fromkeys(RESULT_FIELDS, 0.0)

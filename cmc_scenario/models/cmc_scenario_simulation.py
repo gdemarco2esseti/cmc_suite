@@ -21,7 +21,7 @@ class CmcScenarioSimulation(models.Model):
         "dominant_threshold", "bin_count", "variable_ids",
     )
     _cmc_result_fields = ("bin_ids", "tornado_ids", "sensitivity_ids")
-    _scenario_outputs = (
+    _cmc_output_fields = (
         "base_output", "mean_output", "stdev_output", "min_output", "max_output", "p5_output", "p50_output", "p95_output",
         "prob_positive_pct",
     )

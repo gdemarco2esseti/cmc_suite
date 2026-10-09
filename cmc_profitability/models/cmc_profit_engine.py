@@ -82,17 +82,11 @@ class CmcProfitRun(models.Model):
         driver = self.unit_cost_driver_id
         if not (driver and objects):
             return {}
-        domain = Domain([
-            ("holder_model", "=", "cmc.cost.object"), ("holder_id", "in", objects.ids), ("driver_id", "=", driver.id),
-            ("component", "in", ("variable", "total")), ("date", "in", months), ("company_id", "=", self.company_id.id),
-        ])
-        if self.cost_version_id:
-            domain &= Domain([("origin_model", "=", "cmc.plan.version"), ("origin_id", "=", self.cost_version_id.id)])
-        else:
-            domain &= Domain("origin_model", "!=", "cmc.plan.version")
-        rates = {}
-        for rate in self.env["cmc.rate"].search_read(domain, ["holder_id", "date", "component", "value"], order="id desc"):
-            rates.setdefault((rate["holder_id"], rate["date"], rate["component"]), rate["value"])
+        keys = [("cmc.cost.object", obj.id, driver.id, month) for obj in objects for month in months]
+        found = self.env["cmc.rate"]._cmc_lookup_batch(
+            keys, origin=self.cost_version_id, component=("variable", "total"), company=self.company_id,
+        )
+        rates = {(key[1], key[3], key[4]): rate.value for key, rate in found.items()}
         return rates
 
     def _cmc_abc_costs(self):

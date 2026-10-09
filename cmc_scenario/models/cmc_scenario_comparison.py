@@ -10,7 +10,7 @@ class CmcScenarioComparison(models.Model):
 
     _cmc_input_fields = ("company_id", "evaluator_key", "scenario_id", "baseline_id")
     _cmc_result_fields = ("line_ids",)
-    _scenario_outputs = ("baseline_profit", "scenario_profit", "delta_profit")
+    _cmc_output_fields = ("baseline_profit", "scenario_profit", "delta_profit")
 
     scenario_id = fields.Many2one("cmc.plan.version", required=True, check_company=True, index=True)
     baseline_id = fields.Many2one(

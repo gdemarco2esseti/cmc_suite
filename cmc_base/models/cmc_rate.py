@@ -101,3 +101,35 @@ class CmcRate(models.Model):
         else:
             domain.append(("origin_model", "!=", "cmc.plan.version"))
         return self.search(domain, order="id desc", limit=1)
+
+    @api.model
+    def _cmc_lookup_batch(self, keys, origin=None, component="total", company=None):
+        """`_cmc_lookup` for many `(holder_model, holder_id, driver_id, date)` keys in ONE search: {key: rate}.
+        A tuple `component` reads several at once and keys the result `(*key, component)`."""
+        keys = set(keys)
+        if not keys:
+            return {}
+        components = (component,) if isinstance(component, str) else tuple(component)
+        slot = {key: (*key[:3], month_start(key[3])) for key in keys}
+        domain = [
+            ("holder_model", "in", list({k[0] for k in slot.values()})),
+            ("holder_id", "in", list({k[1] for k in slot.values()})),
+            ("driver_id", "in", list({k[2] for k in slot.values()})),
+            ("component", "in", components),
+            ("date", "in", list({k[3] for k in slot.values()})),
+            ("company_id", "=", (company or self.env.company).id),
+        ]
+        if origin:
+            domain += [("origin_model", "=", origin._name), ("origin_id", "=", origin.id)]
+        else:
+            domain.append(("origin_model", "!=", "cmc.plan.version"))
+        latest = {}
+        for rate in self.search(domain, order="id desc"):
+            latest.setdefault((rate.holder_model, rate.holder_id, rate.driver_id.id, rate.date, rate.component), rate)
+        found = {}
+        for key, norm in slot.items():
+            for comp in components:
+                rate = latest.get((*norm, comp))
+                if rate:
+                    found[key if isinstance(component, str) else (*key, comp)] = rate
+        return found

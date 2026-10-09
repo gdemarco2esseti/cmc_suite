@@ -42,7 +42,7 @@ class CmcTargetCost(models.Model):
         "non_mfg_cost", "assembly_cost", "function_ids", "component_ids", "matrix_ids",
     )
     _cmc_result_fields = ("result_ids",)
-    _tlc_outputs = (
+    _cmc_output_fields = (
         "cost_object_id", "allowable_cost", "deployable_cost", "current_cost", "cost_gap", "reduction_pct", "target_met",
     )
 

@@ -224,10 +224,13 @@ class CmcJobCostRun(models.Model):
         return slot[key]
 
     def _cmc_registry_rates(self, hours, driver):
-        Rate = self.env["cmc.rate"]
+        centers = sorted({(r[3], r[2]) for r in hours}, key=lambda cm: (cm[0].id, cm[1]))
+        batch = self.env["cmc.rate"]._cmc_lookup_batch(
+            [(center._name, center.id, driver.id, month) for center, month in centers], company=self.company_id,
+        )
         found = {}
-        for center, month in sorted({(r[3], r[2]) for r in hours}, key=lambda cm: (cm[0].id, cm[1])):
-            rate = Rate._cmc_lookup(center, driver, month, company=self.company_id)
+        for center, month in centers:
+            rate = batch.get((center._name, center.id, driver.id, month))
             if not rate:
                 raise UserError(
                     self.env._("No registry rate for %(center)s in %(month)s.", center=center.display_name, month=month)

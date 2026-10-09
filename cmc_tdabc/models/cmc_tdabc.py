@@ -213,15 +213,7 @@ class CmcTdabcRun(models.Model):
 
     _cmc_input_fields = ("company_id", "date_from", "date_to", "line_ids")
     _cmc_result_fields = ("result_ids", "capacity_result_ids")
-
-    def _cmc_reset_values(self):
-        return {**super()._cmc_reset_values(), "scenario_warning": False}
-
-    def write(self, vals):
-        # an engine output: only Compute and Reset (under the sentinel) write it
-        if "scenario_warning" in vals and not self._cmc_state_unlocked():
-            raise UserError(self.env._("The results of a run are written by Compute only."))
-        return super().write(vals)
+    _cmc_output_fields = ("scenario_warning",)
 
     def _cmc_compute(self):
         self.ensure_one()

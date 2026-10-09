@@ -231,11 +231,17 @@ class CmcAbcRun(models.Model):
                     sustaining_object = sustaining_object or self._cmc_sustaining_object()
                     flows.append(self._cmc_flow("sustaining", fixed, variable, target_object_id=sustaining_object.id, **source))
                 continue
+            cap = caps.get(act_id)
             if float_is_zero(used, precision_rounding=DRIVER_QTY_ROUNDING):
+                if cap and fixed:
+                    # capacity supplied and not used is idle capacity, not unallocated cost
+                    fixed_rate = fixed / cap
+                    row.update(fixed_rate=fixed_rate, rate=fixed_rate, unused_cost=fixed)
+                    flows.append(self._cmc_flow("unused", fixed, 0.0, driver_qty=cap, rate=fixed_rate, **source))
+                    fixed = 0.0
                 if fixed or variable:
                     flows.append(self._cmc_flow("unallocated", fixed, variable, **source))
                 continue
-            cap = caps.get(act_id)
             if cap and float_compare(used, cap, precision_rounding=qty_step) > 0:
                 raise UserError(
                     self.env._(
@@ -340,16 +346,19 @@ class CmcAbcRun(models.Model):
             }
         return results
 
-    def _cmc_traditional(self, results, resource_cost):
+    def _cmc_traditional(self, results, rounding):
         """{cost object id: traditional cost} - volume base or approved rates (ABC-11)."""
         if self.traditional_basis == "volume":
             if not self.traditional_driver_id:
                 raise UserError(self.env._("Pick the volume driver of the traditional comparison."))
-            volume = self._cmc_quantities(self.traditional_driver_id)
+            volume = {oid: qty for oid, qty in self._cmc_quantities(self.traditional_driver_id).items() if oid in results}
             base = sum(volume.values())
             if float_is_zero(base, precision_rounding=DRIVER_QTY_ROUNDING):
                 return {}
-            return {oid: results[oid]["traced_cost"] + resource_cost * qty / base for oid, qty in volume.items() if oid in results}
+            # zero-sum (Kaplan & Cooper): the pool is the overhead ABC assigns to the compared objects, burdens included
+            pool = sum(results[oid]["full_cost"] - results[oid]["traced_cost"] for oid in volume)
+            shares = spread(float_round(pool, precision_rounding=rounding), volume, rounding)  # cent-exact: Σ traditional = Σ ABC
+            return {oid: results[oid]["traced_cost"] + share for oid, share in shares.items()}
         if self.traditional_basis == "rate":
             version, measure = self.traditional_version_id, self.output_measure_id
             if not (version and measure and self.date_from):
@@ -364,12 +373,12 @@ class CmcAbcRun(models.Model):
             return {rate.holder_id: rate.value * results[rate.holder_id]["quantity"] for rate in rates}
         return {}
 
-    def _cmc_compare(self, results, resource_cost):
-        for oid, trad in self._cmc_traditional(results, resource_cost).items():
+    def _cmc_compare(self, results, rounding):
+        for oid, trad in self._cmc_traditional(results, rounding).items():
             if not trad:
                 continue
             res = results[oid]
-            distortion = (res["amount"] - trad) / trad * 100.0
+            distortion = (res["full_cost"] - trad) / trad * 100.0
             res.update(
                 traditional_cost=trad, distortion_percent=distortion,
                 costing_flag="aligned" if abs(distortion) < ALIGNED_PERCENT else "over" if distortion < 0 else "under",
@@ -460,8 +469,8 @@ class CmcAbcRun(models.Model):
         if float_compare(resource_cost + traced_cost, object_cost + unused + sustaining + unallocated, precision_rounding=rounding):
             raise UserError(self.env._("The cost network does not conserve: %(inflow)s in, %(outflow)s out.",
                                        inflow=resource_cost + traced_cost, outflow=object_cost + unused + sustaining + unallocated))
-        self._cmc_compare(results, resource_cost)
         idle_rate, sustaining_rate = self._cmc_burdens(results, unused, sustaining, rounding)
+        self._cmc_compare(results, rounding)
         self._cmc_publish_rates(rows, results)
         self.env["cmc.abc.flow"].create(all_flows)
         self.env["cmc.abc.activity.cost"].create(rows)

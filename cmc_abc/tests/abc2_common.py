@@ -56,6 +56,14 @@ Engine (``action_compute``; acyclic network, AD-118)
 - Rates: practical capacity line -> ``fixed_rate`` = fixed cost / practical capacity, ``variable_rate``
   = variable cost / used qty (two-tier, Kaplan Ch.14), unused = (capacity - used) x fixed rate (reported,
   never charged); without capacity line rate = cost / used qty. Used > capacity -> UserError.
+  RN-003: a capacity line with ZERO usage in the span (no edge) is idle capacity, not an unallocated
+  pool: its whole fixed cost -> ``unused_cost`` / flow ``unused`` / ``unused_capacity_cost`` (and so
+  into ``idle_burden_rate``), never into ``unallocated_amount``.
+- Traditional comparison (ABC-11, RN-001, Kaplan & Cooper zero-sum distortion): compared objects =
+  results with a traditional figure; volume pool = the overhead ABC actually assigns to THOSE objects
+  (Σ amount - traced over them: unused capacity, sustaining and customer/channel costs that never reach
+  them are excluded), so Σ traditional = Σ ABC over the compared objects. With ``compute_burdens`` the
+  comparison is on ``full_cost`` and the pool includes the same burdens (Σ full_cost - traced).
 - Sustaining (``is_sustaining``) activities: 100% to ``run.sustaining_object_id``; an edge from one ->
   UserError. Cost of an activity with no edge and not sustaining = unallocated (v1 behaviour).
 - ``trace_direct``: stamped direct lines go straight to their cost object (``traced_cost``).

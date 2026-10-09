@@ -5,6 +5,9 @@ CONTRACT (see abc2_common for the whole WP)
   (Kaplan Ch.14) ``fixed_rate`` = fixed cost / practical capacity, ``variable_rate`` = variable cost / used,
   ``rate`` = sum; ``unused_cost`` = (capacity - used) x fixed_rate -> flow stage ``unused`` (no target),
   ``run.unused_capacity_cost``; never charged to an object. used > practical capacity -> UserError.
+  RN-003: a capacity line on an activity with ZERO usage in the period (no edge) -> its fixed cost is
+  idle capacity: ``unused_cost`` = fixed cost (``fixed_rate`` = fixed / capacity, ``charged_cost`` 0),
+  flow ``unused``, counted in ``unused_capacity_cost`` and in ``idle_burden_rate``; NOT unallocated.
 - ``is_sustaining`` activities -> 100% to ``run.sustaining_object_id`` (``cmc.cost.object`` type
   ``sustaining``, res_model ``res.company``, res_id = run company), flow stage ``sustaining``,
   ``run.sustaining_cost``; an edge from a sustaining activity -> UserError.
@@ -83,6 +86,43 @@ class TestAbc2Capacity(Abc2Case):
         self.assertAlmostEqual(self._res(run, self.obj_c1).amount, 168000.0, places=2)
         self.assertAlmostEqual(self._res(run, self.obj_c2).amount, 56000.0, places=2)
         self.assertAlmostEqual(run.unused_capacity_cost, 56000.0, places=2)
+
+
+    def _idle_activity_run(self, **vals):
+        # RN-003 fixture: a line with 900 fixed cost and 30 h practical capacity, no use in March
+        env = self.env_a
+        center = self._center(env, "WP07 idle line", self.company_a)
+        self._cost(env, center, 900, self.oth, "fixed")
+        resource = env["cmc.abc.resource"].create({"name": "Idle line", "code": "WP07RIDLE", "center_id": center.id})
+        idle = self._activity("Run idle line", "WP07IDLE", self.pr_mfg, "unit", self.mhours)
+        run = self._main_run(
+            resource_lines=self._resource_lines() + [{"resource_id": resource.id, "activity_id": idle.id, "percent": 100}],
+            capacity=[{"activity_id": self.mach.id, "practical_capacity": 125},
+                      {"activity_id": idle.id, "practical_capacity": 30}],
+            **vals,
+        )
+        return run, idle
+
+    def test_rn003_capacity_without_usage_is_unused_not_unallocated(self):
+        # RN-003 (Kaplan Ch.7): capacity supplied and not used in the period is idle capacity cost
+        run, idle = self._idle_activity_run()
+        row = self._act(run, idle)
+        self.assertAlmostEqual(row.practical_capacity, 30.0)
+        self.assertAlmostEqual(row.used_qty, 0.0)
+        self.assertAlmostEqual(row.fixed_rate, 30.0, places=4)
+        self.assertAlmostEqual(row.charged_cost, 0.0, places=2)
+        self.assertAlmostEqual(row.unused_cost, 900.0, places=2)
+        unused = run.flow_ids.filtered(lambda f: f.stage == "unused" and f.source_activity_id == idle)
+        self.assertAlmostEqual(sum(unused.mapped("fixed_amount")), 900.0, places=2)
+        self.assertFalse(run.flow_ids.filtered(lambda f: f.stage == "unallocated" and f.source_activity_id == idle))
+        self.assertAlmostEqual(run.unused_capacity_cost, 1970.0, places=2)
+        self.assertAlmostEqual(run.unallocated_amount, 0.0, places=2)
+
+    def test_rn003_idle_burden_includes_unused_line(self):
+        # RN-003 / Frost St.6: the idle line feeds the idle burden: 1970 / 13930 = 14.1421%
+        run, _idle = self._idle_activity_run(compute_burdens=True)
+        self.assertAlmostEqual(run.idle_burden_rate, 14.1421, places=3)
+        self.assertAlmostEqual(sum(run.result_ids.mapped("idle_burden")), 1970.0, places=2)
 
 
 @tagged("post_install", "-at_install")

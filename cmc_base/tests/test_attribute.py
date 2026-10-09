@@ -11,6 +11,9 @@ CONTRACT
   default env.company), ``sequence`` Integer, ``active`` Boolean, ``target_model_ids`` M2m ``ir.model``
   restricted to models that inherit ``cmc.attribute.mixin`` (ValidationError otherwise),
   ``value_ids`` O2m ``cmc.attribute.value``. Unique index (code, company_id) -> IntegrityError.
+  RN-002: a code is unique within what a company sees: a company attribute cannot reuse the code of a
+  shared (company-less) attribute and a shared attribute cannot reuse the code of any company attribute
+  (ValidationError). Two DIFFERENT companies may still share a code.
 - ``cmc.attribute.value``: ``attribute_id`` M2o required ondelete cascade, ``name`` Char required,
   ``code`` Char, ``sequence`` Integer (``_order = "attribute_id, sequence, id"``), ``weight`` Float
   (numeric scales: ordered values with a weight), ``company_id`` related ``attribute_id.company_id``
@@ -24,10 +27,13 @@ CONTRACT
   only to a record whose model is in its attribute's ``target_model_ids``. Company check: a value of a
   company-B attribute on a company-A record -> UserError (``_check_company``).
 - ``record._cmc_attribute_value(attribute)`` (mixin, ensure_one): the ``cmc.attribute.value`` of
-  ``attribute`` on the record, empty recordset if none. ``attribute`` = record or code (str).
+  ``attribute`` on the record, empty recordset if none. ``attribute`` = record or code (str). RN-002: a code resolves to exactly ONE attribute
+  visible to the current companies (``env.companies``: shared or one of them), never to the homonym
+  attribute of another company - also under sudo/superuser, where record rules do not filter.
 - ``records._cmc_group_by_attribute(attribute)`` (mixin): ``{value_id: [record ids], False: [ids
   without a value]}`` in ONE SQL/_read_group over the relation table - constant query count, whatever
-  len(records) (AD-114). Respects the caller's record rules on the values.
+  len(records) (AD-114). Respects the caller's record rules on the values. A code resolves as for
+  ``_cmc_attribute_value`` (RN-002).
 - Shipped data (noupdate, company_id False), xmlids ``cmc_base.cmc_attribute_<x>``:
   ``value_added`` code VA_CLASS, values (by sequence) codes VA, BVA, NVA;
   ``cost_of_quality`` code COQ, values prevention, appraisal, internal_failure, external_failure,
@@ -213,6 +219,49 @@ class TestAttributeFramework(TransactionCase):
             groups = big_set._cmc_group_by_attribute(self.size)
         self.assertEqual(len(groups[self.small.id]), 150)
         self.assertEqual(len(groups[self.large.id]), 150)
+
+    def test_rn002_company_attribute_cannot_reuse_shared_code(self):
+        # RN-002: a company "CHANNEL" next to the shipped shared one would make the code ambiguous
+        with self.assertRaises(ValidationError):
+            self.Attr.create({"name": "My channel", "code": "CHANNEL", "company_id": self.company.id})
+            self.env.flush_all()
+
+    def test_rn002_shared_attribute_cannot_reuse_company_code(self):
+        # RN-002: a shared T_SIZE would be visible to company A together with A's own T_SIZE
+        with self.assertRaises(ValidationError):
+            self.Attr.create({"name": "Shared size", "code": "T_SIZE", "company_id": False})
+            self.env.flush_all()
+
+    def _homonym_b(self):
+        # RN-002: company B's own T_SIZE (allowed: different company) carried by a shared partner
+        size_b = self.Attr.create({
+            "name": "Size (B)", "code": "T_SIZE", "company_id": self.company_b.id,
+            "target_model_ids": [(6, 0, self.model_partner.ids)],
+            "value_ids": [(0, 0, {"name": "B small", "code": "BS"})],
+        })
+        partner_b = self.env["res.partner"].create({"name": "Attr shared partner B", "company_id": False})
+        partner_b.cmc_attribute_value_ids = [(4, size_b.value_ids.id)]
+        return size_b, partner_b
+
+    def test_rn002_code_resolves_to_the_company_attribute(self):
+        # RN-002: in company A "T_SIZE" is A's attribute, in company B it is B's - never the other one
+        size_b, partner_b = self._homonym_b()
+        env_a = self.env(context=dict(self.env.context, allowed_company_ids=self.company.ids))
+        env_b = self.env(context=dict(self.env.context, allowed_company_ids=self.company_b.ids))
+        self.assertFalse(partner_b.with_env(env_a)._cmc_attribute_value("T_SIZE"))
+        self.assertEqual(partner_b.with_env(env_b)._cmc_attribute_value("T_SIZE"), size_b.value_ids)
+
+    def test_rn002_grouped_helper_resolves_code_per_company(self):
+        # RN-002: grouping by code in company A ignores B's homonym values even as superuser
+        size_b, partner_b = self._homonym_b()
+        partner_a = self.env["res.partner"].create({"name": "Attr partner A"})
+        partner_a.cmc_attribute_value_ids = [(4, self.small.id)]
+        env_a = self.env(context=dict(self.env.context, allowed_company_ids=self.company.ids))
+        groups = (partner_a | partner_b).with_env(env_a)._cmc_group_by_attribute("T_SIZE")
+        self.assertEqual(groups, {self.small.id: [partner_a.id], False: [partner_b.id]})
+        env_b = self.env(context=dict(self.env.context, allowed_company_ids=self.company_b.ids))
+        groups = (partner_a | partner_b).with_env(env_b)._cmc_group_by_attribute("T_SIZE")
+        self.assertEqual(groups, {size_b.value_ids.id: [partner_b.id], False: [partner_a.id]})
 
     # -------------------------------------------------------------- shipped data
 

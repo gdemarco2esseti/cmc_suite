@@ -90,3 +90,68 @@ class TestEvmChange(EvmCase):
             self._cr(baseline, task_id=self.tq.id)
         with self.assertRaises(ValidationError):
             self._cr(baseline, date=date(2026, 8, 1))
+
+    # ---- RN-001: change requests accumulate on the lineage tip -------------------------------------------
+
+    def _two_crs(self, baseline):
+        cr_build = self._cr(baseline)
+        cr_test = self._cr(baseline, name="CR-02 extra test bench", task_id=self.t3.id, cost_impact=800.0)
+        return cr_build, cr_test
+
+    def test_rn001_change_requests_accumulate(self):
+        # RN-001: two CRs on the same baseline approved in sequence -> the second copies the first's re-baseline
+        baseline = self._baseline()
+        cr_build, cr_test = self._two_crs(baseline)
+        cr_build.action_approve()
+        cr_test.action_approve()
+        first, final = cr_build.new_baseline_id, cr_test.new_baseline_id
+        self.assertRecordValues(final, [{"parent_id": first.id, "state": "draft", "bac": 34500.0}])
+        self.assertEqual(len(final.estimate_line_ids), 5)
+        self.assertEqual(
+            set(final.estimate_line_ids.mapped("name")), {"Design", "Build", "Test", "CR-01 extra welding", "CR-02 extra test bench"},
+        )
+        april = final.baseline_line_ids.filtered(lambda r: r.date == APR)
+        self.assertAlmostEqual(sum(april.filtered(lambda r: r.task_id == self.t2).mapped("planned_value")), 9200.0, places=2)
+        self.assertAlmostEqual(sum(april.filtered(lambda r: r.task_id == self.t3).mapped("planned_value")), 2725.0, places=2)
+        # the copied versions are untouched
+        self.assertAlmostEqual(first.bac, 33700.0, places=2)
+        self.assertAlmostEqual(baseline.bac, 32200.0, places=2)
+        final.action_approve()
+        self.assertRecordValues(final, [{"state": "done", "bac": 34500.0}])
+
+    def test_rn001_copy_from_the_approved_child(self):
+        # RN-001: the CR baseline already has an approved re-baseline -> the copy is made from that child
+        baseline = self._baseline()
+        cr_build, cr_test = self._two_crs(baseline)
+        cr_build.action_approve()
+        child = cr_build.new_baseline_id
+        child.action_approve()
+        self.assertEqual(child.state, "done")
+        cr_test.action_approve()
+        self.assertRecordValues(cr_test.new_baseline_id, [{"parent_id": child.id, "bac": 34500.0}])
+        self.assertIn("CR-01 extra welding", cr_test.new_baseline_id.estimate_line_ids.mapped("name"))
+
+    def test_rn001_superseded_baseline_cannot_be_approved(self):
+        # RN-001: a baseline with a descendant is no longer the reference: approving it would fork the lineage
+        baseline = self._baseline()
+        cr_build, cr_test = self._two_crs(baseline)
+        cr_build.action_approve()
+        cr_test.action_approve()
+        superseded = cr_build.new_baseline_id
+        with self.assertRaises(UserError):
+            superseded.action_approve()
+        self.assertEqual(superseded.state, "draft")
+
+    # ---- RN-002: descope ----------------------------------------------------------------------------------
+
+    def test_rn002_negative_change_request_descopes(self):
+        # RN-002: a negative cost impact is a scope reduction, never a silent zero: BAC 32200 - 1500 = 30700
+        cr = self._cr(self._baseline(), name="CR-03 drop coating", cost_impact=-1500.0)
+        cr.action_approve()
+        new = cr.new_baseline_id
+        added = new.estimate_line_ids.filtered(lambda line: line.name == "CR-03 drop coating")
+        self.assertRecordValues(added, [{"material_cost": -1500.0, "cost_expected": -1500.0, "cost_sigma": 0.0}])
+        self.assertAlmostEqual(new.bac, 30700.0, places=2)
+        april_t2 = new.baseline_line_ids.filtered(lambda r: r.task_id == self.t2 and r.date == APR)
+        self.assertAlmostEqual(sum(april_t2.mapped("planned_value")), 6200.0, places=2)
+        self.assertAlmostEqual(new.estimate_expected, 30700.0, places=2)

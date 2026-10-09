@@ -105,3 +105,33 @@ class TestEvmEstimate(EvmCase):
             estimates[0].update(date_start=start, date_end=end)
             with self.subTest(start=start, end=end), self.assertRaises(ValidationError):
                 self._baseline(approve=False, risks=False, estimates=estimates)
+
+    def test_rn002_negative_material_cost_is_a_descope(self):
+        # RN-002: a negative material (descope) gives signed cost points, PERT still applies, never a silent zero
+        # hours 10/20/40 at Z 50 = 500/1000/2000, material -1000 -> points -500/0/1000, E = 500/6, sigma = 1500/6
+        version = self._baseline(approve=False, risks=False, estimates=[
+            {"name": "Descoped design", "task_id": self.t1.id, "center_id": self.z.id, "hours_optimistic": 10, "hours_most_likely": 20,
+             "hours_pessimistic": 40, "material_cost": -1000.0, "date_start": JAN, "date_end": JAN},
+            {"name": "Removed purchase", "task_id": self.t2.id, "hours_optimistic": 0, "hours_most_likely": 0, "hours_pessimistic": 0,
+             "material_cost": -300.0, "date_start": FEB, "date_end": FEB},
+        ])
+        version.action_cmc_evm_plan()
+        design = version.estimate_line_ids.filtered(lambda line: line.task_id == self.t1)
+        self.assertAlmostEqual(design.cost_optimistic, -500.0, places=2)
+        self.assertAlmostEqual(design.cost_most_likely, 0.0, places=2)
+        self.assertAlmostEqual(design.cost_pessimistic, 1000.0, places=2)
+        self.assertAlmostEqual(design.cost_expected, 500 / 6, places=2)
+        self.assertAlmostEqual(design.cost_sigma, 1500 / 6, places=2)
+        purchase = version.estimate_line_ids.filtered(lambda line: line.task_id == self.t2)
+        self.assertAlmostEqual(purchase.cost_expected, -300.0, places=2)
+        self.assertAlmostEqual(version.estimate_expected, 500 / 6 - 300.0, places=2)
+        self.assertAlmostEqual(version.bac, 83.33 - 300.0, places=2)
+
+    def test_rn002_invalid_line_names_itself(self):
+        # RN-002: hours keep 0 <= O <= M <= P; the refusal names the line instead of zeroing its cost
+        version = self._baseline(approve=False, risks=False)
+        line = version.estimate_line_ids.filtered(lambda line: line.task_id == self.t1)
+        for vals in ({"hours_optimistic": -5.0}, {"hours_optimistic": 120.0}):
+            with self.subTest(vals=vals), self.assertRaises(ValidationError) as caught:
+                line.write(vals)
+            self.assertIn("Design", str(caught.exception))

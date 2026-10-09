@@ -36,21 +36,22 @@ class CmcEvmEstimateLine(models.Model):
     @api.depends("hours_optimistic", "hours_most_likely", "hours_pessimistic")
     def _compute_hours_expected(self):
         for line in self:
-            try:
-                line.hours_expected = cmc_utils.pert_estimate(line.hours_optimistic, line.hours_most_likely, line.hours_pessimistic)[0]
-            except ValueError:  # why: refused by _check_hours; the compute must not mask that message
-                line.hours_expected = 0.0
+            line.hours_expected = line._pert(line.hours_optimistic, line.hours_most_likely, line.hours_pessimistic)[0]
 
     @api.depends("hours_optimistic", "hours_most_likely", "hours_pessimistic", "hourly_rate", "material_cost")
     def _compute_costs(self):
         for line in self:
             points = [h * line.hourly_rate + line.material_cost for h in (line.hours_optimistic, line.hours_most_likely, line.hours_pessimistic)]
-            try:
-                expected, sigma = cmc_utils.pert_estimate(*points)
-            except ValueError:  # why: refused by _check_hours
-                points, expected, sigma = [0.0] * 3, 0.0, 0.0
+            expected, sigma = line._pert(*points)
             line.cost_optimistic, line.cost_most_likely, line.cost_pessimistic = points
             line.cost_expected, line.cost_sigma = expected, sigma
+
+    def _pert(self, o, m, p):
+        self.ensure_one()
+        try:
+            return cmc_utils.pert_estimate(o, m, p)
+        except ValueError as err:  # why: name the line instead of storing a silent zero
+            raise ValidationError(self.env._("%s: the hours need 0 <= optimistic <= most likely <= pessimistic.", self.name)) from err
 
     @api.constrains("hours_optimistic", "hours_most_likely", "hours_pessimistic", "center_id")
     def _check_hours(self):
@@ -109,10 +110,9 @@ class CmcEvmRisk(models.Model):
     @api.depends("probability", "impact")
     def _compute_emv(self):
         for risk in self:
-            try:
-                risk.emv = cmc_utils.emv(risk.probability / 100.0, risk.impact)
-            except ValueError:  # why: refused by _check_probability
-                risk.emv = 0.0
+            if not 0 <= risk.probability <= 100:
+                raise ValidationError(self.env._("%s: a probability is a percent between 0 and 100.", risk.name))
+            risk.emv = cmc_utils.emv(risk.probability / 100.0, risk.impact)
 
     @api.constrains("probability")
     def _check_probability(self):

@@ -47,6 +47,11 @@ PRJ-01/02 Baseline = ``cmc.plan.version`` with ``version_type = 'baseline'`` (AD
   ``hourly_rate`` Float (set by the plan), stored computes: ``hours_expected`` = (O+4M+P)/6,
   ``cost_optimistic`` / ``cost_most_likely`` / ``cost_pessimistic`` = hours x rate + material,
   ``cost_expected`` = PERT of the three costs, ``cost_sigma`` = (cost P - cost O)/6.
+  RN-002 (descope): ``material_cost`` may be NEGATIVE (a scope reduction), so the three cost points may be
+  negative; the PERT ordering O <= M <= P is still enforced on hours (with 0 <= O) and on the cost points, but
+  there is NO >= 0 requirement on cost (``cmc_utils.pert_estimate`` accepts signed ordered points, see
+  ``cmc_base/tests/test_wp15_pert.py``). Never a silent zero: a line the maths refuse raises ValidationError
+  naming the line; the computes never swallow it into 0.
 - ``cmc.evm.baseline.line`` (time-phased PV, AD-105 month grain): ``version_id``, ``task_id``, ``date``
   (first day of month), ``planned_value`` Monetary. BAC of a task = sum of its rows.
 - ``cmc.evm.risk`` (risk register, line of the version): ``name``, ``task_id`` (optional), ``probability``
@@ -58,11 +63,17 @@ PRJ-03 Change requests, tracked OUTSIDE the baseline, and re-baseline
   (related stored), ``task_id`` (task of the baseline project -> else ValidationError), ``date`` (inside the
   baseline span -> else ValidationError), ``cost_impact`` Monetary, ``state`` ``draft`` (default) /
   ``approved`` / ``rejected``, ``new_baseline_id`` (readonly). A draft CR never changes its baseline.
+- ``cost_impact`` is signed (RN-002): a negative impact is a descope and lowers the new BAC.
 - ``action_approve()``: manager only (AccessError); CR must be draft and its baseline approved (UserError).
-  Copies the baseline (``copy()``: new DRAFT baseline, ``parent_id`` = old, estimate lines, risks and rate
-  card copied), adds ONE estimate line to the copy (``name`` = CR name, task, no hours, ``material_cost`` =
-  cost impact, ``date_start = date_end`` = first day of the CR month), runs the plan on the copy, sets ``new_baseline_id``
-  and ``state = 'approved'``. The old baseline is untouched. ``action_reject()``: draft -> rejected.
+  RN-001 CRs ACCUMULATE: the version copied is the LATEST DESCENDANT of the CR baseline lineage (follow the
+  ``parent_id`` children from ``baseline_id`` down to the tip; the CR baseline itself when it has none), draft
+  or approved. Copies it (``copy()``: new DRAFT baseline, ``parent_id`` = the copied tip, estimate lines,
+  risks and rate card copied), adds ONE estimate line to the copy (``name`` = CR name, task, no hours,
+  ``material_cost`` = cost impact, ``date_start = date_end`` = first day of the CR month), runs the plan on
+  the copy, sets ``new_baseline_id`` and ``state = 'approved'``. The copied versions are untouched.
+  A SUPERSEDED baseline (one with a descendant, i.e. some version has ``parent_id`` = it) cannot be
+  approved (``action_approve`` -> UserError): only the tip of the lineage becomes the reference.
+  ``action_reject()``: draft -> rejected.
 
 PRJ-03/04 EVM status run ``cmc.evm.run`` (``_inherit = ["cmc.run.mixin"]``)
 - Inputs (``_cmc_input_fields``, locked when computed): ``name``, ``company_id``, ``project_id``, ``baseline_id`` (baseline version of the same project ->
@@ -84,9 +95,13 @@ PRJ-03/04 EVM status run ``cmc.evm.run`` (``_inherit = ["cmc.run.mixin"]``)
   ``date``, ``pv`` (month), ``pv_cumulative``, ``ev_cumulative``, ``ac_cumulative``, ``ev``, ``ac``,
   ``cv`` = ev - ac of the month, ``is_forecast`` (month after the status month: EV/AC 0), ``out_of_control``
   (|cv| > control_limit, limit > 0; ``cmc_utils.control_breaches``). EV/AC cumulative of an earlier month =
-  the COMPUTED EVM run of the same project and baseline with the latest status date in that month (carry the
-  previous value forward when a month has none, 0 before the first); the status month = this run.
-  ``rule_of_seven`` = ``cmc_utils.rule_of_seven`` over the monthly cv up to the status month.
+  the COMPUTED EVM run of the same project and of the same baseline LINEAGE (RN-003: the run baseline and
+  its ancestors through ``parent_id``; an unrelated baseline of the same project never counts) with the latest
+  status date in that month (carry the previous value forward when a month has none, 0 before the first);
+  the status month = this run. Past months keep the EV/AC those runs measured (AC is a fact of the project,
+  never re-measured against the new baseline). ``out_of_control`` / ``out_of_control_count`` and
+  ``rule_of_seven`` = ``cmc_utils.rule_of_seven`` run over the monthly cv up to the status month, history
+  included, so a streak spans a re-baseline.
 
 Fixture (company A; hand numbers, 2026)
   Project P "Commessa EVM" (analytic AA-EVM, center Z), tasks T1 Design, T2 Build, T3 Test; project Q with task
@@ -107,6 +122,12 @@ Fixture (company A; hand numbers, 2026)
     EAC 32583.33, ETC 15583.33, VAC -383.33, EAC atypical 32400, EAC composite 36154.51, TCPI 1.0132.
     Monthly cv: Jan -375, Feb -755, Mar +930 -> limit 800: only March out of control; no rule of seven.
   Change request on T2, April, +1500 -> new baseline BAC 33700 (T2 April 9200).
+  RN-001: then a second CR on T3, April, +800 -> copied from that new baseline: BAC 34500 (T3 April 2725).
+  RN-002: CR on T2, April, -1500 (descope) -> new baseline BAC 30700 (T2 April 6200).
+  RN-003: CR on T2, April, +3150 -> B' BAC 35350 (T2 BAC 26250), approved; April job run (Apr 1-30) job-to-date
+    AC 22000; April 30 report on B' (T1 100, T2 60, T3 0) EV 21000. Curve Jan..Apr from the B runs + this one:
+    EV cum 2625 / 9870 / 16800 / 21000, AC cum 3000 / 11000 / 17000 / 22000, monthly cv -375 / -755 / +930 / -800
+    -> limit 800: only March out of control (count 1), April -800 inside.
 """
 
 from datetime import date

@@ -167,8 +167,8 @@ def indifference_qty(fixed_a, var_a, fixed_b, var_b):
 
 
 def _check_three_points(o, m, p):
-    if not 0 <= o <= m <= p:
-        raise ValueError("Three-point estimate needs 0 <= optimistic <= most likely <= pessimistic")
+    if not o <= m <= p:
+        raise ValueError("Three-point estimate needs optimistic <= most likely <= pessimistic")
 
 
 def pert_estimate(o, m, p):

@@ -109,10 +109,14 @@ class CmcEvmRun(models.Model):
         currency = self.company_id.currency_id
         status_month = cmc_utils.month_start(self.status_date)
         # earlier computed reports of the same baseline: the latest of each month is its closing figure
+        lineage, version = [], self.baseline_id
+        while version:
+            lineage.append(version.id)
+            version = version.parent_id
         history = {
             cmc_utils.month_start(past.status_date): (past.ev, past.ac)
             for past in engine.search_fetch([
-                ("state", "=", "done"), ("baseline_id", "=", self.baseline_id.id), ("project_id", "=", self.project_id.id),
+                ("state", "=", "done"), ("baseline_id", "in", lineage), ("project_id", "=", self.project_id.id),
                 ("status_date", "<", status_month),
             ], ["status_date", "ev", "ac"], order="status_date, id")
         }

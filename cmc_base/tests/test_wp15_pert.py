@@ -2,7 +2,8 @@
 
 CONTRACT (binding for the developer; tests are read-only)
 - ``pert_estimate(o, m, p) -> (expected, sigma)``: E = (O + 4M + P) / 6, sigma = (P - O) / 6 (PRJ-01).
-  ValueError unless ``0 <= o <= m <= p``.
+  ValueError unless ``o <= m <= p``. RN-002: the points are SIGNED (a descope gives negative cost points);
+  non-negative hours are the estimate line's own constraint, not the maths'.
 - ``triangular_estimate(o, m, p) -> float``: (O + M + P) / 3; same ValueError.
 - ``pert_total(estimates, z=2.0) -> (expected, sigma, low, high)``: ``estimates`` = iterable of (o, m, p);
   expected = sum of E, sigma = sqrt(sum sigma^2), low/high = expected -/+ z x sigma (z = 2: ~95% band).
@@ -38,10 +39,17 @@ class TestWp15Pert(TransactionCase):
         self.assertAlmostEqual(sigma, 70 / 6)
 
     def test_pert_estimate_rejects_unordered_points(self):
-        # PRJ-01: optimistic <= most likely <= pessimistic, never negative
-        for o, m, p in ((100, 80, 150), (80, 160, 150), (-1, 2, 3)):
+        # PRJ-01: optimistic <= most likely <= pessimistic
+        for o, m, p in ((100, 80, 150), (80, 160, 150), (-1, -2, 3)):
             with self.assertRaises(ValueError):
                 cmc_utils.pert_estimate(o, m, p)
+
+    def test_rn002_pert_estimate_signed_points(self):
+        # RN-002: a descope is a negative cost; ordered signed points are a valid estimate, never refused
+        self.assertEqual(cmc_utils.pert_estimate(-1500, -1500, -1500), (-1500.0, 0.0))
+        expected, sigma = cmc_utils.pert_estimate(-500, 0, 1000)
+        self.assertAlmostEqual(expected, 500 / 6)
+        self.assertAlmostEqual(sigma, 1500 / 6)
 
     def test_triangular_estimate(self):
         # PRJ-01: triangular mean (O + M + P) / 3

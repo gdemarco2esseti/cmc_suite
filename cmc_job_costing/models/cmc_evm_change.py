@@ -40,7 +40,7 @@ class CmcEvmChangeRequest(models.Model):
                 raise UserError(self.env._("%s is not a draft change request.", cr.name))
             if cr.baseline_id.state != "done":
                 raise UserError(self.env._("%s: approve the baseline before amending it.", cr.name))
-            new = cr.baseline_id.copy()
+            new = cr._newest_in_lineage().copy()
             first = month_start(cr.date)
             self.env["cmc.evm.estimate.line"].create({
                 "version_id": new.id, "name": cr.name, "task_id": cr.task_id.id, "material_cost": cr.cost_impact,
@@ -49,6 +49,13 @@ class CmcEvmChangeRequest(models.Model):
             new._cmc_evm_plan()
             cr.write({"new_baseline_id": new.id, "state": "approved"})
         return True
+
+    def _newest_in_lineage(self):
+        self.ensure_one()
+        version = self.baseline_id
+        while child := self.env["cmc.plan.version"].search([("parent_id", "=", version.id)], order="id desc", limit=1):
+            version = child
+        return version
 
     def action_reject(self):
         if any(cr.state != "draft" for cr in self):

@@ -4,11 +4,15 @@ baseline; indices and EAC variants; S-curve and planned vs actual per month with
 CONTRACT: see ``evm_common`` (``cmc.evm.run``, ``cmc.evm.task.line``, ``cmc.evm.curve``).
 """
 
+from datetime import date
+
 from odoo import Command
 from odoo.exceptions import UserError, ValidationError
 from odoo.tests.common import tagged
 
 from .evm_common import APR, FEB, FEB_END, JAN, JUN, MAR, MAR_END, MAY, EvmCase
+
+APR_END = date(2026, 4, 30)
 
 
 @tagged("post_install", "-at_install")
@@ -164,3 +168,34 @@ class TestEvmRun(EvmCase):
         run = self._evm(self._baseline(), self.job_mar, MAR_END, {self.t1: 100.0, self.t2: 50.0, self.t3: 0.0})
         with self.assertRaises(UserError):
             run.control_limit = 100.0
+
+    # ---- RN-003: the history follows the baseline lineage --------------------------------------------------
+
+    def test_rn003_history_spans_the_rebaseline(self):
+        # RN-003: after an April re-baseline the S-curve keeps the Jan-Mar figures measured on its parent;
+        # AC is a project fact, so the April 30 report on B' reads AC 17000 at March and April cv = -800
+        baseline = self._baseline()
+        self._history(baseline)
+        cr = self.env["cmc.evm.change.request"].create({
+            "name": "CR-04 scope growth", "baseline_id": baseline.id, "task_id": self.t2.id,
+            "date": date(2026, 4, 10), "cost_impact": 3150.0,
+        })
+        cr.action_approve()
+        rebaseline = cr.new_baseline_id
+        rebaseline.action_approve()
+        self.assertAlmostEqual(rebaseline.bac, 35350.0, places=2)
+        env_a = self._env_a()
+        job_apr = env_a["cmc.job.cost.run"].create({
+            "name": "WP15 job Apr", "company_id": self.company_a.id, "date_from": APR, "date_to": APR_END,
+            "project_ids": [Command.set(self.prj.ids)], "overhead_rate": 0.0, "overhead_base": "hours",
+        })
+        job_apr.action_compute()
+        apr = self._evm(rebaseline, job_apr, APR_END, {self.t1: 100.0, self.t2: 60.0, self.t3: 0.0})
+        self.assertRecordValues(apr, [{"bac": 35350.0, "ev": 21000.0, "ac": 22000.0, "out_of_control_count": 1, "rule_of_seven": False}])
+        self.assertRecordValues(apr.curve_ids.sorted("date")[:4], [
+            {"date": JAN, "ev_cumulative": 2625.0, "ac_cumulative": 3000.0, "ev": 2625.0, "ac": 3000.0, "cv": -375.0, "out_of_control": False},
+            {"date": FEB, "ev_cumulative": 9870.0, "ac_cumulative": 11000.0, "ev": 7245.0, "ac": 8000.0, "cv": -755.0, "out_of_control": False},
+            {"date": MAR, "ev_cumulative": 16800.0, "ac_cumulative": 17000.0, "ev": 6930.0, "ac": 6000.0, "cv": 930.0, "out_of_control": True},
+            {"date": APR, "ev_cumulative": 21000.0, "ac_cumulative": 22000.0, "ev": 4200.0, "ac": 5000.0, "cv": -800.0,
+             "out_of_control": False},
+        ])

@@ -37,11 +37,7 @@ class CmcPlanVersion(models.Model):
         for version in self:
             lines = version.estimate_line_ids
             triples = zip(lines.mapped("cost_optimistic"), lines.mapped("cost_most_likely"), lines.mapped("cost_pessimistic"), strict=True)
-            try:
-                totals = cmc_utils.pert_total(triples)
-            except ValueError:  # why: an unordered line is refused by its own constraint
-                totals = (0.0, 0.0, 0.0, 0.0)
-            version.estimate_expected, version.estimate_sigma, version.estimate_low, version.estimate_high = totals
+            version.estimate_expected, version.estimate_sigma, version.estimate_low, version.estimate_high = cmc_utils.pert_total(triples)
 
     @api.depends("baseline_line_ids.planned_value")
     def _compute_bac(self):
@@ -78,6 +74,8 @@ class CmcPlanVersion(models.Model):
     def action_approve(self):
         self._cmc_check_manager()
         for baseline in self.filtered(lambda v: v.version_type == "baseline" and v.state == "draft"):
+            if self.search_count([("parent_id", "=", baseline.id), ("version_type", "=", "baseline")]):
+                raise UserError(self.env._("%s has a newer re-baseline: approve that one.", baseline.display_name))
             if not baseline.estimate_line_ids:
                 raise UserError(self.env._("%s has no estimate line: nothing to baseline.", baseline.display_name))
             baseline._cmc_evm_plan()

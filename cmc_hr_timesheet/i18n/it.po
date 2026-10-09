@@ -29,4 +29,4 @@ msgstr "Nome visualizzato"
 #. module: cmc_hr_timesheet
 #: model:ir.model.fields,field_description:cmc_hr_timesheet.field_account_analytic_line__id
 msgid "ID"
-msgstr ""
+msgstr "ID"

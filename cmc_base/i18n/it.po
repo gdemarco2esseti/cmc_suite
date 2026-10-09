@@ -25,7 +25,7 @@ msgstr " (il metodo diretto ignora i servizi verso altri centri ausiliari)"
 #. module: cmc_base
 #: model:ir.actions.report,print_report_name:cmc_base.action_report_cmc_consuntivo
 msgid "'Cost Closing - %s' % object.name"
-msgstr ""
+msgstr "'Chiusura dei costi - %s' % object.name"
 
 #. module: cmc_base
 #: model_terms:ir.ui.view,arch_db:cmc_base.report_cmc_consuntivo
@@ -71,6 +71,12 @@ msgstr ""
 "costo (verrebbe conteggiato due volte nel ribaltamento)."
 
 #. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_run_mixin.py:0
+msgid "A run is created in draft: compute it to make it computed."
+msgstr "Un calcolo nasce in bozza: per renderlo concluso va calcolato."
+
+#. module: cmc_base
 #: model:ir.model.constraint,message:cmc_base.constraint_cmc_center_service_provider_receiver_uniq
 msgid "A service line for this provider/receiver/driver already exists."
 msgstr ""
@@ -86,7 +92,7 @@ msgstr "Attivo"
 #. odoo-python
 #: code:addons/cmc_base/models/cmc_cockpit.py:0
 msgid "Activity-Based Costing"
-msgstr ""
+msgstr "Activity-Based Costing"
 
 #. module: cmc_base
 #. odoo-python
@@ -144,6 +150,16 @@ msgstr "Importo"
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation__amount
 msgid "Amount to Allocate"
 msgstr "Importo da ripartire"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/account_analytic_line.py:0
+msgid ""
+"An excluded cost line cannot be classified: it is a twin of a cost already "
+"counted elsewhere."
+msgstr ""
+"Una riga di costo esclusa non si può classificare: è il gemello di un costo "
+"già contato altrove."
 
 #. module: cmc_base
 #: model:ir.ui.menu,name:cmc_base.menu_cmc_sec_analysis
@@ -204,9 +220,24 @@ msgid "Build the cost base first"
 msgstr "Completa prima la base di costo"
 
 #. module: cmc_base
+#: model:ir.model,name:cmc_base.model_cmc_run_mixin
+msgid "CMC computation run lifecycle"
+msgstr "Ciclo di vita dei calcoli CMC"
+
+#. module: cmc_base
 #: model:ir.model,name:cmc_base.model_cmc_reclass_mixin
 msgid "CMC reclassified (transposed) report contract"
 msgstr "Contratto del report riclassificato (trasposto) CMC"
+
+#. module: cmc_base
+#: model:ir.model,name:cmc_base.model_cmc_run_line_mixin
+msgid "CMC run input line"
+msgstr "Riga di input di un calcolo CMC"
+
+#. module: cmc_base
+#: model:ir.model,name:cmc_base.model_cmc_run_result_mixin
+msgid "CMC run result row"
+msgstr "Riga di risultato di un calcolo CMC"
 
 #. module: cmc_base
 #: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_capacity_form
@@ -357,7 +388,12 @@ msgid "Compute"
 msgstr "Calcola"
 
 #. module: cmc_base
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_abc_run__state__done
 #: model:ir.model.fields.selection,name:cmc_base.selection__cmc_closing_run__state__done
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_costing_run__state__done
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_joint_run__state__done
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_run_mixin__state__done
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_tdabc_run__state__done
 msgid "Computed"
 msgstr "Calcolato"
 
@@ -390,6 +426,11 @@ msgid ""
 msgstr ""
 "Campo di comodità: instrada il costo a un centro di costo indipendentemente "
 "dal piano analitico su cui si trova."
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_account_analytic_line__cmc_cost_amount
+msgid "Cost"
+msgstr "Costo"
 
 #. module: cmc_base
 #: model:ir.model,name:cmc_base.model_cmc_allocation
@@ -581,6 +622,15 @@ msgid "Cost analysis matrix not conserved: pre %(pre)s vs post %(post)s."
 msgstr "Quadro analisi costi non conservato: pre %(pre)s vs post %(post)s."
 
 #. module: cmc_base
+#: model:ir.model.fields,help:cmc_base.field_account_analytic_line__cmc_cost_amount
+msgid ""
+"Cost as a positive figure; stored as a negative analytic amount, the Odoo "
+"sign of a cost."
+msgstr ""
+"Costo come valore positivo; viene salvato come importo analitico negativo, "
+"il segno di un costo in Odoo."
+
+#. module: cmc_base
 #. odoo-javascript
 #: code:addons/cmc_base/static/src/cockpit/cmc_cockpit.xml:0
 msgid "Cost base"
@@ -690,7 +740,7 @@ msgstr "Crea un centro di costo"
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_driver__create_uid
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_element__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Creato da"
 
 #. module: cmc_base
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation__create_date
@@ -704,7 +754,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_driver__create_date
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_element__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Creato il"
 
 #. module: cmc_base
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation__currency_id
@@ -765,6 +815,9 @@ msgstr "Direct costing / CVR"
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_driver__display_name
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_element__display_name
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_reclass_mixin__display_name
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_run_line_mixin__display_name
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_run_mixin__display_name
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_run_result_mixin__display_name
 msgid "Display Name"
 msgstr "Nome visualizzato"
 
@@ -775,7 +828,12 @@ msgid "Distributed"
 msgstr "Distribuito"
 
 #. module: cmc_base
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_abc_run__state__draft
 #: model:ir.model.fields.selection,name:cmc_base.selection__cmc_closing_run__state__draft
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_costing_run__state__draft
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_joint_run__state__draft
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_run_mixin__state__draft
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_tdabc_run__state__draft
 msgid "Draft"
 msgstr "Bozza"
 
@@ -794,6 +852,25 @@ msgstr "Quantità di driver"
 #: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_cost_analysis_search
 msgid "Element"
 msgstr "Elemento"
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_cost_entry_form
+msgid "Enter the cost as a positive figure."
+msgstr "Inserisci il costo come valore positivo."
+
+#. module: cmc_base
+#: model:ir.model.fields,field_description:cmc_base.field_account_analytic_line__cmc_excluded
+msgid "Excluded from Cost Base"
+msgstr "Escluso dalla base di costo"
+
+#. module: cmc_base
+#: model:ir.model.fields,help:cmc_base.field_account_analytic_line__cmc_excluded
+msgid ""
+"Excluded from the cost base: a system twin of a cost already counted "
+"elsewhere."
+msgstr ""
+"Escluso dalla base di costo: gemello di sistema di un costo già contato "
+"altrove."
 
 #. module: cmc_base
 #: model:ir.model.fields.selection,name:cmc_base.selection__cmc_cost_element__cmc_kind__figurative
@@ -850,8 +927,11 @@ msgstr "Costo pieno"
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_driver__id
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_element__id
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_reclass_mixin__id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_run_line_mixin__id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_run_mixin__id
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_run_result_mixin__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: cmc_base
 #: model:ir.model.fields,field_description:cmc_base.field_account_analytic_line__cmc_directness
@@ -937,7 +1017,7 @@ msgstr "Tipo"
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_driver__write_uid
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_element__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Ultimo aggiornamento di"
 
 #. module: cmc_base
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation__write_date
@@ -951,7 +1031,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_driver__write_date
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_element__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Ultimo aggiornamento il"
 
 #. module: cmc_base
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation__line_ids
@@ -968,7 +1048,7 @@ msgstr "Caricamento…"
 #. module: cmc_base
 #: model:cmc.cost.element,name:cmc_base.cmc_element_mod
 msgid "Manodopera diretta (MOD)"
-msgstr ""
+msgstr "Manodopera diretta (MOD)"
 
 #. module: cmc_base
 #: model:ir.ui.menu,name:cmc_base.menu_cmc_cfg_master
@@ -978,7 +1058,7 @@ msgstr "Anagrafiche"
 #. module: cmc_base
 #: model:cmc.cost.element,name:cmc_base.cmc_element_mp
 msgid "Materie prime (MP)"
-msgstr ""
+msgstr "Materie prime (MP)"
 
 #. module: cmc_base
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_run__method
@@ -1146,6 +1226,17 @@ msgstr ""
 "Il max dell'intervallo di rilevanza deve essere maggiore o uguale al min."
 
 #. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_closing_run_form
+msgid "Reset to Draft"
+msgstr "Riporta in bozza"
+
+#. module: cmc_base
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_closing_run_form
+msgid "Resetting deletes the computed results. Continue?"
+msgstr ""
+"Riportando in bozza i risultati calcolati vengono cancellati. Continuare?"
+
+#. module: cmc_base
 #: model_terms:ir.ui.view,arch_db:cmc_base.report_cmc_consuntivo
 #: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_closing_run_form
 msgid "Residual"
@@ -1179,6 +1270,23 @@ msgid "Run"
 msgstr "Elaborazione"
 
 #. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_run_mixin.py:0
+msgid ""
+"Run %(runs)s is already computed. Reset it to draft to compute it again."
+msgstr ""
+"Il calcolo %(runs)s è già concluso. Riportalo in bozza per ricalcolarlo."
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_run_mixin.py:0
+msgid ""
+"Run %(runs)s is computed. Reset it to draft before changing its inputs."
+msgstr ""
+"Il calcolo %(runs)s è concluso. Riportalo in bozza prima di modificarne i "
+"dati di input."
+
+#. module: cmc_base
 #. odoo-javascript
 #: code:addons/cmc_base/static/src/reclass/cmc_reclass.xml:0
 msgid "Run the computation to see the reclassified view."
@@ -1193,6 +1301,16 @@ msgstr "Semi-variabile"
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_element__sequence
 msgid "Sequence"
 msgstr "Sequenza"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/account_analytic_line.py:0
+msgid ""
+"Set either Amount or Cost, not both: Cost is the Amount with the opposite "
+"sign."
+msgstr ""
+"Indica l'Importo oppure il Costo, non entrambi: il Costo è l'Importo con il "
+"segno opposto."
 
 #. module: cmc_base
 #: model:ir.model.fields.selection,name:cmc_base.selection__account_analytic_line__cmc_cost_traceability__special
@@ -1219,6 +1337,7 @@ msgstr ""
 #. module: cmc_base
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_run__state
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_analysis_line__state
+#: model:ir.model.fields,field_description:cmc_base.field_cmc_run_mixin__state
 #: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_cost_analysis_search
 msgid "State"
 msgstr "Stato"
@@ -1237,6 +1356,12 @@ msgstr "Sotto-centri di costo"
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_allocation_line__target_account_id
 msgid "Target Account"
 msgstr "Conto destinazione"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/account_analytic_line.py:0
+msgid "The cost base exclusion is set by the system only."
+msgstr "L'esclusione dalla base di costo la imposta solo il sistema."
 
 #. module: cmc_base
 #: model:ir.model.constraint,message:cmc_base.constraint_cmc_cost_driver_code_company_uniq
@@ -1278,9 +1403,15 @@ msgstr "I servizi reciproci formano un sistema irrisolvibile."
 
 #. module: cmc_base
 #. odoo-python
+#: code:addons/cmc_base/models/cmc_run_mixin.py:0
+msgid "The results of a run are written by Compute only."
+msgstr "I risultati di un calcolo li scrive solo il pulsante Calcola."
+
+#. module: cmc_base
+#. odoo-python
 #: code:addons/cmc_base/models/cmc_cockpit.py:0
 msgid "Time-Driven ABC"
-msgstr ""
+msgstr "Time-Driven ABC"
 
 #. module: cmc_base
 #. odoo-javascript
@@ -1288,6 +1419,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:cmc_base.report_reclass
 #: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_allocation_form
 #: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_cost_analysis_list
+#: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_cost_entry_list
 msgid "Total"
 msgstr "Totale"
 
@@ -1347,6 +1479,12 @@ msgstr "Capacità inutilizzata"
 #: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_capacity_graph
 msgid "Unused Capacity Cost"
 msgstr "Costo della capacità inutilizzata"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_run_mixin.py:0
+msgid "Use Compute or Reset to Draft to change the state of a run."
+msgstr "Per cambiare lo stato di un calcolo usa Calcola o Riporta in bozza."
 
 #. module: cmc_base
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_capacity_analysis__utilization_rate

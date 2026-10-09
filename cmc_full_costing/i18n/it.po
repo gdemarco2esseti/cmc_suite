@@ -54,11 +54,23 @@ msgstr "Elaborazione di chiusura"
 
 #. module: cmc_full_costing
 #. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_closing.py:0
+msgid ""
+"Closing run %(closing)s is used by the computed costing runs %(costings)s. "
+"Reset them to draft first."
+msgstr ""
+"La chiusura %(closing)s è usata dai calcoli del costo pieno conclusi "
+"%(costings)s. Riportali prima in bozza."
+
+#. module: cmc_full_costing
+#. odoo-python
 #: code:addons/cmc_full_costing/models/cmc_costing.py:0
 msgid ""
 "Closing run %(name)s is not computed: its final centers carry no reliable "
 "cost yet."
 msgstr ""
+"La chiusura %(name)s non è calcolata: i suoi centri finali non hanno ancora "
+"un costo affidabile."
 
 #. module: cmc_full_costing
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_figurative_cost__cmc_directness
@@ -111,14 +123,14 @@ msgstr ""
 "               dai centri finali chiusi."
 
 #. module: cmc_full_costing
-#: model:ir.model.fields.selection,name:cmc_full_costing.selection__cmc_costing_run__state__done
-msgid "Computed"
-msgstr "Calcolato"
-
-#. module: cmc_full_costing
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__config_ids
 msgid "Config"
 msgstr "Configurazione"
+
+#. module: cmc_full_costing
+#: model:ir.model,name:cmc_full_costing.model_cmc_closing_run
+msgid "Cost Center Closing Run"
+msgstr "Chiusura dei centri di costo"
 
 #. module: cmc_full_costing
 #: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_result_form
@@ -196,7 +208,7 @@ msgstr "Crea un'elaborazione di costing"
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__create_uid
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_figurative_cost__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Creato da"
 
 #. module: cmc_full_costing
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_config__create_date
@@ -206,7 +218,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__create_date
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_figurative_cost__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Creato il"
 
 #. module: cmc_full_costing
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_config__amount
@@ -240,6 +252,7 @@ msgid "Direct"
 msgstr "Diretto"
 
 #. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_closing_run__display_name
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_config__display_name
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_line__display_name
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_quota__display_name
@@ -247,12 +260,7 @@ msgstr "Diretto"
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__display_name
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_figurative_cost__display_name
 msgid "Display Name"
-msgstr ""
-
-#. module: cmc_full_costing
-#: model:ir.model.fields.selection,name:cmc_full_costing.selection__cmc_costing_run__state__draft
-msgid "Draft"
-msgstr "Bozza"
+msgstr "Nome visualizzato"
 
 #. module: cmc_full_costing
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_line__driver_id
@@ -370,6 +378,7 @@ msgid "Full cost per product (stored result)"
 msgstr "Costo pieno per prodotto (risultato memorizzato)"
 
 #. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_closing_run__id
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_config__id
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_line__id
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_quota__id
@@ -377,7 +386,7 @@ msgstr "Costo pieno per prodotto (risultato memorizzato)"
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__id
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_figurative_cost__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: cmc_full_costing
 #: model_terms:ir.actions.act_window,help:cmc_full_costing.action_cmc_figurative
@@ -469,7 +478,7 @@ msgstr "Interesse sul capitale"
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__write_uid
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_figurative_cost__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Ultimo aggiornamento di"
 
 #. module: cmc_full_costing
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_config__write_date
@@ -479,7 +488,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__write_date
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_figurative_cost__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Ultimo aggiornamento il"
 
 #. module: cmc_full_costing
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_config__level
@@ -598,6 +607,12 @@ msgid "Reset to Draft"
 msgstr "Riporta in bozza"
 
 #. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
+msgid "Resetting deletes the computed results. Continue?"
+msgstr ""
+"Riportando in bozza i risultati calcolati vengono cancellati. Continuare?"
+
+#. module: cmc_full_costing
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_config__result_id
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_quota__result_id
 #: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__result_ids
@@ -662,6 +677,8 @@ msgstr "Prezzo std (rif.)"
 msgid ""
 "The costing period of %(name)s ends after its closing run period (%(end)s)."
 msgstr ""
+"Il periodo del costo pieno %(name)s finisce dopo il periodo della sua "
+"chiusura (%(end)s)."
 
 #. module: cmc_full_costing
 #. odoo-python
@@ -670,6 +687,8 @@ msgid ""
 "The costing period of %(name)s starts before its closing run period "
 "(%(start)s)."
 msgstr ""
+"Il periodo del costo pieno %(name)s inizia prima del periodo della sua "
+"chiusura (%(start)s)."
 
 #. module: cmc_full_costing
 #: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_result_form

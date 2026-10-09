@@ -153,7 +153,7 @@ msgstr "Analisi costi-volumi-risultati / punto di pareggio"
 #: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing__create_uid
 #: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing_line__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Creato da"
 
 #. module: cmc_direct_costing
 #: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_analysis__create_date
@@ -163,7 +163,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing__create_date
 #: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing_line__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Creato il"
 
 #. module: cmc_direct_costing
 #: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_analysis__currency_id
@@ -255,7 +255,7 @@ msgstr "Riga Direct Costing (margine prodotto/linea)"
 #: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing__display_name
 #: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing_line__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nome visualizzato"
 
 #. module: cmc_direct_costing
 #: model_terms:ir.ui.view,arch_db:cmc_direct_costing.view_cmc_differential_form
@@ -310,7 +310,7 @@ msgstr "MC lordo"
 #: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing__id
 #: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing_line__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: cmc_direct_costing
 #. odoo-python
@@ -353,7 +353,7 @@ msgstr "Mantenere — costo rilevante"
 #: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing__write_uid
 #: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing_line__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Ultimo aggiornamento di"
 
 #. module: cmc_direct_costing
 #: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_analysis__write_date
@@ -363,7 +363,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing__write_date
 #: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_direct_costing_line__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Ultimo aggiornamento il"
 
 #. module: cmc_direct_costing
 #: model:ir.model.fields,field_description:cmc_direct_costing.field_cmc_cvr_analysis__line_ids

@@ -19,7 +19,7 @@ msgstr ""
 #. module: cmc_abc
 #: model:ir.actions.report,print_report_name:cmc_abc.action_report_abc_reclass
 msgid "'ABC - %s' % object.name"
-msgstr ""
+msgstr "'ABC - %s' % object.name"
 
 #. module: cmc_abc
 #: model:ir.actions.report,name:cmc_abc.action_report_abc_reclass
@@ -131,7 +131,7 @@ msgstr "Attività al cui pool di costo delle risorse questa riga contribuisce."
 #: model:ir.actions.act_window,name:cmc_abc.action_cmc_abc_run
 #: model:ir.ui.menu,name:cmc_abc.menu_cmc_sec_abc
 msgid "Activity-Based Costing"
-msgstr ""
+msgstr "Activity-Based Costing"
 
 #. module: cmc_abc
 #: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_result__amount
@@ -194,7 +194,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__create_uid
 #: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Creato da"
 
 #. module: cmc_abc
 #: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__create_date
@@ -203,7 +203,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__create_date
 #: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Creato il"
 
 #. module: cmc_abc
 #: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_result__currency_id
@@ -238,16 +238,6 @@ msgid "Display Name"
 msgstr "Nome visualizzato"
 
 #. module: cmc_abc
-#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_run__state__done
-msgid "Done"
-msgstr "Completato"
-
-#. module: cmc_abc
-#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_run__state__draft
-msgid "Draft"
-msgstr "Bozza"
-
-#. module: cmc_abc
 #: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__driver_id
 msgid "Driver"
 msgstr "Driver"
@@ -271,7 +261,7 @@ msgstr "La quantità di driver deve essere maggiore di zero."
 #: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__id
 #: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: cmc_abc
 #: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__write_uid
@@ -280,7 +270,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__write_uid
 #: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Ultimo aggiornamento di"
 
 #. module: cmc_abc
 #: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__write_date
@@ -289,7 +279,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__write_date
 #: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Ultimo aggiornamento il"
 
 #. module: cmc_abc
 #: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__line_ids
@@ -326,6 +316,12 @@ msgid "Reset to Draft"
 msgstr "Riporta in bozza"
 
 #. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_run_form
+msgid "Resetting deletes the computed results. Continue?"
+msgstr ""
+"Riportando in bozza i risultati calcolati vengono cancellati. Continuare?"
+
+#. module: cmc_abc
 #: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__result_ids
 msgid "Result"
 msgstr "Risultato"
@@ -341,16 +337,6 @@ msgstr "Risultati"
 #: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__run_id
 msgid "Run"
 msgstr "Elaborazione"
-
-#. module: cmc_abc
-#. odoo-python
-#: code:addons/cmc_abc/models/cmc_abc.py:0
-msgid ""
-"Run %(run)s is already computed. Reset it to draft before changing its input"
-" lines."
-msgstr ""
-"L'elaborazione %(run)s è già calcolata. Riportala in bozza prima di "
-"modificarne le righe di input."
 
 #. module: cmc_abc
 #: model:ir.model.fields,help:cmc_abc.field_cmc_abc_activity_result__unallocated

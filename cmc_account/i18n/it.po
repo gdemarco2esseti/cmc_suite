@@ -27,6 +27,11 @@ msgid "Account Code Prefix"
 msgstr "Prefisso codice conto"
 
 #. module: cmc_account
+#: model:ir.ui.menu,name:cmc_account.menu_cmc_cfg_integration
+msgid "Accounting Integration"
+msgstr "Integrazione contabile"
+
+#. module: cmc_account
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__active
 msgid "Active"
 msgstr "Attivo"
@@ -45,6 +50,16 @@ msgstr "Assegna (solo se vuoto)"
 #: model:ir.model,name:cmc_account.model_cmc_classification_rule
 msgid "CMC Cost Classification Rule"
 msgstr "Regola di classificazione costi CMC"
+
+#. module: cmc_account
+#: model:ir.model,name:cmc_account.model_cmc_manual_classification
+msgid "CMC Manual Classification"
+msgstr "Classificazione manuale CMC"
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_manual_classification__center_id
+msgid "Center"
+msgstr "Centro"
 
 #. module: cmc_account
 #: model_terms:ir.ui.view,arch_db:cmc_account.view_cmc_rule_form
@@ -69,6 +84,11 @@ msgstr ""
 "corrispondenza, altrimenti corrisponde a ogni riga di costo."
 
 #. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_account_analytic_line__cmc_bridge_source
+msgid "Classified by Bridge"
+msgstr "Classificata dal ponte"
+
+#. module: cmc_account
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__cmc_behavior
 msgid "Cmc Behavior"
 msgstr "Comportamento del costo"
@@ -85,13 +105,24 @@ msgstr "Direttezza"
 
 #. module: cmc_account
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__company_id
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_manual_classification__company_id
 msgid "Company"
 msgstr "Azienda"
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_manual_classification__cmc_behavior
+msgid "Cost Behavior"
+msgstr "Comportamento del costo"
 
 #. module: cmc_account
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__center_id
 msgid "Cost Center"
 msgstr "Centro di costo"
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_manual_classification__cmc_cost_element_id
+msgid "Cost Element"
+msgstr "Elemento di costo"
 
 #. module: cmc_account
 #: model:ir.model.fields,field_description:cmc_account.field_account_account__cmc_cost_element_id
@@ -100,13 +131,15 @@ msgstr "Elemento di costo (natura)"
 
 #. module: cmc_account
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__create_uid
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_manual_classification__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Creato da"
 
 #. module: cmc_account
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__create_date
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_manual_classification__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Creato il"
 
 #. module: cmc_account
 #: model:ir.model.fields.selection,name:cmc_account.selection__cmc_classification_rule__cmc_directness__direct
@@ -117,6 +150,7 @@ msgstr "Diretto"
 #: model:ir.model.fields,field_description:cmc_account.field_account_account__display_name
 #: model:ir.model.fields,field_description:cmc_account.field_account_analytic_line__display_name
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__display_name
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_manual_classification__display_name
 msgid "Display Name"
 msgstr "Nome visualizzato"
 
@@ -134,8 +168,14 @@ msgstr "Fisso"
 #: model:ir.model.fields,field_description:cmc_account.field_account_account__id
 #: model:ir.model.fields,field_description:cmc_account.field_account_analytic_line__id
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__id
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_manual_classification__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
+
+#. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_manual_classification__cmc_directness
+msgid "Imputation"
+msgstr "Imputazione"
 
 #. module: cmc_account
 #: model:ir.model.fields.selection,name:cmc_account.selection__cmc_classification_rule__cmc_directness__indirect
@@ -143,19 +183,16 @@ msgid "Indirect"
 msgstr "Indiretto"
 
 #. module: cmc_account
-#: model:ir.ui.menu,name:cmc_account.menu_cmc_cfg_integration
-msgid "Accounting Integration"
-msgstr "Integrazione contabile"
-
-#. module: cmc_account
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__write_uid
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_manual_classification__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Ultimo aggiornamento di"
 
 #. module: cmc_account
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__write_date
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_manual_classification__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Ultimo aggiornamento il"
 
 #. module: cmc_account
 #: model_terms:ir.actions.act_window,help:cmc_account.action_cmc_unclassified_lines
@@ -165,6 +202,11 @@ msgid ""
 msgstr ""
 "Righe registrate da documenti senza classificazione del comportamento.\n"
 "               Classificale o affina le regole di classificazione."
+
+#. module: cmc_account
+#: model_terms:ir.ui.view,arch_db:cmc_account.view_account_form_cmc
+msgid "Management Control"
+msgstr "Controllo di gestione"
 
 #. module: cmc_account
 #: model:ir.model.fields,field_description:cmc_account.field_account_analytic_line__cmc_classified_manually
@@ -192,6 +234,11 @@ msgstr ""
 "Corrisponde se il codice del conto finanziario inizia con questo prefisso."
 
 #. module: cmc_account
+#: model:ir.model.fields,field_description:cmc_account.field_cmc_manual_classification__move_line_id
+msgid "Move Line"
+msgstr "Riga contabile"
+
+#. module: cmc_account
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__name
 msgid "Name"
 msgstr "Nome"
@@ -200,6 +247,17 @@ msgstr "Nome"
 #: model_terms:ir.actions.act_window,help:cmc_account.action_cmc_unclassified_lines
 msgid "No unclassified cost lines"
 msgstr "Nessuna riga di costo non classificata"
+
+#. module: cmc_account
+#: model:ir.model.fields,help:cmc_account.field_account_analytic_line__cmc_bridge_source
+msgid ""
+"Operational-bridge profile that classified the line and the fields it filled"
+" ('key:field,field'). When the line stops matching it, those fields are "
+"withdrawn."
+msgstr ""
+"Profilo del ponte operativo che ha classificato la riga e i campi che ha "
+"compilato ('chiave:campo,campo'). Quando la riga non corrisponde più al "
+"profilo, quei campi vengono ritirati."
 
 #. module: cmc_account
 #: model:ir.model.fields,field_description:cmc_account.field_cmc_classification_rule__partner_id
@@ -234,8 +292,20 @@ msgstr ""
 "sovrascrivono mai."
 
 #. module: cmc_account
+#. odoo-python
+#: code:addons/cmc_account/models/account_analytic_line.py:0
+msgid "The bridge that classified a line is recorded by the system only."
+msgstr "Il ponte che ha classificato una riga lo registra solo il sistema."
+
+#. module: cmc_account
+#: model_terms:ir.ui.view,arch_db:cmc_account.view_cmc_unclassified_list
+msgid "Total"
+msgstr "Totale"
+
+#. module: cmc_account
 #: model:ir.actions.act_window,name:cmc_account.action_cmc_unclassified_lines
 #: model:ir.ui.menu,name:cmc_account.menu_cmc_unclassified
+#: model_terms:ir.ui.view,arch_db:cmc_account.view_cmc_unclassified_list
 msgid "Unclassified Cost Lines"
 msgstr "Righe di costo non classificate"
 

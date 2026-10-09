@@ -2,6 +2,7 @@ import logging
 from collections import defaultdict
 
 from odoo import api, fields, models
+from odoo.exceptions import AccessError
 
 from odoo.addons.cmc_base.models.account_analytic_line import CMC_AUTO
 
@@ -13,6 +14,11 @@ CMC_GATE = object()
 CLASSIFICATION_FIELDS = ("cmc_behavior", "cmc_directness", "cmc_cost_element_id")
 # the center is NOT here: changing it moves the accounting allocation
 CMC_CLASSIFICATION_FIELDS = {*CLASSIFICATION_FIELDS, "cmc_classified_manually"}
+# what the classification engine writes: the user fields plus the bridge owner
+CMC_ENGINE_FIELDS = {*CMC_CLASSIFICATION_FIELDS, "cmc_bridge_source"}
+# value a bridge-filled field goes back to when the bridge withdraws it
+# ('indirect' is the fill-only "unset" of the engine)
+BRIDGE_UNSET = {"cmc_behavior": False, "cmc_directness": "indirect", "cmc_cost_element_id": False}
 
 
 class AccountAnalyticLine(models.Model):
@@ -29,8 +35,9 @@ class AccountAnalyticLine(models.Model):
         copy=False,
         readonly=True,
         index="btree_not_null",
-        help="Key of the operational-bridge profile that classified the line. "
-        "When the line stops matching it, the values it set are withdrawn.",
+        help="Operational-bridge profile that classified the line and the "
+        "fields it filled ('key:field,field'). When the line stops matching "
+        "it, those fields are withdrawn.",
     )
 
     # ------------------------------------------------------------------
@@ -90,9 +97,12 @@ class AccountAnalyticLine(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        auto = self.env.context.get("cmc_auto_classify") is CMC_AUTO
+        if not (auto or self.env.su) and any("cmc_bridge_source" in vals for vals in vals_list):
+            raise AccessError(self.env._("The bridge that classified a line is recorded by the system only."))
         lines = super().create(vals_list)
         # a classification provided explicitly at create time = manual
-        if self.env.context.get("cmc_auto_classify") is not CMC_AUTO:
+        if not auto:
             manual_ids = [
                 line.id
                 for line, vals in zip(lines, vals_list)
@@ -115,10 +125,12 @@ class AccountAnalyticLine(models.Model):
         excluded twin: sudo would defeat the superuser-only guard of cmc_base,
         which must refuse the write as the user.
         """
+        # the engine also records the bridge owner; a user never writes it
+        allowed = CMC_ENGINE_FIELDS if self.env.context.get("cmc_auto_classify") is CMC_AUTO else CMC_CLASSIFICATION_FIELDS
         if (
             self.env.su
             or not vals
-            or not set(vals) <= CMC_CLASSIFICATION_FIELDS
+            or not set(vals) <= allowed
             or not self.env.user.has_group("cmc_base.group_cmc_user")
         ):
             return False
@@ -132,6 +144,8 @@ class AccountAnalyticLine(models.Model):
         if self._cmc_classification_gate(vals):
             return True
         auto = self.env.context.get("cmc_auto_classify") is CMC_AUTO
+        if "cmc_bridge_source" in vals and not (auto or self.env.su):
+            raise AccessError(self.env._("The bridge that classified a line is recorded by the system only."))
         # "remove manual" is a true reset to what the rules say
         reset = not auto and "cmc_classified_manually" in vals and not vals["cmc_classified_manually"]
         # a user write of a TRUTHY classification value marks the line as manual
@@ -239,10 +253,10 @@ class AccountAnalyticLine(models.Model):
         profiles = self._cmc_bridge_profiles()
         profile_by_key = {profile["key"]: profile for profile in profiles}
         # resolved once: _cmc_element_ref logs a missing element on every call
-        element_by_profile = {
-            profile["key"]: (self._cmc_element_ref(profile["element"]).id if profile["element"] else False)
-            for profile in profiles
-        }
+        element_by_profile = {}
+        for profile in profiles:
+            element = self._cmc_element_ref(profile["element"]) if profile["element"] else None
+            element_by_profile[profile["key"]] = element.id if element else False
         # why sudo: read-only lookup of the stored CMC override; a warehouse or
         # shop-floor user posting a cost line has no read access to the
         # journal items it hangs from.
@@ -285,20 +299,23 @@ class AccountAnalyticLine(models.Model):
             }
             new = dict(current)
             profile = next((p for p in profiles if getattr(line, p["match"])()), None)
-            previous = profile_by_key.get(new["cmc_bridge_source"])
-            if new["cmc_bridge_source"] and (not profile or profile is not previous):
-                # withdraw what the previous profile set (values changed since stay)
+            owner, owned = self._cmc_parse_bridge_source(new["cmc_bridge_source"])
+            if owner and (not profile or profile["key"] != owner):
+                # withdraw only the fields the previous profile filled, and only
+                # while they still hold its value
+                previous = profile_by_key.get(owner)
                 if previous:
-                    if new["cmc_cost_element_id"] == element_by_profile[previous["key"]]:
-                        new["cmc_cost_element_id"] = False
-                    if new["cmc_behavior"] == previous["behavior"]:
-                        new["cmc_behavior"] = False
-                    if new["cmc_directness"] == previous["directness"]:
-                        new["cmc_directness"] = "indirect"
-                new["cmc_bridge_source"] = False
+                    profile_values = self._cmc_profile_values(previous, element_by_profile)
+                    for fname in owned:
+                        if new[fname] == profile_values[fname]:
+                            new[fname] = BRIDGE_UNSET[fname]
+                owner, owned = False, set()
             if profile:
+                before = dict(new)
                 self._cmc_fill(new, profile["behavior"], profile["directness"], element_by_profile[profile["key"]])
-                new["cmc_bridge_source"] = profile["key"]
+                owned |= {fname for fname in BRIDGE_UNSET if new[fname] != before[fname]}
+                owner = profile["key"] if owned else False
+            new["cmc_bridge_source"] = "%s:%s" % (owner, ",".join(sorted(owned))) if owner else False
             mapped_element = element_by_account.get(line.general_account_id.id)
             if not new["cmc_cost_element_id"] and mapped_element:
                 new["cmc_cost_element_id"] = mapped_element
@@ -316,6 +333,22 @@ class AccountAnalyticLine(models.Model):
                 vals_by_line.append((line.id, vals))
         lines._cmc_write_batched(vals_by_line)
         return True
+
+    @api.model
+    def _cmc_parse_bridge_source(self, source):
+        """'key:field,field' -> (key, {fields}); (False, set()) when empty."""
+        if not source:
+            return False, set()
+        key, _sep, fnames = source.partition(":")
+        return key, {fname for fname in fnames.split(",") if fname in BRIDGE_UNSET}
+
+    @api.model
+    def _cmc_profile_values(self, profile, element_by_profile):
+        return {
+            "cmc_behavior": profile["behavior"],
+            "cmc_directness": profile["directness"],
+            "cmc_cost_element_id": element_by_profile[profile["key"]],
+        }
 
     @api.model
     def _cmc_fill(self, values, behavior, directness, element_id):

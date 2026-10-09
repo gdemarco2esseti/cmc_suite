@@ -2,6 +2,7 @@ import importlib.util
 import os
 
 from odoo.modules import get_module_path
+from odoo.exceptions import AccessError
 from odoo.tests.common import TransactionCase, new_test_user, tagged
 
 
@@ -101,7 +102,7 @@ class TestTimesheetMod(TransactionCase):
     # block 3 — the bridge withdraws what it set when the line stops being MOD
     def test_mod_withdrawn_when_hours_move_to_auxiliary_center(self):
         line = self._ts()
-        self.assertEqual(line.cmc_bridge_source, "timesheet_mod")
+        self.assertEqual(line.cmc_bridge_source, "timesheet_mod:cmc_behavior,cmc_cost_element_id,cmc_directness")
         aux = self.env["account.analytic.account"].create(
             {"name": "Manutenzione", "plan_id": self.plan.id, "cmc_center_type": "auxiliary"}
         )
@@ -137,6 +138,55 @@ class TestTimesheetMod(TransactionCase):
         line.unit_amount = 0.0
         self.assertEqual(line.cmc_behavior, "semi_variable")
         self.assertEqual(line.cmc_cost_element_id, self.mod)
+
+    def test_withdrawal_spares_values_the_bridge_did_not_fill(self):
+        # a rule classified the line first; when the bridge comes in later it
+        # fills only element and directness, and withdraws only those
+        aux = self.env["account.analytic.account"].create(
+            {"name": "Diventa finale", "plan_id": self.plan.id, "cmc_center_type": "auxiliary"}
+        )
+        rule = self.env["cmc.classification.rule"].create(
+            {"name": "aux variable", "center_id": aux.id, "cmc_behavior": "variable"}
+        )
+        project = self.env["project.project"].create({"name": "P2", "account_id": aux.id})
+        line = self._ts(project_id=project.id)
+        self.assertEqual(line.cmc_behavior, "variable")
+        aux.cmc_center_type = "final"
+        line.unit_amount = 3.0
+        self.assertEqual(line.cmc_bridge_source, "timesheet_mod:cmc_cost_element_id,cmc_directness")
+        rule.active = False
+        line.unit_amount = 0.0
+        self.assertEqual(line.cmc_behavior, "variable")
+        self.assertFalse(line.cmc_cost_element_id)
+        self.assertEqual(line.cmc_directness, "indirect")
+
+    def test_missing_mod_element_does_not_break_timesheets(self):
+        self.mod.unlink()
+        with self.assertLogs("odoo.addons.cmc_account.models.account_analytic_line", level="WARNING"):
+            line = self._ts()
+        self.assertEqual(line.cmc_behavior, "variable")
+        self.assertFalse(line.cmc_cost_element_id)
+
+    def test_bridge_source_not_writable_by_user(self):
+        line = self._ts()
+        user = new_test_user(self.env, login="cmc_ts_forger", groups="base.group_user,hr_timesheet.group_hr_timesheet_approver")
+        with self.assertRaises(AccessError):
+            line.with_user(user).write({"cmc_bridge_source": "timesheet_mod:cmc_behavior"})
+
+    def test_controller_reclassifies_a_colleague_timesheet(self):
+        # AD-007: the engine run by a CMC controller (Re-apply rules) writes the
+        # bridge owner through the gate, on a timesheet that is not theirs
+        aux = self.env["account.analytic.account"].create(
+            {"name": "Presto finale", "plan_id": self.plan.id, "cmc_center_type": "auxiliary"}
+        )
+        project = self.env["project.project"].create({"name": "P", "account_id": aux.id})
+        line = self._ts(project_id=project.id)
+        self.assertFalse(line.cmc_bridge_source)
+        aux.cmc_center_type = "final"
+        controller = new_test_user(self.env, login="cmc_ts_controller", groups="base.group_user,cmc_base.group_cmc_user")
+        line.with_user(controller)._cmc_auto_classify()
+        self.assertEqual(line.cmc_cost_element_id, self.mod)
+        self.assertTrue(line.cmc_bridge_source)
 
     # item 11 — la griglia timesheet crea la riga e scrive le ore DOPO:
     # la classificazione deve ri-innescarsi in scrittura.
@@ -226,5 +276,5 @@ class TestTimesheetMod(TransactionCase):
         with self.assertLogs("cmc_hr_timesheet_post_migrate_1_2_0", level="INFO"):
             _load_migrate()(self.env.cr, "19.0.1.1.0")
         self.env.invalidate_all()
-        self.assertEqual(bridged.cmc_bridge_source, "timesheet_mod")
+        self.assertEqual(bridged.cmc_bridge_source, "timesheet_mod:cmc_behavior,cmc_cost_element_id,cmc_directness")
         self.assertFalse(manual.cmc_bridge_source)

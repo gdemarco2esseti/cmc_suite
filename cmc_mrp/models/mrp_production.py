@@ -85,6 +85,7 @@ class MrpProduction(models.Model):
                 "cmc_cost_element_id": False,
                 "cmc_directness": "indirect",
                 "cmc_classified_manually": False,
+                "cmc_bridge_source": False,
             })
         return res
 
@@ -183,6 +184,8 @@ class MrpProduction(models.Model):
         vals = {"cmc_mrp_move_id": move.id}
         if line.cmc_classified_manually:
             return vals
+        # the forced classification below is no bridge profile's to withdraw
+        vals["cmc_bridge_source"] = False
         # the element is FORCED, not filled: the line is a raw-material
         # consumption whatever the account mapping or a rule may have guessed.
         if element:

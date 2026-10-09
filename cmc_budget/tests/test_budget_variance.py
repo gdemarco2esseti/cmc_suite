@@ -14,7 +14,7 @@ RN-002 (BUD-03 x STD-02): 2033-2034 plan, energy variable 1,000/yr (March) on mh
 actual 50 h, cost 500 -> v 10, flexible -500, spending 0 on the parent AND on the 2033 child of the split.
 """
 
-from odoo.exceptions import AccessError, UserError
+from odoo.exceptions import UserError
 from odoo.tests.common import tagged
 
 from .common import Y, CmcBudgetCase, d

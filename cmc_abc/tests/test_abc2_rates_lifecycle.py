@@ -13,7 +13,7 @@ CONTRACT (see abc2_common for the whole WP)
   every v1 test in test_abc.py / test_reclass.py stays valid.
 """
 
-from odoo.exceptions import AccessError, UserError
+from odoo.exceptions import UserError
 from odoo.tests.common import tagged
 
 from .abc2_common import D_FROM, D_MID, D_TO, Abc2Case

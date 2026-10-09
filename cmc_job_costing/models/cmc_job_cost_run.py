@@ -4,7 +4,6 @@ from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.fields import Domain
 
-from odoo.addons.cmc_base.models.cmc_run_mixin import CMC_RUN_STATE
 
 
 class CmcJobCostRun(models.Model):

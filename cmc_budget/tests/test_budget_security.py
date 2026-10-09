@@ -3,7 +3,7 @@ outsider sees nothing, two companies are isolated.
 """
 
 from odoo import Command
-from odoo.exceptions import AccessError, UserError, ValidationError
+from odoo.exceptions import AccessError, UserError
 from odoo.tests.common import new_test_user, tagged
 
 from .common import CmcBudgetCase, d

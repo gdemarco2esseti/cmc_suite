@@ -19,13 +19,17 @@ class TestStdCard(StdCase):
         card = self._card(self._std_version(approve=False), self.f)
         self.assertEqual(card.bom_id, self.bom_f)
         lines = card.line_ids.sorted(lambda line: (line.line_type, line.product_id.name or "", line.behavior or ""))
-        self.assertRecordValues(lines, [
+        expected = [
             {"line_type": "labour", "center_id": self.z.id, "quantity": 0.5, "price": 20.0, "amount": 10.0},
             {"line_type": "material", "product_id": self.a.id, "quantity": 2.0, "price": 4.0, "amount": 8.0, "price_source": "planned"},
             {"line_type": "material", "product_id": self.b.id, "quantity": 3.0, "price": 2.0, "amount": 6.0, "price_source": "planned"},
             {"line_type": "overhead", "center_id": self.z.id, "behavior": "fixed", "quantity": 0.5, "price": 10.0, "amount": 5.0},
             {"line_type": "overhead", "center_id": self.z.id, "behavior": "variable", "quantity": 0.5, "price": 6.0, "amount": 3.0},
-        ])
+        ]
+        # why per line: assertRecordValues requires the same keys in every expected dict
+        self.assertEqual(len(lines), len(expected))
+        for line, values in zip(lines, expected, strict=True):
+            self.assertRecordValues(line, [values])
 
     def test_card_single_level_totals(self):
         # STD-01: unit figures by element and by behavior (variable / fixed burden)

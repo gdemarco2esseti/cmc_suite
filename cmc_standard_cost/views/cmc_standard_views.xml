@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_standard_card_list" model="ir.ui.view">
+        <field name="name">cmc.standard.card.list</field>
+        <field name="model">cmc.standard.card</field>
+        <field name="arch" type="xml">
+            <list string="Standard Cost Cards" create="false">
+                <field name="version_id"/>
+                <field name="product_id"/>
+                <field name="bom_id"/>
+                <field name="standard_type" optional="hide"/>
+                <field name="unit_material"/>
+                <field name="unit_labour"/>
+                <field name="unit_overhead"/>
+                <field name="unit_cost"/>
+                <field name="unit_fixed" optional="hide"/>
+                <field name="unit_variable" optional="hide"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_standard_card_form" model="ir.ui.view">
+        <field name="name">cmc.standard.card.form</field>
+        <field name="model">cmc.standard.card</field>
+        <field name="arch" type="xml">
+            <form string="Standard Cost Card">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="version_id" readonly="1"/>
+                            <field name="product_id" readonly="1"/>
+                            <field name="bom_id" readonly="1"/>
+                            <field name="standard_type"/>
+                        </group>
+                        <group>
+                            <field name="unit_material"/>
+                            <field name="unit_labour"/>
+                            <field name="unit_overhead"/>
+                            <field name="unit_cost"/>
+                            <field name="unit_fixed"/>
+                            <field name="unit_variable"/>
+                        </group>
+                    </group>
+                    <field name="line_ids" context="{'default_card_id': id}">
+                        <list editable="bottom">
+                            <field name="line_type"/>
+                            <field name="product_id"/>
+                            <field name="center_id"/>
+                            <field name="driver_id" optional="hide"/>
+                            <field name="behavior"/>
+                            <field name="quantity"/>
+                            <field name="price"/>
+                            <field name="amount" sum="Total"/>
+                            <field name="price_source"/>
+                            <field name="child_card_id" optional="hide"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cmc_standard_card_reconciliation" model="ir.ui.view">
+        <field name="name">cmc.standard.card.reconciliation</field>
+        <field name="model">cmc.standard.card</field>
+        <field name="arch" type="xml">
+            <list string="Card vs Valuation" create="false" edit="false" delete="false">
+                <field name="version_id"/>
+                <field name="product_id"/>
+                <field name="unit_cost"/>
+                <field name="valuation_price"/>
+                <field name="valuation_difference"/>
+                <field name="qty_available"/>
+                <field name="value_difference" sum="Total"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cmc_standard_card" model="ir.actions.act_window">
+        <field name="name">Standard Cost Cards</field>
+        <field name="res_model">cmc.standard.card</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_cmc_standard_reconciliation" model="ir.actions.act_window">
+        <field name="name">Card vs Valuation</field>
+        <field name="res_model">cmc.standard.card</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_cmc_standard_card_reconciliation"/>
+        <field name="domain">[('version_id.state', '=', 'done')]</field>
+    </record>
+
+    <record id="view_cmc_standard_variance_run_list" model="ir.ui.view">
+        <field name="name">cmc.standard.variance.run.list</field>
+        <field name="model">cmc.standard.variance.run</field>
+        <field name="arch" type="xml">
+            <list string="Standard Cost Variances">
+                <field name="name"/>
+                <field name="version_id"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="variance_total" sum="Total"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_standard_variance_run_form" model="ir.ui.view">
+        <field name="name">cmc.standard.variance.run.form</field>
+        <field name="model">cmc.standard.variance.run</field>
+        <field name="arch" type="xml">
+            <form string="Standard Cost Variances">
+                <header>
+                    <button name="action_compute" type="object" string="Compute" class="oe_highlight" invisible="state == 'done'"/>
+                    <button name="action_reset_to_draft" type="object" string="Reset to Draft" invisible="state != 'done'"
+                            confirm="Resetting deletes the computed results. Continue?"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="version_id" readonly="state == 'done'"/>
+                            <field name="company_id" readonly="state == 'done'" groups="base.group_multi_company"/>
+                            <field name="date_from" readonly="state == 'done'"/>
+                            <field name="date_to" readonly="state == 'done'"/>
+                        </group>
+                        <group invisible="state != 'done'">
+                            <field name="std_amount_total"/>
+                            <field name="actual_amount_total"/>
+                            <field name="variance_total"/>
+                            <field name="skipped_count"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="variances" string="Variances">
+                            <field name="line_ids" readonly="1">
+                                <list create="false" edit="false">
+                                    <field name="production_id"/>
+                                    <field name="product_id"/>
+                                    <field name="line_type"/>
+                                    <field name="component_id"/>
+                                    <field name="center_id"/>
+                                    <field name="std_qty" optional="hide"/>
+                                    <field name="actual_qty" optional="hide"/>
+                                    <field name="std_price" optional="hide"/>
+                                    <field name="actual_price" optional="hide"/>
+                                    <field name="std_amount" sum="Standard"/>
+                                    <field name="actual_amount" sum="Actual"/>
+                                    <field name="price_variance" sum="Price / rate"/>
+                                    <field name="quantity_variance" sum="Quantity / efficiency"/>
+                                    <field name="mix_variance" sum="Mix" optional="hide"/>
+                                    <field name="yield_variance" sum="Yield" optional="hide"/>
+                                    <field name="total_variance" sum="Total"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="absorption" string="Overhead Absorption">
+                            <field name="absorption_ids" readonly="1">
+                                <list create="false" edit="false">
+                                    <field name="center_id"/>
+                                    <field name="driver_id"/>
+                                    <field name="actual_qty"/>
+                                    <field name="standard_qty"/>
+                                    <field name="capacity_qty"/>
+                                    <field name="actual_amount" sum="Actual"/>
+                                    <field name="applied_actual" sum="Applied (actual base)"/>
+                                    <field name="over_under_absorbed" sum="Over / under"/>
+                                    <field name="spending_variable" sum="Spending (var.)"/>
+                                    <field name="efficiency_variable" sum="Efficiency"/>
+                                    <field name="spending_fixed" sum="Spending (fixed)"/>
+                                    <field name="volume_variance" sum="Volume"/>
+                                    <field name="budget_fixed" optional="hide"/>
+                                    <field name="applied_standard" optional="hide"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_standard_variance_run" model="ir.actions.act_window">
+        <field name="name">Standard Cost Variances</field>
+        <field name="res_model">cmc.standard.variance.run</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a variance run</p>
+            <p>Compare the manufacturing orders of a period with an approved standard version.</p>
+        </field>
+    </record>
+
+    <record id="view_cmc_standard_prefill_wizard_form" model="ir.ui.view">
+        <field name="name">cmc.standard.prefill.wizard.form</field>
+        <field name="model">cmc.standard.prefill.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Prefill Rates">
+                <group>
+                    <field name="version_id"/>
+                    <field name="budget_version_id"/>
+                    <field name="basis"/>
+                </group>
+                <footer>
+                    <button name="action_prefill" type="object" string="Prefill" class="btn-primary"
+                            confirm="The rate table of the version is replaced. Continue?"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_standard_prefill_wizard" model="ir.actions.act_window">
+        <field name="name">Prefill Rates</field>
+        <field name="res_model">cmc.standard.prefill.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_cmc_standard_rollup_wizard_form" model="ir.ui.view">
+        <field name="name">cmc.standard.rollup.wizard.form</field>
+        <field name="model">cmc.standard.rollup.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Roll Up Cards">
+                <group>
+                    <field name="version_id"/>
+                    <field name="product_ids" widget="many2many_tags"/>
+                </group>
+                <footer>
+                    <button name="action_rollup" type="object" string="Roll Up" class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_standard_rollup_wizard" model="ir.actions.act_window">
+        <field name="name">Roll Up Cards</field>
+        <field name="res_model">cmc.standard.rollup.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_cmc_plan_version_form_standard" model="ir.ui.view">
+        <field name="name">cmc.plan.version.form.standard</field>
+        <field name="model">cmc.plan.version</field>
+        <field name="inherit_id" ref="cmc_base.view_cmc_plan_version_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_approve']" position="before">
+                <button name="%(action_cmc_standard_prefill_wizard)d" type="action" string="Prefill Rates"
+                        invisible="state != 'draft' or version_type != 'standard'" groups="cmc_base.group_cmc_user"
+                        context="{'default_version_id': id}"/>
+                <button name="%(action_cmc_standard_rollup_wizard)d" type="action" string="Roll Up Cards"
+                        invisible="state != 'draft' or version_type != 'standard'" groups="cmc_base.group_cmc_user"
+                        context="{'default_version_id': id}"/>
+                <button name="action_cmc_std_push_prices" type="object" string="Push Standard Prices"
+                        invisible="state != 'done' or version_type != 'standard'" groups="cmc_base.group_cmc_manager"
+                        confirm="The card costs overwrite the standard price of the products valued at standard cost. Continue?"/>
+            </xpath>
+            <xpath expr="//field[@name='version_type']" position="after">
+                <field name="standard_type" invisible="version_type != 'standard'" readonly="state == 'done'"/>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page name="standard" string="Standard Cost" invisible="version_type != 'standard'" groups="cmc_base.group_cmc_user">
+                    <separator string="Planned Purchase Prices"/>
+                    <field name="std_price_ids" readonly="state == 'done'" context="{'default_version_id': id}">
+                        <list editable="bottom">
+                            <field name="product_id"/>
+                            <field name="price"/>
+                        </list>
+                    </field>
+                    <separator string="Predetermined Rates"/>
+                    <field name="std_rate_ids" readonly="state == 'done'" context="{'default_version_id': id}">
+                        <list editable="bottom">
+                            <field name="center_id"/>
+                            <field name="rate_kind"/>
+                            <field name="driver_id"/>
+                            <field name="capacity_basis"/>
+                            <field name="budget_fixed" optional="show"/>
+                            <field name="budget_variable" optional="show"/>
+                            <field name="capacity_qty"/>
+                            <field name="budget_qty" optional="show"/>
+                            <field name="fixed_rate"/>
+                            <field name="variable_rate"/>
+                            <field name="rate"/>
+                        </list>
+                    </field>
+                    <separator string="Cost Cards"/>
+                    <field name="card_ids" readonly="state == 'done'">
+                        <list>
+                            <field name="product_id"/>
+                            <field name="bom_id"/>
+                            <field name="unit_material"/>
+                            <field name="unit_labour"/>
+                            <field name="unit_overhead"/>
+                            <field name="unit_cost"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <menuitem id="menu_cmc_sec_standard" name="Standard Cost" parent="cmc_base.menu_cmc_operations" sequence="40"/>
+    <menuitem id="menu_cmc_standard_card" name="Cost Cards" parent="menu_cmc_sec_standard" action="action_cmc_standard_card" sequence="10"/>
+    <menuitem id="menu_cmc_standard_variance_run" name="Variance Runs" parent="menu_cmc_sec_standard"
+              action="action_cmc_standard_variance_run" sequence="20"/>
+    <menuitem id="menu_cmc_standard_reconciliation" name="Card vs Valuation" parent="menu_cmc_sec_standard"
+              action="action_cmc_standard_reconciliation" sequence="30" groups="cmc_base.group_cmc_manager"/>
+</odoo>

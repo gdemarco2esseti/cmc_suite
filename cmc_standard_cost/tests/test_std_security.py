@@ -41,11 +41,11 @@ class TestStdSecurity(StdCase):
         # AD-115: a user computes the variances; the results are written by Compute only
         run = self._run(self._std_version(), user=self.user)
         self.assertTrue(run.line_ids)
-        with self.assertRaises((AccessError, UserError)):
+        with self.assertRaises(UserError):  # AccessError subclasses UserError
             run.line_ids[:1].price_variance = 0.0
-        with self.assertRaises((AccessError, UserError)):
+        with self.assertRaises(UserError):  # AccessError subclasses UserError
             run.absorption_ids[:1].unlink()
-        with self.assertRaises((AccessError, UserError)):
+        with self.assertRaises(UserError):  # AccessError subclasses UserError
             self.env["cmc.standard.variance.line"].with_user(self.user).create({"run_id": run.id, "line_type": "material"})
 
     def test_outsider_has_no_access(self):

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- record rules live OUTSIDE noupdate: a domain fix must reach databases that already have the module -->
+    <data>
+        <record id="cmc_standard_price_company_rule" model="ir.rule">
+            <field name="name">CMC Standard price: multi-company</field>
+            <field name="model_id" ref="model_cmc_standard_price"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_standard_rate_company_rule" model="ir.rule">
+            <field name="name">CMC Standard rate: multi-company</field>
+            <field name="model_id" ref="model_cmc_standard_rate"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_standard_card_company_rule" model="ir.rule">
+            <field name="name">CMC Standard card: multi-company</field>
+            <field name="model_id" ref="model_cmc_standard_card"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_standard_card_line_company_rule" model="ir.rule">
+            <field name="name">CMC Standard card line: multi-company</field>
+            <field name="model_id" ref="model_cmc_standard_card_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_standard_variance_run_company_rule" model="ir.rule">
+            <field name="name">CMC Standard variance run: multi-company</field>
+            <field name="model_id" ref="model_cmc_standard_variance_run"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_standard_variance_line_company_rule" model="ir.rule">
+            <field name="name">CMC Standard variance result: multi-company</field>
+            <field name="model_id" ref="model_cmc_standard_variance_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_standard_absorption_line_company_rule" model="ir.rule">
+            <field name="name">CMC Absorption result: multi-company</field>
+            <field name="model_id" ref="model_cmc_standard_absorption_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+    </data>
+</odoo>

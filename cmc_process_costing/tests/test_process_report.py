@@ -19,6 +19,9 @@ class TestProcessReport(ProcessCase):
 
     def test_report_renders_cost_of_production(self):
         # FC-07 / BB 1.3: one cost of production report per department and month
+        # why: t-field formats numbers in the user language; pin it so the figures below are locale-independent
+        self.env["res.lang"]._activate_lang("en_US")
+        self.user.sudo().lang = "en_US"
         d1 = self._d1(env=self.env(user=self.user))
         d2 = self._d2(d1, env=self.env(user=self.user))
         content, _report_type = self.env["ir.actions.report"].with_user(self.user).with_context(lang="en_US")._render_qweb_pdf(  # why: number format is locale-dependent

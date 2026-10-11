@@ -118,12 +118,12 @@ class TestKpiMrpLibrary(KpiMrpCase):
         self.assertAlmostEqual(self._val(run, "mrp_mce", FEB).value, 20.0, places=4)
 
     def test_month_without_production_not_computable(self):
-        # cmc_kpi rule: a ratio over nothing is not computable, never a silent 0
+        # cmc_kpi rule: a ratio over nothing is not computable, never a silent 0; DL-010: its status is "No data"
         run = self._run(JAN, MAR)
         for code in ("mrp_cycle_time", "mrp_lead_time", "mrp_ppm", "mrp_fpy", "mrp_mce"):
             row = self._val(run, code, MAR)
             self.assertFalse(row.computable, code)
-            self.assertEqual(row.status, "none", code)
+            self.assertEqual(row.status, "no_data", code)
 
     def test_center_filtered_cycle_time(self):
         # KPI-02 per center: the same measure filtered on the rework center = 192 min / 5 units = 38.4

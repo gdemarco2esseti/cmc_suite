@@ -18,3 +18,4 @@ from . import test_abm_coq
 from . import test_abm_security
 from . import test_abm_performance
 from . import test_abm_two_plans
+from . import test_fx004_prefill_guard

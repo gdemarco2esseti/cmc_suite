@@ -10,13 +10,15 @@
                 <field name="date"/>
                 <field name="perspective" optional="show"/>
                 <field name="name"/>
-                <field name="value" invisible="not computable"/>
+                <field name="value" column_invisible="1"/>
+                <field name="value_display" invisible="not computable"/>
                 <field name="reason" optional="show"/>
-                <field name="target"/>
+                <field name="target" column_invisible="1"/>
+                <field name="target_display"/>
                 <field name="gap_pct" invisible="not computable"/>
                 <field name="status" widget="badge"
                        decoration-success="status == 'green'" decoration-warning="status == 'amber'"
-                       decoration-danger="status == 'red'" decoration-muted="status == 'none'"/>
+                       decoration-danger="status == 'red'" decoration-muted="status in ('none', 'no_data')"/>
                 <field name="score" invisible="not computable" optional="show"/>
                 <field name="trend" widget="badge"
                        decoration-success="trend == 'improving'" decoration-danger="trend == 'worsening'"
@@ -64,6 +66,7 @@
                 <field name="responsibility_id"/>
                 <filter name="red" string="Off target" domain="[('status', '=', 'red')]"/>
                 <filter name="amber" string="Attention" domain="[('status', '=', 'amber')]"/>
+                <filter name="no_data" string="No data" domain="[('status', '=', 'no_data')]"/>
                 <filter name="not_computable" string="Not computable" domain="[('computable', '=', False)]"/>
                 <group>
                     <filter name="group_perspective" string="Perspective" context="{'group_by': 'perspective'}"/>
@@ -144,12 +147,14 @@
                                     <field name="date"/>
                                     <field name="perspective"/>
                                     <field name="name"/>
-                                    <field name="value" invisible="not computable"/>
+                                    <field name="value" column_invisible="1"/>
+                                    <field name="value_display" invisible="not computable"/>
                                     <field name="reason"/>
-                                    <field name="target"/>
+                                    <field name="target" column_invisible="1"/>
+                                    <field name="target_display"/>
                                     <field name="status" widget="badge"
                                            decoration-success="status == 'green'" decoration-warning="status == 'amber'"
-                                           decoration-danger="status == 'red'" decoration-muted="status == 'none'"/>
+                                           decoration-danger="status == 'red'" decoration-muted="status in ('none', 'no_data')"/>
                                     <field name="trend" widget="badge"
                                            decoration-success="trend == 'improving'" decoration-danger="trend == 'worsening'"
                                            decoration-muted="trend in ('stable', 'none')"/>

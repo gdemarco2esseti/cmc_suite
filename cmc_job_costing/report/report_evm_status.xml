@@ -51,8 +51,8 @@
                                     <td class="text-end"><span t-field="row.ac"/></td>
                                     <td class="text-end"><span t-field="row.cv"/></td>
                                     <td class="text-end"><span t-field="row.pv_cumulative"/></td>
-                                    <td class="text-end"><span t-field="row.ev_cumulative"/></td>
-                                    <td class="text-end"><span t-field="row.ac_cumulative"/></td>
+                                    <td class="text-end"><span t-if="not row.is_forecast" t-field="row.ev_cumulative"/></td>
+                                    <td class="text-end"><span t-if="not row.is_forecast" t-field="row.ac_cumulative"/></td>
                                     <td><t t-if="row.out_of_control">Out of control</t><t t-elif="row.is_forecast">Forecast</t></td>
                                 </tr>
                             </tbody>

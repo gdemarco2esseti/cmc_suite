@@ -6,11 +6,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-09 23:35+0000\n"
+"POT-Creation-Date: 2026-10-11 16:15+0000\n"
 "PO-Revision-Date: 2026-10-09 23:35+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: it\n"
+"Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -54,20 +54,14 @@ msgstr "Una riga di budget di costo richiede un centro di costo."
 
 #. module: cmc_budget
 #: model:ir.model.fields,help:cmc_budget.field_cmc_cost_element__cmc_cash_excluded
-msgid ""
-"A cost that is not a payment (e.g. depreciation): the budget cash forecast "
-"skips it."
-msgstr ""
-"Un costo che non è un pagamento (es. ammortamento): la previsione di cassa "
-"del budget lo ignora."
+msgid "A cost that is not a payment (e.g. depreciation): the budget cash forecast skips it."
+msgstr "Un costo che non è un pagamento (es. ammortamento): la previsione di cassa del budget lo ignora."
 
 #. module: cmc_budget
 #. odoo-python
 #: code:addons/cmc_budget/models/cmc_closing_run.py:0
 msgid "A dual rate closing needs a budget or forecast version."
-msgstr ""
-"Una chiusura a doppia tariffa richiede una versione di budget o di "
-"previsione."
+msgstr "Una chiusura a doppia tariffa richiede una versione di budget o di previsione."
 
 #. module: cmc_budget
 #. odoo-python
@@ -80,11 +74,6 @@ msgstr "Un peso di stagionalità non può essere negativo."
 #: model_terms:ir.ui.view,arch_db:cmc_budget.view_cmc_budget_variance_run_form
 msgid "Actual"
 msgstr "Consuntivo"
-
-#. module: cmc_budget
-#: model:ir.model.fields,help:cmc_budget.field_cmc_budget_bva__variance
-msgid "Actual - plan: positive = favourable."
-msgstr "Consuntivo - piano: positivo = favorevole."
 
 #. module: cmc_budget
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_bva__actual_amount
@@ -101,6 +90,19 @@ msgstr "Quantità a consuntivo"
 #: model:ir.model.fields.selection,name:cmc_budget.selection__cmc_closing_run__allocation_basis__actual
 msgid "Actual cost"
 msgstr "Costo a consuntivo"
+
+#. module: cmc_budget
+#: model_terms:ir.ui.view,arch_db:cmc_budget.view_cmc_budget_annual_wizard_form
+msgid "Add"
+msgstr "Aggiungi"
+
+#. module: cmc_budget
+#: model:ir.actions.act_window,name:cmc_budget.action_cmc_budget_annual_wizard
+#: model:ir.model,name:cmc_budget.model_cmc_budget_annual_wizard
+#: model_terms:ir.ui.view,arch_db:cmc_budget.view_cmc_budget_annual_wizard_form
+#: model_terms:ir.ui.view,arch_db:cmc_budget.view_cmc_plan_version_form_budget
+msgid "Add Annual Budget"
+msgstr "Aggiungi budget annuale"
 
 #. module: cmc_budget
 #: model_terms:ir.actions.act_window,help:cmc_budget.action_cmc_budget_line
@@ -139,6 +141,7 @@ msgid "Allowed Quantities"
 msgstr "Quantità ammesse"
 
 #. module: cmc_budget
+#: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_annual_wizard__amount
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_line__amount
 msgid "Amount"
 msgstr "Importo"
@@ -150,12 +153,8 @@ msgstr "Importo in valuta societaria"
 
 #. module: cmc_budget
 #: model_terms:ir.actions.act_window,help:cmc_budget.action_cmc_budget_bva
-msgid ""
-"Approve a budget version: plan and actual figures appear here by month and "
-"cost center."
-msgstr ""
-"Approvare una versione di budget: i valori di piano e consuntivo compaiono "
-"qui per mese e centro di costo."
+msgid "Approve a budget version: plan and actual figures appear here by month and cost center."
+msgstr "Approvare una versione di budget: i valori di piano e consuntivo compaiono qui per mese e centro di costo."
 
 #. module: cmc_budget
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_line__responsibility_id
@@ -163,6 +162,7 @@ msgid "Area"
 msgstr "Area"
 
 #. module: cmc_budget
+#: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_annual_wizard__behavior
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_bva__behavior
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_line__behavior
 msgid "Behavior"
@@ -278,6 +278,11 @@ msgid "Calendar month, 1 to 12."
 msgstr "Mese di calendario, da 1 a 12."
 
 #. module: cmc_budget
+#: model_terms:ir.ui.view,arch_db:cmc_budget.view_cmc_budget_annual_wizard_form
+msgid "Cancel"
+msgstr "Annulla"
+
+#. module: cmc_budget
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_variance_line__capacity_assigned
 msgid "Capacity Assigned"
 msgstr "Capacità assegnata"
@@ -322,6 +327,7 @@ msgid "Center"
 msgstr "Centro"
 
 #. module: cmc_budget
+#: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_annual_wizard__company_id
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_bva__company_id
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_cash_line__company_id
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_cash_run__company_id
@@ -342,8 +348,7 @@ msgstr "Valuta della società"
 #. module: cmc_budget
 #: model:ir.model.fields,help:cmc_budget.field_cmc_plan_version__target_total_cost
 msgid "Company total of the cost budget. 0 = no check on approval."
-msgstr ""
-"Totale societario del budget di costo. 0 = nessun controllo in approvazione."
+msgstr "Totale societario del budget di costo. 0 = nessun controllo in approvazione."
 
 #. module: cmc_budget
 #: model_terms:ir.ui.view,arch_db:cmc_budget.view_cmc_budget_cash_run_form
@@ -352,12 +357,14 @@ msgid "Compute"
 msgstr "Calcola"
 
 #. module: cmc_budget
+#: model:ir.model.fields.selection,name:cmc_budget.selection__cmc_budget_annual_wizard__kind__cost
 #: model:ir.model.fields.selection,name:cmc_budget.selection__cmc_budget_bva__kind__cost
 #: model:ir.model.fields.selection,name:cmc_budget.selection__cmc_budget_line__kind__cost
 msgid "Cost"
 msgstr "Costo"
 
 #. module: cmc_budget
+#: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_annual_wizard__center_id
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_bva__center_id
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_line__center_id
 #: model_terms:ir.ui.view,arch_db:cmc_budget.view_cmc_budget_bva_search
@@ -371,6 +378,7 @@ msgid "Cost Center Closing Run"
 msgstr "Elaborazione di chiusura dei centri di costo"
 
 #. module: cmc_budget
+#: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_annual_wizard__element_id
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_bva__element_id
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_line__element_id
 #: model_terms:ir.ui.view,arch_db:cmc_budget.view_cmc_budget_line_search
@@ -404,6 +412,7 @@ msgid "Create a variance run"
 msgstr "Crea un'elaborazione degli scostamenti"
 
 #. module: cmc_budget
+#: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_annual_wizard__create_uid
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_cash_line__create_uid
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_cash_run__create_uid
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_line__create_uid
@@ -416,6 +425,7 @@ msgid "Created by"
 msgstr "Creato da"
 
 #. module: cmc_budget
+#: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_annual_wizard__create_date
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_cash_line__create_date
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_cash_run__create_date
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_line__create_date
@@ -433,6 +443,7 @@ msgid "Cumulative"
 msgstr "Cumulato"
 
 #. module: cmc_budget
+#: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_annual_wizard__currency_id
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_bva__currency_id
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_cash_line__currency_id
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_cash_run__currency_id
@@ -449,7 +460,6 @@ msgstr "Termine di pagamento cliente"
 
 #. module: cmc_budget
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_cash_line__date
-#: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_line__date
 msgid "Date"
 msgstr "Data"
 
@@ -464,6 +474,11 @@ msgid "Date To"
 msgstr "Data a"
 
 #. module: cmc_budget
+#: model:ir.model.fields,field_description:cmc_budget.field_cmc_plan_version__seasonality_id
+msgid "Default Seasonality"
+msgstr "Stagionalità predefinita"
+
+#. module: cmc_budget
 #: model:ir.model.fields,help:cmc_budget.field_cmc_budget_cash_run__supplier_payment_term_id
 msgid "Default terms of the cost lines."
 msgstr "Termini predefiniti delle righe di costo."
@@ -474,6 +489,7 @@ msgid "Default terms of the revenue lines."
 msgstr "Termini predefiniti delle righe di ricavo."
 
 #. module: cmc_budget
+#: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_annual_wizard__display_name
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_bva__display_name
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_cash_line__display_name
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_cash_run__display_name
@@ -490,6 +506,7 @@ msgid "Display Name"
 msgstr "Nome visualizzato"
 
 #. module: cmc_budget
+#: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_annual_wizard__driver_id
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_line__driver_id
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_variance_input__driver_id
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_variance_line__driver_id
@@ -503,14 +520,13 @@ msgstr "Doppia tariffa (GPK)"
 
 #. module: cmc_budget
 #: model:ir.model.fields,help:cmc_budget.field_cmc_closing_run__allocation_basis
-msgid ""
-"Dual rate charges the fixed budget on planned usage and the variable budget "
-"on actual usage; the difference to the actual cost stays on the support "
-"center."
-msgstr ""
-"La doppia tariffa addebita il budget fisso sull'utilizzo pianificato e il "
-"budget variabile sull'utilizzo effettivo; la differenza rispetto al costo a "
-"consuntivo resta sul centro di supporto."
+msgid "Dual rate charges the fixed budget on planned usage and the variable budget on actual usage; the difference to the actual cost stays on the support center."
+msgstr "La doppia tariffa addebita il budget fisso sull'utilizzo pianificato e il budget variabile sull'utilizzo effettivo; la differenza rispetto al costo a consuntivo resta sul centro di supporto."
+
+#. module: cmc_budget
+#: model_terms:ir.actions.act_window,help:cmc_budget.action_cmc_budget_bva
+msgid "Each approved version is compared with the same actual figures: read the totals within one version."
+msgstr "Ogni versione approvata è confrontata con lo stesso consuntivo: leggi i totali all'interno di una sola versione."
 
 #. module: cmc_budget
 #: model_terms:ir.ui.view,arch_db:cmc_budget.view_cmc_budget_variance_run_form
@@ -544,6 +560,7 @@ msgid "First day of the month."
 msgstr "Primo giorno del mese."
 
 #. module: cmc_budget
+#: model:ir.model.fields.selection,name:cmc_budget.selection__cmc_budget_annual_wizard__behavior__fixed
 #: model:ir.model.fields.selection,name:cmc_budget.selection__cmc_budget_bva__behavior__fixed
 #: model:ir.model.fields.selection,name:cmc_budget.selection__cmc_budget_line__behavior__fixed
 msgid "Fixed"
@@ -560,6 +577,7 @@ msgid "Flexible budget"
 msgstr "Budget flessibile"
 
 #. module: cmc_budget
+#: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_annual_wizard__id
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_bva__id
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_cash_line__id
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_cash_run__id
@@ -587,6 +605,7 @@ msgid "Input"
 msgstr "Input"
 
 #. module: cmc_budget
+#: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_annual_wizard__kind
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_bva__kind
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_line__kind
 #: model_terms:ir.ui.view,arch_db:cmc_budget.view_cmc_budget_bva_search
@@ -594,6 +613,7 @@ msgid "Kind"
 msgstr "Natura"
 
 #. module: cmc_budget
+#: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_annual_wizard__write_uid
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_cash_line__write_uid
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_cash_run__write_uid
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_line__write_uid
@@ -606,6 +626,7 @@ msgid "Last Updated by"
 msgstr "Ultimo aggiornamento di"
 
 #. module: cmc_budget
+#: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_annual_wizard__write_date
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_cash_line__write_date
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_cash_run__write_date
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_line__write_date
@@ -618,6 +639,12 @@ msgid "Last Updated on"
 msgstr "Ultimo aggiornamento il"
 
 #. module: cmc_budget
+#: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_bva__is_latest_version
+#: model_terms:ir.ui.view,arch_db:cmc_budget.view_cmc_budget_bva_search
+msgid "Latest Approved Version"
+msgstr "Ultima versione approvata"
+
+#. module: cmc_budget
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_cash_run__line_ids
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_seasonality__line_ids
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_variance_run__line_ids
@@ -626,6 +653,7 @@ msgstr "Riga"
 
 #. module: cmc_budget
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_bva__date
+#: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_line__date
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_seasonality_line__month
 #: model_terms:ir.ui.view,arch_db:cmc_budget.view_cmc_budget_bva_search
 #: model_terms:ir.ui.view,arch_db:cmc_budget.view_cmc_budget_line_search
@@ -663,12 +691,8 @@ msgstr "Nessun budget da confrontare"
 #. module: cmc_budget
 #. odoo-python
 #: code:addons/cmc_budget/models/cmc_budget_variance.py:0
-msgid ""
-"No planned quantity in %(version)s for the variable budget of %(center)s / "
-"%(element)s, driver %(driver)s."
-msgstr ""
-"Nessuna quantità pianificata in %(version)s per il budget variabile di "
-"%(center)s / %(element)s, driver %(driver)s."
+msgid "No planned quantity in %(version)s for the variable budget of %(center)s / %(element)s, driver %(driver)s."
+msgstr "Nessuna quantità pianificata in %(version)s per il budget variabile di %(center)s / %(element)s, driver %(driver)s."
 
 #. module: cmc_budget
 #: model:ir.model.constraint,message:cmc_budget.constraint_cmc_budget_variance_input_run_center_driver_uniq
@@ -708,17 +732,18 @@ msgstr "Versione di piano"
 
 #. module: cmc_budget
 #: model_terms:ir.actions.act_window,help:cmc_budget.action_cmc_budget_line
-msgid ""
-"Plan costs and revenues by month, cost center and cost element on a budget "
-"version."
-msgstr ""
-"Pianifica costi e ricavi per mese, centro di costo ed elemento di costo su "
-"una versione di budget."
+msgid "Plan costs and revenues by month, cost center and cost element on a budget version."
+msgstr "Pianifica costi e ricavi per mese, centro di costo ed elemento di costo su una versione di budget."
 
 #. module: cmc_budget
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_variance_line__planned_qty
 msgid "Planned Qty"
 msgstr "Quantità pianificata"
+
+#. module: cmc_budget
+#: model:ir.model.fields,help:cmc_budget.field_cmc_budget_bva__variance
+msgid "Positive = favourable: plan - actual for costs, actual - plan for revenues."
+msgstr "Positivo = favorevole: piano - consuntivo per i costi, consuntivo - piano per i ricavi."
 
 #. module: cmc_budget
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_variance_line__practical_qty
@@ -738,9 +763,12 @@ msgstr "Consuntivo anno precedente"
 #. module: cmc_budget
 #: model:ir.model.fields,help:cmc_budget.field_cmc_budget_variance_input__allowed_qty
 msgid "Quantity allowed for the actual output; missing = the actual quantity."
-msgstr ""
-"Quantità ammessa per la produzione effettiva; assente = quantità a "
-"consuntivo."
+msgstr "Quantità ammessa per la produzione effettiva; assente = quantità a consuntivo."
+
+#. module: cmc_budget
+#: model:ir.model.fields,help:cmc_budget.field_cmc_budget_bva__actual_amount
+msgid "Repeated for every approved version that covers the month: sum it within one version only."
+msgstr "Ripetuto per ogni versione approvata che copre il mese: sommalo solo all'interno di una versione."
 
 #. module: cmc_budget
 #: model_terms:ir.ui.view,arch_db:cmc_budget.view_cmc_budget_cash_run_form
@@ -752,7 +780,7 @@ msgstr "Riporta in bozza"
 #: model_terms:ir.ui.view,arch_db:cmc_budget.view_cmc_budget_cash_run_form
 #: model_terms:ir.ui.view,arch_db:cmc_budget.view_cmc_budget_variance_run_form
 msgid "Resetting deletes the computed results. Continue?"
-msgstr "Il ripristino elimina i risultati calcolati. Continuare?"
+msgstr "Riportando in bozza i risultati calcolati vengono cancellati. Continuare?"
 
 #. module: cmc_budget
 #: model_terms:ir.ui.view,arch_db:cmc_budget.view_cmc_budget_variance_run_form
@@ -760,6 +788,7 @@ msgid "Results"
 msgstr "Risultati"
 
 #. module: cmc_budget
+#: model:ir.model.fields.selection,name:cmc_budget.selection__cmc_budget_annual_wizard__kind__revenue
 #: model:ir.model.fields.selection,name:cmc_budget.selection__cmc_budget_bva__kind__revenue
 #: model:ir.model.fields.selection,name:cmc_budget.selection__cmc_budget_line__kind__revenue
 msgid "Revenue"
@@ -779,6 +808,7 @@ msgid "Run"
 msgstr "Elaborazione"
 
 #. module: cmc_budget
+#: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_annual_wizard__seasonality_id
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_seasonality_line__seasonality_id
 msgid "Seasonality"
 msgstr "Stagionalità"
@@ -801,6 +831,11 @@ msgid "Semi-variable"
 msgstr "Semivariabile"
 
 #. module: cmc_budget
+#: model:ir.model.fields,help:cmc_budget.field_cmc_budget_annual_wizard__seasonality_id
+msgid "Shapes variable costs and revenues over the months. A fixed cost is always spread evenly."
+msgstr "Distribuisce sui mesi i costi variabili e i ricavi. Un costo fisso è sempre ripartito in parti uguali."
+
+#. module: cmc_budget
 #: model_terms:ir.ui.view,arch_db:cmc_budget.view_cmc_budget_variance_run_form
 msgid "Spending"
 msgstr "Spesa"
@@ -817,12 +852,8 @@ msgstr "Suddividi valori annuali"
 
 #. module: cmc_budget
 #: model_terms:ir.actions.act_window,help:cmc_budget.action_cmc_budget_variance_run
-msgid ""
-"Split the gap between budget and actual into spending, efficiency and volume"
-" variances."
-msgstr ""
-"Scompone lo scostamento tra budget e consuntivo in scostamenti di spesa, "
-"efficienza e volume."
+msgid "Split the gap between budget and actual into spending, efficiency and volume variances."
+msgstr "Scompone lo scostamento tra budget e consuntivo in scostamenti di spesa, efficienza e volume."
 
 #. module: cmc_budget
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_cash_run__state
@@ -856,14 +887,15 @@ msgid "The amount converted at the fixed rate of the version."
 msgstr "L'importo convertito al cambio fisso della versione."
 
 #. module: cmc_budget
+#: model:ir.model.fields,help:cmc_budget.field_cmc_budget_annual_wizard__amount
+msgid "The annual figure, always positive."
+msgstr "L'importo annuale, sempre positivo."
+
+#. module: cmc_budget
 #. odoo-python
 #: code:addons/cmc_budget/models/cmc_plan_version.py:0
-msgid ""
-"The cost lines of %(version)s total %(total)s, not the company total "
-"%(target)s."
-msgstr ""
-"Le righe di costo di %(version)s totalizzano %(total)s, non il totale "
-"societario %(target)s."
+msgid "The cost lines of %(version)s total %(total)s, not the company total %(target)s."
+msgstr "Le righe di costo di %(version)s totalizzano %(total)s, non il totale societario %(target)s."
 
 #. module: cmc_budget
 #. odoo-python
@@ -891,13 +923,11 @@ msgstr "Totale"
 
 #. module: cmc_budget
 #: model_terms:ir.actions.act_window,help:cmc_budget.action_cmc_budget_cash_run
-msgid ""
-"Turn a budget into monthly cash inflows and outflows using payment terms."
-msgstr ""
-"Trasforma un budget in entrate e uscite di cassa mensili usando i termini di"
-" pagamento."
+msgid "Turn a budget into monthly cash inflows and outflows using payment terms."
+msgstr "Trasforma un budget in entrate e uscite di cassa mensili usando i termini di pagamento."
 
 #. module: cmc_budget
+#: model:ir.model.fields.selection,name:cmc_budget.selection__cmc_budget_annual_wizard__behavior__variable
 #: model:ir.model.fields.selection,name:cmc_budget.selection__cmc_budget_bva__behavior__variable
 #: model:ir.model.fields.selection,name:cmc_budget.selection__cmc_budget_line__behavior__variable
 msgid "Variable"
@@ -924,11 +954,10 @@ msgstr "Elaborazioni scostamenti"
 #. module: cmc_budget
 #: model:ir.model.fields,help:cmc_budget.field_cmc_plan_version__alert_threshold
 msgid "Variance percent beyond which a budget vs actual figure is flagged."
-msgstr ""
-"Percentuale di scostamento oltre la quale un valore budget vs consuntivo "
-"viene segnalato."
+msgstr "Percentuale di scostamento oltre la quale un valore budget vs consuntivo viene segnalato."
 
 #. module: cmc_budget
+#: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_annual_wizard__version_id
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_bva__version_id
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_cash_run__version_id
 #: model:ir.model.fields,field_description:cmc_budget.field_cmc_budget_line__version_id
@@ -962,3 +991,9 @@ msgstr "Peso"
 #: model_terms:ir.ui.view,arch_db:cmc_budget.view_cmc_budget_seasonality_form
 msgid "e.g. Summer peak"
 msgstr "es. Picco estivo"
+
+#~ msgid "Computed"
+#~ msgstr "Calcolato"
+
+#~ msgid "Draft"
+#~ msgstr "Bozza"

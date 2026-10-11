@@ -6,7 +6,7 @@
         <field name="model">cmc.fin.override</field>
         <field name="arch" type="xml">
             <list editable="bottom">
-                <field name="year"/>
+                <field name="year" options="{'enable_formatting': false}"/>
                 <field name="scheme_id"/>
                 <field name="account_id"/>
                 <field name="line_id" domain="[('scheme_id', '=', scheme_id), ('line_type', '=', 'account')]"/>
@@ -45,7 +45,7 @@
         <field name="model">cmc.fin.history</field>
         <field name="arch" type="xml">
             <list editable="bottom">
-                <field name="year"/>
+                <field name="year" options="{'enable_formatting': false}"/>
                 <field name="account_id"/>
                 <field name="balance" sum="Total"/>
                 <field name="company_id" groups="base.group_multi_company"/>
@@ -80,7 +80,7 @@
         <field name="model">cmc.fin.input</field>
         <field name="arch" type="xml">
             <list editable="bottom">
-                <field name="year"/>
+                <field name="year" options="{'enable_formatting': false}"/>
                 <field name="code"/>
                 <field name="value"/>
                 <field name="company_id" groups="base.group_multi_company"/>
@@ -115,9 +115,10 @@
         <field name="arch" type="xml">
             <list editable="bottom">
                 <field name="ateco_code"/>
-                <field name="year"/>
+                <field name="year" options="{'enable_formatting': false}"/>
                 <field name="ratio_id"/>
-                <field name="value"/>
+                <field name="value_input"/>
+                <field name="unit"/>
                 <field name="company_id" groups="base.group_multi_company"/>
             </list>
         </field>
@@ -151,7 +152,7 @@
         <field name="model">cmc.fin.criteria.change</field>
         <field name="arch" type="xml">
             <list editable="bottom">
-                <field name="year"/>
+                <field name="year" options="{'enable_formatting': false}"/>
                 <field name="name"/>
                 <field name="line_codes"/>
                 <field name="reason"/>

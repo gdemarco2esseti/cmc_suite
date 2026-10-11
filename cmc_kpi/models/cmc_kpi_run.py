@@ -8,7 +8,7 @@ from odoo.exceptions import UserError, ValidationError
 from odoo.fields import Domain
 from odoo.tools.safe_eval import _BUILTINS, safe_eval
 
-from odoo.addons.cmc_base.models.cmc_utils import month_end, month_range, month_start
+from odoo.addons.cmc_base.models.cmc_utils import format_figure, month_end, month_range, month_start
 
 from .cmc_kpi import PERSPECTIVES
 from .cmc_kpi_run_snapshot import BVA_KEYS
@@ -111,8 +111,8 @@ class CmcKpiRun(models.Model):
         ordered, children, formula_names = self._cmc_kpi_plan(kpis)
         self._cmc_check_scorecards(scorecards)
         analyses = self._cmc_analyses(kpis, months)
-        sources = self._cmc_source_values(kpis, months, analyses)
-        rows = self._cmc_rows(ordered, children, formula_names, months, sources)
+        sources, no_data = self._cmc_source_values(kpis, months, analyses)
+        rows = self._cmc_rows(ordered, children, formula_names, months, sources, no_data)
         self._cmc_record_sources(kpis, analyses)
         # why sudo: result rows are engine output (users hold read access only)
         self.env["cmc.kpi.value"].sudo().create(list(rows.values()))
@@ -221,9 +221,10 @@ class CmcKpiRun(models.Model):
     # ---- sources (one batch per source type, whatever the number of KPIs) ----
 
     def _cmc_source_values(self, kpis, months, analyses):
-        """{(kpi.id, month): float | None} of the KPIs read from the data (measure, ratio, variance, engine)."""
+        """({(kpi.id, month): float | None}, {(kpi.id, month) without any fact}) of the KPIs read from the data."""
         values = {}
-        values.update(self._cmc_measure_values(kpis.filtered(lambda kpi: kpi.source_type == "measure"), months))
+        measures, no_data = self._cmc_measure_values(kpis.filtered(lambda kpi: kpi.source_type == "measure"), months)
+        values.update(measures)
         values.update(self._cmc_ratio_values(kpis.filtered(lambda kpi: kpi.source_type == "ratio"), months, analyses))
         values.update(self._cmc_variance_values(kpis.filtered(lambda kpi: kpi.source_type == "variance"), months))
         hooks = kpis.filtered(lambda kpi: kpi.source_type == "hook")
@@ -231,11 +232,11 @@ class CmcKpiRun(models.Model):
         for key, group in hooks.grouped("hook_key").items():
             for month in months:
                 values.update({(kpi_id, month): value for kpi_id, value in evaluators[key](self, group, month).items()})
-        return values
+        return values, no_data
 
     def _cmc_measure_values(self, kpis, months):
         if not kpis:
-            return {}
+            return {}, set()
         drivers = kpis.driver_id | kpis.denominator_driver_id
         by_center, by_object = bool(kpis.center_id), bool(kpis.cost_object_id)
         groupby = ["driver_id", "date:month"] + ["center_id"] * by_center + ["cost_object_id"] * by_object
@@ -250,25 +251,34 @@ class CmcKpiRun(models.Model):
             cost_object = next(scope).id if by_object else False
             facts[driver.id, fields.Date.to_date(month)].append((center, cost_object, total or 0.0, count))
 
-        def aggregate(kpi, driver, month):
-            rows = [
+        def scoped(kpi, driver, month):
+            return [
                 (total, count) for center, cost_object, total, count in facts.get((driver.id, month), ())
                 if (not kpi.center_id or center == kpi.center_id.id) and (not kpi.cost_object_id or cost_object == kpi.cost_object_id.id)
             ]
+
+        def has_fact(driver, kpi, month):
+            return bool(scoped(kpi, driver, month))
+
+        def aggregate(kpi, driver, month):
+            rows = scoped(kpi, driver, month)
             if not rows:
                 return 0.0 if kpi.aggregation == "sum" else None
             total, count = sum(row[0] for row in rows), sum(row[1] for row in rows)
             return total if kpi.aggregation == "sum" else total / count
 
-        values = {}
+        values, no_data = {}, set()
         for kpi in kpis:
             for month in months:
                 value = aggregate(kpi, kpi.driver_id, month)
+                # why: a month without any fact of the driver the value is divided by (else of its own) has no data to judge
+                if not has_fact(kpi.denominator_driver_id or kpi.driver_id, kpi, month):
+                    no_data.add((kpi.id, month))
                 if value is not None and kpi.denominator_driver_id:
                     denominator = aggregate(kpi, kpi.denominator_driver_id, month)
                     value = value / denominator if denominator else None
                 values[kpi.id, month] = value * kpi.scale if value is not None else None
-        return values
+        return values, no_data
 
     def _cmc_ratio_values(self, kpis, months, analyses):
         if not kpis:
@@ -319,12 +329,12 @@ class CmcKpiRun(models.Model):
         )
         return {(row.kpi_id.id, row.date): row.value for row in Value.browse([group[2] for group in groups])}
 
-    def _cmc_rows(self, ordered, children, formula_names, months, sources):
+    def _cmc_rows(self, ordered, children, formula_names, months, sources, no_data=frozenset()):
         targets = self._cmc_targets(ordered, months)
         others = self._cmc_previous_values(ordered, months)
         rows = {}
         for month in months:
-            current = {}
+            current, empty_codes = {}, set()
             previous_month = month_start(month - timedelta(days=1))
             for kpi in ordered:
                 if kpi.source_type == "formula":
@@ -334,7 +344,15 @@ class CmcKpiRun(models.Model):
                 else:
                     value = sources.get((kpi.id, month))
                 current[kpi.code] = value
-                reason = False if value is not None else self._cmc_reason(kpi, formula_names.get(kpi.id), current)
+                empty = (kpi.id, month) in no_data
+                # why: a formula over inputs that all have no data (produced - reworked, both empty) has no data either
+                inputs_empty = kpi.source_type == "formula" and formula_names[kpi.id] and set(formula_names[kpi.id]) <= empty_codes
+                empty = empty or bool(inputs_empty)
+                if empty:
+                    empty_codes.add(kpi.code)
+                reason = False if value is not None and not empty else self._cmc_reason(kpi, formula_names.get(kpi.id), current, empty)
+                if inputs_empty:
+                    reason = self.env._("No data for %s", ", ".join(sorted(formula_names[kpi.id])))
                 if kpi.source_type == "cascade":
                     target, source, direction = CASCADE_TARGET, "static", "higher"
                 elif (kpi.id, month) in targets:
@@ -343,10 +361,10 @@ class CmcKpiRun(models.Model):
                     target, source, direction = kpi.target_value, "static", kpi.direction
                 before = rows.get((kpi.id, previous_month))
                 before = before["value"] if before and before["computable"] else others.get((kpi.id, previous_month))
-                rows[kpi.id, month] = self._cmc_row(kpi, month, value, (target, source, direction), before, reason)
+                rows[kpi.id, month] = self._cmc_row(kpi, month, value, (target, source, direction), before, reason, empty)
         return rows
 
-    def _cmc_row(self, kpi, month, value, target, before, reason):
+    def _cmc_row(self, kpi, month, value, target, before, reason, empty=False):
         target, source, direction = target
         vals = {
             "run_id": self.id, "company_id": self.company_id.id, "kpi_id": kpi.id, "code": kpi.code, "perspective": kpi.perspective,
@@ -354,6 +372,9 @@ class CmcKpiRun(models.Model):
             "target": target, "target_source": source, "gap_pct": 0.0, "status": "none", "score": 0.0,
             "previous_value": 0.0, "trend_delta": 0.0, "trend": "none",
         }
+        # why: a formula returning a real 0 against a 0 target (0 ppm) is on target; its inputs already carry the no_data
+        if empty or (value is not None and not value and not target and kpi.source_type != "formula"):
+            return vals | {"computable": False, "status": "no_data", "reason": reason or self.env._("No data for the month")}
         if value is None:
             return vals
         gap, status, score = _measure(kpi, value, target, direction)
@@ -365,7 +386,9 @@ class CmcKpiRun(models.Model):
             vals |= {"previous_value": before, "trend_delta": delta, "trend": trend}
         return vals
 
-    def _cmc_reason(self, kpi, names, current):
+    def _cmc_reason(self, kpi, names, current, no_data=False):
+        if no_data:
+            return self.env._("No data for the month")
         if kpi.source_type == "formula":
             missing = sorted(name for name in names if current.get(name) is None)
             if missing:
@@ -455,6 +478,7 @@ class CmcKpiRun(models.Model):
         values = self.env["cmc.kpi.value"].search([("run_id", "=", self.id), ("date", "=", month)])
         kpis = [{
             "kpi": row.kpi_id, "value": row.value, "computable": row.computable, "target": row.target,
+            "value_display": row.value_display, "target_display": row.target_display,
             "status": row.status, "trend": row.trend, "score": row.score,
         } for row in values.sorted(lambda row: (rank[row.perspective], row.kpi_id.sequence, row.code))]
         results = self.env["cmc.kpi.scorecard.result"].search([("run_id", "=", self.id), ("date", "=", month)])
@@ -471,8 +495,17 @@ class CmcKpiRun(models.Model):
             })
         bva = self.env["cmc.kpi.run.bva"].search([("run_id", "=", self.id), ("date", "=", month)])
         ratios = self.env["cmc.kpi.run.ratio"].search([("run_id", "=", self.id), ("year", "=", month.year)])
+        # why: the pack prints percent ratios like the screens (RN-008); a company ratio overrides the shared one
+        ratio_units = {
+            ratio.code: ratio.unit for ratio in self.env["cmc.fin.ratio"].search(
+                [("code", "in", ratios.mapped("code")), ("company_id", "in", [False, self.company_id.id])],
+            ).sorted(lambda ratio: bool(ratio.company_id))
+        }
         return {
             "month": month, "kpis": kpis, "scorecards": scorecards,
             "bva": [{"center_id": row.center_id} | {key: row[key] for key in BVA_KEYS} for row in bva],
-            "ratios": [{"code": row.code, "name": row.name, "value": row.value, "status": row.status} for row in ratios],
+            "ratios": [{
+                "code": row.code, "name": row.name, "value": row.value, "status": row.status,
+                "value_display": format_figure(self.env, row.value, ratio_units.get(row.code) == "percent"),
+            } for row in ratios],
         }

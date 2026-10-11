@@ -9,4 +9,12 @@
         <field name="source">feeder</field>
         <field name="feeder_key">account_customer_invoice_lines</field>
     </record>
+    <!-- own block: the file is noupdate, the Cost Entries domain must follow every upgrade -->
+    <data noupdate="0">
+        <record id="cmc_base.action_cmc_analytic_lines" model="ir.actions.act_window">
+            <field name="domain">['|', '|', ('cmc_behavior', '!=', False),
+                '&amp;', ('general_account_id', '!=', False), ('general_account_id.account_type', 'not in', ['income', 'income_other']),
+                '&amp;', ('general_account_id', '=', False), ('amount', '&lt;', 0)]</field>
+        </record>
+    </data>
 </odoo>

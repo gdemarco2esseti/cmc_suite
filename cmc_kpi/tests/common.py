@@ -49,8 +49,9 @@ the KPI-02 feeders read ``stock.scrap`` / ``stock.picking``; see the report to t
    - ``measure``: ``driver_id`` req, ``aggregation`` ``sum`` (default) / ``avg``, optional filters ``center_id``
      / ``cost_object_id``, optional ``denominator_driver_id``, ``scale`` Float (default 1.0).
      value = agg(ACTUAL facts ``cmc.measure.quantity`` (version_id False) of the run company, month, driver,
-     filters) [/ agg(facts of denominator_driver_id, same filters)] x scale. sum without facts = 0; avg = mean of
-     the fact ROWS, no facts -> not computable; denominator 0 -> not computable.
+     filters) [/ agg(facts of denominator_driver_id, same filters)] x scale. avg = mean of the fact ROWS;
+     denominator 0 -> not computable. DL-010: NO fact of the driver in the month (sum or avg) -> status
+     ``no_data``, computable False, score 0, reason "No data for the month".
    - ``ratio``: ``ratio_code`` Char req = a ``cmc.fin.ratio`` code. value = ``cmc.fin.ratio.value`` of the
      year of the month from the run ``fin_analysis_id`` or, when empty, the latest (id desc) COMPUTED
      ``cmc.fin.analysis`` of the run company with year_from <= year <= year_to; its usage is recorded (AD-002).
@@ -92,6 +93,9 @@ the KPI-02 feeders read ``stock.scrap`` / ``stock.picking``; see the report to t
    ``static``, ``gap_pct``, ``status`` ``green`` / ``amber`` / ``red`` / ``none``, ``score``,
    ``previous_value``, ``trend_delta``, ``trend`` ``improving`` / ``worsening`` / ``stable`` / ``none``.
    One row per KPI x month (not computable included: value 0, status none, score 0, trend none).
+   DL-010: ``status`` also ``no_data`` ("No data"): a measure KPI without facts in the month, or a value 0 against
+   a target 0 -> ``no_data``, score 0, computable False, reason "No data for the month"; a real value against a
+   0 target (variance KPIs) keeps the traffic light below.
    - target = ``cmc.kpi.target`` of (run version, kpi, month) -> ``version``, else ``kpi.target_value`` -> ``static``.
    - gap_pct = (value - target) / abs(target) x 100 (higher) or (target - value) / abs(target) x 100 (lower);
      target 0 -> the signed difference itself (value - target, or target - value). Positive = better.

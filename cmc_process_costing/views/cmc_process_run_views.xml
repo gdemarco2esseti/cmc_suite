@@ -27,7 +27,8 @@
         <field name="arch" type="xml">
             <form string="Process Run">
                 <header>
-                    <button name="action_cmc_prefill" type="object" string="Prefill from MRP" invisible="state == 'done'"/>
+                    <button name="action_cmc_prefill" type="object" string="Prefill from MRP" invisible="state == 'done'"
+                            confirm="Prefilling replaces the quantities typed on this run with those read from MRP. Continue?"/>
                     <button name="action_compute" type="object" string="Compute" class="oe_highlight" invisible="state == 'done'"/>
                     <button name="action_reset_to_draft" type="object" string="Reset to Draft" invisible="state != 'done'"
                             confirm="Resetting deletes the computed results. Continue?"/>

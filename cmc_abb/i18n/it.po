@@ -544,6 +544,8 @@ msgstr ""
 
 #. module: cmc_abb
 #: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_search
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_abb_run__state__done
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_abb_variance_run__state__done
 msgid "Computed"
 msgstr "Calcolato"
 
@@ -749,6 +751,8 @@ msgstr "Nome visualizzato"
 
 #. module: cmc_abb
 #: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_search
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_abb_run__state__draft
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_abb_variance_run__state__draft
 msgid "Draft"
 msgstr "Bozza"
 
@@ -1033,6 +1037,15 @@ msgid "Prefill Bill from Calibration"
 msgstr "Precompila la distinta dalla calibrazione"
 
 #. module: cmc_abb
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
+msgid ""
+"Prefilling replaces the current lines with the quantities read from the "
+"data. Continue?"
+msgstr ""
+"La precompilazione sostituisce le righe attuali con le quantità lette dai "
+"dati. Continuare?"
+
+#. module: cmc_abb
 #: model:ir.model.fields.selection,name:cmc_abb.selection__cmc_abb_capacity_state__state__productive
 msgid "Productive"
 msgstr "Produttiva"
@@ -1076,12 +1089,14 @@ msgstr "Unità richieste"
 #: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_run_form
 #: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_whatif_form
 msgid "Reset to Draft"
-msgstr "Reimposta a bozza"
+msgstr "Riporta in bozza"
 
 #. module: cmc_abb
 #: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_whatif_form
 msgid "Resetting deletes the computed results. Continue?"
-msgstr "Azzerare elimina i risultati calcolati. Continuare?"
+msgstr ""
+"Riportando in bozza i risultati calcolati vengono cancellati. Continuare?"
 
 #. module: cmc_abb
 #: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_run_form
@@ -1089,8 +1104,8 @@ msgid ""
 "Resetting deletes the results, the budget lines and the prospective rates of"
 " this run. Continue?"
 msgstr ""
-"Azzerare elimina i risultati, le righe di budget e le tariffe prospettiche "
-"di questa esecuzione. Continuare?"
+"Riportando in bozza vengono cancellati i risultati, le righe di budget e le "
+"tariffe prospettiche di questa esecuzione. Continuare?"
 
 #. module: cmc_abb
 #: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_capacity_state__resource_id
@@ -1177,6 +1192,16 @@ msgstr "Responsabilità"
 #: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_capacity_state_search
 msgid "Run"
 msgstr "Esecuzione"
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_abb_variance.py:0
+msgid ""
+"Several resources of %(center)s cover the same cost: it would be counted "
+"twice."
+msgstr ""
+"Più risorse di %(center)s coprono lo stesso costo: verrebbe conteggiato due "
+"volte."
 
 #. module: cmc_abb
 #: model:ir.model.fields,field_description:cmc_abb.field_cmc_abb_resource_result__shortage_units
@@ -1301,6 +1326,19 @@ msgid ""
 msgstr ""
 "La versione di budget non può essere quella che contiene i volumi "
 "pianificati."
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_abb_run.py:0
+msgid ""
+"The calibration run \"%(run)s\" has no activity to cost object edge with a "
+"produced quantity: compute it with driver and output quantities, or type the"
+" bill by hand. The current bill is unchanged."
+msgstr ""
+"L'elaborazione di calibrazione \"%(run)s\" non ha archi attività-oggetto di "
+"costo con una quantità prodotta: calcolala con le quantità dei driver e di "
+"output, oppure digita la distinta a mano. La distinta attuale non è "
+"modificata."
 
 #. module: cmc_abb
 #. odoo-python

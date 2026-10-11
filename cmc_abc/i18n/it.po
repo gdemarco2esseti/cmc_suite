@@ -1550,6 +1550,15 @@ msgid "Prefill Edges from Facts"
 msgstr "Precompila gli archi dai fatti"
 
 #. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_run_form
+msgid ""
+"Prefilling replaces the current lines with the quantities read from the "
+"data. Continue?"
+msgstr ""
+"La precompilazione sostituisce le righe attuali con le quantità lette dai "
+"dati. Continuare?"
+
+#. module: cmc_abc
 #: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__process_id
 #: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_activity__node_type__process
 #: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_cost_search
@@ -2034,6 +2043,18 @@ msgstr "L'esecuzione di verifica deve essere diversa da quella di base."
 
 #. module: cmc_abc
 #. odoo-python
+#: code:addons/cmc_abc/models/cmc_abc.py:0
+msgid ""
+"There are no driver quantities of the activities for the period of this run:"
+" enter them in Cost Base > Driver Quantities, then prefill again. The "
+"current edges are unchanged."
+msgstr ""
+"Non ci sono quantità driver delle attività per il periodo di questa "
+"elaborazione: inseriscile in Base di costo > Quantità driver, poi precompila"
+" di nuovo. Gli archi attuali non sono modificati."
+
+#. module: cmc_abc
+#. odoo-python
 #: code:addons/cmc_abc/models/cmc_abm.py:0
 msgid ""
 "These runs are read by other documents: %(names)s. Delete or change them "
@@ -2317,3 +2338,13 @@ msgstr "totale 100%"
 #: code:addons/cmc_abc/models/cmc_abc_engine.py:0
 msgid "total more than zero"
 msgstr "totale maggiore di zero"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_abc_run__state__done
+msgid "Computed"
+msgstr "Calcolato"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_abc_run__state__draft
+msgid "Draft"
+msgstr "Bozza"

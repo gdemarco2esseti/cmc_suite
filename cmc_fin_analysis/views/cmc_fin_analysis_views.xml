@@ -9,7 +9,7 @@
                 <field name="run_id"/>
                 <field name="scheme_id"/>
                 <field name="name"/>
-                <field name="year"/>
+                <field name="year" options="{'enable_formatting': false}"/>
                 <field name="value"/>
                 <field name="common_size_pct"/>
                 <field name="yoy_pct" invisible="not yoy_computable"/>
@@ -78,16 +78,19 @@
                 <field name="run_id"/>
                 <field name="name"/>
                 <field name="area" column_invisible="1"/>
-                <field name="year"/>
-                <field name="value" invisible="status == 'not_computable'"/>
+                <field name="year" options="{'enable_formatting': false}"/>
+                <field name="value" column_invisible="1"/>
+                <field name="value_display" invisible="status == 'not_computable'"/>
                 <field name="status" widget="badge"
                        decoration-success="status == 'ok'" decoration-danger="status == 'alert'"
                        decoration-muted="status == 'not_computable'"/>
                 <field name="threshold_op"/>
-                <field name="threshold" invisible="not threshold_op"/>
-                <field name="benchmark" invisible="not has_benchmark"/>
+                <field name="threshold" column_invisible="1"/>
+                <field name="threshold_display" invisible="not threshold_op"/>
+                <field name="benchmark" column_invisible="1"/>
+                <field name="benchmark_display" invisible="not has_benchmark"/>
                 <field name="has_benchmark" column_invisible="1"/>
-            </list>
+                            </list>
         </field>
     </record>
 
@@ -145,8 +148,8 @@
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>
-                <field name="year_from"/>
-                <field name="year_to"/>
+                <field name="year_from" options="{'enable_formatting': false}"/>
+                <field name="year_to" options="{'enable_formatting': false}"/>
                 <field name="state" widget="badge"/>
                 <field name="company_id" groups="base.group_multi_company"/>
             </list>
@@ -184,12 +187,12 @@
                     </div>
                     <group>
                         <group>
-                            <field name="year_from" readonly="state == 'done'"/>
-                            <field name="year_to" readonly="state == 'done'"/>
+                            <field name="year_from" options="{'enable_formatting': false}" readonly="state == 'done'"/>
+                            <field name="year_to" options="{'enable_formatting': false}" readonly="state == 'done'"/>
                             <field name="scheme_ids" widget="many2many_tags" readonly="state == 'done'"/>
                         </group>
                         <group>
-                            <field name="excluded_journal_ids" widget="many2many_tags" readonly="state == 'done'" domain="[('company_id', '=', company_id)]"/>
+                            <field name="excluded_journal_ids" groups="account.group_account_readonly" widget="many2many_tags" readonly="state == 'done'" domain="[('company_id', '=', company_id)]"/>
                             <field name="reduced_mode" readonly="state == 'done'"/>
                             <field name="ateco_code" readonly="state == 'done'"/>
                             <field name="company_id" readonly="state == 'done'" groups="base.group_multi_company"/>
@@ -201,7 +204,7 @@
                                 <list create="false" edit="false" default_order="scheme_id, sequence, year">
                                     <field name="scheme_id"/>
                                     <field name="name"/>
-                                    <field name="year"/>
+                                    <field name="year" options="{'enable_formatting': false}"/>
                                     <field name="value"/>
                                     <field name="common_size_pct"/>
                                     <field name="yoy_pct" invisible="not yoy_computable"/>
@@ -215,14 +218,17 @@
                                 <list create="false" edit="false" default_group_by="area"
                                       decoration-danger="status == 'alert'" decoration-muted="status == 'not_computable'">
                                     <field name="name"/>
-                                    <field name="year"/>
-                                    <field name="value" invisible="status == 'not_computable'"/>
+                                    <field name="year" options="{'enable_formatting': false}"/>
+                                    <field name="value" column_invisible="1"/>
+                                    <field name="value_display" invisible="status == 'not_computable'"/>
                                     <field name="status" widget="badge"
                                            decoration-success="status == 'ok'" decoration-danger="status == 'alert'"
                                            decoration-muted="status == 'not_computable'"/>
                                     <field name="threshold_op"/>
-                                    <field name="threshold" invisible="not threshold_op"/>
-                                    <field name="benchmark" invisible="not has_benchmark"/>
+                                    <field name="threshold" column_invisible="1"/>
+                                    <field name="threshold_display" invisible="not threshold_op"/>
+                                    <field name="benchmark" column_invisible="1"/>
+                                    <field name="benchmark_display" invisible="not has_benchmark"/>
                                     <field name="has_benchmark" column_invisible="1"/>
                                     <field name="area" column_invisible="1"/>
                                 </list>

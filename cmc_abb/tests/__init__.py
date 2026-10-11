@@ -6,3 +6,4 @@ from . import test_abb_performance
 from . import test_abb_security
 from . import test_abb_variance
 from . import test_abb_whatif
+from . import test_fx_stress_c

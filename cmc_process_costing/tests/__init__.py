@@ -6,3 +6,4 @@ from . import test_process_report
 from . import test_process_security
 from . import test_process_performance
 from . import test_process_run_lock
+from . import test_fx_stress_c

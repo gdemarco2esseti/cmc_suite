@@ -1,11 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="view_cmc_budget_annual_wizard_form" model="ir.ui.view">
+        <field name="name">cmc.budget.annual.wizard.form</field>
+        <field name="model">cmc.budget.annual.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Add Annual Budget">
+                <group>
+                    <group>
+                        <field name="version_id"/>
+                        <field name="kind"/>
+                        <field name="center_id"/>
+                        <field name="element_id"/>
+                    </group>
+                    <group>
+                        <field name="behavior"/>
+                        <field name="driver_id"/>
+                        <field name="amount"/>
+                        <field name="seasonality_id" invisible="kind == 'cost' and behavior == 'fixed'"/>
+                        <field name="currency_id" invisible="1"/>
+                        <field name="company_id" invisible="1"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_apply" type="object" string="Add" class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_budget_annual_wizard" model="ir.actions.act_window">
+        <field name="name">Add Annual Budget</field>
+        <field name="res_model">cmc.budget.annual.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
     <record id="view_cmc_plan_version_form_budget" model="ir.ui.view">
         <field name="name">cmc.plan.version.form.budget</field>
         <field name="model">cmc.plan.version</field>
         <field name="inherit_id" ref="cmc_base.view_cmc_plan_version_form"/>
         <field name="arch" type="xml">
             <xpath expr="//header/button[@name='action_approve']" position="before">
+                <button name="%(cmc_budget.action_cmc_budget_annual_wizard)d" type="action" string="Add Annual Budget"
+                        invisible="state != 'draft' or version_type not in ('budget', 'forecast')"
+                        context="{'default_version_id': id}"/>
                 <button name="action_split_annual" type="object" string="Split Annual Figures"
                         invisible="state != 'draft'" groups="cmc_base.group_cmc_user"/>
             </xpath>
@@ -18,6 +57,7 @@
                         </group>
                         <group>
                             <field name="alert_threshold" readonly="state == 'done'"/>
+                            <field name="seasonality_id" readonly="state == 'done'"/>
                         </group>
                     </group>
                     <field name="budget_line_ids" readonly="state == 'done'"

@@ -396,6 +396,19 @@ msgid "Name"
 msgstr "Nome"
 
 #. module: cmc_process_costing
+#. odoo-python
+#: code:addons/cmc_process_costing/models/cmc_process_run.py:0
+msgid ""
+"No MRP quantity of %(product)s in %(center)s for %(month)s and no source "
+"run: produced and scrapped quantities come from the manufacturing orders of "
+"the month, or link a previous run. The typed quantities are unchanged."
+msgstr ""
+"Nessuna quantità MRP di %(product)s in %(center)s per %(month)s e nessuna "
+"elaborazione di origine: le quantità prodotte e scartate provengono dagli "
+"ordini di produzione del mese, oppure collega un'elaborazione precedente. Le"
+" quantità inserite non sono modificate."
+
+#. module: cmc_process_costing
 #: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__normal_spoilage_pct
 msgid "Normal Spoilage %"
 msgstr "Scarti normali %"
@@ -452,6 +465,15 @@ msgstr "Precompila da MRP"
 #: code:addons/cmc_process_costing/models/cmc_process_run.py:0
 msgid "Prefill works on draft runs only."
 msgstr "La precompilazione funziona solo su esecuzioni in bozza."
+
+#. module: cmc_process_costing
+#: model_terms:ir.ui.view,arch_db:cmc_process_costing.view_cmc_process_run_form
+msgid ""
+"Prefilling replaces the quantities typed on this run with those read from "
+"MRP. Continue?"
+msgstr ""
+"La precompilazione sostituisce le quantità inserite su questa elaborazione "
+"con quelle lette da MRP. Continuare?"
 
 #. module: cmc_process_costing
 #: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run__previous_run_id
@@ -511,12 +533,13 @@ msgstr "Riportare in bozza un'esecuzione calcolata prima di eliminarla."
 #. module: cmc_process_costing
 #: model_terms:ir.ui.view,arch_db:cmc_process_costing.view_cmc_process_run_form
 msgid "Reset to Draft"
-msgstr "Reimposta a bozza"
+msgstr "Riporta in bozza"
 
 #. module: cmc_process_costing
 #: model_terms:ir.ui.view,arch_db:cmc_process_costing.view_cmc_process_run_form
 msgid "Resetting deletes the computed results. Continue?"
-msgstr "Azzerare elimina i risultati calcolati. Continuare?"
+msgstr ""
+"Riportando in bozza i risultati calcolati vengono cancellati. Continuare?"
 
 #. module: cmc_process_costing
 #: model:ir.model.fields,field_description:cmc_process_costing.field_cmc_process_run_line__run_id
@@ -691,3 +714,13 @@ msgstr "Media ponderata"
 #: model_terms:ir.ui.view,arch_db:cmc_process_costing.view_cmc_process_run_form
 msgid "Work in progress"
 msgstr "Lavori in corso"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_process_run__state__done
+msgid "Computed"
+msgstr "Calcolato"
+
+#. module: cmc_process_costing
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_process_run__state__draft
+msgid "Draft"
+msgstr "Bozza"

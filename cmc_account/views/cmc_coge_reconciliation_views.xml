@@ -27,6 +27,7 @@
                     <button name="action_compute" type="object" string="Compute"
                             class="oe_highlight" invisible="state == 'done'"/>
                     <button name="action_reset_to_draft" type="object" string="Reset to Draft"
+                            confirm="Resetting deletes the computed results. Continue?"
                             invisible="state != 'done'"/>
                     <field name="state" widget="statusbar"/>
                 </header>

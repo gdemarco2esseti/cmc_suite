@@ -57,15 +57,26 @@ class TestEvmRun(EvmCase):
 
     def test_prj04_s_curve_cumulative_pv_ev_ac(self):
         # PRJ-04: one row per baseline month; EV/AC of past months from the earlier status reports
+        # FX-012: after the status month EV/AC cumulative are EMPTY (NULL), never 0 - the S-curve must not drop
         _jan, _feb, mar = self._history(self._baseline())
-        self.assertRecordValues(mar.curve_ids.sorted("date"), [
+        curve = mar.curve_ids.sorted("date")
+        self.assertRecordValues(curve[:3], [
             {"date": JAN, "pv_cumulative": 2625.0, "ev_cumulative": 2625.0, "ac_cumulative": 3000.0, "is_forecast": False},
             {"date": FEB, "pv_cumulative": 12950.0, "ev_cumulative": 9870.0, "ac_cumulative": 11000.0, "is_forecast": False},
             {"date": MAR, "pv_cumulative": 20650.0, "ev_cumulative": 16800.0, "ac_cumulative": 17000.0, "is_forecast": False},
-            {"date": APR, "pv_cumulative": 30275.0, "ev_cumulative": 0.0, "ac_cumulative": 0.0, "is_forecast": True},
-            {"date": MAY, "pv_cumulative": 32200.0, "ev_cumulative": 0.0, "ac_cumulative": 0.0, "is_forecast": True},
-            {"date": JUN, "pv_cumulative": 32200.0, "ev_cumulative": 0.0, "ac_cumulative": 0.0, "is_forecast": True},
         ])
+        self.assertRecordValues(curve[3:], [
+            {"date": APR, "pv_cumulative": 30275.0, "is_forecast": True},
+            {"date": MAY, "pv_cumulative": 32200.0, "is_forecast": True},
+            {"date": JUN, "pv_cumulative": 32200.0, "is_forecast": True},
+        ])
+        # the ORM reads a NULL Monetary as 0.0: only the stored value tells "empty" from "zero"
+        self.env.flush_all()
+        self.env.cr.execute(
+            "SELECT date, ev_cumulative IS NULL, ac_cumulative IS NULL FROM cmc_evm_curve WHERE run_id = %s AND is_forecast ORDER BY date",
+            [mar.id],
+        )
+        self.assertEqual(self.env.cr.fetchall(), [(APR, True, True), (MAY, True, True), (JUN, True, True)])
 
     def test_prj03_planned_vs_actual_per_month_and_control_limits(self):
         # PRJ-03: monthly PV / EV / AC and cost variance; |cv| above the 800 limit is out of control

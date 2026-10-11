@@ -67,7 +67,7 @@ class CmcFinMappingRule(models.Model):
     line_id = fields.Many2one("cmc.fin.scheme.line", required=True, ondelete="cascade", check_company=True)
     account_id = fields.Many2one("account.account", check_company=True, ondelete="cascade")
     account_code_prefix = fields.Char()
-    account_type = fields.Selection(selection=lambda self: self.env["account.account"]._fields["account_type"].selection)
+    account_type = fields.Selection(selection=lambda self: self.env["account.account"]._fields["account_type"]._description_selection(self.env))
     cmc_behavior = fields.Selection([("fixed", "Fixed"), ("variable", "Variable"), ("semi_variable", "Semi-variable")])
 
     @api.constrains("scheme_id", "line_id", "account_id", "account_code_prefix", "account_type", "cmc_behavior")

@@ -32,7 +32,7 @@ class TestStdPublish(StdCase):
     def test_push_standard_price_through_core_revaluation(self):
         # FC-09: the manager pushes the card cost to standard_price; core records the revaluation (product.value)
         version = self._std_version()
-        version.with_user(self.manager).action_cmc_std_push_prices()
+        version.with_user(self.manager).with_context(cmc_std_push_confirmed=True).action_cmc_std_push_prices()
         self.assertAlmostEqual(self.f.with_company(self.company).standard_price, 32.0)
         self.assertAlmostEqual(self.g.with_company(self.company).standard_price, 38.0)
         value = self.env["product.value"].search([("product_id", "=", self.f.id)], order="id desc", limit=1)
@@ -46,7 +46,7 @@ class TestStdPublish(StdCase):
         product = self._product("STD fifo product", 3.0, categ=fifo)
         self._bom(product, [(self.c, 1)])
         version = self._std_version(products=self.f | product)
-        version.with_user(self.manager).action_cmc_std_push_prices()
+        version.with_user(self.manager).with_context(cmc_std_push_confirmed=True).action_cmc_std_push_prices()
         self.assertAlmostEqual(product.with_company(self.company).standard_price, 3.0)
         self.assertAlmostEqual(self.f.with_company(self.company).standard_price, 32.0)
 
@@ -73,7 +73,7 @@ class TestStdPublish(StdCase):
         self.assertAlmostEqual(row_f["difference"], -32.0)
         self.assertAlmostEqual(row_f["qty_available"], 10.0)
         self.assertAlmostEqual(row_f["value_difference"], -320.0)
-        version.with_user(self.manager).action_cmc_std_push_prices()
+        version.with_user(self.manager).with_context(cmc_std_push_confirmed=True).action_cmc_std_push_prices()
         after = {row["product"]: row for row in version._cmc_std_reconciliation()}
         self.assertAlmostEqual(after[self.f]["difference"], 0.0)
         self.assertAlmostEqual(after[self.g]["difference"], 0.0)

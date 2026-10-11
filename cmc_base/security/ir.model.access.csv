@@ -53,3 +53,4 @@ access_cmc_attribute_user,cmc.attribute.user,model_cmc_attribute,cmc_base.group_
 access_cmc_attribute_manager,cmc.attribute.manager,model_cmc_attribute,cmc_base.group_cmc_manager,1,1,1,1
 access_cmc_attribute_value_user,cmc.attribute.value.user,model_cmc_attribute_value,cmc_base.group_cmc_user,1,0,0,0
 access_cmc_attribute_value_manager,cmc.attribute.value.manager,model_cmc_attribute_value,cmc_base.group_cmc_manager,1,1,1,1
+access_ir_model_cmc_manager,ir.model cmc manager,base.model_ir_model,cmc_base.group_cmc_manager,1,0,0,0

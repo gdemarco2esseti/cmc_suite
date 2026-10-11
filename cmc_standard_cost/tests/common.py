@@ -52,6 +52,9 @@ favourable (AD-112).
      only (UserError): for each card whose product has cost method ``standard`` in the version company, writes
      ``product.with_company(company).standard_price = card.unit_cost`` through the core ``write`` (core creates the
      ``product.value`` revaluation row; sudo allowed with a # why); other cost methods are skipped untouched.
+     FX-010 / DL-005: AccessError and UserError are raised FIRST; then, WITHOUT the context key
+     ``cmc_std_push_confirmed`` it writes nothing and returns the preview wizard action (``cmc.std.push.wizard``);
+     WITH it the push runs (see ``test_std_stress_fixes.py``).
    - ``_cmc_std_reconciliation() -> list[dict]`` (FC-09), one dict per card: ``product`` (record),
      ``card_unit_cost``, ``valuation_price`` (= current company ``standard_price``), ``difference`` (=
      valuation_price - card_unit_cost), ``qty_available``, ``value_difference`` (= difference x qty_available).

@@ -11,3 +11,5 @@ from . import test_evm_change
 from . import test_evm_run
 from . import test_evm_security
 from . import test_evm_performance
+from . import test_fx_stress_c
+from . import test_fx012_curve_series

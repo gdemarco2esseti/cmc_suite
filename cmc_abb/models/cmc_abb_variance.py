@@ -98,11 +98,32 @@ class CmcAbbVarianceRun(models.Model):
         return demand
 
     def _cmc_actual_cost(self, resources):
-        """{resource id: ledger pool of the resource in the period}: the pool rule of the ABC run, not a second one."""
+        """{resource id: cost booked on its center x elements in the period}, activity-tagged lines included.
+
+        Unlike the ABC pools, a tagged line is cost the resource actually incurred: the variance compares it to the budget."""
         window = self.env["cmc.abc.run"].new({"company_id": self.company_id.id, "date_from": self.date_from, "date_to": self.date_to})
+        base, stamped = window._cmc_ledger_domains()
+        # why sudo: a certified actual must not depend on who presses Compute; the company domain is the scope
+        Line = self.env["account.analytic.line"].sudo()
+        by_center = defaultdict(list)
+        for res in resources.read(["center_id", "cost_element_ids"], load=False):
+            by_center[res["center_id"]].append(res)
         cost = defaultdict(float)
-        for (res_id, _element), pair in window._cmc_ledger_pools(resources)[0].items():
-            cost[res_id] += sum(pair)
+        for plan, centers in resources.center_id.sudo().grouped("plan_id").items():
+            col = plan._column_name()
+            for center, element, amount in Line._cmc_cost_read_group(
+                base & ~stamped & Domain(col, "in", centers.ids), [col, "cmc_cost_element_id"]
+            ):
+                covering = [r for r in by_center[center.id] if not r["cost_element_ids"] or element.id in r["cost_element_ids"]]
+                if len(covering) > 1:
+                    raise UserError(
+                        self.env._(
+                            "Several resources of %(center)s cover the same cost: it would be counted twice.",
+                            center=center.display_name,
+                        )
+                    )
+                if covering:
+                    cost[covering[0]["id"]] += amount
         return cost
 
     def _cmc_line_vals(self, row, share, actual_demand, actual_cost):

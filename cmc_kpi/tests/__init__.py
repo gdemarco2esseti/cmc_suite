@@ -6,3 +6,5 @@ from . import test_kpi_run
 from . import test_kpi_scorecard
 from . import test_kpi_security
 from . import test_kpi_snapshot
+from . import test_kpi_stress_fixes
+from . import test_stress_rilancio

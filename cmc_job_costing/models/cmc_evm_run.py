@@ -2,6 +2,8 @@ from collections import defaultdict
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
+from odoo.fields import Domain
+from odoo.tools import SQL
 
 from odoo.addons.cmc_base.models import cmc_utils
 
@@ -45,6 +47,31 @@ class CmcEvmRun(models.Model):
     out_of_control_count = fields.Integer(readonly=True, copy=False)
     task_line_ids = fields.One2many("cmc.evm.task.line", "run_id")
     curve_ids = fields.One2many("cmc.evm.curve", "run_id")
+    is_latest = fields.Boolean(
+        string="Latest Status Report", compute="_compute_is_latest", search="_search_is_latest",
+        help="The computed report with the latest status date of its job.",
+    )
+
+    @api.depends("project_id", "state", "status_date")
+    def _compute_is_latest(self):
+        latest = set(self._cmc_latest_ids(self.project_id.ids))
+        for run in self:
+            run.is_latest = run.id in latest
+
+    def _search_is_latest(self, operator, value):
+        if operator not in ("=", "!="):
+            raise UserError(self.env._("Unsupported search on the latest status report."))
+        positive = bool(value) == (operator == "=")
+        return Domain("id", "in" if positive else "not in", self._cmc_latest_ids())
+
+    def _cmc_latest_ids(self, project_ids=None):
+        """Ids of the computed report with the latest status date of each job (the highest id on a tie), in one query."""
+        self.env.flush_all()
+        self.env.cr.execute(SQL(
+            "SELECT DISTINCT ON (project_id) id FROM cmc_evm_run WHERE state = 'done' %s ORDER BY project_id, status_date DESC, id DESC",
+            SQL("AND project_id IN %s", tuple(project_ids)) if project_ids else SQL(),
+        ))
+        return [row[0] for row in self.env.cr.fetchall()]
 
     @api.constrains("baseline_id", "project_id")
     def _check_baseline(self):
@@ -139,8 +166,9 @@ class CmcEvmRun(models.Model):
                 cvs.append(cv)
             vals.append({
                 "run_id": self.id, "date": month, "pv": pv_by_month.get(month, 0.0), "pv_cumulative": pv_cum,
-                "ev_cumulative": ev_cum, "ac_cumulative": ac_cum, "ev": month_ev, "ac": month_ac, "cv": cv,
-                "is_forecast": forecast, "out_of_control": False,
+                "ev": month_ev, "ac": month_ac, "cv": cv, "is_forecast": forecast, "out_of_control": False,
+                # why omitted on a forecast: NULL, not 0, so a line chart stops at the status month
+                **({} if forecast else {"ev_cumulative": ev_cum, "ac_cumulative": ac_cum}),
             })
         limit = self.control_limit
         breaches = cmc_utils.control_breaches(cvs, -limit, limit) if limit > 0 else []
@@ -181,8 +209,8 @@ class CmcEvmCurve(models.Model):
     ev = fields.Monetary(string="EV")
     ac = fields.Monetary(string="AC")
     cv = fields.Monetary(string="CV")
-    pv_cumulative = fields.Monetary(string="PV (cumulative)")
-    ev_cumulative = fields.Monetary(string="EV (cumulative)")
-    ac_cumulative = fields.Monetary(string="AC (cumulative)")
+    pv_cumulative = fields.Monetary(string="PV (cumulative)", aggregator="max")
+    ev_cumulative = fields.Monetary(string="EV (cumulative)", aggregator="max")
+    ac_cumulative = fields.Monetary(string="AC (cumulative)", aggregator="max")
     is_forecast = fields.Boolean()
     out_of_control = fields.Boolean()

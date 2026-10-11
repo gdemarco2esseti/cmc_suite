@@ -138,13 +138,20 @@ class CmcAbbRun(models.Model):
         edges = calibration.sudo().line_ids.filtered(lambda e: e.activity_id and e.cost_object_id).read(
             ["activity_id", "cost_object_id", "driver_qty"], load=False
         )
-        self.bill_line_ids = [Command.clear()] + [
+        bill = [
             Command.create({
                 "cost_object_id": e["cost_object_id"], "activity_id": e["activity_id"],
                 "qty_per_unit": e["driver_qty"] / produced[e["cost_object_id"]],
             })
             for e in edges if produced.get(e["cost_object_id"])
         ]
+        if not bill:
+            raise UserError(self.env._(
+                "The calibration run \"%(run)s\" has no activity to cost object edge with a produced quantity: "
+                "compute it with driver and output quantities, or type the bill by hand. The current bill is unchanged.",
+                run=calibration.display_name,
+            ))
+        self.bill_line_ids = [Command.clear()] + bill
         return True
 
     def action_what_if(self):

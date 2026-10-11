@@ -78,6 +78,7 @@ class TestBudgetRevenue(CmcBudgetCommon, AccountTestInvoicingCommon):
         forecast = version.with_user(self.manager)._cmc_rolling_forecast(d(3, 31)).sudo()
         march = forecast.budget_line_ids.filtered(lambda line: line.kind == "revenue" and line.date == d(3))
         self.assertRecordValues(march, [{"figure": 10000.0, "amount": 10000.0, "amount_company": 11000.0}])
+        self._approve(forecast)  # DL-004: the rolling forecast is born draft; only approved versions are in the view
         self.env.flush_all()
         row = self.env["cmc.budget.bva"].search([("version_id", "=", forecast.id), ("kind", "=", "revenue"), ("date", "=", d(3))])
         self.assertRecordValues(row, [{"plan_amount": 11000.0, "actual_amount": 11000.0, "variance": 0.0}])

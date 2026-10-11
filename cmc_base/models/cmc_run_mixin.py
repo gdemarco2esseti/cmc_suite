@@ -217,12 +217,12 @@ class CmcRunMixin(models.AbstractModel):
     def _cmc_check_editable(self):
         computed = self.filtered(lambda run: run.state == "done")
         if computed:
-            raise UserError(
-                self.env._(
-                    "Run %(runs)s is computed. Reset it to draft before changing its inputs.",
-                    runs=", ".join(computed.mapped("display_name")),
-                )
-            )
+            names = ", ".join(computed.mapped("display_name"))
+            raise UserError(computed._cmc_locked_message() % {"runs": names, "versions": names})
+
+    def _cmc_locked_message(self):
+        # %(runs)s is filled by the caller; subclasses name their own object
+        return self.env._("Run %(runs)s is computed. Reset it to draft before changing its inputs.")
 
     def _cmc_lock_rows(self):
         """Serialize concurrent Compute/Reset on the same runs."""

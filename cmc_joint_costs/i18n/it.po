@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-09 23:35+0000\n"
+"POT-Creation-Date: 2026-10-11 16:15+0000\n"
 "PO-Revision-Date: 2026-10-09 23:35+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -19,11 +19,8 @@ msgstr ""
 #. module: cmc_joint_costs
 #. odoo-python
 #: code:addons/cmc_joint_costs/models/cmc_joint.py:0
-msgid ""
-"Add at least one main (non by-product) product to absorb the joint cost."
-msgstr ""
-"Aggiungi almeno un prodotto principale (non sottoprodotto) per assorbire il "
-"costo congiunto."
+msgid "Add at least one main (non by-product) product to absorb the joint cost."
+msgstr "Aggiungi almeno un prodotto principale (non sottoprodotto) per assorbire il costo congiunto."
 
 #. module: cmc_joint_costs
 #: model:ir.model.fields,field_description:cmc_joint_costs.field_cmc_joint_result__allocated_joint_cost
@@ -38,31 +35,18 @@ msgstr "Sottoprodotto"
 #. module: cmc_joint_costs
 #. odoo-python
 #: code:addons/cmc_joint_costs/models/cmc_joint.py:0
-msgid ""
-"By-product NRV (%(nrv)s) exceeds the joint cost pool (%(pool)s); the excess "
-"is a gain, not a negative cost on the main products."
-msgstr ""
-"Il NRV dei sottoprodotti (%(nrv)s) supera il pool di costi congiunti "
-"(%(pool)s); l'eccedenza è un provento, non un costo negativo sui prodotti "
-"principali."
+msgid "By-product NRV (%(nrv)s) exceeds the joint cost pool (%(pool)s); the excess is a gain, not a negative cost on the main products."
+msgstr "Il NRV dei sottoprodotti (%(nrv)s) supera il pool di costi congiunti (%(pool)s); l'eccedenza è un provento, non un costo negativo sui prodotti principali."
 
 #. module: cmc_joint_costs
 #: model:ir.model.fields,help:cmc_joint_costs.field_cmc_joint_line__is_byproduct
-msgid ""
-"By-products are valued at NRV and netted off the joint cost pool instead of "
-"receiving an allocation."
-msgstr ""
-"I sottoprodotti sono valorizzati al NRV e nettati dal pool di costi "
-"congiunti invece di ricevere una ripartizione."
+msgid "By-products are valued at NRV and netted off the joint cost pool instead of receiving an allocation."
+msgstr "I sottoprodotti sono valorizzati al NRV e nettati dal pool di costi congiunti invece di ricevere una ripartizione."
 
 #. module: cmc_joint_costs
 #: model:ir.model.fields,help:cmc_joint_costs.field_cmc_joint_run__joint_cost
-msgid ""
-"Common cost incurred up to the split-off point, to be allocated across the "
-"joint products."
-msgstr ""
-"Costo comune sostenuto fino al punto di separazione, da ripartire tra i "
-"prodotti congiunti."
+msgid "Common cost incurred up to the split-off point, to be allocated across the joint products."
+msgstr "Costo comune sostenuto fino al punto di separazione, da ripartire tra i prodotti congiunti."
 
 #. module: cmc_joint_costs
 #: model:ir.model.fields,field_description:cmc_joint_costs.field_cmc_joint_line__company_id
@@ -85,24 +69,13 @@ msgstr "Margine lordo costante"
 #. odoo-python
 #: code:addons/cmc_joint_costs/models/cmc_joint.py:0
 msgid "Constant-margin allocation needs a positive total sales value."
-msgstr ""
-"La ripartizione a margine costante richiede un valore di vendita totale "
-"positivo."
+msgstr "La ripartizione a margine costante richiede un valore di vendita totale positivo."
 
 #. module: cmc_joint_costs
 #. odoo-python
 #: code:addons/cmc_joint_costs/models/cmc_joint.py:0
-msgid ""
-"Constant-margin allocation would assign a negative joint cost to "
-"%(products)s: the total cost (joint pool %(pool)s plus separable costs "
-"%(separable)s) exceeds the total sales value %(sales)s. Use the Net "
-"Realizable Value or Sales Value at Split-off method instead."
-msgstr ""
-"La ripartizione a margine lordo costante assegnerebbe un costo congiunto "
-"negativo a %(products)s: il costo totale (pool congiunto %(pool)s più costi "
-"separabili %(separable)s) supera il valore di vendita totale %(sales)s. Usa "
-"il metodo del valore netto di realizzo o del valore di vendita allo split-"
-"off."
+msgid "Constant-margin allocation would assign a negative joint cost to %(products)s: the total cost (joint pool %(pool)s plus separable costs %(separable)s) exceeds the total sales value %(sales)s. Use the Net Realizable Value or Sales Value at Split-off method instead."
+msgstr "La ripartizione a margine lordo costante assegnerebbe un costo congiunto negativo a %(products)s: il costo totale (pool congiunto %(pool)s più costi separabili %(separable)s) supera il valore di vendita totale %(sales)s. Usa il metodo del valore netto di realizzo o del valore di vendita allo split-off."
 
 #. module: cmc_joint_costs
 #: model:ir.model.fields,help:cmc_joint_costs.field_cmc_joint_line__separable_cost
@@ -248,12 +221,8 @@ msgstr "Valore netto di realizzo (NRV)"
 #. module: cmc_joint_costs
 #. odoo-python
 #: code:addons/cmc_joint_costs/models/cmc_joint.py:0
-msgid ""
-"No positive allocation base for the '%s' method: the joint cost cannot be "
-"split."
-msgstr ""
-"Nessuna base di riparto positiva per il metodo '%s': il costo congiunto non "
-"può essere suddiviso."
+msgid "No positive allocation base for the '%(method)s' method: the joint cost cannot be split. Fill %(columns)s on the main (non by-product) lines."
+msgstr "Nessuna base di riparto positiva per il metodo '%(method)s': il costo congiunto non può essere suddiviso. Compila %(columns)s sulle righe dei prodotti principali (non sottoprodotti)."
 
 #. module: cmc_joint_costs
 #: model:ir.model.constraint,message:cmc_joint_costs.constraint_cmc_joint_line_uniq
@@ -289,8 +258,7 @@ msgstr "Riporta in bozza"
 #. module: cmc_joint_costs
 #: model_terms:ir.ui.view,arch_db:cmc_joint_costs.view_cmc_joint_run_form
 msgid "Resetting deletes the computed results. Continue?"
-msgstr ""
-"Riportando in bozza i risultati calcolati vengono cancellati. Continuare?"
+msgstr "Riportando in bozza i risultati calcolati vengono cancellati. Continuare?"
 
 #. module: cmc_joint_costs
 #: model:ir.model.fields,field_description:cmc_joint_costs.field_cmc_joint_run__result_ids
@@ -315,12 +283,8 @@ msgstr "Valore di vendita al punto di separazione"
 
 #. module: cmc_joint_costs
 #: model:ir.model.fields,help:cmc_joint_costs.field_cmc_joint_line__unit_sales_value
-msgid ""
-"Selling price per unit (at split-off for the sales-value method, final price"
-" for NRV / constant-margin)."
-msgstr ""
-"Prezzo di vendita unitario (al punto di separazione per il metodo del valore"
-" di vendita, prezzo finale per NRV / margine costante)."
+msgid "Selling price per unit (at split-off for the sales-value method, final price for NRV / constant-margin)."
+msgstr "Prezzo di vendita unitario (al punto di separazione per il metodo del valore di vendita, prezzo finale per NRV / margine costante)."
 
 #. module: cmc_joint_costs
 #: model:ir.model.fields,field_description:cmc_joint_costs.field_cmc_joint_line__separable_cost
@@ -362,3 +326,12 @@ msgstr "Costo unitario"
 #: model:ir.model.fields,field_description:cmc_joint_costs.field_cmc_joint_line__unit_sales_value
 msgid "Unit Sales Value"
 msgstr "Valore di vendita unitario"
+
+#~ msgid "No positive allocation base for the '%s' method: the joint cost cannot be split."
+#~ msgstr "Nessuna base di riparto positiva per il metodo '%s': il costo congiunto non può essere suddiviso."
+
+#~ msgid "Computed"
+#~ msgstr "Calcolato"
+
+#~ msgid "Draft"
+#~ msgstr "Bozza"

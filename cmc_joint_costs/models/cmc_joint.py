@@ -93,9 +93,15 @@ class CmcJointRun(models.Model):
         if float_compare(base, 0.0, precision_rounding=base_rounding) <= 0:
             if float_is_zero(net_joint, precision_rounding=rounding):
                 return {}
+            # why: name the line column the user must fill, as labelled on screen
+            Line = self.env["cmc.joint.line"]
+            columns = {"physical": ("quantity",), "sales_value": ("quantity", "unit_sales_value")}.get(
+                method, ("quantity", "unit_sales_value", "separable_cost"))
             raise UserError(self.env._(
-                "No positive allocation base for the '%s' method: the joint cost "
-                "cannot be split.", method,
+                "No positive allocation base for the '%(method)s' method: the joint cost "
+                "cannot be split. Fill %(columns)s on the main (non by-product) lines.",
+                method=dict(self._fields["method"]._description_selection(self.env))[method],
+                columns=", ".join(f"'{Line._fields[name]._description_string(self.env)}'" for name in columns),
             ))
         return spread(net_joint, weights, rounding)
 

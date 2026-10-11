@@ -6,6 +6,8 @@ from odoo.exceptions import AccessError
 
 from odoo.addons.cmc_base.models.account_analytic_line import CMC_AUTO
 
+from .account_move_line import REVENUE_TYPES
+
 _logger = logging.getLogger(__name__)
 
 # context sentinel (not a boolean, same reason as CMC_AUTO): marks a write made
@@ -38,6 +40,18 @@ class AccountAnalyticLine(models.Model):
         "fields it filled ('key:field,field'). When the line stops matching "
         "it, those fields are withdrawn.",
     )
+
+    @api.model
+    def _cmc_cost_base_domain(self):
+        # with a GL account the account type decides (a credit note is revenue, a vendor refund stays a cost);
+        # the analytic sign only decides for lines without one
+        return [
+            ("cmc_excluded", "=", False),
+            "|", "|",
+            ("cmc_behavior", "!=", False),
+            "&", ("general_account_id", "!=", False), ("general_account_id.account_type", "not in", list(REVENUE_TYPES)),
+            "&", ("general_account_id", "=", False), ("amount", "<", 0),
+        ]
 
     # ------------------------------------------------------------------
     # helpers shared with the operational bridges

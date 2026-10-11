@@ -170,7 +170,7 @@
         <field name="name">cmc.evm.curve.graph</field>
         <field name="model">cmc.evm.curve</field>
         <field name="arch" type="xml">
-            <graph string="S-Curve" type="line">
+            <graph string="S-Curve" type="line" stacked="0">
                 <field name="date" interval="month"/>
                 <field name="pv_cumulative" type="measure"/>
                 <field name="ev_cumulative" type="measure"/>
@@ -187,10 +187,11 @@
                 <field name="run_id"/>
                 <field name="date"/>
                 <field name="pv_cumulative"/>
-                <field name="ev_cumulative"/>
-                <field name="ac_cumulative"/>
+                <field name="ev_cumulative" invisible="is_forecast"/>
+                <field name="ac_cumulative" invisible="is_forecast"/>
                 <field name="cv"/>
                 <field name="out_of_control"/>
+                <field name="is_forecast" column_invisible="1"/>
                 <field name="currency_id" column_invisible="1"/>
             </list>
         </field>
@@ -202,6 +203,7 @@
         <field name="arch" type="xml">
             <search string="Monthly Curve">
                 <field name="run_id"/>
+                <filter name="latest_run" string="Latest Status Report" domain="[('run_id.is_latest', '=', True)]"/>
             </search>
         </field>
     </record>
@@ -210,6 +212,72 @@
         <field name="name">S-Curve</field>
         <field name="res_model">cmc.evm.curve</field>
         <field name="view_mode">graph,list</field>
+        <field name="search_view_id" ref="view_cmc_evm_curve_search"/>
+        <field name="context">{'search_default_latest_run': 1}</field>
+    </record>
+
+    <record id="view_cmc_evm_curve_series_graph" model="ir.ui.view">
+        <field name="name">cmc.evm.curve.series.graph</field>
+        <field name="model">cmc.evm.curve.series</field>
+        <field name="arch" type="xml">
+            <graph string="S-Curve" type="line" stacked="0">
+                <field name="month" interval="month"/>
+                <field name="series" type="col"/>
+                <field name="value" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_cmc_evm_curve_series_pivot" model="ir.ui.view">
+        <field name="name">cmc.evm.curve.series.pivot</field>
+        <field name="model">cmc.evm.curve.series</field>
+        <field name="arch" type="xml">
+            <pivot string="S-Curve">
+                <field name="month" interval="month" type="row"/>
+                <field name="series" type="col"/>
+                <field name="value" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_cmc_evm_curve_series_list" model="ir.ui.view">
+        <field name="name">cmc.evm.curve.series.list</field>
+        <field name="model">cmc.evm.curve.series</field>
+        <field name="arch" type="xml">
+            <list string="S-Curve" create="false" edit="false" delete="false">
+                <field name="run_id"/>
+                <field name="project_id"/>
+                <field name="month"/>
+                <field name="series"/>
+                <field name="value"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_evm_curve_series_search" model="ir.ui.view">
+        <field name="name">cmc.evm.curve.series.search</field>
+        <field name="model">cmc.evm.curve.series</field>
+        <field name="arch" type="xml">
+            <search string="S-Curve">
+                <field name="run_id"/>
+                <field name="project_id"/>
+                <filter name="latest_run" string="Latest Status Report" domain="[('run_id.is_latest', '=', True)]"/>
+                <group>
+                    <filter name="group_run" string="Status Report" context="{'group_by': 'run_id'}"/>
+                    <filter name="group_project" string="Project" context="{'group_by': 'project_id'}"/>
+                    <filter name="group_series" string="Series" context="{'group_by': 'series'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cmc_evm_curve_series" model="ir.actions.act_window">
+        <field name="name">S-Curve</field>
+        <field name="res_model">cmc.evm.curve.series</field>
+        <field name="view_mode">graph,pivot,list</field>
+        <field name="search_view_id" ref="view_cmc_evm_curve_series_search"/>
+        <field name="context">{'search_default_latest_run': 1}</field>
     </record>
 
     <!-- ===== EVM status report ===== -->
@@ -245,7 +313,7 @@
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="%(action_cmc_evm_curve_run)d" type="action" class="oe_stat_button" icon="fa-line-chart"
-                                string="S-Curve" invisible="state != 'done'" context="{'search_default_run_id': id}"/>
+                                string="S-Curve" invisible="state != 'done'" context="{'search_default_run_id': id, 'search_default_latest_run': 0}"/>
                     </div>
                     <div class="oe_title">
                         <label for="name"/>
@@ -310,8 +378,8 @@
                                     <field name="ac"/>
                                     <field name="cv"/>
                                     <field name="pv_cumulative"/>
-                                    <field name="ev_cumulative"/>
-                                    <field name="ac_cumulative"/>
+                                    <field name="ev_cumulative" invisible="is_forecast"/>
+                                    <field name="ac_cumulative" invisible="is_forecast"/>
                                     <field name="out_of_control" widget="boolean"/>
                                     <field name="is_forecast" column_invisible="1"/>
                                     <field name="currency_id" column_invisible="1"/>

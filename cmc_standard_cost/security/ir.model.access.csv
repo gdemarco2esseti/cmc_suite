@@ -13,5 +13,9 @@ access_cmc_standard_variance_line_user,cmc.standard.variance.line.user,model_cmc
 access_cmc_standard_variance_line_manager,cmc.standard.variance.line.manager,model_cmc_standard_variance_line,cmc_base.group_cmc_manager,1,1,1,1
 access_cmc_standard_absorption_line_user,cmc.standard.absorption.line.user,model_cmc_standard_absorption_line,cmc_base.group_cmc_user,1,0,1,0
 access_cmc_standard_absorption_line_manager,cmc.standard.absorption.line.manager,model_cmc_standard_absorption_line,cmc_base.group_cmc_manager,1,1,1,1
-access_cmc_standard_prefill_wizard_manager,cmc.standard.prefill.wizard manager,model_cmc_standard_prefill_wizard,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_standard_prefill_wizard_user,cmc.standard.prefill.wizard user,model_cmc_standard_prefill_wizard,cmc_base.group_cmc_user,1,1,1,1
 access_cmc_standard_rollup_wizard_user,cmc.standard.rollup.wizard user,model_cmc_standard_rollup_wizard,cmc_base.group_cmc_user,1,1,1,1
+access_cmc_std_push_wizard_manager,cmc.std.push.wizard manager,model_cmc_std_push_wizard,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_std_push_wizard_line_manager,cmc.std.push.wizard.line manager,model_cmc_std_push_wizard_line,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_std_push_line_user,cmc.std.push.line user,model_cmc_std_push_line,cmc_base.group_cmc_user,1,0,0,0
+access_cmc_std_push_line_manager,cmc.std.push.line manager,model_cmc_std_push_line,cmc_base.group_cmc_manager,1,0,0,0

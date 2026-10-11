@@ -325,6 +325,23 @@ msgid "Compute"
 msgstr "Calcola"
 
 #. module: cmc_profitability
+#: model_terms:ir.actions.act_window,help:cmc_profitability.action_cmc_profit_channel
+#: model_terms:ir.actions.act_window,help:cmc_profitability.action_cmc_profit_customer
+#: model_terms:ir.actions.act_window,help:cmc_profitability.action_cmc_profit_fact
+#: model_terms:ir.actions.act_window,help:cmc_profitability.action_cmc_profit_product
+#: model_terms:ir.actions.act_window,help:cmc_profitability.action_cmc_profit_quadrant
+#: model_terms:ir.actions.act_window,help:cmc_profitability.action_cmc_profit_sbu
+#: model_terms:ir.actions.act_window,help:cmc_profitability.action_cmc_profit_supplier
+#: model_terms:ir.actions.act_window,help:cmc_profitability.action_cmc_profit_waterfall_customer
+#: model_terms:ir.actions.act_window,help:cmc_profitability.action_cmc_profit_whale
+msgid ""
+"Compute a profitability run for the period: margins by product, customer and"
+" channel appear here."
+msgstr ""
+"Calcola un'elaborazione di redditività per il periodo: qui compaiono i "
+"margini per prodotto, cliente e canale."
+
+#. module: cmc_profitability
 #. odoo-python
 #: code:addons/cmc_profitability/models/cmc_profit_engine.py:0
 msgid "Compute the run before generating a direct costing statement."
@@ -388,6 +405,11 @@ msgstr "Costo di servizio al cliente totale"
 #: model:ir.model.fields.selection,name:cmc_profitability.selection__cmc_transfer_charge__criterion__cost_plus
 msgid "Cost plus"
 msgstr "Costo maggiorato (cost plus)"
+
+#. module: cmc_profitability
+#: model_terms:ir.actions.act_window,help:cmc_profitability.action_cmc_profit_run
+msgid "Create a profitability run"
+msgstr "Crea un'elaborazione di redditività"
 
 #. module: cmc_profitability
 #: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_channel__create_uid
@@ -831,6 +853,19 @@ msgstr ""
 "Per l'attività e l'unità di servizio non è pubblicata alcuna tariffa ABC."
 
 #. module: cmc_profitability
+#: model_terms:ir.actions.act_window,help:cmc_profitability.action_cmc_profit_channel
+#: model_terms:ir.actions.act_window,help:cmc_profitability.action_cmc_profit_customer
+#: model_terms:ir.actions.act_window,help:cmc_profitability.action_cmc_profit_fact
+#: model_terms:ir.actions.act_window,help:cmc_profitability.action_cmc_profit_product
+#: model_terms:ir.actions.act_window,help:cmc_profitability.action_cmc_profit_quadrant
+#: model_terms:ir.actions.act_window,help:cmc_profitability.action_cmc_profit_sbu
+#: model_terms:ir.actions.act_window,help:cmc_profitability.action_cmc_profit_supplier
+#: model_terms:ir.actions.act_window,help:cmc_profitability.action_cmc_profit_waterfall_customer
+#: model_terms:ir.actions.act_window,help:cmc_profitability.action_cmc_profit_whale
+msgid "No profitability results yet"
+msgstr "Ancora nessun risultato di redditività"
+
+#. module: cmc_profitability
 #: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu__equity
 msgid "Notional equity"
 msgstr "Capitale figurativo"
@@ -890,6 +925,17 @@ msgstr "PFN"
 #: model:ir.model.fields.selection,name:cmc_profitability.selection__cmc_profit_customer__quadrant__passive
 msgid "Passive (high margin, low cost-to-serve)"
 msgstr "Passivo (margine alto, costo di servizio al cliente basso)"
+
+#. module: cmc_profitability
+#: model_terms:ir.actions.act_window,help:cmc_profitability.action_cmc_profit_run
+msgid ""
+"Pick the period and, if you need them, a computed ABC run and a standard "
+"cost version: Compute fills the margins by product, customer, channel and "
+"business line."
+msgstr ""
+"Scegli il periodo e, se servono, un'elaborazione ABC calcolata e una "
+"versione di costo standard: Calcola compila i margini per prodotto, cliente,"
+" canale e linea di business."
 
 #. module: cmc_profitability
 #: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__pocket_amount
@@ -1147,17 +1193,20 @@ msgstr "Rendicontato, mai addebitato a un cliente o a un prodotto."
 #: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_run_form
 #: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_transfer_charge_form
 msgid "Reset to Draft"
-msgstr "Reimposta a bozza"
+msgstr "Riporta in bozza"
 
 #. module: cmc_profitability
 #: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_run_form
 msgid "Resetting deletes the computed results. Continue?"
-msgstr "Azzerare elimina i risultati calcolati. Continuare?"
+msgstr ""
+"Riportando in bozza i risultati calcolati vengono cancellati. Continuare?"
 
 #. module: cmc_profitability
 #: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_transfer_charge_form
 msgid "Resetting deletes the posted chargeback lines. Continue?"
-msgstr "Azzerare elimina le righe di riaddebito registrate. Continuare?"
+msgstr ""
+"Riportando in bozza vengono cancellate le righe di riaddebito registrate. "
+"Continuare?"
 
 #. module: cmc_profitability
 #: model:ir.model.fields,field_description:cmc_profitability.field_cmc_transfer_charge__result_ids
@@ -1370,9 +1419,35 @@ msgstr "Il prezzo %s deve essere positivo."
 #. module: cmc_profitability
 #. odoo-python
 #: code:addons/cmc_profitability/models/cmc_profit_engine.py:0
-msgid "The ABC run %s must lie inside the span of the run."
+msgid ""
+"The ABC run \"%(run)s\" (%(date_from)s - %(date_to)s) lies outside the span "
+"of this run: link an ABC run inside it."
 msgstr ""
-"L'esecuzione ABC %s deve rientrare nell'arco temporale dell'esecuzione."
+"L'elaborazione ABC \"%(run)s\" (%(date_from)s - %(date_to)s) è fuori "
+"dall'intervallo di questa elaborazione: collega un'elaborazione ABC al suo "
+"interno."
+
+#. module: cmc_profitability
+#. odoo-python
+#: code:addons/cmc_profitability/models/cmc_profit_engine.py:0
+msgid ""
+"The ABC run \"%s\" assigns no cost to products, customers or channels: every"
+" margin layer would be the same. Check the cost level of its activities, or "
+"remove the ABC run from this run."
+msgstr ""
+"L'elaborazione ABC \"%s\" non assegna costi a prodotti, clienti o canali: "
+"ogni livello di margine sarebbe identico. Verifica il livello di costo delle"
+" sue attività, oppure rimuovi l'elaborazione ABC da questa elaborazione."
+
+#. module: cmc_profitability
+#. odoo-python
+#: code:addons/cmc_profitability/models/cmc_profit_engine.py:0
+msgid ""
+"The ABC run \"%s\" has no period: link an ABC run whose dates lie inside the"
+" span of this run."
+msgstr ""
+"L'elaborazione ABC \"%s\" non ha un periodo: collega un'elaborazione ABC con"
+" date all'interno dell'intervallo di questa elaborazione."
 
 #. module: cmc_profitability
 #. odoo-python
@@ -1553,3 +1628,15 @@ msgstr "Costo annuo del capitale immobilizzato nei crediti."
 #: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_sbu__growth
 msgid "g %"
 msgstr "g %"
+
+#. module: cmc_profitability
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_profit_run__state__done
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_transfer_charge__state__done
+msgid "Computed"
+msgstr "Calcolato"
+
+#. module: cmc_profitability
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_profit_run__state__draft
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_transfer_charge__state__draft
+msgid "Draft"
+msgstr "Bozza"

@@ -4,3 +4,5 @@ from . import test_fin_security
 from . import test_fin_extras
 from . import test_fin_report
 from . import test_fin_hardening
+from . import test_fin_stress_fixes
+from . import test_stress_rilancio

@@ -711,3 +711,13 @@ msgstr "consuntivo"
 #: code:addons/cmc_tdabc/models/cmc_tdabc.py:0
 msgid "estimate"
 msgstr "stima"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_tdabc_run__state__done
+msgid "Computed"
+msgstr "Calcolato"
+
+#. module: cmc_tdabc
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_tdabc_run__state__draft
+msgid "Draft"
+msgstr "Bozza"

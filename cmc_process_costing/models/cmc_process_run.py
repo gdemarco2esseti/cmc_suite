@@ -1,7 +1,7 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.fields import Domain
-from odoo.tools import float_compare
+from odoo.tools import float_compare, format_date
 
 from odoo.addons.cmc_base.models.cmc_utils import month_end, process_cost_report, spoilage_split
 
@@ -146,6 +146,13 @@ class CmcProcessRun(models.Model):
                 ["driver_id"], ["quantity:sum"],
             )
         }
+        if not (totals or self.previous_run_id or self.previous_dept_run_id):
+            raise UserError(self.env._(
+                "No MRP quantity of %(product)s in %(center)s for %(month)s and no source run: produced and scrapped quantities "
+                "come from the manufacturing orders of the month, or link a previous run. The typed quantities are unchanged.",
+                product=self.product_id.display_name, center=self.center_id.display_name,
+                month=format_date(self.env, self.date_from, date_format="MMMM yyyy"),
+            ))
         spoiled = totals.get(scrap.id, 0.0)
         vals = {"units_spoiled": spoiled, "units_completed": totals.get(produced.id, 0.0) - spoiled}
         if self.previous_run_id:

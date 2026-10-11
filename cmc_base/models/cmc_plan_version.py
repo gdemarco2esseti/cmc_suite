@@ -89,6 +89,9 @@ class CmcPlanVersion(models.Model):
         self._cmc_check_manager()
         return super().action_reset_to_draft()
 
+    def _cmc_locked_message(self):
+        return self.env._("Version %(versions)s is approved. Reset it to draft before changing it.")
+
     def _cmc_compute(self):
         """An approved version has no results: approving only locks it."""
 

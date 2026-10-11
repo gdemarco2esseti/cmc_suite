@@ -93,7 +93,7 @@ PRJ-03/04 EVM status run ``cmc.evm.run`` (``_inherit = ["cmc.run.mixin"]``)
   ``cmc.evm.task.line``: ``run_id``, ``task_id``, ``bac``, ``percent_complete``, ``pv``, ``ev``, ``sv``.
   ``cmc.evm.curve`` (S-curve + planned vs actual per period), one row per month of the baseline span:
   ``date``, ``pv`` (month), ``pv_cumulative``, ``ev_cumulative``, ``ac_cumulative``, ``ev``, ``ac``,
-  ``cv`` = ev - ac of the month, ``is_forecast`` (month after the status month: EV/AC 0), ``out_of_control``
+  ``cv`` = ev - ac of the month, ``is_forecast`` (month after the status month: EV/AC cumulative EMPTY - NULL, never 0 - FX-012), ``out_of_control``
   (|cv| > control_limit, limit > 0; ``cmc_utils.control_breaches``). EV/AC cumulative of an earlier month =
   the COMPUTED EVM run of the same project and of the same baseline LINEAGE (RN-003: the run baseline and
   its ancestors through ``parent_id``; an unrelated baseline of the same project never counts) with the latest

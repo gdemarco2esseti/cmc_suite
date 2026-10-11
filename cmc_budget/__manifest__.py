@@ -1,6 +1,6 @@
 {
     "name": "CMC - Budget, Forecast and Variances",
-    "version": "19.0.1.0.0",
+    "version": "19.0.1.1.2",
     "category": "Accounting/Accounting",
     "summary": "Master and flexible budget, rolling forecast, spending/capacity variances, GPK dual-rate closing, cash forecast",
     "description": "Known limit: the cash forecast is net of VAT (no VAT cash timing is modelled).",

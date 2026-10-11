@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-from odoo import fields, models
+from odoo import api, fields, models
 from odoo.fields import Domain
 
 from .cmc_utils import month_start
@@ -32,6 +32,14 @@ class CmcResponsibilityCenter(models.Model):
         check_company=True,
     )
     capital_ids = fields.One2many("cmc.responsibility.capital", "responsibility_id", string="Invested Capital")
+
+    @api.model
+    def fields_get(self, allfields=None, attributes=None):
+        res = super().fields_get(allfields, attributes)
+        # why: the web client offers Archive when "active" is writable; a read-only role must not see it
+        if "active" in res and not self.has_access("write"):
+            res["active"]["readonly"] = True
+        return res
 
     def _cmc_responsibility_summary(self, date_from, date_to):
         """{id: figures} over the cost centers of each record and their descendants."""
@@ -128,6 +136,7 @@ class CmcResponsibilitySummary(models.TransientModel):
         ]
         return {
             "type": "ir.actions.act_window",
+            "name": self.env._("Controllable Cost and ROI"),
             "res_model": self._name,
             "res_id": self.id,
             "view_mode": "form",

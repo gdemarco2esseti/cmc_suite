@@ -3,7 +3,10 @@ from collections import defaultdict
 from odoo import fields, models
 from odoo.exceptions import AccessError, UserError
 from odoo.fields import Domain
+from odoo.tools import float_compare
+from odoo.tools.misc import format_date
 
+from odoo.addons.cmc_base.models.cmc_run_mixin import CMC_RUN_STATE
 from odoo.addons.cmc_base.models.cmc_plan_version import CmcPlanVersion as BaseVersion
 
 
@@ -11,6 +14,8 @@ class CmcPlanVersion(models.Model):
     _inherit = "cmc.plan.version"
 
     _cmc_input_fields = (*BaseVersion._cmc_input_fields, "standard_type")
+    # the push snapshot is evidence: written by the confirmed push under the run sentinel, by nothing else
+    _cmc_output_fields = ("std_push_date", "std_push_line_ids")
 
     standard_type = fields.Selection(
         [("basic", "Basic"), ("ideal", "Ideal"), ("attainable", "Attainable")], default="attainable", required=True,
@@ -18,6 +23,8 @@ class CmcPlanVersion(models.Model):
     std_price_ids = fields.One2many("cmc.standard.price", "version_id", copy=True)
     std_rate_ids = fields.One2many("cmc.standard.rate", "version_id", copy=True)
     card_ids = fields.One2many("cmc.standard.card", "version_id", copy=True)
+    std_push_date = fields.Datetime(string="Pushed On", readonly=True, copy=False)
+    std_push_line_ids = fields.One2many("cmc.std.push.line", "version_id", string="Pushed Prices", readonly=True, copy=False)
 
     # ---- engine ---------------------------------------------------------
 
@@ -34,6 +41,14 @@ class CmcPlanVersion(models.Model):
             line.child_card_id = cards.get(line.product_id)
         return new
 
+    def action_reset_to_draft(self):
+        for version in self.filtered("std_push_date"):
+            raise UserError(self.env._(
+                "%(version)s: costs already pushed to the stock valuation on %(date)s. Create a new version.",
+                version=version.display_name, date=format_date(self.env, version.std_push_date),
+            ))
+        return super().action_reset_to_draft()
+
     # ---- rate table (FC-08) ---------------------------------------------
 
     def action_cmc_std_prefill_rates(self, budget_version, basis="practical"):
@@ -42,6 +57,11 @@ class CmcPlanVersion(models.Model):
         if basis not in ("practical", "normal"):
             raise UserError(self.env._("The capacity basis is Practical or Normal."))
         figures = self._cmc_std_budget_figures(budget_version)
+        if not figures:
+            raise UserError(self.env._(
+                "%(budget)s has no cost figure between %(date_from)s and %(date_to)s: enter them in the Budget tab of that version, then prefill again.",
+                budget=budget_version.display_name, date_from=format_date(self.env, self.date_from), date_to=format_date(self.env, self.date_to),
+            ))
         capacities = self._cmc_std_capacities(figures)
         vals_list = []
         for center, figure in figures.items():
@@ -128,12 +148,32 @@ class CmcPlanVersion(models.Model):
         if not self.env.su and not self.env.user.has_group("cmc_base.group_cmc_manager"):
             raise AccessError(self.env._("Only a Controlling Manager pushes standard costs to the valuation."))
         self._cmc_std_check_approved()
-        # why sudo: the controlling manager has no stock rights; the write is the core revaluation (product.value)
-        products = self.card_ids.product_id.sudo().with_company(self.company_id)
-        costs = {card.product_id.id: card.unit_cost for card in self.card_ids}
-        for product in products.filtered(lambda product: product.cost_method == "standard"):
-            product.standard_price = costs[product.id]
+        if not self.env.context.get("cmc_std_push_confirmed"):
+            wizard = self.env["cmc.std.push.wizard"].create({
+                "version_id": self.id,
+                "line_ids": [(0, 0, {"product_id": product.id, "old_cost": old, "new_cost": new}) for product, old, new in self._cmc_std_push_rows()],
+            })
+            return {
+                "type": "ir.actions.act_window", "name": self.env._("Push Standard Prices"), "res_model": "cmc.std.push.wizard",
+                "res_id": wizard.id, "view_mode": "form", "target": "new",
+            }
+        precision = self.env["decimal.precision"].precision_get("Product Price")
+        changed = [(product, old, new) for product, old, new in self._cmc_std_push_rows() if float_compare(old, new, precision_digits=precision)]
+        for product, _old, new in changed:
+            product.standard_price = new
+        # why sudo: the snapshot is read-only for every group (ACL); only this confirmed push writes it
+        self.with_context(cmc_run_state=CMC_RUN_STATE).sudo().write({
+            "std_push_date": fields.Datetime.now(),
+            "std_push_line_ids": [(0, 0, {"product_id": product.id, "old_cost": old, "new_cost": new}) for product, old, new in changed],
+        })
         return True
+
+    def _cmc_std_push_rows(self):
+        """[(product, current standard price, card unit cost)] of the standard-costed card products, one pass."""
+        # why sudo: the controlling manager has no stock rights; the write is the core revaluation (product.value)
+        card_costs = {card.product_id.id: card.unit_cost for card in self.card_ids}
+        products = self.card_ids.product_id.sudo().with_company(self.company_id)
+        return [(product, product.standard_price, card_costs[product.id]) for product in products if product.cost_method == "standard"]
 
     def _cmc_std_reconciliation(self):
         self.ensure_one()

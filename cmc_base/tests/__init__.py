@@ -34,3 +34,5 @@ from . import test_relocation
 from . import test_wp06_eu
 from . import test_run_lock
 from . import test_wp11_stats
+from . import test_fx_stress_2026_10
+from . import test_stress_rilancio

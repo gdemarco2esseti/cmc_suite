@@ -225,6 +225,28 @@
         <field name="target">new</field>
     </record>
 
+    <record id="view_cmc_std_push_wizard_form" model="ir.ui.view">
+        <field name="name">cmc.std.push.wizard.form</field>
+        <field name="model">cmc.std.push.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Push Standard Prices">
+                <p>The card costs overwrite the standard price of the products valued at standard cost.</p>
+                <field name="version_id" invisible="1"/>
+                <field name="line_ids" readonly="1">
+                    <list create="false" delete="false">
+                        <field name="product_id"/>
+                        <field name="old_cost"/>
+                        <field name="new_cost"/>
+                    </list>
+                </field>
+                <footer>
+                    <button name="action_confirm" type="object" string="Confirm Push" class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
     <record id="view_cmc_standard_rollup_wizard_form" model="ir.ui.view">
         <field name="name">cmc.standard.rollup.wizard.form</field>
         <field name="model">cmc.standard.rollup.wizard</field>
@@ -262,8 +284,7 @@
                         invisible="state != 'draft' or version_type != 'standard'" groups="cmc_base.group_cmc_user"
                         context="{'default_version_id': id}"/>
                 <button name="action_cmc_std_push_prices" type="object" string="Push Standard Prices"
-                        invisible="state != 'done' or version_type != 'standard'" groups="cmc_base.group_cmc_manager"
-                        confirm="The card costs overwrite the standard price of the products valued at standard cost. Continue?"/>
+                        invisible="state != 'done' or version_type != 'standard'" groups="cmc_base.group_cmc_manager"/>
             </xpath>
             <xpath expr="//field[@name='version_type']" position="after">
                 <field name="standard_type" invisible="version_type != 'standard'" readonly="state == 'done'"/>
@@ -302,6 +323,17 @@
                             <field name="unit_labour"/>
                             <field name="unit_overhead"/>
                             <field name="unit_cost"/>
+                        </list>
+                    </field>
+                    <separator string="Pushed Prices" invisible="not std_push_date"/>
+                    <group invisible="not std_push_date">
+                        <field name="std_push_date"/>
+                    </group>
+                    <field name="std_push_line_ids" readonly="1" invisible="not std_push_date">
+                        <list>
+                            <field name="product_id"/>
+                            <field name="old_cost"/>
+                            <field name="new_cost"/>
                         </list>
                     </field>
                 </page>

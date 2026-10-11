@@ -25,11 +25,11 @@ class CmcManualClassification(models.Model):
         "cmc.cost.element", string="Cost Element", ondelete="set null"
     )
     cmc_behavior = fields.Selection(
-        selection=lambda self: self.env["account.analytic.line"]._fields["cmc_behavior"].selection,
+        selection=lambda self: self.env["account.analytic.line"]._fields["cmc_behavior"]._description_selection(self.env),
         string="Cost Behavior",
     )
     cmc_directness = fields.Selection(
-        selection=lambda self: self.env["account.analytic.line"]._fields["cmc_directness"].selection,
+        selection=lambda self: self.env["account.analytic.line"]._fields["cmc_directness"]._description_selection(self.env),
         string="Imputation",
     )
 

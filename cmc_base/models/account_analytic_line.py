@@ -143,6 +143,11 @@ class AccountAnalyticLine(models.Model):
             raise UserError(self.env._("Set either Amount or Cost, not both: Cost is the Amount with the opposite sign."))
 
     @api.model
+    def _cmc_cost_base_domain(self):
+        """The cost base: classified or negative lines. A positive unclassified line is revenue (invoice)."""
+        return [("cmc_excluded", "=", False), "|", ("cmc_behavior", "!=", False), ("amount", "<", 0)]
+
+    @api.model
     def _cmc_cost_read_group(self, domain, groupby=()):
         """``_read_group`` whose last aggregate is the COST (positive) of the
         group: the one place where the analytic sign (cost < 0) is flipped."""
@@ -325,6 +330,12 @@ class AccountAnalyticLine(models.Model):
         if any(guarded & vals.keys() for vals in vals_list) or self.filtered("cmc_is_relocation"):
             raise UserError(self.env._("Lines posted by a run change only by computing or resetting it."))
 
+    def _cmc_check_manual_entry(self):
+        # why after super(): the center is resolved from whichever plan column the line ends up with;
+        # the UserError rolls the whole create/write back, so nothing half-recorded survives
+        if any(not line.cmc_center_id or not line.cmc_behavior for line in self):
+            raise UserError(self.env._("Fill in the Cost Center and the Cost Behavior of the cost entry before saving."))
+
     @api.model_create_multi
     def create(self, vals_list):
         self._cmc_check_relocation_lock(vals_list)
@@ -332,7 +343,12 @@ class AccountAnalyticLine(models.Model):
             raise AccessError(self.env._("The cost base exclusion is set by the system only."))
         for vals in vals_list:
             self._cmc_check_one_amount(vals)
-        lines = super().create(vals_list)
+        # why: the inverses of Cost/Center write the new lines before they are complete, so the
+        # inner writes must not check; the whole create is checked once below
+        manual = self.env.context.get("cmc_manual_entry")
+        lines = super(AccountAnalyticLine, self.with_context(cmc_manual_entry=False)).create(vals_list).with_env(self.env)
+        if manual:
+            lines._cmc_check_manual_entry()
         lines._cmc_touch_capacity(lines._cmc_capacity_rows())
         return lines
 
@@ -360,10 +376,18 @@ class AccountAnalyticLine(models.Model):
                 self.env._("An excluded cost line cannot be classified: it is a twin of a cost already counted elsewhere.")
             )
         watched = {"amount", "date", "cmc_behavior", "cmc_excluded"} | set(self._get_plan_fnames())
+        # why: inner writes of the Cost/Center inverses must not check half-built lines; checked once below
+        manual = self.env.context.get("cmc_manual_entry")
+        plain = super(AccountAnalyticLine, self.with_context(cmc_manual_entry=False) if manual else self)
         if not (vals.keys() & watched):
-            return super().write(vals)
+            res = plain.write(vals)
+            if manual:
+                self._cmc_check_manual_entry()
+            return res
         rows_before = self._cmc_capacity_rows()
-        res = super().write(vals)
+        res = plain.write(vals)
+        if manual:
+            self._cmc_check_manual_entry()
         self._cmc_touch_capacity(rows_before | self._cmc_capacity_rows())
         return res
 

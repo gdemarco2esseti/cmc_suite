@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-09 23:35+0000\n"
+"POT-Creation-Date: 2026-10-11 16:26+0000\n"
 "PO-Revision-Date: 2026-10-09 23:35+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -100,8 +100,7 @@ msgstr "Una prospettiva è ponderata una sola volta per scheda di valutazione."
 #. odoo-python
 #: code:addons/cmc_kpi/models/cmc_kpi_target.py:0
 msgid "A target must fall inside the span of its plan version."
-msgstr ""
-"Un obiettivo deve rientrare nell'arco temporale della sua versione di piano."
+msgstr "Un obiettivo deve rientrare nell'arco temporale della sua versione di piano."
 
 #. module: cmc_kpi
 #: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__active
@@ -167,6 +166,11 @@ msgstr "Importo"
 #: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_search
 msgid "Archived"
 msgstr "In archivio"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,help:cmc_kpi.field_cmc_kpi_target__target_input
+msgid "As a percentage for percent KPIs (15 = 15 %)."
+msgstr "In percentuale per i KPI percentuali (15 = 15 %)."
 
 #. module: cmc_kpi
 #: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi_value__status__amber
@@ -418,12 +422,8 @@ msgstr "Diviso per"
 
 #. module: cmc_kpi
 #: model:ir.model.fields,help:cmc_kpi.field_stock_picking__cmc_on_time
-msgid ""
-"Done no later than the day of the deadline (else of the scheduled date), in "
-"the company timezone."
-msgstr ""
-"Completato entro il giorno della scadenza (altrimenti della data "
-"pianificata), nel fuso orario dell'azienda."
+msgid "Done no later than the day of the deadline (else of the scheduled date), in the company timezone."
+msgstr "Completato entro il giorno della scadenza (altrimenti della data pianificata), nel fuso orario dell'azienda."
 
 #. module: cmc_kpi
 #: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_run_search
@@ -582,6 +582,7 @@ msgstr "Esecuzioni KPI"
 
 #. module: cmc_kpi
 #: model:ir.model,name:cmc_kpi.model_cmc_kpi_target
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__target_display
 msgid "KPI Target"
 msgstr "Obiettivo KPI"
 
@@ -593,6 +594,7 @@ msgstr "Obiettivi KPI"
 
 #. module: cmc_kpi
 #: model:ir.model,name:cmc_kpi.model_cmc_kpi_value
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__value_display
 msgid "KPI Value"
 msgstr "Valore KPI"
 
@@ -616,11 +618,8 @@ msgstr "KPI (pesi che sommano a 100 per prospettiva)"
 
 #. module: cmc_kpi
 #: model:ir.model.fields,help:cmc_kpi.field_cmc_kpi__hook_key
-msgid ""
-"Key of the engine evaluator registered in cmc.kpi.run._cmc_kpi_evaluators."
-msgstr ""
-"Chiave del valutatore del motore registrato in "
-"cmc.kpi.run._cmc_kpi_evaluators."
+msgid "Key of the engine evaluator registered in cmc.kpi.run._cmc_kpi_evaluators."
+msgstr "Chiave del valutatore del motore registrato in cmc.kpi.run._cmc_kpi_evaluators."
 
 #. module: cmc_kpi
 #: model_terms:ir.ui.view,arch_db:cmc_kpi.report_cmc_kpi_pack_document
@@ -735,6 +734,24 @@ msgid "Name of the KPI in the formulas: a Python identifier."
 msgstr "Nome del KPI nelle formule: un identificatore Python."
 
 #. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi_value__status__no_data
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_value_search
+msgid "No data"
+msgstr "Nessun dato"
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_kpi_run.py:0
+msgid "No data for %s"
+msgstr "Nessun dato per %s"
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_kpi_run.py:0
+msgid "No data for the month"
+msgstr "Nessun dato nel mese"
+
+#. module: cmc_kpi
 #: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi_value__trend__none
 msgid "No trend"
 msgstr "Nessun andamento"
@@ -800,8 +817,7 @@ msgstr "Percentuale; i KPI di una prospettiva sommano a 100."
 #. module: cmc_kpi
 #: model:ir.model.fields,help:cmc_kpi.field_cmc_kpi_scorecard_perspective__weight
 msgid "Percent; the perspectives of a scorecard total 100."
-msgstr ""
-"Percentuale; le prospettive di una scheda di valutazione sommano a 100."
+msgstr "Percentuale; le prospettive di una scheda di valutazione sommano a 100."
 
 #. module: cmc_kpi
 #: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__perspective
@@ -853,12 +869,8 @@ msgstr "Versione di piano"
 
 #. module: cmc_kpi
 #: model:ir.model.fields,help:cmc_kpi.field_cmc_kpi_run__version_id
-msgid ""
-"Plan version holding the KPI targets; without a target the static one "
-"applies."
-msgstr ""
-"Versione di piano che contiene gli obiettivi KPI; senza un obiettivo vale "
-"quello statico."
+msgid "Plan version holding the KPI targets; without a target the static one applies."
+msgstr "Versione di piano che contiene gli obiettivi KPI; senza un obiettivo vale quello statico."
 
 #. module: cmc_kpi
 #: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__previous_value
@@ -867,12 +879,8 @@ msgstr "Valore precedente"
 
 #. module: cmc_kpi
 #: model:ir.model.fields,help:cmc_kpi.field_cmc_kpi__formula
-msgid ""
-"Python expression over the codes of the other KPIs, e.g. good_qty / "
-"(good_qty + scrap_qty) * 100."
-msgstr ""
-"Espressione Python sui codici degli altri KPI, ad es. good_qty / (good_qty +"
-" scrap_qty) * 100."
+msgid "Python expression over the codes of the other KPIs, e.g. good_qty / (good_qty + scrap_qty) * 100."
+msgstr "Espressione Python sui codici degli altri KPI, ad es. good_qty / (good_qty + scrap_qty) * 100."
 
 #. module: cmc_kpi
 #: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run__ratio_ids
@@ -898,12 +906,12 @@ msgstr "Tolleranza rossa %"
 #. module: cmc_kpi
 #: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_run_form
 msgid "Reset to Draft"
-msgstr "Reimposta a bozza"
+msgstr "Riporta in bozza"
 
 #. module: cmc_kpi
 #: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_run_form
 msgid "Resetting deletes the computed results. Continue?"
-msgstr "Azzerare elimina i risultati calcolati. Continuare?"
+msgstr "Riportando in bozza i risultati calcolati vengono cancellati. Continuare?"
 
 #. module: cmc_kpi
 #: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_search
@@ -954,19 +962,13 @@ msgstr "Scheda di valutazione"
 #. odoo-python
 #: code:addons/cmc_kpi/models/cmc_kpi_run.py:0
 msgid "Scorecard %(name)s: %(kpi)s sits in a perspective with no weight."
-msgstr ""
-"Scheda di valutazione %(name)s: %(kpi)s si trova in una prospettiva senza "
-"peso."
+msgstr "Scheda di valutazione %(name)s: %(kpi)s si trova in una prospettiva senza peso."
 
 #. module: cmc_kpi
 #. odoo-python
 #: code:addons/cmc_kpi/models/cmc_kpi_run.py:0
-msgid ""
-"Scorecard %(name)s: the KPI weights of the perspective %(perspective)s do "
-"not total 100."
-msgstr ""
-"Scheda di valutazione %(name)s: i pesi dei KPI della prospettiva "
-"%(perspective)s non sommano a 100."
+msgid "Scorecard %(name)s: the KPI weights of the perspective %(perspective)s do not total 100."
+msgstr "Scheda di valutazione %(name)s: i pesi dei KPI della prospettiva %(perspective)s non sommano a 100."
 
 #. module: cmc_kpi
 #. odoo-python
@@ -1024,12 +1026,8 @@ msgstr "Tipo di fonte"
 
 #. module: cmc_kpi
 #: model:ir.model.fields,help:cmc_kpi.field_cmc_kpi_run__fin_analysis_id
-msgid ""
-"Source of the ratio KPIs and of the key ratios of the pack; empty = the "
-"latest computed analysis."
-msgstr ""
-"Fonte degli indici KPI e degli indici chiave del pack; vuoto = l'ultima "
-"analisi calcolata."
+msgid "Source of the ratio KPIs and of the key ratios of the pack; empty = the latest computed analysis."
+msgstr "Fonte degli indici KPI e degli indici chiave del pack; vuoto = l'ultima analisi calcolata."
 
 #. module: cmc_kpi
 #: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi_value__trend__stable
@@ -1044,9 +1042,12 @@ msgstr "Stato"
 #. module: cmc_kpi
 #: model:ir.model.fields,help:cmc_kpi.field_cmc_kpi__target_value
 msgid "Static target, used when the run version has none for the month."
-msgstr ""
-"Obiettivo statico, usato quando la versione dell'esecuzione non ne ha uno "
-"per il mese."
+msgstr "Obiettivo statico, usato quando la versione dell'esecuzione non ne ha uno per il mese."
+
+#. module: cmc_kpi
+#: model:ir.model.fields,help:cmc_kpi.field_cmc_kpi__target_input
+msgid "Static target, used when the run version has none for the month. As a percentage for percent KPIs (15 = 15 %)."
+msgstr "Obiettivo statico, usato quando la versione dell'elaborazione non ne ha uno per il mese. In percentuale per i KPI percentuali (15 = 15 %)."
 
 #. module: cmc_kpi
 #: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_ratio__status
@@ -1062,10 +1063,12 @@ msgid "Sum"
 msgstr "Totale"
 
 #. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__target_input
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_target__target_input
 #: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__target
 #: model_terms:ir.ui.view,arch_db:cmc_kpi.report_cmc_kpi_pack_document
 msgid "Target"
-msgstr "Obiettivi"
+msgstr "Obiettivo"
 
 #. module: cmc_kpi
 #: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__target_source
@@ -1101,12 +1104,8 @@ msgstr "Obiettivi per versione"
 #. module: cmc_kpi
 #. odoo-python
 #: code:addons/cmc_kpi/models/cmc_kpi.py:0
-msgid ""
-"The code %s is not a valid identifier: it is the name of the KPI in the "
-"formulas."
-msgstr ""
-"Il codice %s non è un identificatore valido: è il nome del KPI nelle "
-"formule."
+msgid "The code %s is not a valid identifier: it is the name of the KPI in the formulas."
+msgstr "Il codice %s non è un identificatore valido: è il nome del KPI nelle formule."
 
 #. module: cmc_kpi
 #. odoo-python

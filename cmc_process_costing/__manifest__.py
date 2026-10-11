@@ -1,6 +1,6 @@
 {
     "name": "CMC - Process Costing",
-    "version": "19.0.1.0.0",
+    "version": "19.0.1.0.1",
     "category": "Accounting/Management Control",
     "summary": "Process costing per department and month: equivalent units (weighted average / FIFO), "
                "spoilage, transferred-in chaining, cost of production report",

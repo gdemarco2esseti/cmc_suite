@@ -8,7 +8,7 @@ from odoo.fields import Domain
 from odoo.addons.cmc_base.models import cmc_utils
 from odoo.addons.cmc_base.models.cmc_utils import month_end, month_start
 
-BVA_AMOUNTS = ("plan_amount:sum", "actual_amount:sum", "prior_actual_amount:sum")
+BVA_AMOUNTS = ("actual_amount:sum", "prior_actual_amount:sum")
 
 
 def _pct(variance, plan):
@@ -24,6 +24,7 @@ class CmcPlanVersion(models.Model):
     target_total_cost = fields.Monetary(help="Company total of the cost budget. 0 = no check on approval.")
     target_profit = fields.Monetary()
     alert_threshold = fields.Float(default=10.0, help="Variance percent beyond which a budget vs actual figure is flagged.")
+    seasonality_id = fields.Many2one("cmc.budget.seasonality", string="Default Seasonality", check_company=True)
 
     # ---- engine ---------------------------------------------------------
 
@@ -204,29 +205,40 @@ class CmcPlanVersion(models.Model):
     # ---- budget vs actual -----------------------------------------------
 
     def _cmc_bva_summary(self, date_to, groupby=("center_id",)):
-        """Month and YTD plan / actual / variance per group, from one grouped read of the BvA view."""
+        """Month and YTD plan / actual / variance per group (natural sign) of an approved version: two grouped reads."""
         self.ensure_one()
+        if self.state != "done" or self.version_type not in ("budget", "forecast"):
+            return []
         month = month_start(date_to)
         ytd_from = max(date(date_to.year, 1, 1), month_start(self.date_from))
-        domain = Domain("version_id", "=", self.id) & Domain("date", ">=", ytd_from) & Domain("date", "<=", month)
+        period = Domain("date", ">=", ytd_from) & Domain("date", "<=", month)
         groups = defaultdict(lambda: dict.fromkeys(("plan_month", "actual_month", "plan_ytd", "actual_ytd", "prior_ytd"), 0.0))
-        for *key, row_month, plan, actual, prior in self.env["cmc.budget.bva"]._read_group(domain, [*groupby, "date:month"], BVA_AMOUNTS):
-            totals = groups[tuple(key)]
+        for *key, row_month, plan in self.env["cmc.budget.line"]._read_group(
+            Domain("version_id", "=", self.id) & period, [*groupby, "date:month"], ["amount_company:sum"]
+        ):
+            totals = groups[tuple(value or False for value in key)]
             totals["plan_ytd"] += plan
-            totals["actual_ytd"] += actual
-            totals["prior_ytd"] += prior
-            if row_month == month:
-                totals["plan_month"] += plan
-                totals["actual_month"] += actual
+            totals["plan_month"] += plan if row_month == month else 0.0
+        # why: actuals carry no business line, so they are read without it and land in the False group of that axis
+        actual_by = list(dict.fromkeys([*(name for name in groupby if name != "business_line_id"), "kind"]))
+        for *key, row_month, actual, prior in self.env["cmc.budget.bva"]._read_group(
+            Domain("version_id", "=", self.id) & period, [*actual_by, "date:month"], BVA_AMOUNTS
+        ):
+            values = dict(zip(actual_by, key))
+            sign = -1.0 if values["kind"] == "cost" else 1.0
+            totals = groups[tuple(values.get(name) or False for name in groupby)]
+            totals["actual_ytd"] += sign * actual
+            totals["prior_ytd"] += sign * prior
+            totals["actual_month"] += sign * actual if row_month == month else 0.0
         rows = []
         for key, totals in groups.items():
             row = {name: value or False for name, value in zip(groupby, key)}
-            for period in ("month", "ytd"):
-                variance = totals[f"actual_{period}"] - totals[f"plan_{period}"]
+            for period_name in ("month", "ytd"):
+                variance = totals[f"actual_{period_name}"] - totals[f"plan_{period_name}"]
                 row |= {
-                    f"plan_{period}": totals[f"plan_{period}"], f"actual_{period}": totals[f"actual_{period}"],
-                    f"variance_{period}": variance, f"variance_{period}_pct": _pct(variance, totals[f"plan_{period}"]),
-                    f"alert_{period}": abs(_pct(variance, totals[f"plan_{period}"])) > self.alert_threshold,
+                    f"plan_{period_name}": totals[f"plan_{period_name}"], f"actual_{period_name}": totals[f"actual_{period_name}"],
+                    f"variance_{period_name}": variance, f"variance_{period_name}_pct": _pct(variance, totals[f"plan_{period_name}"]),
+                    f"alert_{period_name}": abs(_pct(variance, totals[f"plan_{period_name}"])) > self.alert_threshold,
                 }
             rows.append(row | {"prior_ytd": totals["prior_ytd"]})
         return rows

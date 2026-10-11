@@ -10,7 +10,7 @@ msgstr ""
 "PO-Revision-Date: 2026-10-09 23:35+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: it\n"
+"Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -190,6 +190,11 @@ msgid "Accuracy (95 %)"
 msgstr "Accuratezza (95 %)"
 
 #. module: cmc_job_costing
+#: model:ir.model.fields.selection,name:cmc_job_costing.selection__cmc_evm_curve_series__series__ac
+msgid "Actual Cost (AC)"
+msgstr "Costo effettivo (AC)"
+
+#. module: cmc_job_costing
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet_labour__amount
 #: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_cost_run_form
 msgid "Amount"
@@ -348,6 +353,7 @@ msgstr "Quota dei costi comuni"
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_baseline_line__company_id
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_change_request__company_id
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve__company_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve_series__company_id
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__company_id
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_risk__company_id
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__company_id
@@ -378,6 +384,8 @@ msgstr "Calcola"
 #. module: cmc_job_costing
 #: model:ir.model.fields.selection,name:cmc_job_costing.selection__cmc_job_rate__rate_mode__computed
 #: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_rate_search
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_evm_run__state__done
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_job_cost_run__state__done
 msgid "Computed"
 msgstr "Calcolato"
 
@@ -485,6 +493,7 @@ msgstr "Creato il"
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_baseline_line__currency_id
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_change_request__currency_id
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve__currency_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve_series__currency_id
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__currency_id
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_risk__currency_id
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__currency_id
@@ -560,6 +569,7 @@ msgstr "Costi diretti"
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_baseline_line__display_name
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_change_request__display_name
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve__display_name
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve_series__display_name
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__display_name
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_risk__display_name
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__display_name
@@ -576,6 +586,8 @@ msgstr "Nome visualizzato"
 
 #. module: cmc_job_costing
 #: model:ir.model.fields.selection,name:cmc_job_costing.selection__cmc_evm_change_request__state__draft
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_evm_run__state__draft
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_job_cost_run__state__draft
 msgid "Draft"
 msgstr "Bozza"
 
@@ -638,6 +650,11 @@ msgid "EVM Curve"
 msgstr "Curva EVM"
 
 #. module: cmc_job_costing
+#: model:ir.model,name:cmc_job_costing.model_cmc_evm_curve_series
+msgid "EVM S-curve series"
+msgstr "Serie curva a S EVM"
+
+#. module: cmc_job_costing
 #: model:ir.actions.report,name:cmc_job_costing.action_report_evm_status
 #: model:ir.model,name:cmc_job_costing.model_cmc_evm_run
 #: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_run_form
@@ -661,6 +678,11 @@ msgstr "Riga attività EVM"
 #: code:addons/cmc_job_costing/models/cmc_evm_run.py:0
 msgid "EVM status"
 msgstr "Stato EVM"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields.selection,name:cmc_job_costing.selection__cmc_evm_curve_series__series__ev
+msgid "Earned Value (EV)"
+msgstr "Valore guadagnato (EV)"
 
 #. module: cmc_job_costing
 #: model:ir.model.fields,help:cmc_job_costing.field_project_task__cmc_progress
@@ -796,15 +818,10 @@ msgid "Hours Pessimistic"
 msgstr "Ore pessimistiche"
 
 #. module: cmc_job_costing
-#. odoo-python
-#: code:addons/cmc_job_costing/models/cmc_job_cost_run.py:0
-msgid "Hours of %(job)s have no cost center."
-msgstr "Le ore della commessa %(job)s non hanno un centro di costo."
-
-#. module: cmc_job_costing
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_baseline_line__id
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_change_request__id
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve__id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve_series__id
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__id
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_risk__id
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__id
@@ -1003,6 +1020,13 @@ msgid "Last Updated on"
 msgstr "Ultimo aggiornamento il"
 
 #. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__is_latest
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_curve_search
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_curve_series_search
+msgid "Latest Status Report"
+msgstr "Ultimo rapporto di stato"
+
+#. module: cmc_job_costing
 #: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_rate_list
 msgid "Load center cost"
 msgstr "Carica costo del centro"
@@ -1065,6 +1089,7 @@ msgstr ""
 " di commessa."
 
 #. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve_series__month
 #: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_evm_status
 #: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_rate_search
 msgid "Month"
@@ -1330,6 +1355,11 @@ msgid "Planned Value"
 msgstr "Valore pianificato"
 
 #. module: cmc_job_costing
+#: model:ir.model.fields.selection,name:cmc_job_costing.selection__cmc_evm_curve_series__series__pv
+msgid "Planned Value (PV)"
+msgstr "Valore pianificato (PV)"
+
+#. module: cmc_job_costing
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__prime_cost
 msgid "Prime Cost"
 msgstr "Costo primo"
@@ -1346,6 +1376,8 @@ msgstr "Probabilità"
 
 #. module: cmc_job_costing
 #: model:ir.model,name:cmc_job_costing.model_project_project
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve_series__project_id
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_curve_series_search
 msgid "Project"
 msgstr "Progetto"
 
@@ -1434,7 +1466,8 @@ msgstr "Riporta in bozza"
 #: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_run_form
 #: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_cost_run_form
 msgid "Resetting deletes the computed results. Continue?"
-msgstr "Il ripristino elimina i risultati calcolati. Continuare?"
+msgstr ""
+"Riportando in bozza i risultati calcolati vengono cancellati. Continuare?"
 
 #. module: cmc_job_costing
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__center_id
@@ -1489,6 +1522,7 @@ msgstr "Regola dei sette"
 
 #. module: cmc_job_costing
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve__run_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve_series__run_id
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_task_line__run_id
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__run_id
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet_labour__run_id
@@ -1497,8 +1531,13 @@ msgstr "Elaborazione"
 
 #. module: cmc_job_costing
 #: model:ir.actions.act_window,name:cmc_job_costing.action_cmc_evm_curve_run
+#: model:ir.actions.act_window,name:cmc_job_costing.action_cmc_evm_curve_series
 #: model:ir.ui.menu,name:cmc_job_costing.menu_cmc_evm_curve
 #: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_curve_graph
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_curve_series_graph
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_curve_series_list
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_curve_series_pivot
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_curve_series_search
 #: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_run_form
 msgid "S-Curve"
 msgstr "Curva a S"
@@ -1516,6 +1555,12 @@ msgstr "SPI"
 #: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_run_form
 msgid "SV"
 msgstr "SV"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve_series__series
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_curve_series_search
+msgid "Series"
+msgstr "Serie"
 
 #. module: cmc_job_costing
 #: model:ir.model.fields,help:cmc_job_costing.field_cmc_evm_estimate_line__hourly_rate
@@ -1539,6 +1584,18 @@ msgid "Sheet"
 msgstr "Scheda"
 
 #. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_job_cost_run.py:0
+msgid ""
+"Some jobs have hours without a cost center:\n"
+"%(jobs)s\n"
+"Set the cost center of each project on the analytic plan %(plans)s, then compute again."
+msgstr ""
+"Alcune commesse hanno ore senza centro di costo:\n"
+"%(jobs)s\n"
+"Imposta il centro di costo di ogni progetto sul piano analitico %(plans)s, poi calcola di nuovo."
+
+#. module: cmc_job_costing
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_rate__special_cost
 msgid "Special Cost"
 msgstr "Costo speciale"
@@ -1554,6 +1611,11 @@ msgstr "Stato"
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__status_date
 msgid "Status Date"
 msgstr "Data di stato"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_curve_series_search
+msgid "Status Report"
+msgstr "Rapporto di stato"
 
 #. module: cmc_job_costing
 #: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__tcpi
@@ -1602,6 +1664,12 @@ msgstr "La modifica deve ricadere nell'intervallo della baseline."
 msgid "The change must fall on a task of the baseline job."
 msgstr ""
 "La modifica deve riguardare un'attività della commessa della baseline."
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,help:cmc_job_costing.field_cmc_evm_run__is_latest
+msgid "The computed report with the latest status date of its job."
+msgstr ""
+"Il rapporto calcolato con la data di stato più recente della sua commessa."
 
 #. module: cmc_job_costing
 #. odoo-python
@@ -1660,6 +1728,12 @@ msgid "Transferred to finished goods."
 msgstr "Trasferito ai prodotti finiti."
 
 #. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_evm_run.py:0
+msgid "Unsupported search on the latest status report."
+msgstr "Ricerca non supportata sull'ultimo rapporto di stato."
+
+#. module: cmc_job_costing
 #: model:ir.model.fields,help:cmc_job_costing.field_project_task__display_name
 msgid ""
 "Use these keywords in the title to set new tasks:\n"
@@ -1696,6 +1770,7 @@ msgid "Vacation, holidays, sick leave."
 msgstr "Ferie, festività, malattia."
 
 #. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve_series__value
 #: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_evm_status
 msgid "Value"
 msgstr "Valore"

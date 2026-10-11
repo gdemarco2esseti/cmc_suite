@@ -110,7 +110,7 @@
             </div>
 
             <!-- cost-by-element chart -->
-            <div class="card o_cmc_chart_card">
+            <div t-if="state.data.chart" class="card o_cmc_chart_card">
                 <div class="card-body">
                     <div class="o_cmc_kpi_label text-muted small text-uppercase mb-2">
                         Costs by nature (element)

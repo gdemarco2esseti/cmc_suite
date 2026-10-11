@@ -253,6 +253,11 @@ class CmcAbcRun(models.Model):
                 {"activity_id": activity.id, "cost_object_id": obj, "driver_id": driver.id, "driver_qty": qty}
                 for obj, qty in quantities.items() if float_compare(qty, 0.0, precision_rounding=qty_step) > 0
             ]
+        if not lines:
+            raise UserError(self.env._(
+                "There are no driver quantities of the activities for the period of this run: "
+                "enter them in Cost Base > Driver Quantities, then prefill again. The current edges are unchanged."
+            ))
         replaced = self.line_ids.filtered(lambda ln: ln.activity_id in activities and ln.cost_object_id)
         self.line_ids = [Command.delete(ln.id) for ln in replaced] + [Command.create(vals) for vals in lines]
         return True

@@ -86,6 +86,7 @@ class TestBudgetSecurity(CmcBudgetCase):
 
     def test_responsible_sees_only_own_bva(self):
         # BUD-05: budget vs actual of his own centers only
+        self._approve(self.version)  # DL-004: only approved versions are in the view
         self.env.flush_all()
         rows = self.env["cmc.budget.bva"].with_user(self.responsible).search([("version_id", "=", self.version.id)])
         self.assertEqual(rows.mapped("center_id"), self.mine)
@@ -113,7 +114,11 @@ class TestBudgetSecurity(CmcBudgetCase):
     def test_other_company_isolated(self):
         # AD-115: company rule parent_of on budget lines and BvA
         self.assertEqual(self._lines_seen(self.user_b), self.line_b)
+        # DL-004: approve company B's version so its rows exist and only the company rule can hide them
+        self.version_b.sudo().action_approve()
         self.env.flush_all()
+        self.assertTrue(self.env["cmc.budget.bva"].sudo().search_count([("version_id", "=", self.version_b.id)]),
+                        "fixture: the approved company-B version must have BvA rows")
         rows = self.env["cmc.budget.bva"].with_user(self.user).search([("version_id", "=", self.version_b.id)])
         self.assertFalse(rows)
 

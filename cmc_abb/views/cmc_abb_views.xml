@@ -68,7 +68,8 @@
                 <header>
                     <button name="action_compute" string="Compute" type="object" class="oe_highlight" invisible="state == 'done'"/>
                     <button name="action_prefill_bill" string="Prefill Bill from Calibration" type="object"
-                            invisible="state == 'done' or not calibration_run_id"/>
+                            invisible="state == 'done' or not calibration_run_id"
+                            confirm="Prefilling replaces the current lines with the quantities read from the data. Continue?"/>
                     <button name="action_open_what_if" string="What-if" type="object" invisible="state != 'done'"/>
                     <button name="action_reset_to_draft" string="Reset to Draft" type="object" invisible="state != 'done'"
                             confirm="Resetting deletes the results, the budget lines and the prospective rates of this run. Continue?"/>
@@ -258,7 +259,8 @@
             <form string="What-if Scenario">
                 <header>
                     <button name="action_compute" string="Compute" type="object" class="oe_highlight" invisible="state == 'done'"/>
-                    <button name="action_reset_to_draft" string="Reset to Draft" type="object" invisible="state != 'done'"/>
+                    <button name="action_reset_to_draft" string="Reset to Draft" type="object" invisible="state != 'done'"
+                            confirm="Resetting deletes the computed results. Continue?"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>

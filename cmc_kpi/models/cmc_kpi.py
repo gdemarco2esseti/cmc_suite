@@ -1,6 +1,10 @@
+from collections import defaultdict
+
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.tools.safe_eval import test_python_expr
+
+from odoo.addons.cmc_base.models.cmc_utils import percent_factor
 
 PERSPECTIVES = [
     ("financial", "Financial"),
@@ -8,6 +12,7 @@ PERSPECTIVES = [
     ("internal", "Internal Process"),
     ("learning", "Learning and Growth"),
 ]
+RATIO_UNITS = {"ratio": "number", "percent": "percent", "days": "days", "amount": "amount"}
 # the source field each type needs, checked by _check_source_fields
 SOURCE_FIELDS = {
     "measure": ("driver_id",),
@@ -32,13 +37,19 @@ class CmcKpi(models.Model):
     sequence = fields.Integer(default=10)
     description = fields.Text()
     unit = fields.Selection(
-        [("number", "Number"), ("percent", "Percent"), ("amount", "Amount"), ("days", "Days")], required=True, default="number"
+        [("number", "Number"), ("percent", "Percent"), ("amount", "Amount"), ("days", "Days")],
+        compute="_compute_unit", store=True, readonly=False,
     )
     perspective = fields.Selection(PERSPECTIVES, required=True, default="financial")
     direction = fields.Selection(
         [("higher", "Higher is better"), ("lower", "Lower is better")], required=True, default="higher"
     )
     target_value = fields.Float(help="Static target, used when the run version has none for the month.")
+    # why: a percent financial ratio is stored as a fraction; the target is typed as read (15 = 15 %), RN-007
+    target_input = fields.Float(
+        string="Target", compute="_compute_target_input", inverse="_inverse_target_input", digits=(16, 4),
+        help="Static target, used when the run version has none for the month. As a percentage for percent KPIs (15 = 15 %).",
+    )
     amber_tolerance_pct = fields.Float(string="Amber Tolerance %", help="Gap beyond which the light turns amber.")
     red_tolerance_pct = fields.Float(string="Red Tolerance %", default=10.0, help="Gap beyond which the light turns red.")
     responsibility_id = fields.Many2one("cmc.responsibility.center", string="Responsibility Center", check_company=True)
@@ -71,6 +82,33 @@ class CmcKpi(models.Model):
     hook_key = fields.Char(help="Key of the engine evaluator registered in cmc.kpi.run._cmc_kpi_evaluators.")
 
     _code_company_uniq = models.UniqueIndex("(company_id, code)", "A KPI code is unique in a company.")
+
+    @api.depends("target_value", "unit", "source_type")
+    def _compute_target_input(self):
+        for kpi in self:
+            kpi.target_input = kpi.target_value * percent_factor(kpi._cmc_is_fraction_percent())
+
+    def _inverse_target_input(self):
+        for kpi in self:
+            kpi.target_value = kpi.target_input / percent_factor(kpi._cmc_is_fraction_percent())
+
+    def _cmc_is_fraction_percent(self):
+        """A financial-ratio KPI in percent holds a fraction (0.15 = 15 %); other percent KPIs already hold 0..100."""
+        self.ensure_one()
+        return self.unit == "percent" and self.source_type == "ratio"
+
+    @api.depends("source_type", "ratio_code")
+    def _compute_unit(self):
+        ratios = self.filtered(lambda kpi: kpi.source_type == "ratio")
+        found = defaultdict(dict)
+        for ratio in self.env["cmc.fin.ratio"].search([("code", "in", ratios.mapped("ratio_code")), ("company_id", "in", [False, *ratios.company_id.ids])]):
+            found[ratio.code][ratio.company_id.id] = ratio.unit
+        for kpi in ratios:
+            units = found.get(kpi.ratio_code, {})
+            ratio_unit = units.get(kpi.company_id.id) or units.get(False)
+            kpi.unit = RATIO_UNITS.get(ratio_unit, kpi.unit or "number")
+        for kpi in self - ratios:
+            kpi.unit = kpi.unit or "number"
 
     @api.model
     def _selection_activity_ref(self):

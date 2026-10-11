@@ -204,6 +204,11 @@ class CmcCostingRun(models.Model):
             for center, obj, driver, qty in groups
             if float_compare(qty, 0.0, precision_rounding=qty_step) > 0 and (not wanted or product_of[obj.id] in wanted)
         ]
+        if not lines:
+            raise UserError(self.env._(
+                "There are no driver quantities of the allocation measures for the period (and the products) of this run: "
+                "enter them in Cost Base > Driver Quantities, then prefill again. The current lines are unchanged."
+            ))
         self.line_ids = [(5, 0, 0)] + lines
         return True
 

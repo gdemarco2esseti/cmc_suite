@@ -384,7 +384,7 @@ class CmcClosingLine(models.Model):
     # frozen by Compute: a related field would be rewritten on the results of
     # a computed closing when the center is reclassified
     center_type = fields.Selection(
-        selection=lambda self: self.env["account.analytic.account"]._fields["cmc_center_type"].selection,
+        selection=lambda self: self.env["account.analytic.account"]._fields["cmc_center_type"]._description_selection(self.env),
         readonly=True,
     )
     cost_initial = fields.Monetary()

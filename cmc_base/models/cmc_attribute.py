@@ -15,8 +15,16 @@ class CmcAttribute(models.Model):
     company_id = fields.Many2one("res.company", default=lambda self: self.env.company, index=True)
     sequence = fields.Integer(default=10)
     active = fields.Boolean(default=True)
-    target_model_ids = fields.Many2many("ir.model", string="Applies To", domain="[('transient', '=', False)]")
+    target_model_ids = fields.Many2many("ir.model", string="Applies To", domain=lambda self: self._cmc_target_model_domain())
     value_ids = fields.One2many("cmc.attribute.value", "attribute_id", string="Values")
+
+    @api.model
+    def _cmc_target_model_domain(self):
+        names = [
+            name for name, model in self.env.registry.items()
+            if not model._transient and issubclass(model, self.env.registry["cmc.attribute.mixin"])
+        ]
+        return [("model", "in", names)]
 
     @api.constrains("code", "company_id")
     def _check_code_visibility(self):

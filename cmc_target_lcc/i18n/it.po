@@ -1194,7 +1194,16 @@ msgstr "Fattore relativo"
 #: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_lcc_model_form
 #: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_target_cost_form
 msgid "Reset to Draft"
-msgstr "Reimposta a bozza"
+msgstr "Riporta in bozza"
+
+#. module: cmc_target_lcc
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_feature_costing_form
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_kaizen_form
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_lcc_model_form
+#: model_terms:ir.ui.view,arch_db:cmc_target_lcc.view_cmc_target_cost_form
+msgid "Resetting deletes the computed results. Continue?"
+msgstr ""
+"Riportando in bozza i risultati calcolati vengono cancellati. Continuare?"
 
 #. module: cmc_target_lcc
 #: model:ir.model.fields,field_description:cmc_target_lcc.field_cmc_lcc_model__residual_cost
@@ -1502,3 +1511,21 @@ msgid ""
 "Years and costs must fall inside the horizon (0 to %(last)s): %(items)s"
 msgstr ""
 "Anni e costi devono rientrare nell'orizzonte (da 0 a %(last)s): %(items)s"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_feature_costing__state__done
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_kaizen_target__state__done
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_lcc_model__state__done
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_target_cost__state__done
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_tlc_run_mixin__state__done
+msgid "Computed"
+msgstr "Calcolato"
+
+#. module: cmc_target_lcc
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_feature_costing__state__draft
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_kaizen_target__state__draft
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_lcc_model__state__draft
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_target_cost__state__draft
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_tlc_run_mixin__state__draft
+msgid "Draft"
+msgstr "Bozza"

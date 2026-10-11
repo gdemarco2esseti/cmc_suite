@@ -11,6 +11,13 @@ class CmcPlanVersion(models.Model):
         self._cmc_check_editable()
         company = self.company_id
         boms = self._cmc_std_boms(products)
+        # why: a product without a manufacturing BoM would get no card and no message (FX-020)
+        if missing := products.filtered(lambda product: product not in boms):
+            raise UserError(self.env._(
+                "No manufacturing bill of materials for %(products)s in %(company)s: create one in "
+                "Manufacturing > Products > Bills of Materials (type 'Manufacture this product'), then roll up again.",
+                products=", ".join(missing.mapped("display_name")), company=company.display_name,
+            ))
         parents = self._cmc_std_parents(self.env["product.product"].union(*boms))
         if parents - products:
             boms = self._cmc_std_boms(products | parents)

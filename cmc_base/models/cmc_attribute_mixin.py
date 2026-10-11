@@ -22,7 +22,8 @@ class CmcAttributeMixin(models.AbstractModel):
             if record.company_id and values.company_id - record.company_id:
                 raise UserError(self.env._("Attribute values of another company cannot be assigned to this record."))
             for attribute in values.attribute_id:
-                if self._name not in attribute.target_model_ids.mapped("model"):
+                # why sudo: ir.model is not readable by every user who assigns attributes
+                if self._name not in attribute.target_model_ids.sudo().mapped("model"):
                     raise ValidationError(self.env._("Attribute %s does not apply to this record type.", attribute.name))
 
     def _cmc_resolve_attribute(self, attribute):

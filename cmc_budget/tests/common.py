@@ -77,19 +77,27 @@ called ``figure``/``rate``/``qty``. Variances = actual - reference: positive = f
      Grouped reads only: query count independent of lines/months (AD-114).
      T-A (BUD-01): ``groupby=("business_line_id",)`` groups by the line's business line; actuals carry no
      business line (the cost reader is center based) and fall in the ``False`` group.
+     FX-009 / DL-004: output keys, natural sign and T-A semantics UNCHANGED (the summary is NOT the view's
+     presentation sign); only APPROVED versions are compared: on a draft version it returns ``[]``.
 
-4. ``cmc.budget.bva`` (``_auto = False`` SQL view, read-only, AD-114 (7)): ``company_id``, ``version_id``,
-   ``version_type``, ``date`` (month), ``kind``, ``center_id``, ``element_id``, ``behavior``,
-   ``business_line_id`` (T-A: plan rows keep the line's one, actual rows False), ``plan_amount``,
-   ``actual_amount``, ``variance`` (= actual - plan), ``prior_actual_amount`` (actual of the same key 12 months
-   earlier), all company currency, natural sign, ``aggregator="sum"``. ``is_alert`` (RN-004) is computed on the
-   center x element x month grain of the version (kind x center x element x month: behaviors and business lines
-   summed): abs(actual - plan) / abs(plan) x 100 > ``alert_threshold`` of that group, plan of the group 0 -> False;
-   every row of the group carries the group's flag (a fixed/variable or business-line split of the plan never
-   flags rows whose center x element total is within threshold). One row per budget/forecast version x month
-   of its span x key present in plan, actual or prior actual. Actual cost = analytic lines (``cmc_excluded``
-   False) of the company on cmc centers, cost element and behavior; actual revenue = posted income journal items
-   (kind revenue, no center). LIVE: a new posting shows without any recompute.
+4. ``cmc.budget.bva`` (``_auto = False`` SQL view, read-only, AD-114 (7); FX-009 / DL-004 / DL-006): ``company_id``,
+   ``version_id``, ``version_type``, ``is_latest_version``, ``date`` (month), ``kind``, ``center_id``,
+   ``element_id``, ``behavior``, ``business_line_id``, ``plan_amount``, ``actual_amount``, ``variance``,
+   ``prior_actual_amount`` (actual of the same key 12 months earlier), company currency, ``aggregator="sum"``.
+   Only APPROVED (``state = 'done'``) versions of type budget/forecast have rows: a draft version is never in the
+   view. Row key = version x month x kind x center x element (ONE row: plan and actual of the same key are never
+   split apart). ``behavior`` and ``business_line_id`` are informational: the single non-null value carried by the
+   row's plan lines, False when the plan lines carry several (or none); actuals never contribute to them.
+   PRESENTATION sign (DL-006): ``plan_amount`` / ``actual_amount`` / ``prior_actual_amount`` are POSITIVE figures
+   for costs (= -natural) and for revenue; ``variance`` = natural actual - natural plan (positive = favourable:
+   a cost of 900 against a plan of 1,000 is +100). Each approved version joins the actuals once (grouped by version
+   the actual shows once per version, never multiplied). ``is_latest_version`` marks the latest approved version;
+   the menu action ``cmc_budget.action_cmc_budget_bva`` opens with ``search_default_latest_version`` in its
+   context. ``is_alert`` (RN-004) = abs(variance) / abs(plan) x 100 > ``alert_threshold`` of the version on the
+   row (plan 0 -> False). One row per approved version x month of its span x key present in plan, actual or prior
+   actual. Actual cost = analytic lines (``cmc_excluded`` False) of the company on cmc centers, cost element;
+   actual revenue = posted income journal items (kind revenue, no center). LIVE: a new posting shows without any
+   recompute.
 
 5. ``cmc.budget.variance.run`` (cmc.run.mixin; STD-02, STD-03, CAP-04): ``name``, ``company_id``, ``version_id``
    (budget/forecast, check_company), ``date_from``, ``date_to``, ``input_ids`` O2m ``cmc.budget.variance.input``

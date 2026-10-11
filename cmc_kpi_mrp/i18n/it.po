@@ -150,6 +150,20 @@ msgid "Produced quantity"
 msgstr "Quantità prodotta"
 
 #. module: cmc_kpi_mrp
+#: model:ir.model.fields,field_description:cmc_kpi_mrp.field_mrp_workorder__cmc_productive_minutes
+msgid "Productive Minutes"
+msgstr "Minuti produttivi"
+
+#. module: cmc_kpi_mrp
+#: model:ir.model.fields,help:cmc_kpi_mrp.field_mrp_workorder__cmc_productive_minutes
+msgid ""
+"Productive time entries merged: overlapping timers of concurrent operators "
+"count once."
+msgstr ""
+"Registrazioni di tempo produttivo unite: i timer sovrapposti di operatori "
+"concorrenti contano una volta."
+
+#. module: cmc_kpi_mrp
 #: model:ir.model.fields,help:cmc_kpi_mrp.field_mrp_production__cmc_is_rework
 msgid "Re-processes units that failed the first pass (first-pass yield KPI)."
 msgstr ""
@@ -185,6 +199,20 @@ msgstr "Quantità rilavorata"
 #. module: cmc_kpi_mrp
 #. odoo-python
 #: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+#: model:cmc.cost.driver,name:cmc_kpi_mrp.cmc_measure_routed_mo_lead_minutes
+msgid "Routed manufacturing lead minutes"
+msgstr "Minuti di lead time di produzione (con ciclo)"
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+#: model:cmc.cost.driver,name:cmc_kpi_mrp.cmc_measure_routed_produced_qty
+msgid "Routed produced quantity"
+msgstr "Quantità prodotta (con ciclo)"
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
 msgid "Scrapped quantity"
 msgstr "Quantità scartata"
 
@@ -207,44 +235,16 @@ msgid "Value-added minutes"
 msgstr "Minuti a valore aggiunto"
 
 #. module: cmc_kpi_mrp
+#: model:ir.model,name:cmc_kpi_mrp.model_mrp_workorder
+msgid "Work Order"
+msgstr "Ordine di lavoro"
+
+#. module: cmc_kpi_mrp
 #. odoo-python
 #: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
 #: model:cmc.cost.driver,name:cmc_kpi_mrp.cmc_measure_wo_minutes
 msgid "Work order minutes"
 msgstr "Minuti ordini di lavoro"
-
-#. module: cmc_kpi_mrp
-#: model:ir.model.fields,field_description:cmc_kpi_mrp.field_mrp_workorder__cmc_productive_minutes
-msgid "Productive Minutes"
-msgstr "Minuti produttivi"
-
-#. module: cmc_kpi_mrp
-#: model:ir.model.fields,help:cmc_kpi_mrp.field_mrp_workorder__cmc_productive_minutes
-msgid ""
-"Productive time entries merged: overlapping timers of concurrent operators "
-"count once."
-msgstr ""
-"Registrazioni di tempo produttivo unite: i timer sovrapposti di operatori "
-"concorrenti contano una volta."
-
-#. module: cmc_kpi_mrp
-#. odoo-python
-#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
-#: model:cmc.cost.driver,name:cmc_kpi_mrp.cmc_measure_routed_mo_lead_minutes
-msgid "Routed manufacturing lead minutes"
-msgstr "Minuti di lead time di produzione (con ciclo)"
-
-#. module: cmc_kpi_mrp
-#. odoo-python
-#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
-#: model:cmc.cost.driver,name:cmc_kpi_mrp.cmc_measure_routed_produced_qty
-msgid "Routed produced quantity"
-msgstr "Quantità prodotta (con ciclo)"
-
-#. module: cmc_kpi_mrp
-#: model:ir.model,name:cmc_kpi_mrp.model_mrp_workorder
-msgid "Work Order"
-msgstr "Ordine di lavoro"
 
 #. module: cmc_kpi_mrp
 #. odoo-python

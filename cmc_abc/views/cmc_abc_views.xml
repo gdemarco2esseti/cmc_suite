@@ -183,7 +183,8 @@
                     <button name="action_compute" string="Compute" type="object"
                             class="oe_highlight" invisible="state == 'done'"/>
                     <button name="action_cmc_prefill_lines" string="Prefill Edges from Facts" type="object"
-                            invisible="state == 'done'"/>
+                            invisible="state == 'done'"
+                            confirm="Prefilling replaces the current lines with the quantities read from the data. Continue?"/>
                     <button name="action_reset_to_draft" string="Reset to Draft"
                             type="object" invisible="state != 'done'"
                             confirm="Resetting deletes the computed results. Continue?"/>

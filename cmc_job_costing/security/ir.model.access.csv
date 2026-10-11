@@ -21,3 +21,5 @@ access_cmc_evm_task_line_user,cmc.evm.task.line.user,model_cmc_evm_task_line,cmc
 access_cmc_evm_task_line_manager,cmc.evm.task.line.manager,model_cmc_evm_task_line,cmc_base.group_cmc_manager,1,1,1,1
 access_cmc_evm_curve_user,cmc.evm.curve.user,model_cmc_evm_curve,cmc_base.group_cmc_user,1,0,0,0
 access_cmc_evm_curve_manager,cmc.evm.curve.manager,model_cmc_evm_curve,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_evm_curve_series_user,cmc.evm.curve.series.user,model_cmc_evm_curve_series,cmc_base.group_cmc_user,1,0,0,0
+access_cmc_evm_curve_series_manager,cmc.evm.curve.series.manager,model_cmc_evm_curve_series,cmc_base.group_cmc_manager,1,0,0,0

@@ -145,7 +145,7 @@ class CmcJobCostRun(models.Model):
             list({acc.id for row in hours for acc in row[3:-1] if acc})
         )
         accounts.mapped("cmc_center_type")  # one prefetch for the whole set
-        hour_parts = []
+        hour_parts, no_center = [], defaultdict(float)
         for rows in (hours, period_hours):
             out = []
             for obj, employee, month, *rest in rows:
@@ -154,10 +154,25 @@ class CmcJobCostRun(models.Model):
                 qty, cols = rest[-1], rest[:-1]
                 centers = [acc for acc in cols if acc and (acc.cmc_center_type or acc.cmc_is_period)]
                 if not centers:
-                    raise UserError(self.env._("Hours of %(job)s have no cost center.", job=obj.display_name))
+                    if rows is hours:  # the period hours are a subset of the to-date ones
+                        no_center[obj] += qty
+                    continue
                 out.append((obj.id, employee, month, centers[0], qty))
             hour_parts.append(out)
+        if no_center:
+            raise self._cmc_no_center_error(no_center)
         return *direct_parts, *hour_parts, projects, {o.res_id: o for o in objects}
+
+    def _cmc_no_center_error(self, hours_by_object):
+        """One UserError listing every job with hours but no cost center, and the plans where to set it."""
+        plans = self.env["account.analytic.account"]._read_group(
+            [("cmc_center_type", "!=", False), ("company_id", "in", [False, self.company_id.id])], ["plan_id"]
+        )
+        return UserError(self.env._(
+            "Some jobs have hours without a cost center:\n%(jobs)s\nSet the cost center of each project on the analytic plan %(plans)s, then compute again.",
+            jobs="\n".join("- %s: %.2f h" % (obj.display_name, qty) for obj, qty in hours_by_object.items()),
+            plans=", ".join(plan.display_name for (plan,) in plans),
+        ))
 
     def _cmc_scope_object_ids(self, objects, period_costs, period_hours):
         """Empty scope (RN-002): jobs with activity in the period plus the jobs still open at the end of it;

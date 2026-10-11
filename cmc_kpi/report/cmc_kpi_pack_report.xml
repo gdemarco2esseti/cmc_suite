@@ -16,7 +16,7 @@
             <t t-foreach="docs" t-as="doc">
                 <t t-call="web.external_layout">
                     <t t-set="data" t-value="doc._cmc_pack_data()"/>
-                    <t t-set="light" t-value="{'green': 'text-bg-success', 'amber': 'text-bg-warning', 'red': 'text-bg-danger', 'none': 'text-bg-secondary', 'ok': 'text-bg-success', 'alert': 'text-bg-danger', 'not_computable': 'text-bg-secondary'}"/>
+                    <t t-set="light" t-value="{'green': 'text-bg-success', 'amber': 'text-bg-warning', 'red': 'text-bg-danger', 'none': 'text-bg-secondary', 'ok': 'text-bg-success', 'alert': 'text-bg-danger', 'not_computable': 'text-bg-secondary', 'no_data': 'text-bg-secondary'}"/>
                     <div class="page">
                         <h2>Management Pack: <span t-field="doc.name"/></h2>
                         <p><span t-out="data['month']" t-options='{"widget": "date", "format": "MMMM yyyy"}'/></p>
@@ -37,10 +37,10 @@
                                     <tr>
                                         <td><t t-out="row['kpi'].name"/></td>
                                         <td class="text-end">
-                                            <t t-if="row['computable']" t-out="row['value']" t-options='{"widget": "float", "precision": 2}'/>
+                                            <t t-if="row['computable']" t-out="row['value_display']"/>
                                             <t t-else="">n.c.</t>
                                         </td>
-                                        <td class="text-end"><t t-out="row['target']" t-options='{"widget": "float", "precision": 2}'/></td>
+                                        <td class="text-end"><t t-out="row['target_display']"/></td>
                                         <td><span t-att-class="'badge ' + light[row['status']]" t-out="row['status']"/></td>
                                         <td><t t-out="row['trend']"/></td>
                                     </tr>
@@ -111,7 +111,7 @@
                                     <tr t-foreach="data['ratios']" t-as="row">
                                         <td><t t-out="row['name']"/></td>
                                         <td class="text-end">
-                                            <t t-if="row['status'] != 'not_computable'" t-out="row['value']" t-options='{"widget": "float", "precision": 2}'/>
+                                            <t t-if="row['status'] != 'not_computable'" t-out="row['value_display']"/>
                                             <t t-else="">n.c.</t>
                                         </td>
                                         <td><span t-att-class="'badge ' + light[row['status']]" t-out="row['status']"/></td>

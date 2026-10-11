@@ -11,3 +11,4 @@ from . import test_wp10_investment
 from . import test_wp10_security
 from . import test_wp10_performance
 from . import test_cvr_scenario_evaluator
+from . import test_fx_stress_2026_10

@@ -12,6 +12,7 @@ class CmcBudgetLine(models.Model):
     _check_company_auto = True
     _cmc_run_field = "version_id"
 
+    date = fields.Date(string="Month")
     version_id = fields.Many2one("cmc.plan.version", required=True, ondelete="cascade", index=True)
     company_id = fields.Many2one(related="version_id.company_id", store=True, index=True)
     currency_id = fields.Many2one(related="version_id.currency_id")

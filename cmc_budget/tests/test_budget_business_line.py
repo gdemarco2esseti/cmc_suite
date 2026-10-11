@@ -8,6 +8,8 @@ cost reader is center based -> the actual sits in the business_line_id False gro
     Windows plan_month -400  actual_month    0  variance_month +400  (+100.0 %)
     False   plan_month -100  actual_month -900  variance_month -800  (-800.0 %)
   groupby center: one row, plan -1,100, actual -900 (the business line does not split the center total).
+  view (FX-009 / DL-006): ONE row center M x rent x Feb, business_line_id False (several on the plan), plan 1,100,
+  actual 900, variance +200 (natural actual - natural plan: -900 - -1,100).
 """
 
 from odoo.tests.common import tagged
@@ -41,10 +43,24 @@ class TestBudgetBusinessLine(CmcBudgetCase):
         ])
 
     def test_bva_view_exposes_business_line(self):
-        # T-A / BUD-01: the BvA SQL view carries business_line_id as a key (plan rows keep theirs)
+        # T-A / FX-009 / DL-004: one BvA row per center x element x month; business_line_id is informational,
+        # False when the plan lines carry several (Doors + Windows + none); DL-006 costs presented positive
         Bva = self.env["cmc.budget.bva"]
-        rows = Bva.search([("version_id", "=", self.version.id), ("date", "=", d(2)), ("business_line_id", "=", self.doors.id)])
-        self.assertRecordValues(rows, [{"plan_amount": -600.0, "actual_amount": 0.0, "center_id": self.center.id}])
+        rows = Bva.search([("version_id", "=", self.version.id), ("date", "=", d(2)), ("center_id", "=", self.center.id)])
+        self.assertRecordValues(rows, [{
+            "business_line_id": False, "plan_amount": 1100.0, "actual_amount": 900.0, "variance": 200.0,
+            "element_id": self.rent.id,
+        }])
+
+    def test_bva_view_single_business_line_is_shown(self):
+        # T-A / FX-009: when every plan line of the row carries the same business line, the row shows it
+        version = self._version(name="BUD bl single 2033")
+        self._line(version, self.center, 3, 500.0, business_line_id=self.doors.id)
+        self._cost(self.center, 450.0, d(3, 10))
+        self._approve(version)
+        self.env.flush_all()
+        rows = self.env["cmc.budget.bva"].search([("version_id", "=", version.id), ("date", "=", d(3)), ("center_id", "=", self.center.id)])
+        self.assertRecordValues(rows, [{"business_line_id": self.doors.id, "plan_amount": 500.0, "actual_amount": 450.0, "variance": 50.0}])
 
     def test_summary_by_business_line(self):
         # T-A / BUD-01: plan / actual / variance per business line, actuals without line under False

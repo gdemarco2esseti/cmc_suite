@@ -6,11 +6,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-09 23:35+0000\n"
+"POT-Creation-Date: 2026-10-11 16:15+0000\n"
 "PO-Revision-Date: 2026-10-09 23:35+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: it\n"
+"Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -19,11 +19,20 @@ msgstr ""
 #. module: cmc_standard_cost
 #. odoo-python
 #: code:addons/cmc_standard_cost/models/cmc_plan_version.py:0
-msgid ""
-"%(center)s has budget figures but no capacity analysis covering %(version)s."
-msgstr ""
-"%(center)s ha valori di budget ma nessuna analisi di capacità che copra "
-"%(version)s."
+msgid "%(budget)s has no cost figure between %(date_from)s and %(date_to)s: enter them in the Budget tab of that version, then prefill again."
+msgstr "%(budget)s non ha importi di costo tra %(date_from)s e %(date_to)s: inseriscili nella scheda Budget di quella versione, poi precompila di nuovo."
+
+#. module: cmc_standard_cost
+#. odoo-python
+#: code:addons/cmc_standard_cost/models/cmc_plan_version.py:0
+msgid "%(center)s has budget figures but no capacity analysis covering %(version)s."
+msgstr "%(center)s ha valori di budget ma nessuna analisi di capacità che copra %(version)s."
+
+#. module: cmc_standard_cost
+#. odoo-python
+#: code:addons/cmc_standard_cost/models/cmc_plan_version.py:0
+msgid "%(version)s: costs already pushed to the stock valuation on %(date)s. Create a new version."
+msgstr "%(version)s: costi già trasferiti alla valorizzazione di magazzino il %(date)s. Crea una nuova versione."
 
 #. module: cmc_standard_cost
 #. odoo-python
@@ -40,9 +49,7 @@ msgstr "%s non è una versione standard approvata."
 #. module: cmc_standard_cost
 #: model:ir.model.fields,help:cmc_standard_cost.field_cmc_standard_card_line__price
 msgid "A sub-assembly is priced at its card cost at roll-up time."
-msgstr ""
-"Un semilavorato è valorizzato al costo della sua scheda al momento del roll-"
-"up."
+msgstr "Un semilavorato è valorizzato al costo della sua scheda al momento del roll-up."
 
 #. module: cmc_standard_cost
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__absorption_ids
@@ -176,6 +183,7 @@ msgstr "Tabella versioni standard CMC"
 #. module: cmc_standard_cost
 #: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_prefill_wizard_form
 #: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_rollup_wizard_form
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_std_push_wizard_form
 msgid "Cancel"
 msgstr "Annulla"
 
@@ -222,17 +230,14 @@ msgstr "Centro"
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rate__company_id
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__company_id
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__company_id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_std_push_line__company_id
 msgid "Company"
 msgstr "Società"
 
 #. module: cmc_standard_cost
 #: model_terms:ir.actions.act_window,help:cmc_standard_cost.action_cmc_standard_variance_run
-msgid ""
-"Compare the manufacturing orders of a period with an approved standard "
-"version."
-msgstr ""
-"Confronta gli ordini di produzione di un periodo con una versione standard "
-"approvata."
+msgid "Compare the manufacturing orders of a period with an approved standard version."
+msgstr "Confronta gli ordini di produzione di un periodo con una versione standard approvata."
 
 #. module: cmc_standard_cost
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card_line__product_id
@@ -244,6 +249,11 @@ msgstr "Componente"
 #: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_variance_run_form
 msgid "Compute"
 msgstr "Calcola"
+
+#. module: cmc_standard_cost
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_std_push_wizard_form
+msgid "Confirm Push"
+msgstr "Conferma trasferimento"
 
 #. module: cmc_standard_cost
 #: model:ir.ui.menu,name:cmc_standard_cost.menu_cmc_standard_card
@@ -273,6 +283,9 @@ msgstr "Crea un'elaborazione degli scostamenti"
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rollup_wizard__create_uid
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__create_uid
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__create_uid
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_std_push_line__create_uid
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_std_push_wizard__create_uid
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_std_push_wizard_line__create_uid
 msgid "Created by"
 msgstr "Creato da"
 
@@ -286,6 +299,9 @@ msgstr "Creato da"
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rollup_wizard__create_date
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__create_date
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__create_date
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_std_push_line__create_date
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_std_push_wizard__create_date
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_std_push_wizard_line__create_date
 msgid "Created on"
 msgstr "Creato il"
 
@@ -295,6 +311,11 @@ msgstr "Creato il"
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__currency_id
 msgid "Currency"
 msgstr "Valuta"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_std_push_wizard_line__old_cost
+msgid "Current Cost"
+msgstr "Costo attuale"
 
 #. module: cmc_standard_cost
 #: model:ir.model.fields,help:cmc_standard_cost.field_cmc_standard_card__valuation_price
@@ -328,6 +349,9 @@ msgstr "Differenza x quantità disponibile."
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rollup_wizard__display_name
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__display_name
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__display_name
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_std_push_line__display_name
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_std_push_wizard__display_name
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_std_push_wizard_line__display_name
 msgid "Display Name"
 msgstr "Nome visualizzato"
 
@@ -376,6 +400,9 @@ msgstr "Tariffa fissa"
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rollup_wizard__id
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__id
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_std_push_line__id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_std_push_wizard__id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_std_push_wizard_line__id
 msgid "ID"
 msgstr "ID"
 
@@ -401,6 +428,9 @@ msgstr "Manodopera"
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rollup_wizard__write_uid
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__write_uid
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__write_uid
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_std_push_line__write_uid
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_std_push_wizard__write_uid
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_std_push_wizard_line__write_uid
 msgid "Last Updated by"
 msgstr "Ultimo aggiornamento di"
 
@@ -414,12 +444,16 @@ msgstr "Ultimo aggiornamento di"
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rollup_wizard__write_date
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__write_date
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__write_date
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_std_push_line__write_date
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_std_push_wizard__write_date
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_std_push_wizard_line__write_date
 msgid "Last Updated on"
 msgstr "Ultimo aggiornamento il"
 
 #. module: cmc_standard_cost
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card__line_ids
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__line_ids
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_std_push_wizard__line_ids
 msgid "Line"
 msgstr "Riga"
 
@@ -453,16 +487,12 @@ msgstr "Materiale"
 #. module: cmc_standard_cost
 #: model:ir.model.fields,help:cmc_standard_cost.field_cmc_standard_variance_line__price_variance
 msgid "Material price variance; for labour the rate variance."
-msgstr ""
-"Scostamento di prezzo dei materiali; per la manodopera, scostamento di "
-"tariffa."
+msgstr "Scostamento di prezzo dei materiali; per la manodopera, scostamento di tariffa."
 
 #. module: cmc_standard_cost
 #: model:ir.model.fields,help:cmc_standard_cost.field_cmc_standard_variance_line__quantity_variance
 msgid "Material usage variance; for labour the efficiency variance."
-msgstr ""
-"Scostamento di impiego dei materiali; per la manodopera, scostamento di "
-"efficienza."
+msgstr "Scostamento di impiego dei materiali; per la manodopera, scostamento di efficienza."
 
 #. module: cmc_standard_cost
 #: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_variance_run_form
@@ -480,16 +510,33 @@ msgid "Name"
 msgstr "Nome"
 
 #. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_std_push_line__new_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_std_push_wizard_line__new_cost
+msgid "New Cost"
+msgstr "Nuovo costo"
+
+#. module: cmc_standard_cost
 #. odoo-python
 #: code:addons/cmc_standard_cost/models/cmc_standard_rollup.py:0
 msgid "No labour rate for %(center)s in %(version)s."
 msgstr "Nessuna tariffa di manodopera per %(center)s in %(version)s."
 
 #. module: cmc_standard_cost
+#. odoo-python
+#: code:addons/cmc_standard_cost/models/cmc_standard_rollup.py:0
+msgid "No manufacturing bill of materials for %(products)s in %(company)s: create one in Manufacturing > Products > Bills of Materials (type 'Manufacture this product'), then roll up again."
+msgstr "Nessuna distinta base di produzione per %(products)s in %(company)s: creala in Produzione > Prodotti > Distinte base (tipo 'Produzione del prodotto'), poi rilancia il roll-up."
+
+#. module: cmc_standard_cost
 #: model:ir.model.fields.selection,name:cmc_standard_cost.selection__cmc_standard_prefill_wizard__basis__normal
 #: model:ir.model.fields.selection,name:cmc_standard_cost.selection__cmc_standard_rate__capacity_basis__normal
 msgid "Normal capacity"
 msgstr "Capacità normale"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_std_push_line__old_cost
+msgid "Old Cost"
+msgstr "Costo precedente"
 
 #. module: cmc_standard_cost
 #: model:ir.model.constraint,message:cmc_standard_cost.constraint_cmc_standard_price_version_product_uniq
@@ -510,9 +557,7 @@ msgstr "Una scheda di costo standard per prodotto in una versione."
 #. odoo-python
 #: code:addons/cmc_standard_cost/models/cmc_plan_version.py:0
 msgid "Only a Controlling Manager pushes standard costs to the valuation."
-msgstr ""
-"Solo un Responsabile del controllo di gestione trasferisce i costi standard "
-"alla valorizzazione."
+msgstr "Solo un Responsabile del controllo di gestione trasferisce i costi standard alla valorizzazione."
 
 #. module: cmc_standard_cost
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__output_qty
@@ -637,6 +682,8 @@ msgstr "Scostamento di prezzo"
 #. module: cmc_standard_cost
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card__product_id
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_price__product_id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_std_push_line__product_id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_std_push_wizard_line__product_id
 msgid "Product"
 msgstr "Prodotto"
 
@@ -651,9 +698,34 @@ msgid "Products"
 msgstr "Prodotti"
 
 #. module: cmc_standard_cost
+#. odoo-python
+#: code:addons/cmc_standard_cost/models/cmc_plan_version.py:0
+#: model:ir.model,name:cmc_standard_cost.model_cmc_std_push_wizard
 #: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_plan_version_form_standard
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_std_push_wizard_form
 msgid "Push Standard Prices"
 msgstr "Trasferisci prezzi standard"
+
+#. module: cmc_standard_cost
+#: model:ir.model,name:cmc_standard_cost.model_cmc_std_push_wizard_line
+msgid "Push Standard Prices Line"
+msgstr "Riga trasferimento prezzi standard"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_plan_version__std_push_date
+msgid "Pushed On"
+msgstr "Trasferito il"
+
+#. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_plan_version__std_push_line_ids
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_plan_version_form_standard
+msgid "Pushed Prices"
+msgstr "Prezzi trasferiti"
+
+#. module: cmc_standard_cost
+#: model:ir.model,name:cmc_standard_cost.model_cmc_std_push_line
+msgid "Pushed Standard Price"
+msgstr "Prezzo standard trasferito"
 
 #. module: cmc_standard_cost
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_card__qty_available
@@ -693,7 +765,7 @@ msgstr "Riporta in bozza"
 #. module: cmc_standard_cost
 #: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_variance_run_form
 msgid "Resetting deletes the computed results. Continue?"
-msgstr "Il ripristino elimina i risultati calcolati. Continuare?"
+msgstr "Riportando in bozza i risultati calcolati vengono cancellati. Continuare?"
 
 #. module: cmc_standard_cost
 #: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_rollup_wizard_form
@@ -875,13 +947,9 @@ msgid "The capacity basis is Practical or Normal."
 msgstr "La base di capacità è Pratica o Normale."
 
 #. module: cmc_standard_cost
-#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_plan_version_form_standard
-msgid ""
-"The card costs overwrite the standard price of the products valued at "
-"standard cost. Continue?"
-msgstr ""
-"I costi di scheda sovrascrivono il prezzo standard dei prodotti valorizzati "
-"a costo standard. Continuare?"
+#: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_std_push_wizard_form
+msgid "The card costs overwrite the standard price of the products valued at standard cost."
+msgstr "I costi della scheda sovrascrivono il prezzo standard dei prodotti valorizzati al costo standard."
 
 #. module: cmc_standard_cost
 #. odoo-python
@@ -997,6 +1065,8 @@ msgstr "Scostamenti"
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rate__version_id
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_rollup_wizard__version_id
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_run__version_id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_std_push_line__version_id
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_std_push_wizard__version_id
 msgid "Version"
 msgstr "Versione"
 
@@ -1011,12 +1081,15 @@ msgid "Volume Variance"
 msgstr "Scostamento di volume"
 
 #. module: cmc_standard_cost
+#: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_std_push_wizard_line__wizard_id
+msgid "Wizard"
+msgstr "Procedura guidata"
+
+#. module: cmc_standard_cost
 #. odoo-python
 #: code:addons/cmc_standard_cost/models/cmc_standard_rollup.py:0
 msgid "Work center %s has no CMC cost center in its analytic distribution."
-msgstr ""
-"Il centro di lavoro %s non ha alcun centro di costo CMC nella propria "
-"distribuzione analitica."
+msgstr "Il centro di lavoro %s non ha alcun centro di costo CMC nella propria distribuzione analitica."
 
 #. module: cmc_standard_cost
 #: model_terms:ir.ui.view,arch_db:cmc_standard_cost.view_cmc_standard_variance_run_form
@@ -1027,3 +1100,9 @@ msgstr "Resa"
 #: model:ir.model.fields,field_description:cmc_standard_cost.field_cmc_standard_variance_line__yield_variance
 msgid "Yield Variance"
 msgstr "Scostamento di resa"
+
+#~ msgid "Computed"
+#~ msgstr "Calcolato"
+
+#~ msgid "Draft"
+#~ msgstr "Bozza"

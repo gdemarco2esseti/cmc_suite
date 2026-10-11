@@ -1,6 +1,6 @@
 {
     "name": "CMC - Profitability",
-    "version": "19.0.1.0.2",
+    "version": "19.0.1.0.3",
     "category": "Accounting/Accounting",
     "summary": "Customer, product and channel profitability: layered margins, whale curve, cost-to-serve, "
     "price waterfall, supplier TCO, transfer pricing, SBU margin",

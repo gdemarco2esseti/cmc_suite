@@ -1,6 +1,8 @@
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 
+from odoo.addons.cmc_base.models.cmc_utils import percent_factor
+
 from .cmc_fin_utils import split_codes
 
 
@@ -66,6 +68,21 @@ class CmcFinBenchmark(models.Model):
     year = fields.Integer(required=True, aggregator=False)
     ratio_id = fields.Many2one("cmc.fin.ratio", required=True, ondelete="cascade", check_company=True)
     value = fields.Float(aggregator="avg")
+    unit = fields.Selection(related="ratio_id.unit")
+    # why: percent ratios are stored as fractions; the user types the benchmark as read in the sector study (7.5 = 7.5 %)
+    value_input = fields.Float(
+        string="Benchmark", compute="_compute_value_input", inverse="_inverse_value_input", digits=(16, 4), aggregator=False,
+        help="As a percentage for percent ratios (7.5 = 7.5 %), as a plain number otherwise.",
+    )
+
+    @api.depends("value", "ratio_id.unit")
+    def _compute_value_input(self):
+        for benchmark in self:
+            benchmark.value_input = benchmark.value * percent_factor(benchmark.unit == "percent")
+
+    def _inverse_value_input(self):
+        for benchmark in self:
+            benchmark.value = benchmark.value_input / percent_factor(benchmark.unit == "percent")
 
 
 class CmcFinCriteriaChange(models.Model):

@@ -6,3 +6,4 @@ from . import test_readers
 from . import test_invoice_feeder
 from . import test_wp01_reconciliation
 from . import test_wp01_allocation_guard
+from . import test_fx_stress_2026_10

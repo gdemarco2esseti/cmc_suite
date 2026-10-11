@@ -1,15 +1,17 @@
 """BUD-04 / INT-07 - budget vs actual, live SQL view, monthly / YTD / prior year, % and alerts.
 
-Hand-computed (center B, rent fixed, natural sign): budget Jan-Mar 1,000 each; actual 2033 Jan 900,
+Hand-computed (center B, rent fixed): budget Jan-Mar 1,000 each; actual 2033 Jan 900,
 Feb 1,200, Mar 1,050; actual 2032 Jan 800, Feb 700, Mar 600.
-  view Feb: plan -1,000, actual -1,200, variance -200 (unfavourable), prior -700; Jan variance +100.
-  summary at 15 Feb: month plan -1,000 actual -1,200 var -200 (-20.0%); YTD plan -2,000 actual -2,100
+  view Feb (DL-006 presentation sign, costs positive): plan 1,000, actual 1,200, variance -200 (unfavourable),
+  prior 700; Jan variance +100. Only approved versions have rows (DL-004).
+  summary at 15 Feb (natural sign, unchanged): month plan -1,000 actual -1,200 var -200 (-20.0%); YTD plan -2,000 actual -2,100
   var -100 (-5.0%); prior YTD -1,500; threshold 10 -> alert_month True, alert_ytd False; threshold 4 -> both.
-INT-07: budget 1,000 EUR at 1.1 -> plan -1,100 in company currency.
-RN-004: is_alert on the center x element x month grain, threshold 10:
-  energy Feb plan fixed 400 + variable 600, actual semi-variable 1,050 -> group plan -1,000 actual -1,050 (-5%)
-  -> no row flagged (row grain would flag fixed and variable at 100%); actual 1,500 (-50%) -> every row flagged.
-  rent Feb plan Doors 600 + Windows 400, actual 1,050 (no business line) -> -5% -> no row flagged.
+INT-07: budget 1,000 EUR at 1.1 -> plan 1,100 in company currency.
+RN-004 + FX-009: the fixed/variable or business-line split of the plan lives on ONE center x element x month row,
+threshold 10:
+  energy Feb plan fixed 400 + variable 600, actual semi-variable 1,050 -> row plan 1,000 actual 1,050 (-5%)
+  -> not flagged; actual 1,500 (-50%) -> flagged. Behavior of the row False (several on the plan).
+  rent Feb plan Doors 600 + Windows 400, actual 1,050 (no business line) -> -5% -> not flagged.
 """
 
 from odoo.tests.common import tagged
@@ -41,21 +43,21 @@ class TestBudgetBva(CmcBudgetCase):
         return rows
 
     def test_monthly_row_plan_actual_variance(self):
-        # BUD-04: one row per version x month x center x element x behavior
+        # BUD-04 / FX-009: one row per version x month x center x element; DL-006 costs presented positive
         self.assertRecordValues(self._row(2), [{
-            "plan_amount": -1000.0, "actual_amount": -1200.0, "variance": -200.0, "prior_actual_amount": -700.0,
+            "plan_amount": 1000.0, "actual_amount": 1200.0, "variance": -200.0, "prior_actual_amount": 700.0,
             "element_id": self.rent.id, "behavior": "fixed", "version_type": "budget", "company_id": self.company.id,
         }])
 
     def test_cost_saving_is_favourable(self):
         # AD-112: spending less than budget is a positive variance
-        self.assertRecordValues(self._row(1), [{"actual_amount": -900.0, "variance": 100.0}])
+        self.assertRecordValues(self._row(1), [{"actual_amount": 900.0, "variance": 100.0}])
 
     def test_view_is_live(self):
         # AD-114: the view reads the actuals live, no recompute
         self._cost(self.center, 300.0, d(3, 20))
         self.env.flush_all()
-        self.assertRecordValues(self._row(3), [{"actual_amount": -1350.0, "variance": -350.0}])
+        self.assertRecordValues(self._row(3), [{"actual_amount": 1350.0, "variance": -350.0}])
 
     def test_actual_outside_span_is_not_a_row_of_the_version(self):
         # BUD-04: 2032 actuals are only the prior-year column of the 2033 version
@@ -67,7 +69,7 @@ class TestBudgetBva(CmcBudgetCase):
         self._cost(self.center, 40.0, d(2, 5), element=self.energy, behavior="variable")
         self.env.flush_all()
         row = self.Bva.search([("version_id", "=", self.version.id), ("date", "=", d(2)), ("element_id", "=", self.energy.id)])
-        self.assertRecordValues(row, [{"plan_amount": 0.0, "actual_amount": -40.0, "variance": -40.0}])
+        self.assertRecordValues(row, [{"plan_amount": 0.0, "actual_amount": 40.0, "variance": -40.0}])
 
     def test_summary_month_ytd_and_prior_year(self):
         # BUD-04: monthly and YTD, absolute and %, against prior year
@@ -96,16 +98,18 @@ class TestBudgetBva(CmcBudgetCase):
         version = self._version(name="BUD bva fx", currency_id=eur.id, currency_rate=1.1)
         self._line(version, center, 3, 1000.0)
         self._cost(center, 1000.0, d(3, 3))
+        self._approve(version)  # DL-004: only approved versions are in the view
         self.env.flush_all()
         self.assertRecordValues(self._row(3, version=version, center=center),
-                                [{"plan_amount": -1100.0, "actual_amount": -1000.0, "variance": 100.0}])
+                                [{"plan_amount": 1100.0, "actual_amount": 1000.0, "variance": 100.0}])
 
     def test_forecast_version_has_its_own_rows(self):
         # FCS-01: a forecast is comparable with the budget on the same actuals
         forecast = self.version.copy({"version_type": "forecast"})
         forecast.budget_line_ids.filtered(lambda line: line.date == d(2)).figure = 1200.0
+        self._approve(forecast)  # DL-004: the copy is draft; only approved versions are in the view
         self.env.flush_all()
-        self.assertRecordValues(self._row(2, version=forecast), [{"version_type": "forecast", "plan_amount": -1200.0, "variance": 0.0}])
+        self.assertRecordValues(self._row(2, version=forecast), [{"version_type": "forecast", "plan_amount": 1200.0, "variance": 0.0}])
 
     def test_summary_query_count_independent_of_volume(self):
         # AD-114: grouped reads; months, lines and postings do not add queries
@@ -116,7 +120,7 @@ class TestBudgetBva(CmcBudgetCase):
                 self._line(version, center, month, 100.0)
                 for i in range(postings):
                     self._cost(center, 1.0 + i, d(month, 1 + i % 28))
-            return version
+            return self._approve(version)  # the summary compares approved versions only
 
         counts = []
         for version in (build("small", 1, 1), build("large", 12, 6)):
@@ -127,9 +131,11 @@ class TestBudgetBva(CmcBudgetCase):
         self.assertLessEqual(counts[1], counts[0] + 2, f"query count grows with the volume: {counts}")
 
     def _alerts(self, version, center):
+        self._approve(version)  # DL-004: only approved versions are in the view
         self.env.flush_all()
         rows = self.Bva.search([("version_id", "=", version.id), ("center_id", "=", center.id), ("date", "=", d(2))])
-        self.assertGreater(len(rows), 1, "the fixture must spread the group over several rows")
+        # FX-009: the split of the plan (behavior / business line) never splits the center x element x month row
+        self.assertEqual(len(rows), 1, rows.read(["behavior", "business_line_id", "plan_amount", "actual_amount"]))
         return rows
 
     def test_rn004_behavior_split_within_threshold_not_flagged(self):
@@ -139,18 +145,18 @@ class TestBudgetBva(CmcBudgetCase):
         self._line(version, center, 2, 400.0, element=self.energy, behavior="fixed")
         self._line(version, center, 2, 600.0, element=self.energy, behavior="variable", driver_id=self.mh.id)
         self._cost(center, 1050.0, d(2, 10), element=self.energy, behavior="semi_variable")
-        rows = self._alerts(version, center)
-        self.assertEqual(rows.mapped("is_alert"), [False] * len(rows), rows.read(["behavior", "plan_amount", "actual_amount"]))
+        row = self._alerts(version, center)
+        self.assertRecordValues(row, [{"plan_amount": 1000.0, "actual_amount": 1050.0, "behavior": False, "is_alert": False}])
 
     def test_rn004_behavior_split_beyond_threshold_flags_every_row(self):
-        # RN-004 / BUD-04: beyond threshold the whole center x element group is flagged, the zero-plan actual row too
+        # RN-004 / BUD-04: beyond threshold the single center x element row is flagged
         center = self._center("BUD bva alert semi over")
         version = self._version(name="BUD bva alert semi over")
         self._line(version, center, 2, 400.0, element=self.energy, behavior="fixed")
         self._line(version, center, 2, 600.0, element=self.energy, behavior="variable", driver_id=self.mh.id)
         self._cost(center, 1500.0, d(2, 10), element=self.energy, behavior="semi_variable")
-        rows = self._alerts(version, center)
-        self.assertEqual(rows.mapped("is_alert"), [True] * len(rows), rows.read(["behavior", "plan_amount", "actual_amount"]))
+        row = self._alerts(version, center)
+        self.assertRecordValues(row, [{"plan_amount": 1000.0, "actual_amount": 1500.0, "behavior": False, "is_alert": True}])
 
     def test_rn004_business_line_split_within_threshold_not_flagged(self):
         # RN-004 / BUD-01 T-A: actuals carry no business line, so a business-line split never flags on its own
@@ -161,5 +167,5 @@ class TestBudgetBva(CmcBudgetCase):
         self._line(version, center, 2, 600.0, business_line_id=doors.id)
         self._line(version, center, 2, 400.0, business_line_id=windows.id)
         self._cost(center, 1050.0, d(2, 10))
-        rows = self._alerts(version, center)
-        self.assertEqual(rows.mapped("is_alert"), [False] * len(rows), rows.read(["business_line_id", "plan_amount", "actual_amount"]))
+        row = self._alerts(version, center)
+        self.assertRecordValues(row, [{"plan_amount": 1000.0, "actual_amount": 1050.0, "business_line_id": False, "is_alert": False}])

@@ -122,10 +122,10 @@ class TestKpiRun(KpiCase):
         self.assertEqual(feb.trend, "improving")
 
     def test_not_computable_row(self):
-        # KPI-01: a KPI without data is shown as not computable (status none, no score, no trend)
+        # KPI-01 / DL-010: a measure KPI without facts in the month is "No data" (not computable, no score, no trend)
         lib = self._library()
         row = self._val(self._run(MAR), lib["otd"], MAR)
-        self.assertRecordValues(row, [{"computable": False, "value": 0.0, "status": "none", "score": 0.0, "trend": "none"}])
+        self.assertRecordValues(row, [{"computable": False, "value": 0.0, "status": "no_data", "score": 0.0, "trend": "none"}])
 
     def test_snapshot_until_reset(self):
         # AD-113: a computed run does not move with later facts; reset + compute picks them up
@@ -199,11 +199,12 @@ class TestKpiRun(KpiCase):
         self.assertFalse(run.value_ids)
 
     def test_rn003_reason_of_not_computable(self):
-        # RN-003: a not computable value says why, naming the KPI whose data is missing
+        # RN-003 / DL-010: a not computable value says why: a measure without facts "No data for the month",
+        # a formula names the input KPI whose data is missing
         lib = self._library()
         late = self._kpi("late_share", "formula", formula="100 - otd", unit="percent")
         run = self._run(MAR)
-        self.assertIn("otd", self._val(run, lib["otd"], MAR).reason)
+        self.assertIn("No data for the month", self._val(run, lib["otd"], MAR).reason)
         self.assertIn("otd", self._val(run, late, MAR).reason)
         self.assertFalse(self._val(run, lib["yield_pct"], MAR).reason)
 

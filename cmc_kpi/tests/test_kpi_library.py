@@ -2,7 +2,7 @@
 
 Hand numbers (fixture in ``common.py``):
   measure sum: good units Jan 500 + 450 = 950 (a planned fact 99,999 is ignored); avg: cycle days (4 + 6) / 2 = 5.0;
-  ratio of two measures: OTD Jan 3 / 4 x 100 = 75.0, Feb 5 / 5 x 100 = 100.0, Mar 0 / 0 -> not computable.
+  ratio of two measures: OTD Jan 3 / 4 x 100 = 75.0, Feb 5 / 5 x 100 = 100.0, Mar 0 / 0 (no fact) -> "No data" (DL-010).
   ratio: current_ratio 2026 = (400 + 600) / 500 = 2.0, 2025 = 800 / 200 = 4.0 (financial analysis run).
   variance: rent on "KPI production" Jan (-900) - (-1,000) = +100 -> +10.0 %, Feb -20.0 %; YTD Feb -100 / 2,000 = -5.0 %.
   formula: MCE = processing 2 / (2 + 0.5 + 0.5 + 7) x 100 = 20.0 (Kaplan-Cooper Ch4).
@@ -79,11 +79,11 @@ class TestKpiSources(KpiCase):
         self.assertRecordValues(self._val(run, kpi, FEB), [{"value": 900.0, "computable": True}])
 
     def test_measure_average(self):
-        # KPI-02: cycle time = average of the month's facts; no fact -> not computable, not 0
+        # KPI-02 / DL-010: cycle time = average of the month's facts; no fact -> "No data" (not computable), not 0
         kpi = self._kpi("cycle_time", "measure", driver_id=self.cycle.id, aggregation="avg", direction="lower")
         run = self._run(JAN, FEB)
         self.assertRecordValues(self._val(run, kpi, JAN), [{"value": 5.0, "computable": True}])
-        self.assertRecordValues(self._val(run, kpi, FEB), [{"value": 0.0, "computable": False, "status": "none"}])
+        self.assertRecordValues(self._val(run, kpi, FEB), [{"value": 0.0, "computable": False, "status": "no_data", "score": 0.0}])
 
     def test_measure_filtered_by_center(self):
         # KPI-01: a measure KPI can be scoped to a center (the facts of other centers are excluded)
@@ -92,12 +92,12 @@ class TestKpiSources(KpiCase):
         self.assertEqual(self._val(self._run(), kpi, JAN).value, 70.0)
 
     def test_measure_over_denominator_scaled(self):
-        # KPI-02: OTD % = on-time shipments / shipments x 100; Mar has no shipment -> not computable
+        # KPI-02 / DL-010: OTD % = on-time shipments / shipments x 100; Mar has no shipment (no fact) -> "No data"
         kpi = self._library()["otd"]
         run = self._run(JAN, MAR)
         self.assertAlmostEqual(self._val(run, kpi, JAN).value, 75.0, places=4)
         self.assertAlmostEqual(self._val(run, kpi, FEB).value, 100.0, places=4)
-        self.assertRecordValues(self._val(run, kpi, MAR), [{"computable": False, "status": "none"}])
+        self.assertRecordValues(self._val(run, kpi, MAR), [{"computable": False, "status": "no_data", "score": 0.0}])
 
     def test_ratio_from_computed_fin_analysis(self):
         # KPI-01 / AD-102: the ratio value of the month's year, read from the computed analysis run

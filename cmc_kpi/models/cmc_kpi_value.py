@@ -1,4 +1,6 @@
-from odoo import fields, models
+from odoo import api, fields, models
+
+from odoo.addons.cmc_base.models.cmc_utils import format_figure
 
 from .cmc_kpi import PERSPECTIVES
 
@@ -25,7 +27,8 @@ class CmcKpiValue(models.Model):
     target_source = fields.Selection([("version", "Plan version"), ("static", "KPI")])
     gap_pct = fields.Float(string="Gap %", aggregator="avg")
     status = fields.Selection(
-        [("green", "On target"), ("amber", "Attention"), ("red", "Off target"), ("none", "Not computable")], default="none"
+        [("green", "On target"), ("amber", "Attention"), ("red", "Off target"), ("none", "Not computable"), ("no_data", "No data")],
+        default="none",
     )
     score = fields.Float(aggregator="avg")
     previous_value = fields.Float(digits=(16, 4), aggregator=False)
@@ -33,6 +36,16 @@ class CmcKpiValue(models.Model):
     trend = fields.Selection(
         [("improving", "Improving"), ("worsening", "Worsening"), ("stable", "Stable"), ("none", "No trend")], default="none"
     )
+    value_display = fields.Char(string="KPI Value", compute="_compute_display_figures")
+    target_display = fields.Char(string="KPI Target", compute="_compute_display_figures")
+
+    @api.depends("value", "target", "kpi_id.unit", "kpi_id.source_type")
+    def _compute_display_figures(self):
+        for rec in self:
+            # why: a percent financial ratio is a fraction (0.9076), the same figure the ratio list shows as 90.76 %
+            percent, fraction = rec.kpi_id.unit == "percent", bool(rec.kpi_id) and rec.kpi_id._cmc_is_fraction_percent()
+            rec.value_display = format_figure(self.env, rec.value, percent, fraction, digits=4)
+            rec.target_display = format_figure(self.env, rec.target, percent, fraction, digits=4)
 
 
 class CmcKpiScorecardResult(models.Model):

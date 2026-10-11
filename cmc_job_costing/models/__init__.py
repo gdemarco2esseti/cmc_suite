@@ -6,3 +6,4 @@ from . import cmc_job_cost_run
 from . import cmc_evm_baseline
 from . import cmc_evm_change
 from . import cmc_evm_run
+from . import cmc_evm_curve_series

@@ -6,11 +6,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-09 23:35+0000\n"
+"POT-Creation-Date: 2026-10-11 16:26+0000\n"
 "PO-Revision-Date: 2026-10-09 23:35+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: it\n"
+"Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -20,9 +20,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/cmc_fin_analysis/models/cmc_fin_analysis.py:0
 msgid "%(label)s needs lines of schemes not selected in the run: %(names)s"
-msgstr ""
-"%(label)s richiede righe di schemi non selezionati nell'elaborazione: "
-"%(names)s"
+msgstr "%(label)s richiede righe di schemi non selezionati nell'elaborazione: %(names)s"
 
 #. module: cmc_fin_analysis
 #. odoo-python
@@ -37,12 +35,8 @@ msgstr "'Analisi di bilancio - %s' % object.name"
 
 #. module: cmc_fin_analysis
 #: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.report_cmc_fin_analysis_document
-msgid ""
-"(*) Valuation criteria changed: the value and its change versus the previous"
-" year are not comparable."
-msgstr ""
-"(*) Criteri di valutazione modificati: il valore e la sua variazione "
-"rispetto all'anno precedente non sono confrontabili."
+msgid "(*) Valuation criteria changed: the value and its change versus the previous year are not comparable."
+msgstr "(*) Criteri di valutazione modificati: il valore e la sua variazione rispetto all'anno precedente non sono confrontabili."
 
 #. module: cmc_fin_analysis
 #. odoo-python
@@ -58,11 +52,8 @@ msgstr "Una regola di mappatura richiede almeno un criterio."
 
 #. module: cmc_fin_analysis
 #: model:ir.model.fields,help:cmc_fin_analysis.field_cmc_fin_analysis_value__comparability_break
-msgid ""
-"A valuation-criteria change makes this year, and its YoY, not comparable."
-msgstr ""
-"Un cambio dei criteri di valutazione rende non confrontabili questo anno e "
-"la sua variazione annua."
+msgid "A valuation-criteria change makes this year, and its YoY, not comparable."
+msgstr "Un cambio dei criteri di valutazione rende non confrontabili questo anno e la sua variazione annua."
 
 #. module: cmc_fin_analysis
 #: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_oic_a
@@ -86,11 +77,8 @@ msgstr "A.3 Dopo le variazioni del capitale circolante netto"
 
 #. module: cmc_fin_analysis
 #: model:ir.model.fields,help:cmc_fin_analysis.field_cmc_fin_analysis__reduced_mode
-msgid ""
-"Abbreviated statements: ratios needing detail are flagged not computable."
-msgstr ""
-"Bilancio abbreviato: gli indici che richiedono dettagli sono segnalati come "
-"non calcolabili."
+msgid "Abbreviated statements: ratios needing detail are flagged not computable."
+msgstr "Bilancio abbreviato: gli indici che richiedono dettagli sono segnalati come non calcolabili."
 
 #. module: cmc_fin_analysis
 #: model:ir.model.fields,help:cmc_fin_analysis.field_cmc_fin_override__amount
@@ -181,6 +169,11 @@ msgid "Area"
 msgstr "Area"
 
 #. module: cmc_fin_analysis
+#: model:ir.model.fields,help:cmc_fin_analysis.field_cmc_fin_benchmark__value_input
+msgid "As a percentage for percent ratios (7.5 = 7.5 %), as a plain number otherwise."
+msgstr "In percentuale per gli indici percentuali (7,5 = 7,5 %), come numero semplice per gli altri."
+
+#. module: cmc_fin_analysis
 #: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis__ateco_code
 #: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_benchmark__ateco_code
 msgid "Ateco Code"
@@ -210,9 +203,7 @@ msgstr "Stato patrimoniale (finanziario e funzionale)"
 #. module: cmc_fin_analysis
 #: model:ir.model.fields,help:cmc_fin_analysis.field_cmc_fin_scheme_line__result_line
 msgid "Balance sheet line receiving the result not yet closed to equity."
-msgstr ""
-"Voce di stato patrimoniale che riceve il risultato non ancora chiuso a "
-"patrimonio netto."
+msgstr "Voce di stato patrimoniale che riceve il risultato non ancora chiuso a patrimonio netto."
 
 #. module: cmc_fin_analysis
 #: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_scheme__base_code
@@ -220,6 +211,7 @@ msgid "Base Code"
 msgstr "Codice base"
 
 #. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_benchmark__value_input
 #: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio_value__benchmark
 msgid "Benchmark"
 msgstr "Benchmark"
@@ -298,12 +290,8 @@ msgstr "Modello di piano dei conti"
 
 #. module: cmc_fin_analysis
 #: model:ir.model.fields,help:cmc_fin_analysis.field_cmc_fin_mapping_rule__chart_template
-msgid ""
-"Chart of accounts the rule applies to (company chart_template); empty = "
-"every chart."
-msgstr ""
-"Piano dei conti a cui si applica la regola (chart_template della società); "
-"vuoto = tutti i piani."
+msgid "Chart of accounts the rule applies to (company chart_template); empty = every chart."
+msgstr "Piano dei conti a cui si applica la regola (chart_template della società); vuoto = tutti i piani."
 
 #. module: cmc_fin_analysis
 #: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_cf_check
@@ -334,11 +322,8 @@ msgstr "Codice"
 
 #. module: cmc_fin_analysis
 #: model:ir.model.fields,help:cmc_fin_analysis.field_cmc_fin_criteria_change__line_codes
-msgid ""
-"Comma-separated codes of the scheme lines whose value is not comparable."
-msgstr ""
-"Codici, separati da virgola, delle righe di schema il cui valore non è "
-"confrontabile."
+msgid "Comma-separated codes of the scheme lines whose value is not comparable."
+msgstr "Codici, separati da virgola, delle righe di schema il cui valore non è confrontabile."
 
 #. module: cmc_fin_analysis
 #: model:cmc.fin.ratio,name:cmc_fin_analysis.ratio_commercial_cycle
@@ -589,11 +574,8 @@ msgstr "Espressione"
 
 #. module: cmc_fin_analysis
 #: model:ir.model.fields,help:cmc_fin_analysis.field_cmc_fin_scheme_line__formula
-msgid ""
-"Expression over the line codes, prev_<code>, typed inputs and ratio codes."
-msgstr ""
-"Espressione sui codici di riga, prev_<codice>, input inseriti e codici degli"
-" indici."
+msgid "Expression over the line codes, prev_<code>, typed inputs and ratio codes."
+msgstr "Espressione sui codici di riga, prev_<codice>, input inseriti e codici degli indici."
 
 #. module: cmc_fin_analysis
 #: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_external_costs
@@ -877,9 +859,7 @@ msgstr "Crescita delle rimanenze vs crescita dei ricavi"
 #. module: cmc_fin_analysis
 #: model:ir.model.fields,help:cmc_fin_analysis.field_cmc_fin_analysis__excluded_journal_ids
 msgid "Journals ignored by the general ledger read (e.g. year-end closing)."
-msgstr ""
-"Registri ignorati dalla lettura della contabilità generale (es. chiusura "
-"d'esercizio)."
+msgstr "Registri ignorati dalla lettura della contabilità generale (es. chiusura d'esercizio)."
 
 #. module: cmc_fin_analysis
 #: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis__write_uid
@@ -999,9 +979,7 @@ msgstr "Nome"
 #. module: cmc_fin_analysis
 #: model:ir.model.fields,help:cmc_fin_analysis.field_cmc_fin_history__balance
 msgid "Natural sign (debit positive), pre-closing trial balance of the year."
-msgstr ""
-"Segno naturale (dare positivo), bilancio di verifica ante chiusura "
-"dell'esercizio."
+msgstr "Segno naturale (dare positivo), bilancio di verifica ante chiusura dell'esercizio."
 
 #. module: cmc_fin_analysis
 #: model:ir.model.fields,help:cmc_fin_analysis.field_cmc_fin_ratio__full_only
@@ -1074,9 +1052,7 @@ msgstr "Capitale circolante netto (CCN)"
 #. odoo-python
 #: code:addons/cmc_fin_analysis/models/cmc_fin_analysis.py:0
 msgid "No mapping rule of scheme %(scheme)s places the accounts: %(accounts)s"
-msgstr ""
-"Nessuna regola di mappatura dello schema %(scheme)s colloca i conti: "
-"%(accounts)s"
+msgstr "Nessuna regola di mappatura dello schema %(scheme)s colloca i conti: %(accounts)s"
 
 #. module: cmc_fin_analysis
 #: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_non_cash
@@ -1249,8 +1225,7 @@ msgstr "Risultato ante imposte"
 #. module: cmc_fin_analysis
 #: model:ir.model.fields,help:cmc_fin_analysis.field_cmc_fin_scheme_line__sign
 msgid "Presentation sign: value = sign x natural balance (debit positive)."
-msgstr ""
-"Segno di presentazione: valore = segno x saldo naturale (dare positivo)."
+msgstr "Segno di presentazione: valore = segno x saldo naturale (dare positivo)."
 
 #. module: cmc_fin_analysis
 #: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_production_value
@@ -1326,7 +1301,18 @@ msgid "Ratio"
 msgstr "Indice"
 
 #. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio_value__benchmark_display
+msgid "Ratio Benchmark"
+msgstr "Benchmark indice"
+
+#. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio_value__threshold_display
+msgid "Ratio Threshold"
+msgstr "Soglia indice"
+
+#. module: cmc_fin_analysis
 #: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_analysis__ratio_value_ids
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio_value__value_display
 msgid "Ratio Value"
 msgstr "Valore dell'indice"
 
@@ -1383,7 +1369,7 @@ msgstr "Riporta in bozza"
 #. module: cmc_fin_analysis
 #: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_analysis_form
 msgid "Resetting deletes the computed results. Continue?"
-msgstr "Il ripristino elimina i risultati calcolati. Continuare?"
+msgstr "Riportando in bozza i risultati calcolati vengono cancellati. Continuare?"
 
 #. module: cmc_fin_analysis
 #: model:cmc.fin.scheme.line,name:cmc_fin_analysis.line_liq_residual
@@ -1580,11 +1566,8 @@ msgstr "La destinazione deve essere una riga di conto dello schema."
 #. module: cmc_fin_analysis
 #. odoo-python
 #: code:addons/cmc_fin_analysis/models/cmc_fin_scheme.py:0
-msgid ""
-"The target of a mapping rule must be an account line of its own scheme."
-msgstr ""
-"La destinazione di una regola di mappatura deve essere una riga di conto del"
-" proprio schema."
+msgid "The target of a mapping rule must be an account line of its own scheme."
+msgstr "La destinazione di una regola di mappatura deve essere una riga di conto del proprio schema."
 
 #. module: cmc_fin_analysis
 #. odoo-python
@@ -1635,6 +1618,7 @@ msgid "Treasury margin"
 msgstr "Margine di tesoreria"
 
 #. module: cmc_fin_analysis
+#: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_benchmark__unit
 #: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio__unit
 #: model:ir.model.fields,field_description:cmc_fin_analysis.field_cmc_fin_ratio_value__unit
 msgid "Unit"
@@ -1749,3 +1733,6 @@ msgstr "vuoto"
 #: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.report_cmc_fin_analysis_document
 msgid "n.c."
 msgstr "n.c."
+
+#~ msgid "Computed"
+#~ msgstr "Calcolato"

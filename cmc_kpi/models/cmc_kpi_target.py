@@ -1,7 +1,7 @@
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 
-from odoo.addons.cmc_base.models.cmc_utils import month_start
+from odoo.addons.cmc_base.models.cmc_utils import month_start, percent_factor
 
 
 class CmcKpiTarget(models.Model):
@@ -16,8 +16,22 @@ class CmcKpiTarget(models.Model):
     company_id = fields.Many2one(related="version_id.company_id", store=True, index=True)
     kpi_id = fields.Many2one("cmc.kpi", string="KPI", required=True, ondelete="cascade", index=True, check_company=True)
     target_value = fields.Float()
+    # why: typed as read for a percent financial ratio (15 = 15 %), stored as a fraction like the ratio (RN-007)
+    target_input = fields.Float(
+        string="Target", compute="_compute_target_input", inverse="_inverse_target_input", digits=(16, 4),
+        help="As a percentage for percent KPIs (15 = 15 %).",
+    )
 
     _version_kpi_month_uniq = models.UniqueIndex("(version_id, kpi_id, date)", "A KPI has one target per month and plan version.")
+
+    @api.depends("target_value", "kpi_id.unit", "kpi_id.source_type")
+    def _compute_target_input(self):
+        for target in self:
+            target.target_input = target.target_value * percent_factor(bool(target.kpi_id) and target.kpi_id._cmc_is_fraction_percent())
+
+    def _inverse_target_input(self):
+        for target in self:
+            target.target_value = target.target_input / percent_factor(target.kpi_id._cmc_is_fraction_percent())
 
     @api.constrains("date", "version_id")
     def _check_date_in_version(self):

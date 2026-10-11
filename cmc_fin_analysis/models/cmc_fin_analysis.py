@@ -10,6 +10,8 @@ from odoo.fields import Domain
 from odoo.tools import float_is_zero
 from odoo.tools.safe_eval import _BUILTINS, safe_eval
 
+from odoo.addons.cmc_base.models.cmc_utils import format_figure
+
 from .cmc_fin_utils import split_codes
 
 # inputs read by the shipped ratios: known even when the company has not typed them (the ratio is then not computable)
@@ -96,7 +98,7 @@ class CmcFinAnalysis(models.Model):
     year_from = fields.Integer(required=True, default=lambda self: fields.Date.today().year - 2, aggregator=False)
     year_to = fields.Integer(required=True, default=lambda self: fields.Date.today().year, aggregator=False)
     scheme_ids = fields.Many2many("cmc.fin.scheme", default=lambda self: self._default_scheme_ids())
-    excluded_journal_ids = fields.Many2many("account.journal", check_company=True, help="Journals ignored by the general ledger read (e.g. year-end closing).")
+    excluded_journal_ids = fields.Many2many("account.journal", check_company=True, copy=False, groups="account.group_account_readonly", help="Journals ignored by the general ledger read (e.g. year-end closing).")
     reduced_mode = fields.Boolean(help="Abbreviated statements: ratios needing detail are flagged not computable.")
     ateco_code = fields.Char(help="Sector (ATECO) of the benchmarks shown next to the ratios.")
     value_ids = fields.One2many("cmc.fin.analysis.value", "run_id")
@@ -108,6 +110,15 @@ class CmcFinAnalysis(models.Model):
     def _default_scheme_ids(self):
         company_domain = Domain("company_id", "=", False) | Domain("company_id", "parent_of", self.env.company.id)
         return self.env["cmc.fin.scheme"].search(Domain("active", "=", True) & company_domain)
+
+    def copy(self, default=None):
+        copies = super().copy(default)
+        if not (default and "excluded_journal_ids" in default):
+            # why sudo: the field is accounting-gated, so the standard copy cannot read it for a CMC user (hence copy=False) and the
+            # duplicate would re-include the year-end closing journals; only the ids are carried over
+            for run, copied in zip(self.sudo(), copies.sudo()):
+                copied.excluded_journal_ids = run.excluded_journal_ids
+        return copies
 
     @api.constrains("year_from", "year_to")
     def _check_years(self):
@@ -385,8 +396,20 @@ class CmcFinRatioValue(models.Model):
     area = fields.Selection(related="ratio_id.area", store=True)
     unit = fields.Selection(related="ratio_id.unit")
     threshold_op = fields.Selection(related="ratio_id.threshold_op")
-    threshold = fields.Float(related="ratio_id.threshold")
-    value = fields.Float(aggregator="avg")
+    threshold = fields.Float(related="ratio_id.threshold", aggregator=False)
+    value = fields.Float(aggregator=False)
     status = fields.Selection([("ok", "OK"), ("alert", "Alert"), ("not_computable", "Not computable")])
     benchmark = fields.Float()
     has_benchmark = fields.Boolean()
+    # why: one list column per figure, shown as a percentage when the ratio is a percent (FX-018)
+    value_display = fields.Char(string="Ratio Value", compute="_compute_display_figures")
+    threshold_display = fields.Char(string="Ratio Threshold", compute="_compute_display_figures")
+    benchmark_display = fields.Char(string="Ratio Benchmark", compute="_compute_display_figures")
+
+    @api.depends("value", "threshold", "benchmark", "unit")
+    def _compute_display_figures(self):
+        for rec in self:
+            percent = rec.unit == "percent"
+            rec.value_display = format_figure(self.env, rec.value, percent)
+            rec.threshold_display = format_figure(self.env, rec.threshold, percent)
+            rec.benchmark_display = format_figure(self.env, rec.benchmark, percent)

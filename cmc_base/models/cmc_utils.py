@@ -6,7 +6,7 @@ import math
 import statistics
 from datetime import timedelta
 
-from odoo.tools import float_round
+from odoo.tools import float_round, formatLang
 
 
 def largest_remainder(total, raw, rounding):
@@ -407,3 +407,15 @@ def describe(values):
         "p95": percentile(values, 95),
         "prob_positive": sum(1 for value in values if value > 0) / len(values),
     }
+
+
+def percent_factor(percent):
+    """Scale between a percent stored as a fraction (0.075) and the figure users read and type (7.5)."""
+    return 100.0 if percent else 1.0
+
+
+def format_figure(env, value, percent=False, fraction=True, digits=2):
+    """`value` as users read it: a percent shows with " %" (scaled when stored as a fraction), else `digits` decimals."""
+    if percent:
+        return formatLang(env, value * percent_factor(fraction), digits=2) + " %"
+    return formatLang(env, value, digits=digits)

@@ -1,9 +1,9 @@
 from collections import defaultdict
 
-from odoo import models
+from odoo import api, models
 from odoo.exceptions import UserError
 from odoo.fields import Command, Domain
-from odoo.tools import float_compare, float_round
+from odoo.tools import float_compare, float_round, format_date
 
 from odoo.addons.cmc_account.models.account_move_line import REVENUE_TYPES
 from odoo.addons.cmc_base.models.cmc_utils import month_range, spread
@@ -42,11 +42,39 @@ class CmcProfitRun(models.Model):
         for origin in (abc, version, fin):
             if origin and origin.state != "done":
                 raise UserError(self.env._("%s is not computed: a computed run reads certified sources only.", origin.display_name))
-        if abc and not (abc.date_from and abc.date_to and self.date_from <= abc.date_from and abc.date_to <= self.date_to):
-            raise UserError(self.env._("The ABC run %s must lie inside the span of the run.", abc.display_name))
+        if abc:
+            self._cmc_check_abc(abc)
         for origin in (abc, version, fin):
             if origin:
                 self._cmc_record_usage(origin)
+
+    def _cmc_check_abc(self, abc):
+        if not (abc.date_from and abc.date_to):
+            raise UserError(self.env._(
+                "The ABC run \"%s\" has no period: link an ABC run whose dates lie inside the span of this run.", abc.display_name,
+            ))
+        if not (self.date_from <= abc.date_from and abc.date_to <= self.date_to):
+            raise UserError(self.env._(
+                "The ABC run \"%(run)s\" (%(date_from)s - %(date_to)s) lies outside the span of this run: link an ABC run inside it.",
+                run=abc.display_name, date_from=format_date(self.env, abc.date_from), date_to=format_date(self.env, abc.date_to),
+            ))
+        # existence only: a run serving cost to no product, customer nor channel gives the same margin at every layer
+        Result = self.env["cmc.abc.result"]
+        serves_objects = Result.search_count([
+            ("run_id", "=", abc.id), ("cost_object_id.object_type", "in", ("customer", "channel")),
+        ], limit=1)
+        if not (serves_objects or self.env["cmc.abc.flow"].search_count(self._cmc_product_flow_domain(abc), limit=1)):
+            raise UserError(self.env._(
+                "The ABC run \"%s\" assigns no cost to products, customers or channels: every margin layer would be the same. "
+                "Check the cost level of its activities, or remove the ABC run from this run.", abc.display_name,
+            ))
+
+    @api.model
+    def _cmc_product_flow_domain(self, abc):
+        return Domain([
+            ("run_id", "=", abc.id), ("stage", "=", "object"), ("source_activity_id.cost_level", "=", "product"),
+            ("target_object_id.res_model", "=", "product.product"),
+        ])
 
     # ---- readers (AD-111 / AD-114: grouped, never per line) -------------------
 
@@ -98,11 +126,7 @@ class CmcProfitRun(models.Model):
             return costs
         results = abc.result_ids.read(["cost_object_id", "amount"], load=False)
         flows = self.env["cmc.abc.flow"]._read_group(
-            Domain([
-                ("run_id", "=", abc.id), ("stage", "=", "object"), ("source_activity_id.cost_level", "=", "product"),
-                ("target_object_id.res_model", "=", "product.product"),
-            ]),
-            ["target_object_id"], ["amount:sum"],
+            self._cmc_product_flow_domain(abc), ["target_object_id"], ["amount:sum"],
         )
         ids = {row["cost_object_id"] for row in results if row["cost_object_id"]} | {obj.id for obj, _amount in flows}
         info = {row["id"]: row for row in self.env["cmc.cost.object"].browse(list(ids)).read(["object_type", "res_model", "res_id"], load=False)}

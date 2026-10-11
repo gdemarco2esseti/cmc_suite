@@ -20,3 +20,5 @@ access_cmc_budget_cash_line_user,cmc.budget.cash.line.user,model_cmc_budget_cash
 access_cmc_budget_cash_line_manager,cmc.budget.cash.line.manager,model_cmc_budget_cash_line,cmc_base.group_cmc_manager,1,1,1,1
 access_cmc_plan_version_responsible,cmc.plan.version.responsible,cmc_base.model_cmc_plan_version,cmc_base.group_cmc_responsible,1,0,0,0
 access_res_currency_cmc_user,res.currency.cmc.user,base.model_res_currency,cmc_base.group_cmc_user,1,0,0,0
+access_cmc_budget_annual_wizard_user,cmc.budget.annual.wizard.user,model_cmc_budget_annual_wizard,cmc_base.group_cmc_user,1,1,1,1
+access_cmc_budget_annual_wizard_manager,cmc.budget.annual.wizard.manager,model_cmc_budget_annual_wizard,cmc_base.group_cmc_manager,1,1,1,1

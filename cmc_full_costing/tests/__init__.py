@@ -15,3 +15,4 @@ from . import test_wp04_rates
 from . import test_wp04_security
 from . import test_wp04_performance
 from . import test_wp04_ronin_regressions
+from . import test_fx004_prefill_guard

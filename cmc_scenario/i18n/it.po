@@ -552,7 +552,15 @@ msgstr "Riesegui senza input dominanti"
 #: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_consolidation_form
 #: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_simulation_form
 msgid "Reset to Draft"
-msgstr "Reimposta a bozza"
+msgstr "Riporta in bozza"
+
+#. module: cmc_scenario
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_comparison_form
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_consolidation_form
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_simulation_form
+msgid "Resetting deletes the computed results. Continue?"
+msgstr ""
+"Riportando in bozza i risultati calcolati vengono cancellati. Continuare?"
 
 #. module: cmc_scenario
 #: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_consolidation_form
@@ -811,3 +819,19 @@ msgstr "Riga di consolidamento di versioni"
 #: model:ir.actions.act_window,name:cmc_scenario.action_cmc_scenario_consolidation
 msgid "Version Consolidations"
 msgstr "Consolidamenti di versioni"
+
+#. module: cmc_scenario
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_scenario_comparison__state__done
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_scenario_consolidation__state__done
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_scenario_run_mixin__state__done
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_scenario_simulation__state__done
+msgid "Computed"
+msgstr "Calcolato"
+
+#. module: cmc_scenario
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_scenario_comparison__state__draft
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_scenario_consolidation__state__draft
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_scenario_run_mixin__state__draft
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_scenario_simulation__state__draft
+msgid "Draft"
+msgstr "Bozza"

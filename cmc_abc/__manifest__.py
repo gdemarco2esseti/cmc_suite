@@ -1,7 +1,7 @@
 {
     "name": "CMC - Activity-Based Costing",
     "summary": "Multistage ABC and Activity-Based Management: process view, Pareto, performance measures, initiatives, benchmark, cost of quality",
-    "version": "19.0.3.0.0",
+    "version": "19.0.3.0.1",
     "category": "Accounting/Management Control",
     "license": "LGPL-3",
     "author": "2ST",

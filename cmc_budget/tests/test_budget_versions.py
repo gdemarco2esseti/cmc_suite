@@ -127,8 +127,9 @@ class TestBudgetVersions(CmcBudgetCase):
         self.assertEqual((forecast.currency_id, forecast.currency_rate), (chf, 1.1))
         january = forecast.budget_line_ids.filtered(lambda line: line.center_id == center and line.date == d(1))
         self.assertRecordValues(january, [{"figure": 909.09, "amount": -909.09, "amount_company": -1000.0}])
+        self._approve(forecast)  # DL-004: the rolling forecast is born draft; only approved versions are in the view
         self.env.flush_all()
         row = self.env["cmc.budget.bva"].search([
             ("version_id", "=", forecast.id), ("date", "=", d(1)), ("center_id", "=", center.id), ("kind", "=", "cost"),
         ])
-        self.assertRecordValues(row, [{"plan_amount": -1000.0, "actual_amount": -1000.0, "variance": 0.0}])
+        self.assertRecordValues(row, [{"plan_amount": 1000.0, "actual_amount": 1000.0, "variance": 0.0}])  # DL-006: costs positive

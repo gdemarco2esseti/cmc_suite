@@ -23,7 +23,8 @@
                     <button name="action_compute" type="object" string="Compute"
                             class="oe_highlight" invisible="state != 'draft'"/>
                     <button name="action_cmc_prefill_lines" type="object" string="Prefill Lines"
-                            invisible="state != 'draft'"/>
+                            invisible="state != 'draft'"
+                            confirm="Prefilling replaces the current lines with the quantities read from the data. Continue?"/>
                     <button name="action_reset_to_draft" type="object"
                             string="Reset to Draft" invisible="state != 'done'"
                             confirm="Resetting deletes the computed results. Continue?"/>

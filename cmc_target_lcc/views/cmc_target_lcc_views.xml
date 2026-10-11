@@ -28,7 +28,7 @@
             <form string="Target Costing Sheet">
                 <header>
                     <button name="action_compute" type="object" string="Compute" class="btn-primary" invisible="state == 'done'"/>
-                    <button name="action_reset_to_draft" type="object" string="Reset to Draft" invisible="state == 'draft'"/>
+                    <button name="action_reset_to_draft" type="object" string="Reset to Draft" confirm="Resetting deletes the computed results. Continue?" invisible="state == 'draft'"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
@@ -142,7 +142,7 @@
             <form string="Kaizen Target">
                 <header>
                     <button name="action_compute" type="object" string="Compute" class="btn-primary" invisible="state == 'done'"/>
-                    <button name="action_reset_to_draft" type="object" string="Reset to Draft" invisible="state == 'draft'"/>
+                    <button name="action_reset_to_draft" type="object" string="Reset to Draft" confirm="Resetting deletes the computed results. Continue?" invisible="state == 'draft'"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
@@ -219,7 +219,7 @@
             <form string="Feature Costing">
                 <header>
                     <button name="action_compute" type="object" string="Compute" class="btn-primary" invisible="state == 'done'"/>
-                    <button name="action_reset_to_draft" type="object" string="Reset to Draft" invisible="state == 'draft'"/>
+                    <button name="action_reset_to_draft" type="object" string="Reset to Draft" confirm="Resetting deletes the computed results. Continue?" invisible="state == 'draft'"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
@@ -332,7 +332,7 @@
                 <field name="lc_unit_cost"/>
                 <field name="lc_profit"/>
                 <field name="lc_profit_npv"/>
-                <field name="breakeven_year"/>
+                <field name="breakeven_year" options="{'enable_formatting': false}"/>
                 <field name="state" widget="badge" decoration-success="state == 'done'"/>
                 <field name="company_id" groups="base.group_multi_company"/>
             </list>
@@ -346,7 +346,7 @@
             <form string="Life-Cycle Cost Model">
                 <header>
                     <button name="action_compute" type="object" string="Compute" class="btn-primary" invisible="state == 'done'"/>
-                    <button name="action_reset_to_draft" type="object" string="Reset to Draft" invisible="state == 'draft'"/>
+                    <button name="action_reset_to_draft" type="object" string="Reset to Draft" confirm="Resetting deletes the computed results. Continue?" invisible="state == 'draft'"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
@@ -355,7 +355,7 @@
                         <group string="Inputs">
                             <field name="product_id" readonly="state == 'done'"/>
                             <field name="partner_id" readonly="state == 'done'"/>
-                            <field name="start_year" readonly="state == 'done'"/>
+                            <field name="start_year" options="{'enable_formatting': false}" readonly="state == 'done'"/>
                             <field name="horizon_years" readonly="state == 'done'"/>
                             <field name="discount_rate" readonly="state == 'done'"/>
                             <field name="inflation_rate" readonly="state == 'done'"/>
@@ -379,7 +379,7 @@
                             <field name="lc_profit"/>
                             <field name="lc_profit_npv"/>
                             <field name="has_breakeven" invisible="1"/>
-                            <field name="breakeven_year" invisible="not has_breakeven"/>
+                            <field name="breakeven_year" options="{'enable_formatting': false}" invisible="not has_breakeven"/>
                             <field name="has_actuals" invisible="1"/>
                             <field name="absorbed_to_date" invisible="not has_actuals"/>
                             <field name="residual_cost" invisible="not has_actuals"/>
@@ -437,7 +437,7 @@
                         <page string="Cash View (years)" name="cash" invisible="state == 'draft'">
                             <field name="year_result_ids">
                                 <list>
-                                    <field name="calendar_year"/>
+                                    <field name="calendar_year" options="{'enable_formatting': false}"/>
                                     <field name="volume"/>
                                     <field name="revenue"/>
                                     <field name="cost"/>

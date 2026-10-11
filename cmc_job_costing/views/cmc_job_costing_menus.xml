@@ -37,6 +37,6 @@
     <menuitem id="menu_cmc_evm_curve"
               name="S-Curve"
               parent="menu_cmc_sec_job_costing"
-              action="action_cmc_evm_curve_run"
+              action="action_cmc_evm_curve_series"
               sequence="70"/>
 </odoo>

@@ -14,7 +14,7 @@ BASE_STEPS = [
      ["|", ("cmc_center_type", "!=", False), ("cmc_is_period", "=", True)],
      "cmc_base.action_cmc_cost_center"),
     ("costs", _lt("Cost Entry"), "account.analytic.line",
-     [("cmc_behavior", "!=", False)], "cmc_base.action_cmc_analytic_lines"),
+     lambda AL: AL._cmc_cost_base_domain(), "cmc_base.action_cmc_analytic_lines"),
     ("services", _lt("Inter-Center Services"), "cmc.center.service",
      [], "cmc_base.action_cmc_center_service"),
     ("closing", _lt("Center Closing"), "cmc.closing.run",
@@ -51,6 +51,10 @@ class CmcCockpit(models.TransientModel):
             if model not in self.env:
                 continue  # capillary module not installed
             Model = self.env[model]
+            if callable(domain):
+                domain = domain(Model)
+            if not Model.has_access("read"):
+                continue  # a role without read access simply does not see the step
             if "company_id" in Model._fields:
                 # shared (no company) records count for everyone
                 domain = domain + [("company_id", "in", [False, self.env.company.id])]
@@ -90,18 +94,18 @@ class CmcCockpit(models.TransientModel):
         AL = self.env["account.analytic.line"]
         company_domain = [("company_id", "=", self.env.company.id)]
 
-        # total booked cost (classified lines), as a magnitude
-        cost_groups = AL._cmc_cost_read_group(
-            [("cmc_behavior", "!=", False), ("cmc_excluded", "=", False)] + company_domain
-        )
-        total_cost = cost_groups[0][-1] if cost_groups else 0.0
+        can_read_cost = AL.has_access("read")
+        # total booked cost (whole cost base), as a magnitude
+        total_cost = 0.0
+        if can_read_cost:
+            cost_groups = AL._cmc_cost_read_group(AL._cmc_cost_base_domain() + company_domain)
+            total_cost = cost_groups[0][-1] if cost_groups else 0.0
 
         all_steps = pipeline + methods
         runs_done = sum(s["count"] for s in all_steps if s["key"] in DONE_RUN_KEYS)
-        products_costed = (
-            self.env["cmc.costing.result"].search_count(company_domain)
-            if "cmc.costing.result" in self.env else 0
-        )
+        Result = self.env.get("cmc.costing.result")
+        can_read_products = Result is not None and Result.has_access("read")
+        products_costed = Result.search_count(company_domain) if can_read_products else 0
         centers = next((s["count"] for s in pipeline if s["key"] == "centers"), 0)
 
         kpis = [
@@ -114,18 +118,25 @@ class CmcCockpit(models.TransientModel):
             {"key": "products", "label": self.env._("Costed Products"),
              "value": str(products_costed)},
         ]
+        # a KPI the caller cannot read is omitted, not shown as a misleading zero
+        kpis = [
+            k for k in kpis
+            if (k["key"] != "cost" or can_read_cost) and (k["key"] != "products" or can_read_products)
+        ]
 
-        # cost-by-element chart (stored FK -> _read_group is fine)
+        # cost-by-element chart (stored FK -> _read_group is fine); a caller who cannot read elements gets no chart
+        # at all, not an empty one that reads "no classified cost" (SC-082)
+        can_read_chart = can_read_cost and self.env["cmc.cost.element"].has_access("read")
         el_groups = AL._cmc_cost_read_group(
-            [("cmc_cost_element_id", "!=", False), ("cmc_excluded", "=", False)] + company_domain,
+            [("cmc_cost_element_id", "!=", False)] + AL._cmc_cost_base_domain() + company_domain,
             groupby=["cmc_cost_element_id"],
-        )
+        ) if can_read_chart else []
         # why: a net-credit element has no slice in a doughnut
         el_groups = [(el, cost) for el, cost in el_groups if cost > 0]
         chart = {
             "labels": [el.display_name for el, _ in el_groups],
             "values": [cost for _, cost in el_groups],
-        }
+        } if can_read_chart else False
 
         return {"pipeline": pipeline, "methods": methods,
                 "kpis": kpis, "chart": chart}

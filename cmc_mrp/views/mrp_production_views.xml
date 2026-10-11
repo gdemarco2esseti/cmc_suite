@@ -5,7 +5,7 @@
         <field name="model">mrp.production</field>
         <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
         <field name="arch" type="xml">
-            <field name="bom_id" position="after">
+            <xpath expr="//div[@name='bom_div']" position="after">
                 <!-- account.analytic.account is readable only by
                      analytic.group_analytic_accounting, and a shop-floor
                      mrp.group_mrp_user has no such right: guard the field
@@ -13,7 +13,7 @@
                      operational document. group_cmc_user implies
                      analytic.group_analytic_accounting. -->
                 <field name="cmc_center_id" groups="cmc_base.group_cmc_user"/>
-            </field>
+            </xpath>
         </field>
     </record>
 </odoo>

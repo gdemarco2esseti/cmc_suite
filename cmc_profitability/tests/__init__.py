@@ -7,3 +7,4 @@ from . import test_transfer_pricing
 from . import test_security_company
 from . import test_performance
 from . import test_cb4_chargeback_relocation
+from . import test_fx_stress_c

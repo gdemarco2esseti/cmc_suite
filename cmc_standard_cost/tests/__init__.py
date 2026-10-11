@@ -5,3 +5,5 @@ from . import test_std_absorption
 from . import test_std_publish
 from . import test_std_security
 from . import test_std_performance
+from . import test_std_stress_fixes
+from . import test_stress_rilancio

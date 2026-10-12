@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- record rules live OUTSIDE noupdate: a domain fix must be able to
+         reach databases that already have the module installed -->
+    <data>
+        <record id="cmc_rule_company_rule" model="ir.rule">
+            <field name="name">CMC classification rule: multi-company</field>
+            <field name="model_id" ref="model_cmc_classification_rule"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <!-- satellite of account.move.line: same `in company_ids` domain as the
+             core journal item rule, so it sees exactly the items the user sees -->
+        <record id="cmc_manual_classification_company_rule" model="ir.rule">
+            <field name="name">CMC manual classification: multi-company</field>
+            <field name="model_id" ref="model_cmc_manual_classification"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        </record>
+        <record id="cmc_coge_reconciliation_company_rule" model="ir.rule">
+            <field name="name">CMC COGE reconciliation: multi-company</field>
+            <field name="model_id" ref="model_cmc_coge_reconciliation"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+    </data>
+</odoo>

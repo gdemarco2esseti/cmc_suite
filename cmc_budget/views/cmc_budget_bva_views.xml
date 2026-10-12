@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_budget_bva_list" model="ir.ui.view">
+        <field name="name">cmc.budget.bva.list</field>
+        <field name="model">cmc.budget.bva</field>
+        <field name="arch" type="xml">
+            <list string="Budget vs Actual" create="false" edit="false" decoration-bf="is_alert">
+                <field name="date"/>
+                <field name="version_id"/>
+                <field name="center_id"/>
+                <field name="element_id" optional="hide"/>
+                <field name="kind" optional="hide"/>
+                <field name="plan_amount" sum="Plan"/>
+                <field name="actual_amount" sum="Actual"/>
+                <field name="variance" sum="Variance" decoration-success="variance > 0" decoration-danger="variance &lt; 0"/>
+                <field name="prior_actual_amount" optional="hide" sum="Prior Year"/>
+                <field name="is_alert" column_invisible="1"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_budget_bva_search" model="ir.ui.view">
+        <field name="name">cmc.budget.bva.search</field>
+        <field name="model">cmc.budget.bva</field>
+        <field name="arch" type="xml">
+            <search string="Budget vs Actual">
+                <field name="version_id"/>
+                <field name="center_id"/>
+                <filter name="date" date="date"/>
+                <filter name="latest_version" string="Latest Approved Version" domain="[('is_latest_version', '=', True)]"/>
+                <filter name="alert" string="Alerts" domain="[('is_alert', '=', True)]"/>
+                <filter name="cost" string="Costs" domain="[('kind', '=', 'cost')]"/>
+                <filter name="revenue" string="Revenues" domain="[('kind', '=', 'revenue')]"/>
+                <group>
+                    <filter name="group_version" string="Version" context="{'group_by': 'version_id'}"/>
+                    <filter name="group_center" string="Cost Center" context="{'group_by': 'center_id'}"/>
+                    <filter name="group_kind" string="Kind" context="{'group_by': 'kind'}"/>
+                    <filter name="group_month" string="Month" context="{'group_by': 'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_cmc_budget_bva_pivot" model="ir.ui.view">
+        <field name="name">cmc.budget.bva.pivot</field>
+        <field name="model">cmc.budget.bva</field>
+        <field name="arch" type="xml">
+            <pivot string="Budget vs Actual">
+                <field name="version_id" type="row"/>
+                <field name="center_id" type="row"/>
+                <field name="date" interval="month" type="col"/>
+                <field name="plan_amount" type="measure"/>
+                <field name="actual_amount" type="measure"/>
+                <field name="variance" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_cmc_budget_bva_graph" model="ir.ui.view">
+        <field name="name">cmc.budget.bva.graph</field>
+        <field name="model">cmc.budget.bva</field>
+        <field name="arch" type="xml">
+            <graph string="Budget vs Actual" type="bar">
+                <field name="date" interval="month"/>
+                <field name="plan_amount" type="measure"/>
+                <field name="actual_amount" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="action_cmc_budget_bva" model="ir.actions.act_window">
+        <field name="name">Budget vs Actual</field>
+        <field name="res_model">cmc.budget.bva</field>
+        <field name="view_mode">pivot,list,graph</field>
+        <field name="context">{'search_default_latest_version': 1, 'search_default_group_version': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No budget to compare yet</p>
+            <p>Approve a budget version: plan and actual figures appear here by month and cost center.</p>
+            <p>Each approved version is compared with the same actual figures: read the totals within one version.</p>
+        </field>
+    </record>
+</odoo>

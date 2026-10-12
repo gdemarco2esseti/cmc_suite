@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_analytic_line_form_cmc" model="ir.ui.view">
+        <field name="name">account.analytic.line.form.cmc</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="analytic.view_account_analytic_line_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='amount']" position="inside">
+                <field name="cmc_cost_amount" readonly="1" invisible="not cmc_behavior"/>
+            </xpath>
+            <xpath expr="//group[@name='amount']" position="after">
+                <group name="cmc_taxonomy" string="Cost Management">
+                    <field name="cmc_behavior"/>
+                    <field name="cmc_cost_element_id"/>
+                    <field name="cmc_driver_id"/>
+                    <field name="cmc_directness"/>
+                    <field name="cmc_relevance_min"/>
+                    <field name="cmc_relevance_max"/>
+                    <field name="cmc_cost_object_ref"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_analytic_line_tree_cmc" model="ir.ui.view">
+        <field name="name">account.analytic.line.list.cmc</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="analytic.view_account_analytic_line_tree"/>
+        <field name="arch" type="xml">
+            <field name="amount" position="after">
+                <field name="cmc_cost_element_id" optional="show"/>
+                <field name="cmc_behavior" optional="hide"/>
+                <field name="cmc_directness" optional="hide"/>
+                <field name="cmc_cost_object_id" optional="hide"/>
+                <field name="cmc_allocation_id" optional="hide"/>
+            </field>
+        </field>
+    </record>
+</odoo>

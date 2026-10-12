@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Characteristic -->
+    <record id="view_cmc_tdabc_characteristic_list" model="ir.ui.view">
+        <field name="name">cmc.tdabc.characteristic.list</field>
+        <field name="model">cmc.tdabc.characteristic</field>
+        <field name="arch" type="xml">
+            <list string="Characteristics" editable="bottom">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="ttype"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_cmc_tdabc_characteristic" model="ir.actions.act_window">
+        <field name="name">TDABC Characteristics</field>
+        <field name="res_model">cmc.tdabc.characteristic</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <!-- Characteristic values on cost objects -->
+    <record id="view_cmc_tdabc_char_value_list" model="ir.ui.view">
+        <field name="name">cmc.tdabc.char.value.list</field>
+        <field name="model">cmc.tdabc.char.value</field>
+        <field name="arch" type="xml">
+            <list string="Characteristic Values" editable="bottom">
+                <field name="characteristic_id"/>
+                <field name="product_tmpl_id"/>
+                <field name="partner_id"/>
+                <field name="value"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_cmc_tdabc_char_value_form" model="ir.ui.view">
+        <field name="name">cmc.tdabc.char.value.form</field>
+        <field name="model">cmc.tdabc.char.value</field>
+        <field name="arch" type="xml">
+            <form string="Characteristic Value">
+                <sheet>
+                    <group>
+                        <field name="characteristic_id"/>
+                        <field name="value"/>
+                        <field name="product_tmpl_id"
+                               required="not partner_id"
+                               readonly="partner_id"/>
+                        <field name="partner_id"
+                               required="not product_tmpl_id"
+                               readonly="product_tmpl_id"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_cmc_tdabc_char_value" model="ir.actions.act_window">
+        <field name="name">TDABC Characteristic Values</field>
+        <field name="res_model">cmc.tdabc.char.value</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Assign characteristics on the cost objects themselves -->
+    <record id="view_product_template_form_tdabc" model="ir.ui.view">
+        <field name="name">product.template.form.tdabc</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="TDABC" name="tdabc" groups="cmc_base.group_cmc_user">
+                    <field name="tdabc_char_value_ids">
+                        <list editable="bottom">
+                            <field name="characteristic_id"/>
+                            <field name="value"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </list>
+                    </field>
+                </page>
+            </notebook>
+        </field>
+    </record>
+    <record id="view_partner_form_tdabc" model="ir.ui.view">
+        <field name="name">res.partner.form.tdabc</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="TDABC" name="tdabc" groups="cmc_base.group_cmc_user">
+                    <field name="tdabc_char_value_ids">
+                        <list editable="bottom">
+                            <field name="characteristic_id"/>
+                            <field name="value"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </list>
+                    </field>
+                </page>
+            </notebook>
+        </field>
+    </record>
+
+    <!-- Resource -->
+    <record id="view_cmc_tdabc_resource_form" model="ir.ui.view">
+        <field name="name">cmc.tdabc.resource.form</field>
+        <field name="model">cmc.tdabc.resource</field>
+        <field name="arch" type="xml">
+            <form string="Resource">
+                <sheet>
+                    <div class="oe_title"><label for="name"/><h1><field name="name"/></h1></div>
+                    <group>
+                        <group>
+                            <field name="cost"/>
+                            <field name="theoretical_time"/>
+                            <field name="util_factor"/>
+                        </group>
+                        <group>
+                            <field name="practical_capacity"/>
+                            <field name="rate"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_cmc_tdabc_resource_list" model="ir.ui.view">
+        <field name="name">cmc.tdabc.resource.list</field>
+        <field name="model">cmc.tdabc.resource</field>
+        <field name="arch" type="xml">
+            <list string="Resources">
+                <field name="name"/>
+                <field name="cost"/>
+                <field name="practical_capacity"/>
+                <field name="rate"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_cmc_tdabc_resource" model="ir.actions.act_window">
+        <field name="name">TDABC Resources</field>
+        <field name="res_model">cmc.tdabc.resource</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Activity -->
+    <record id="view_cmc_tdabc_activity_form" model="ir.ui.view">
+        <field name="name">cmc.tdabc.activity.form</field>
+        <field name="model">cmc.tdabc.activity</field>
+        <field name="arch" type="xml">
+            <form string="Activity">
+                <sheet>
+                    <div class="oe_title"><label for="name"/><h1><field name="name"/></h1></div>
+                    <group>
+                        <field name="code"/>
+                        <field name="resource_id"/>
+                        <field name="base_time"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>
+                    <notebook>
+                        <page string="Time Equation Terms" name="terms">
+                            <field name="term_ids">
+                                <list editable="bottom">
+                                    <field name="characteristic_id"/>
+                                    <field name="coefficient"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_cmc_tdabc_activity_list" model="ir.ui.view">
+        <field name="name">cmc.tdabc.activity.list</field>
+        <field name="model">cmc.tdabc.activity</field>
+        <field name="arch" type="xml">
+            <list string="Activities">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="resource_id"/>
+                <field name="base_time"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_cmc_tdabc_activity" model="ir.actions.act_window">
+        <field name="name">TDABC Activities</field>
+        <field name="res_model">cmc.tdabc.activity</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Run -->
+    <record id="view_cmc_tdabc_run_form" model="ir.ui.view">
+        <field name="name">cmc.tdabc.run.form</field>
+        <field name="model">cmc.tdabc.run</field>
+        <field name="arch" type="xml">
+            <form string="TDABC Run">
+                <header>
+                    <button name="action_compute" string="Compute" type="object" class="oe_highlight"
+                            invisible="state == 'done'"/>
+                    <button name="action_reset_to_draft" string="Reset to Draft" type="object"
+                            invisible="state != 'done'"
+                            confirm="Resetting deletes the computed results. Continue?"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-warning" role="alert"
+                         invisible="not scenario_warning">
+                        <field name="scenario_warning" nolabel="1" readonly="1"/>
+                    </div>
+                    <div class="oe_title"><label for="name"/><h1><field name="name"/></h1></div>
+                    <group>
+                        <group><field name="date_from" readonly="state == 'done'"/><field name="date_to" readonly="state == 'done'"/></group>
+                        <group>
+                            <field name="company_id" readonly="state == 'done'" groups="base.group_multi_company"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Input" name="lines">
+                            <field name="line_ids" readonly="state == 'done'">
+                                <list editable="bottom">
+                                    <field name="activity_id"/>
+                                    <field name="cost_object_type"/>
+                                    <field name="product_id"
+                                           invisible="cost_object_type != 'product'"/>
+                                    <field name="partner_id"
+                                           invisible="cost_object_type != 'customer'"/>
+                                    <field name="volume"/>
+                                    <field name="volume_derived"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Results" name="results">
+                            <field name="result_ids" readonly="1">
+                                <list create="false" edit="false">
+                                    <field name="scenario"/>
+                                    <field name="activity_id"/>
+                                    <field name="product_id"/>
+                                    <field name="partner_id"/>
+                                    <field name="time_absorbed"/>
+                                    <field name="cost_absorbed"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Capacity" name="capacity">
+                            <field name="capacity_result_ids" readonly="1">
+                                <list create="false" edit="false">
+                                    <field name="scenario"/>
+                                    <field name="resource_id"/>
+                                    <field name="required_time"/>
+                                    <field name="unused_time"/>
+                                    <field name="unused_cost"/>
+                                    <field name="capacity_use_pct"/>
+                                    <field name="over_capacity"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Reclassified" name="reclass">
+                            <field name="cmc_reclass_json" widget="cmc_reclass" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_cmc_tdabc_run_list" model="ir.ui.view">
+        <field name="name">cmc.tdabc.run.list</field>
+        <field name="model">cmc.tdabc.run</field>
+        <field name="arch" type="xml">
+            <list string="TDABC Runs">
+                <field name="name"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="state" widget="badge"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_cmc_tdabc_run" model="ir.actions.act_window">
+        <field name="name">Time-Driven ABC</field>
+        <field name="res_model">cmc.tdabc.run</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Menus -->
+    <menuitem id="menu_cmc_sec_tdabc" name="Time-Driven ABC"
+              parent="cmc_base.menu_cmc_operations" sequence="60"/>
+    <menuitem id="menu_cmc_tdabc_run" name="TDABC Computation"
+              parent="menu_cmc_sec_tdabc" action="action_cmc_tdabc_run" sequence="10"/>
+    <menuitem id="menu_cmc_tdabc_resource" name="Resources"
+              parent="cmc_base.menu_cmc_cfg_master" action="action_cmc_tdabc_resource" sequence="50"/>
+    <menuitem id="menu_cmc_tdabc_activity" name="TDABC Activities"
+              parent="cmc_base.menu_cmc_cfg_master" action="action_cmc_tdabc_activity" sequence="51"/>
+    <menuitem id="menu_cmc_tdabc_characteristic" name="Characteristics"
+              parent="cmc_base.menu_cmc_cfg_master" action="action_cmc_tdabc_characteristic" sequence="52"/>
+    <menuitem id="menu_cmc_tdabc_char_value" name="Characteristic Values"
+              parent="cmc_base.menu_cmc_cfg_master" action="action_cmc_tdabc_char_value" sequence="53"/>
+</odoo>

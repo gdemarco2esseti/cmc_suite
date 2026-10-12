@@ -1,0 +1,21 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_cmc_standard_price_user,cmc.standard.price.user,model_cmc_standard_price,cmc_base.group_cmc_user,1,1,1,1
+access_cmc_standard_price_manager,cmc.standard.price.manager,model_cmc_standard_price,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_standard_rate_user,cmc.standard.rate.user,model_cmc_standard_rate,cmc_base.group_cmc_user,1,1,1,1
+access_cmc_standard_rate_manager,cmc.standard.rate.manager,model_cmc_standard_rate,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_standard_card_user,cmc.standard.card.user,model_cmc_standard_card,cmc_base.group_cmc_user,1,1,1,1
+access_cmc_standard_card_manager,cmc.standard.card.manager,model_cmc_standard_card,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_standard_card_line_user,cmc.standard.card.line.user,model_cmc_standard_card_line,cmc_base.group_cmc_user,1,1,1,1
+access_cmc_standard_card_line_manager,cmc.standard.card.line.manager,model_cmc_standard_card_line,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_standard_variance_run_user,cmc.standard.variance.run.user,model_cmc_standard_variance_run,cmc_base.group_cmc_user,1,1,1,0
+access_cmc_standard_variance_run_manager,cmc.standard.variance.run.manager,model_cmc_standard_variance_run,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_standard_variance_line_user,cmc.standard.variance.line.user,model_cmc_standard_variance_line,cmc_base.group_cmc_user,1,0,1,0
+access_cmc_standard_variance_line_manager,cmc.standard.variance.line.manager,model_cmc_standard_variance_line,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_standard_absorption_line_user,cmc.standard.absorption.line.user,model_cmc_standard_absorption_line,cmc_base.group_cmc_user,1,0,1,0
+access_cmc_standard_absorption_line_manager,cmc.standard.absorption.line.manager,model_cmc_standard_absorption_line,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_standard_prefill_wizard_user,cmc.standard.prefill.wizard user,model_cmc_standard_prefill_wizard,cmc_base.group_cmc_user,1,1,1,1
+access_cmc_standard_rollup_wizard_user,cmc.standard.rollup.wizard user,model_cmc_standard_rollup_wizard,cmc_base.group_cmc_user,1,1,1,1
+access_cmc_std_push_wizard_manager,cmc.std.push.wizard manager,model_cmc_std_push_wizard,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_std_push_wizard_line_manager,cmc.std.push.wizard.line manager,model_cmc_std_push_wizard_line,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_std_push_line_user,cmc.std.push.line user,model_cmc_std_push_line,cmc_base.group_cmc_user,1,0,0,0
+access_cmc_std_push_line_manager,cmc.std.push.line manager,model_cmc_std_push_line,cmc_base.group_cmc_manager,1,0,0,0

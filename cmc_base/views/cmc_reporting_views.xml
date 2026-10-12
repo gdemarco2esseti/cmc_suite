@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ===== Cost Element (configuration) ===== -->
+    <record id="view_cmc_cost_element_list" model="ir.ui.view">
+        <field name="name">cmc.cost.element.list</field>
+        <field name="model">cmc.cost.element</field>
+        <field name="arch" type="xml">
+            <list string="Cost Elements" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="cmc_kind"/>
+                <field name="cmc_controllable" optional="show"/>
+                <field name="cmc_avoidable" optional="hide"/>
+                <field name="cmc_sunk" optional="hide"/>
+                <field name="cmc_commitment" optional="hide"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cmc_cost_element" model="ir.actions.act_window">
+        <field name="name">Cost Elements</field>
+        <field name="res_model">cmc.cost.element</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <menuitem id="menu_cmc_cost_element" name="Cost Elements"
+              parent="menu_cmc_cfg_master" action="action_cmc_cost_element" sequence="20"/>
+
+    <!-- ===== TS-008: Quadro Analisi Costi (pivot center x element) ===== -->
+    <record id="view_cmc_cost_analysis_pivot" model="ir.ui.view">
+        <field name="name">cmc.cost.analysis.line.pivot</field>
+        <field name="model">cmc.cost.analysis.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Cost Analysis Matrix" sample="1">
+                <field name="center_id" type="row"/>
+                <field name="element_id" type="col"/>
+                <field name="amount" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_cmc_cost_analysis_list" model="ir.ui.view">
+        <field name="name">cmc.cost.analysis.line.list</field>
+        <field name="model">cmc.cost.analysis.line</field>
+        <field name="arch" type="xml">
+            <list string="Cost Analysis">
+                <field name="state"/>
+                <field name="center_id"/>
+                <field name="center_type"/>
+                <field name="element_id"/>
+                <field name="amount" sum="Total"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_cost_analysis_search" model="ir.ui.view">
+        <field name="name">cmc.cost.analysis.line.search</field>
+        <field name="model">cmc.cost.analysis.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter name="pre" string="Before Closing" domain="[('state','=','pre')]"/>
+                <filter name="post" string="After Closing" domain="[('state','=','post')]"/>
+                <separator/>
+                <field name="center_id"/>
+                <field name="element_id"/>
+                <group name="groupby">
+                    <filter name="g_center" string="Center" context="{'group_by': 'center_id'}"/>
+                    <filter name="g_element" string="Element" context="{'group_by': 'element_id'}"/>
+                    <filter name="g_state" string="State" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cmc_cost_analysis" model="ir.actions.act_window">
+        <field name="name">Cost Analysis Matrix</field>
+        <field name="res_model">cmc.cost.analysis.line</field>
+        <field name="view_mode">pivot,list</field>
+        <field name="search_view_id" ref="view_cmc_cost_analysis_search"/>
+        <field name="context">{'search_default_post': 1}</field>
+    </record>
+
+    <menuitem id="menu_cmc_cost_analysis" name="Cost Analysis Matrix"
+              parent="menu_cmc_sec_analysis" action="action_cmc_cost_analysis" sequence="70"/>
+
+    <!-- ===== TS-009: consuntivo dashboards (Community pivot/graph) ===== -->
+    <record id="view_cmc_closing_line_pivot" model="ir.ui.view">
+        <field name="name">cmc.closing.line.pivot</field>
+        <field name="model">cmc.closing.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Cost per Center" sample="1">
+                <field name="center_id" type="row"/>
+                <field name="cost_residual" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_cmc_closing_line_graph" model="ir.ui.view">
+        <field name="name">cmc.closing.line.graph</field>
+        <field name="model">cmc.closing.line</field>
+        <field name="arch" type="xml">
+            <graph string="Cost per Center" type="bar" sample="1">
+                <field name="center_id"/>
+                <field name="cost_residual" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_cmc_capacity_graph" model="ir.ui.view">
+        <field name="name">cmc.capacity.analysis.graph</field>
+        <field name="model">cmc.capacity.analysis</field>
+        <field name="arch" type="xml">
+            <graph string="Unused Capacity Cost" type="bar" sample="1">
+                <field name="center_id"/>
+                <field name="unused_capacity_cost" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <menuitem id="menu_cmc_dashboard" name="Dashboard" parent="menu_cmc_root" sequence="20"
+              groups="cmc_base.group_cmc_user"/>
+
+    <record id="action_dash_cost_center" model="ir.actions.act_window">
+        <field name="name">Cost per Center</field>
+        <field name="res_model">cmc.closing.line</field>
+        <field name="view_mode">pivot,graph,list</field>
+    </record>
+    <record id="action_dash_idle" model="ir.actions.act_window">
+        <field name="name">Unused Capacity</field>
+        <field name="res_model">cmc.capacity.analysis</field>
+        <field name="view_mode">graph,pivot,list</field>
+    </record>
+
+    <menuitem id="menu_dash_cost_center" name="Cost per Center"
+              parent="menu_cmc_dashboard" action="action_dash_cost_center" sequence="10"/>
+    <menuitem id="menu_dash_idle" name="Unused Capacity"
+              parent="menu_cmc_dashboard" action="action_dash_idle" sequence="30"/>
+</odoo>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_cmc_consuntivo" model="ir.actions.report">
+        <field name="name">Cost Closing Report</field>
+        <field name="model">cmc.closing.run</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">cmc_base.report_cmc_consuntivo</field>
+        <field name="report_file">cmc_base.report_cmc_consuntivo</field>
+        <field name="print_report_name">'Cost Closing - %s' % object.name</field>
+        <field name="binding_model_id" ref="model_cmc_closing_run"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_cmc_consuntivo">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Cost Closing — <span t-field="o.name"/></h2>
+                        <p>
+                            <strong>Method:</strong> <span t-field="o.method"/>
+                            <span> · <strong>From:</strong> <span t-field="o.date_from"/></span>
+                            <span> · <strong>To:</strong> <span t-field="o.date_to"/></span>
+                        </p>
+                        <table class="table table-sm o_main_table">
+                            <thead>
+                                <tr>
+                                    <th>Cost Center</th>
+                                    <th>Type</th>
+                                    <th class="text-end">Initial</th>
+                                    <th class="text-end">Received</th>
+                                    <th class="text-end">Distributed</th>
+                                    <th class="text-end">Residual</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="o.line_ids" t-as="l">
+                                    <td><span t-field="l.center_id"/></td>
+                                    <td><span t-field="l.center_type"/></td>
+                                    <td class="text-end"><span t-field="l.cost_initial"/></td>
+                                    <td class="text-end"><span t-field="l.cost_received"/></td>
+                                    <td class="text-end"><span t-field="l.cost_distributed"/></td>
+                                    <td class="text-end"><span t-field="l.cost_residual"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

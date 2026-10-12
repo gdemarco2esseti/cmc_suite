@@ -1,0 +1,18 @@
+<section class="oe_container">
+<div class="oe_row oe_spaced">
+<div class="oe_span12">
+<h1>CMC – Manodopera da Timesheet (cmc_hr_timesheet)</h1>
+<p>Modulo <strong>ponte</strong> della suite CMC. Dipende da <code>cmc_account</code> e <code>hr_timesheet</code>.</p>
+<h2>Obiettivo</h2>
+<p>Portare la <strong>manodopera diretta (MOD)</strong> consuntiva dai <strong>timesheet</strong> nella base di costo del controllo di gestione, con classificazione automatica come costo diretto di manodopera. Utile anche come sorgente del <strong>consuntivo</strong> per lo scenario timesheet di <code>cmc_tdabc</code>.</p>
+<h2>Configurazione (step-by-step)</h2>
+<ol><li>Installa <code>cmc_hr_timesheet</code> (richiede <code>cmc_account</code> + <code>hr_timesheet</code>).</li><li>Assicurati che i dipendenti abbiano un <strong>costo orario</strong> impostato (<em>Dipendenti › scheda › costo</em>), così le righe di timesheet valorizzino l&#x27;importo.</li><li>Verifica/estendi le <strong>regole di classificazione</strong> (<code>cmc_account</code>) per intercettare le righe di timesheet e assegnarle all&#x27;elemento <strong>Manodopera diretta</strong> (comportamento e direttezza corretti).</li></ol>
+<h2>Utilizzo (step-by-step)</h2>
+<ol><li>I dipendenti registrano le ore normalmente (timesheet su progetti/attività con conto analitico).</li><li>Ogni riga di timesheet riconosciuta come MOD (<code>_cmc_is_timesheet_mod</code>) viene</li></ol>
+<p><strong>auto-classificata</strong> ed entra nella base di costo come manodopera diretta.</p>
+<ol><li>I costi confluiscono nel ribaltamento e nelle metodologie di costing di <code>cmc_base</code> e dei moduli capillari; per il TDABC possono taggare l&#x27;<strong>Attività TDABC</strong> e alimentare lo scenario <em>Consuntivo (timesheet)</em>.</li></ol>
+<h2>Note</h2>
+<ul><li>Ponte &quot;invisibile&quot;: non aggiunge menu propri, estende <code>account.analytic.line</code>.</li><li>Nessun doppio conteggio: la riga di timesheet è già una riga analitica, viene solo classificata secondo la tassonomia CMC.</li></ul>
+</div>
+</div>
+</section>

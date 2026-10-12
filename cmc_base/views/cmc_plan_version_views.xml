@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_plan_version_list" model="ir.ui.view">
+        <field name="name">cmc.plan.version.list</field>
+        <field name="model">cmc.plan.version</field>
+        <field name="arch" type="xml">
+            <list string="Plan Versions">
+                <field name="name"/>
+                <field name="version_type"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="parent_id" optional="hide"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'done'"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_plan_version_form" model="ir.ui.view">
+        <field name="name">cmc.plan.version.form</field>
+        <field name="model">cmc.plan.version</field>
+        <field name="arch" type="xml">
+            <form string="Plan Version">
+                <header>
+                    <button name="action_approve" type="object" string="Approve"
+                            class="oe_highlight" invisible="state != 'draft'"
+                            groups="cmc_base.group_cmc_manager"/>
+                    <button name="action_reset_to_draft" type="object"
+                            string="Reset to Draft" invisible="state != 'done'"
+                            groups="cmc_base.group_cmc_manager"
+                            confirm="Resetting reopens the version for editing. Continue?"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Approved" invisible="state != 'done'"/>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="e.g. Budget 2027"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="version_type" readonly="state == 'done'"/>
+                            <field name="parent_id" readonly="1" invisible="not parent_id"/>
+                            <field name="company_id" readonly="state == 'done'" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="date_from" readonly="state == 'done'"/>
+                            <field name="date_to" readonly="state == 'done'"/>
+                            <field name="currency_id" readonly="state == 'done'"/>
+                            <field name="currency_rate" readonly="state == 'done'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="assumptions" string="Assumptions">
+                            <field name="assumption_ids" readonly="state == 'done'">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="note"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cmc_plan_version_search" model="ir.ui.view">
+        <field name="name">cmc.plan.version.search</field>
+        <field name="model">cmc.plan.version</field>
+        <field name="arch" type="xml">
+            <search string="Plan Versions">
+                <field name="name"/>
+                <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="approved" string="Approved" domain="[('state', '=', 'done')]"/>
+                <group>
+                    <filter name="group_type" string="Type" context="{'group_by': 'version_type'}"/>
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cmc_plan_version" model="ir.actions.act_window">
+        <field name="name">Plan Versions</field>
+        <field name="res_model">cmc.plan.version</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a plan version</p>
+            <p>Budget, forecast, standard or simulation: plan quantities and rates
+               on a version, then approve it to freeze them.</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_cmc_plan_version"
+              name="Plan Versions"
+              parent="menu_cmc_sec_base"
+              action="action_cmc_plan_version"
+              sequence="50"/>
+</odoo>

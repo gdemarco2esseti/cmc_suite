@@ -1,0 +1,1810 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* cmc_job_costing
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 23:35+0000\n"
+"PO-Revision-Date: 2026-10-09 23:35+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_job_cost_run.py:0
+msgid ""
+"%(employee)s matches several rate categories on %(center)s in %(month)s."
+msgstr ""
+"%(employee)s corrisponde a più categorie di tariffa su %(center)s in "
+"%(month)s."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_evm_run.py:0
+msgid "%(run)s holds no cost sheet of %(job)s."
+msgstr "%(run)s non contiene alcuna scheda di costo della commessa %(job)s."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_plan_version.py:0
+msgid "%s has a newer re-baseline: approve that one."
+msgstr "%s ha una ripianificazione più recente: approvare quella."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_plan_version.py:0
+msgid "%s has no estimate line: nothing to baseline."
+msgstr "%s non ha righe di stima: nulla da pianificare."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_evm_change.py:0
+msgid "%s is not a draft change request."
+msgstr "%s non è una richiesta di modifica in bozza."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_evm_run.py:0
+msgid "%s is not approved: measure against an approved baseline."
+msgstr "%s non è approvata: misurare rispetto a una baseline approvata."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_evm_baseline.py:0
+msgid "%s: a probability is a percent between 0 and 100."
+msgstr "%s: una probabilità è una percentuale tra 0 e 100."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_evm_change.py:0
+msgid "%s: approve the baseline before amending it."
+msgstr "%s: approvare la baseline prima di modificarla."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_evm_baseline.py:0
+msgid "%s: hours are valued at a resource center rate."
+msgstr "%s: le ore sono valorizzate alla tariffa di un centro risorsa."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_evm_baseline.py:0
+msgid "%s: schedule it inside the baseline span."
+msgstr "%s: pianificarlo all'interno dell'intervallo della baseline."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_evm_baseline.py:0
+msgid "%s: the end precedes the start."
+msgstr "%s: la fine precede l'inizio."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_evm_baseline.py:0
+msgid "%s: the hours need 0 <= optimistic <= most likely <= pessimistic."
+msgstr ""
+"%s: le ore richiedono 0 <= ottimistica <= più probabile <= pessimistica."
+
+#. module: cmc_job_costing
+#: model:ir.actions.report,print_report_name:cmc_job_costing.action_report_evm_status
+msgid "'EVM status - %s' % object.name"
+msgstr "'Stato EVM - %s' % object.name"
+
+#. module: cmc_job_costing
+#: model:ir.actions.report,print_report_name:cmc_job_costing.action_report_job_cost_sheet
+msgid "'Job cost sheets - %s' % object.name"
+msgstr "'Schede di costo di commessa - %s' % object.name"
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_plan_version.py:0
+msgid "A baseline is the plan of one job."
+msgstr "Una baseline è il piano di una commessa."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_evm_change.py:0
+msgid "A change request amends a baseline."
+msgstr "Una richiesta di modifica emenda una baseline."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/project_project.py:0
+msgid "A closed job needs its close date."
+msgstr "Una commessa chiusa richiede la data di chiusura."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_job_rate.py:0
+msgid "A computed rate needs net hours above zero."
+msgstr "Una tariffa calcolata richiede ore nette maggiori di zero."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_evm_baseline.py:0
+msgid "A probability is a percent between 0 and 100."
+msgstr "Una probabilità è una percentuale tra 0 e 100."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_job_cost_run.py:0
+msgid "A registry labour rate needs its rate unit."
+msgstr ""
+"Una tariffa di manodopera da registro richiede la propria unità di tariffa."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_job_cost_run.py:0
+msgid "A registry overhead rate needs its rate unit."
+msgstr ""
+"Una tariffa di costi indiretti da registro richiede la propria unità di "
+"tariffa."
+
+#. module: cmc_job_costing
+#: model:ir.model.constraint,message:cmc_job_costing.constraint_cmc_job_rate_center_category_month_uniq
+msgid "A resource center has one rate per category and month."
+msgstr "Un centro risorsa ha una tariffa per categoria e mese."
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve__ac
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__ac
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_evm_status
+msgid "AC"
+msgstr "AC"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve__ac_cumulative
+msgid "AC (cumulative)"
+msgstr "AC (cumulato)"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,help:cmc_job_costing.field_cmc_evm_run__eac_composite
+msgid "AC + (BAC - EV) / (CPI x SPI)."
+msgstr "AC + (BAC - EV) / (CPI x SPI)."
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,help:cmc_job_costing.field_cmc_evm_run__eac_atypical
+msgid "AC + BAC - EV."
+msgstr "AC + BAC - EV."
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_evm_status
+msgid "AC cum."
+msgstr "AC cum."
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_rate__absence_hours
+msgid "Absence Hours"
+msgstr "Ore di assenza"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_plan_version_form_evm
+msgid "Accuracy (95 %)"
+msgstr "Accuratezza (95 %)"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields.selection,name:cmc_job_costing.selection__cmc_evm_curve_series__series__ac
+msgid "Actual Cost (AC)"
+msgstr "Costo effettivo (AC)"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet_labour__amount
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_cost_run_form
+msgid "Amount"
+msgstr "Importo"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,help:cmc_job_costing.field_cmc_job_cost_run__overhead_variance
+msgid ""
+"Applied minus actual: above zero over-applied, below zero under-applied."
+msgstr ""
+"Imputato meno effettivo: sopra zero sovraimputato, sotto zero sottoimputato."
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_job_cost_sheet
+msgid "Applied overhead"
+msgstr "Costi indiretti imputati"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_change_request_form
+msgid "Approve"
+msgstr "Approva"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields.selection,name:cmc_job_costing.selection__cmc_evm_change_request__state__approved
+msgid "Approved"
+msgstr "Approvato"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_change_request_form
+msgid ""
+"Approving creates a new draft baseline including this change. Continue?"
+msgstr ""
+"L'approvazione crea una nuova baseline in bozza che include questa modifica."
+" Continuare?"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__bac
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_task_line__bac
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_plan_version__bac
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_evm_status
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_run_form
+msgid "BAC"
+msgstr "BAC"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,help:cmc_job_costing.field_cmc_evm_run__eac
+msgid "BAC / CPI."
+msgstr "BAC / CPI."
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,help:cmc_job_costing.field_cmc_evm_run__control_limit
+msgid "Band on the monthly cost variance. 0 = no limit."
+msgstr "Fascia sullo scostamento mensile dei costi. 0 = nessun limite."
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_change_request__baseline_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__baseline_id
+#: model:ir.model.fields.selection,name:cmc_job_costing.selection__cmc_plan_version__version_type__baseline
+msgid "Baseline"
+msgstr "Baseline"
+
+#. module: cmc_job_costing
+#: model:ir.model,name:cmc_job_costing.model_cmc_evm_change_request
+msgid "Baseline Change Request"
+msgstr "Richiesta di modifica della baseline"
+
+#. module: cmc_job_costing
+#: model:ir.model,name:cmc_job_costing.model_cmc_evm_estimate_line
+msgid "Baseline Estimate Line"
+msgstr "Riga di stima della baseline"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_plan_version__baseline_line_ids
+msgid "Baseline Line"
+msgstr "Riga della baseline"
+
+#. module: cmc_job_costing
+#: model:ir.model,name:cmc_job_costing.model_cmc_evm_baseline_line
+msgid "Baseline Planned Value"
+msgstr "Valore pianificato della baseline"
+
+#. module: cmc_job_costing
+#: model:ir.model,name:cmc_job_costing.model_cmc_evm_risk
+msgid "Baseline Risk"
+msgstr "Rischio della baseline"
+
+#. module: cmc_job_costing
+#: model:ir.actions.act_window,name:cmc_job_costing.action_cmc_evm_baseline
+#: model:ir.ui.menu,name:cmc_job_costing.menu_cmc_evm_baseline
+msgid "Baselines"
+msgstr "Baseline"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,help:cmc_job_costing.field_cmc_plan_version__bac
+msgid "Budget at completion of the work packages."
+msgstr "Budget a finire dei pacchetti di lavoro."
+
+#. module: cmc_job_costing
+#: model_terms:ir.actions.act_window,help:cmc_job_costing.action_cmc_job_cost_run
+msgid ""
+"Build the job cost sheet of every job of a period: direct costs, hours at "
+"the resource rate, applied overhead, margin."
+msgstr ""
+"Costruisce la scheda di costo di ogni commessa di un periodo: costi diretti,"
+" ore alla tariffa della risorsa, costi indiretti imputati, margine."
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__cpi
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_evm_status
+msgid "CPI"
+msgstr "CPI"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve__cv
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__cv
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_evm_status
+msgid "CV"
+msgstr "CV"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet_labour__category_id
+msgid "Category"
+msgstr "Categoria"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet_labour__center_id
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_rate_search
+msgid "Center"
+msgstr "Centro"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_plan_version__change_request_ids
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_change_request_form
+msgid "Change Request"
+msgstr "Richiesta di modifica"
+
+#. module: cmc_job_costing
+#: model:ir.actions.act_window,name:cmc_job_costing.action_cmc_evm_change_request
+#: model:ir.ui.menu,name:cmc_job_costing.menu_cmc_evm_change_request
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_change_request_list
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_plan_version_form_evm
+msgid "Change Requests"
+msgstr "Richieste di modifica"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__close_date
+msgid "Close Date"
+msgstr "Data di chiusura"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_rate__common_cost_share
+msgid "Common Cost Share"
+msgstr "Quota dei costi comuni"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_baseline_line__company_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_change_request__company_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve__company_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve_series__company_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__company_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_risk__company_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__company_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_task_line__company_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_cost_run__company_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_rate__company_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__company_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet_labour__company_id
+msgid "Company"
+msgstr "Società"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields.selection,name:cmc_job_costing.selection__cmc_job_sheet__job_status__completed
+msgid "Completed"
+msgstr "Completato"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_cost_run__completed_total
+msgid "Completed Jobs"
+msgstr "Commesse completate"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_cost_run_form
+msgid "Compute"
+msgstr "Calcola"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields.selection,name:cmc_job_costing.selection__cmc_job_rate__rate_mode__computed
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_rate_search
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_evm_run__state__done
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_job_cost_run__state__done
+msgid "Computed"
+msgstr "Calcolato"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_plan_version__contingency_reserve
+msgid "Contingency Reserve"
+msgstr "Riserva per contingenze"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__control_limit
+msgid "Control Limit"
+msgstr "Limite di controllo"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_plan_version__cost_baseline
+msgid "Cost Baseline"
+msgstr "Baseline dei costi"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__cost_expected
+msgid "Cost Expected"
+msgstr "Costo atteso"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_change_request__cost_impact
+msgid "Cost Impact"
+msgstr "Impatto sui costi"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__cost_most_likely
+msgid "Cost Most Likely"
+msgstr "Costo più probabile"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__cost_object_id
+msgid "Cost Object"
+msgstr "Oggetto di costo"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__cost_optimistic
+msgid "Cost Optimistic"
+msgstr "Costo ottimistico"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__cost_pessimistic
+msgid "Cost Pessimistic"
+msgstr "Costo pessimistico"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__cost_sigma
+msgid "Cost Sigma"
+msgstr "Sigma del costo"
+
+#. module: cmc_job_costing
+#: model_terms:ir.actions.act_window,help:cmc_job_costing.action_cmc_job_cost_run
+msgid "Create a job cost run"
+msgstr "Crea un'elaborazione di costo di commessa"
+
+#. module: cmc_job_costing
+#: model_terms:ir.actions.act_window,help:cmc_job_costing.action_cmc_evm_baseline
+msgid "Create a project baseline"
+msgstr "Crea una baseline di progetto"
+
+#. module: cmc_job_costing
+#: model_terms:ir.actions.act_window,help:cmc_job_costing.action_cmc_evm_run
+msgid "Create an EVM status report"
+msgstr "Crea un rapporto di stato EVM"
+
+#. module: cmc_job_costing
+#: model_terms:ir.actions.act_window,help:cmc_job_costing.action_cmc_job_rate
+msgid "Create the hourly rate of a resource center"
+msgstr "Crea la tariffa oraria di un centro risorsa"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_baseline_line__create_uid
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_change_request__create_uid
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve__create_uid
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__create_uid
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_risk__create_uid
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__create_uid
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_task_line__create_uid
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_cost_run__create_uid
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_rate__create_uid
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__create_uid
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet_labour__create_uid
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_baseline_line__create_date
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_change_request__create_date
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve__create_date
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__create_date
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_risk__create_date
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__create_date
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_task_line__create_date
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_cost_run__create_date
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_rate__create_date
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__create_date
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet_labour__create_date
+msgid "Created on"
+msgstr "Creato il"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_baseline_line__currency_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_change_request__currency_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve__currency_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve_series__currency_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__currency_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_risk__currency_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__currency_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_task_line__currency_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_cost_run__currency_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_rate__currency_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__currency_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet_labour__currency_id
+msgid "Currency"
+msgstr "Valuta"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__curve_ids
+msgid "Curve"
+msgstr "Curva"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_baseline_line__date
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_change_request__date
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve__date
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_rate__date
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet_labour__date
+msgid "Date"
+msgstr "Data"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__date_end
+msgid "Date End"
+msgstr "Data di fine"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_cost_run__date_from
+msgid "Date From"
+msgstr "Data da"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__date_start
+msgid "Date Start"
+msgstr "Data di inizio"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_cost_run__date_to
+msgid "Date To"
+msgstr "Data a"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_cost_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_sheet_list
+msgid "Direct"
+msgstr "Diretto"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__direct_cost
+msgid "Direct Cost"
+msgstr "Costo diretto"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__direct_material_cost
+msgid "Direct Material Cost"
+msgstr "Costo dei materiali diretti"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,help:cmc_job_costing.field_cmc_job_rate__special_cost
+msgid "Direct cost of the center in the month."
+msgstr "Costo diretto del centro nel mese."
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_job_cost_sheet
+msgid "Direct costs"
+msgstr "Costi diretti"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_baseline_line__display_name
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_change_request__display_name
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve__display_name
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve_series__display_name
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__display_name
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_risk__display_name
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__display_name
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_task_line__display_name
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_cost_run__display_name
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_rate__display_name
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__display_name
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet_labour__display_name
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_plan_version__display_name
+#: model:ir.model.fields,field_description:cmc_job_costing.field_project_project__display_name
+#: model:ir.model.fields,field_description:cmc_job_costing.field_project_task__display_name
+msgid "Display Name"
+msgstr "Nome visualizzato"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields.selection,name:cmc_job_costing.selection__cmc_evm_change_request__state__draft
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_evm_run__state__draft
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_job_cost_run__state__draft
+msgid "Draft"
+msgstr "Bozza"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__eac
+msgid "EAC"
+msgstr "EAC"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_evm_status
+msgid "EAC (BAC / CPI)"
+msgstr "EAC (BAC / CPI)"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__eac_atypical
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_evm_status
+msgid "EAC (atypical)"
+msgstr "EAC (atipico)"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__eac_composite
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_evm_status
+msgid "EAC (composite)"
+msgstr "EAC (composito)"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_risk__emv
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_plan_version_form_evm
+msgid "EMV"
+msgstr "EMV"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__etc
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_evm_status
+msgid "ETC"
+msgstr "ETC"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve__ev
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__ev
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_task_line__ev
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_evm_status
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_run_form
+msgid "EV"
+msgstr "EV"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve__ev_cumulative
+msgid "EV (cumulative)"
+msgstr "EV (cumulato)"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_evm_status
+msgid "EV cum."
+msgstr "EV cum."
+
+#. module: cmc_job_costing
+#: model:ir.model,name:cmc_job_costing.model_cmc_evm_curve
+msgid "EVM Curve"
+msgstr "Curva EVM"
+
+#. module: cmc_job_costing
+#: model:ir.model,name:cmc_job_costing.model_cmc_evm_curve_series
+msgid "EVM S-curve series"
+msgstr "Serie curva a S EVM"
+
+#. module: cmc_job_costing
+#: model:ir.actions.report,name:cmc_job_costing.action_report_evm_status
+#: model:ir.model,name:cmc_job_costing.model_cmc_evm_run
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_run_form
+msgid "EVM Status Report"
+msgstr "Rapporto di stato EVM"
+
+#. module: cmc_job_costing
+#: model:ir.actions.act_window,name:cmc_job_costing.action_cmc_evm_run
+#: model:ir.ui.menu,name:cmc_job_costing.menu_cmc_evm_run
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_run_list
+msgid "EVM Status Reports"
+msgstr "Rapporti di stato EVM"
+
+#. module: cmc_job_costing
+#: model:ir.model,name:cmc_job_costing.model_cmc_evm_task_line
+msgid "EVM Task Line"
+msgstr "Riga attività EVM"
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_evm_run.py:0
+msgid "EVM status"
+msgstr "Stato EVM"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields.selection,name:cmc_job_costing.selection__cmc_evm_curve_series__series__ev
+msgid "Earned Value (EV)"
+msgstr "Valore guadagnato (EV)"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,help:cmc_job_costing.field_project_task__cmc_progress
+msgid "Earned value reads this field, not the timesheet progress."
+msgstr ""
+"Il valore maturato (earned value) legge questo campo, non l'avanzamento dei "
+"fogli ore."
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_rate__category_id
+msgid "Employee Category"
+msgstr "Categoria del dipendente"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,help:cmc_job_costing.field_cmc_job_rate__category_id
+msgid ""
+"Empty = every employee of the center without a rate of their own category."
+msgstr ""
+"Vuoto = ogni dipendente del centro privo di una tariffa per la propria "
+"categoria."
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,help:cmc_job_costing.field_cmc_job_cost_run__project_ids
+msgid ""
+"Empty = every job of the company with cost lines or timesheets in the "
+"period, plus the jobs still open at the end date."
+msgstr ""
+"Vuoto = ogni commessa della società con righe di costo o fogli ore nel "
+"periodo, più le commesse ancora aperte alla data di fine."
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_plan_version_form_evm
+msgid "Estimate"
+msgstr "Stima"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_plan_version__estimate_expected
+msgid "Estimate Expected"
+msgstr "Stima attesa"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_plan_version__estimate_high
+msgid "Estimate High"
+msgstr "Stima alta"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_plan_version__estimate_line_ids
+msgid "Estimate Line"
+msgstr "Riga di stima"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_plan_version__estimate_low
+msgid "Estimate Low"
+msgstr "Stima bassa"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_plan_version__estimate_sigma
+msgid "Estimate Sigma"
+msgstr "Sigma della stima"
+
+#. module: cmc_job_costing
+#: model_terms:ir.actions.act_window,help:cmc_job_costing.action_cmc_evm_baseline
+msgid ""
+"Estimate the work packages with three points, rate the hours from the rate "
+"card, then approve to freeze the time-phased cost baseline."
+msgstr ""
+"Stimare i pacchetti di lavoro con tre punti, valorizzare le ore dal listino "
+"tariffe, poi approvare per congelare la baseline dei costi distribuita nel "
+"tempo."
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_plan_version_form_evm
+msgid "Expected"
+msgstr "Atteso"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,help:cmc_job_costing.field_cmc_evm_baseline_line__date
+#: model:ir.model.fields,help:cmc_job_costing.field_cmc_evm_curve__date
+#: model:ir.model.fields,help:cmc_job_costing.field_cmc_job_rate__date
+#: model:ir.model.fields,help:cmc_job_costing.field_cmc_job_sheet_labour__date
+msgid "First day of the month."
+msgstr "Primo giorno del mese."
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_evm_status
+msgid "Flag"
+msgstr "Segnalazione"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_evm_status
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_run_form
+msgid "Forecast"
+msgstr "Previsione"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_rate__gross_hours
+msgid "Gross Hours"
+msgstr "Ore lorde"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__hourly_rate
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_rate__hourly_rate
+msgid "Hourly Rate"
+msgstr "Tariffa oraria"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__hours
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet_labour__hours
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_job_cost_sheet
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_cost_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_sheet_list
+msgid "Hours"
+msgstr "Ore"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__hours_expected
+msgid "Hours Expected"
+msgstr "Ore attese"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__hours_most_likely
+msgid "Hours Most Likely"
+msgstr "Ore più probabili"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__hours_optimistic
+msgid "Hours Optimistic"
+msgstr "Ore ottimistiche"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__hours_pessimistic
+msgid "Hours Pessimistic"
+msgstr "Ore pessimistiche"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_baseline_line__id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_change_request__id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve__id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve_series__id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_risk__id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_task_line__id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_cost_run__id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_rate__id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet_labour__id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_plan_version__id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_project_project__id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_project_task__id
+msgid "ID"
+msgstr "ID"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_risk__impact
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_change_request_list
+msgid "Impact"
+msgstr "Impatto"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_evm_status
+msgid "Index"
+msgstr "Indice"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_run_form
+msgid "Indices"
+msgstr "Indici"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve__is_forecast
+msgid "Is Forecast"
+msgstr "È previsione"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__project_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__project_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_plan_version__project_id
+msgid "Job"
+msgstr "Commessa"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_project_project__cmc_job_close_date
+msgid "Job Close Date"
+msgstr "Data di chiusura della commessa"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_project_project__cmc_job_closed
+msgid "Job Closed"
+msgstr "Commessa chiusa"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__job_cost
+msgid "Job Cost"
+msgstr "Costo di commessa"
+
+#. module: cmc_job_costing
+#: model:ir.model,name:cmc_job_costing.model_cmc_job_cost_run
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__job_run_id
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_cost_run_form
+msgid "Job Cost Run"
+msgstr "Elaborazione costo di commessa"
+
+#. module: cmc_job_costing
+#: model:ir.actions.act_window,name:cmc_job_costing.action_cmc_job_cost_run
+#: model:ir.ui.menu,name:cmc_job_costing.menu_cmc_job_cost_run
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_cost_run_list
+msgid "Job Cost Runs"
+msgstr "Elaborazioni costo di commessa"
+
+#. module: cmc_job_costing
+#: model:ir.model,name:cmc_job_costing.model_cmc_job_sheet
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_sheet_form
+msgid "Job Cost Sheet"
+msgstr "Scheda di costo di commessa"
+
+#. module: cmc_job_costing
+#: model:ir.model,name:cmc_job_costing.model_cmc_job_sheet_labour
+msgid "Job Cost Sheet Labour"
+msgstr "Manodopera della scheda di costo di commessa"
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/project_project.py:0
+#: model:ir.actions.act_window,name:cmc_job_costing.action_cmc_job_sheet
+#: model:ir.actions.report,name:cmc_job_costing.action_report_job_cost_sheet
+#: model:ir.ui.menu,name:cmc_job_costing.menu_cmc_job_sheet
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.project_project_view_form_cmc_job
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_cost_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_sheet_list
+msgid "Job Cost Sheets"
+msgstr "Schede di costo di commessa"
+
+#. module: cmc_job_costing
+#: model:ir.ui.menu,name:cmc_job_costing.menu_cmc_sec_job_costing
+msgid "Job Costing"
+msgstr "Costing di commessa"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__job_status
+msgid "Job Status"
+msgstr "Stato della commessa"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_job_cost_sheet
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_cost_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_sheet_list
+msgid "Job cost"
+msgstr "Costo di commessa"
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_job_cost_run.py:0
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.project_project_view_form_cmc_job
+msgid "Job costing"
+msgstr "Costing di commessa"
+
+#. module: cmc_job_costing
+#: model_terms:ir.actions.act_window,help:cmc_job_costing.action_cmc_job_rate
+msgid ""
+"Job costing values the hours of a job at these monthly rates, not at the "
+"employee cost."
+msgstr ""
+"Il costing di commessa valorizza le ore di una commessa a queste tariffe "
+"mensili, non al costo del dipendente."
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_job_cost_sheet
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_sheet_form
+msgid "Job to date"
+msgstr "Commessa a oggi"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_cost_run__project_ids
+msgid "Jobs"
+msgstr "Commesse"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_cost_run__labour_ids
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__labour_ids
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_job_cost_sheet
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_cost_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_sheet_list
+msgid "Labour"
+msgstr "Manodopera"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__labour_cost
+msgid "Labour Cost"
+msgstr "Costo della manodopera"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_cost_run__labour_rate_source
+msgid "Labour Rate Source"
+msgstr "Fonte della tariffa di manodopera"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_cost_run__labour_driver_id
+msgid "Labour Rate Unit"
+msgstr "Unità della tariffa di manodopera"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields.selection,name:cmc_job_costing.selection__cmc_job_cost_run__overhead_base__hours
+msgid "Labour hours"
+msgstr "Ore di manodopera"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_baseline_line__write_uid
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_change_request__write_uid
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve__write_uid
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__write_uid
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_risk__write_uid
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__write_uid
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_task_line__write_uid
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_cost_run__write_uid
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_rate__write_uid
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__write_uid
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet_labour__write_uid
+msgid "Last Updated by"
+msgstr "Ultimo aggiornamento di"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_baseline_line__write_date
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_change_request__write_date
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve__write_date
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__write_date
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_risk__write_date
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__write_date
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_task_line__write_date
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_cost_run__write_date
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_rate__write_date
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__write_date
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet_labour__write_date
+msgid "Last Updated on"
+msgstr "Ultimo aggiornamento il"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__is_latest
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_curve_search
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_curve_series_search
+msgid "Latest Status Report"
+msgstr "Ultimo rapporto di stato"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_rate_list
+msgid "Load center cost"
+msgstr "Carica costo del centro"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_plan_version__management_reserve
+msgid "Management Reserve"
+msgstr "Riserva gestionale"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_plan_version__management_reserve_percent
+msgid "Management Reserve Percent"
+msgstr "Riserva gestionale %"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields.selection,name:cmc_job_costing.selection__cmc_job_rate__rate_mode__manual
+msgid "Manual"
+msgstr "Manuale"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields.selection,name:cmc_job_costing.selection__cmc_job_cost_run__overhead_source__manual
+msgid "Manual rate"
+msgstr "Tariffa manuale"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__margin
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_cost_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_sheet_list
+msgid "Margin"
+msgstr "Margine"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_job_cost_sheet
+msgid "Margin % (job to date)"
+msgstr "Margine % (commessa a oggi)"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_job_cost_sheet
+msgid "Margin (job to date)"
+msgstr "Margine (commessa a oggi)"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__margin_percent
+msgid "Margin Percent"
+msgstr "Margine %"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__material_cost
+msgid "Material Cost"
+msgstr "Costo dei materiali"
+
+#. module: cmc_job_costing
+#: model_terms:ir.actions.act_window,help:cmc_job_costing.action_cmc_evm_run
+msgid ""
+"Measure a job against its approved baseline: earned value from the task "
+"progress, actual cost from the job cost run."
+msgstr ""
+"Misura una commessa rispetto alla baseline approvata: valore maturato "
+"dall'avanzamento delle attività, costo effettivo dall'elaborazione del costo"
+" di commessa."
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve_series__month
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_evm_status
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_rate_search
+msgid "Month"
+msgstr "Mese"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_curve_list
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_curve_search
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_run_form
+msgid "Monthly Curve"
+msgstr "Curva mensile"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_evm_status
+msgid "Monthly curve"
+msgstr "Curva mensile"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_change_request__name
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__name
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_risk__name
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__name
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_cost_run__name
+msgid "Name"
+msgstr "Nome"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,help:cmc_job_costing.field_cmc_evm_risk__impact
+msgid "Negative: an opportunity."
+msgstr "Negativo: un'opportunità."
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_rate__net_hours
+msgid "Net Hours"
+msgstr "Ore nette"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_change_request__new_baseline_id
+msgid "New Baseline"
+msgstr "Nuova baseline"
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_job_cost_run.py:0
+msgid "No hourly rate for %(center)s in %(month)s."
+msgstr "Nessuna tariffa oraria per %(center)s in %(month)s."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_plan_version.py:0
+msgid "No rate on the rate card for %(center)s in %(month)s."
+msgstr "Nessuna tariffa nel listino per %(center)s in %(month)s."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_job_cost_run.py:0
+msgid "No registry rate for %(center)s in %(month)s."
+msgstr "Nessuna tariffa di registro per %(center)s in %(month)s."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/project_project.py:0
+msgid "Only a Controlling Manager closes or reopens a job."
+msgstr ""
+"Solo un Responsabile del controllo di gestione chiude o riapre una commessa."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_evm_change.py:0
+msgid "Only a draft change request can be rejected."
+msgstr "Solo una richiesta di modifica in bozza può essere rifiutata."
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__other_direct_cost
+msgid "Other Direct Cost"
+msgstr "Altri costi diretti"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve__out_of_control
+msgid "Out Of Control"
+msgstr "Fuori controllo"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__out_of_control_count
+msgid "Out Of Control Count"
+msgstr "Numero di fuori controllo"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_evm_status
+msgid "Out of control"
+msgstr "Fuori controllo"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_evm_status
+msgid "Out of control months"
+msgstr "Mesi fuori controllo"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_cost_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_sheet_list
+msgid "Overhead"
+msgstr "Costi indiretti"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_cost_run__overhead_actual
+msgid "Overhead Actual"
+msgstr "Costi indiretti effettivi"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_cost_run__overhead_applied
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__overhead_applied
+msgid "Overhead Applied"
+msgstr "Costi indiretti imputati"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_cost_run__overhead_base
+msgid "Overhead Base"
+msgstr "Base dei costi indiretti"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__overhead_base_qty
+msgid "Overhead Base Qty"
+msgstr "Quantità della base dei costi indiretti"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_cost_run__overhead_center_ids
+msgid "Overhead Centers"
+msgstr "Centri dei costi indiretti"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_cost_run__overhead_rate
+msgid "Overhead Rate"
+msgstr "Tariffa dei costi indiretti"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_cost_run__overhead_driver_id
+msgid "Overhead Rate Unit"
+msgstr "Unità della tariffa dei costi indiretti"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_cost_run__overhead_source
+msgid "Overhead Source"
+msgstr "Fonte dei costi indiretti"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_cost_run__overhead_variance
+msgid "Overhead Variance"
+msgstr "Scostamento dei costi indiretti"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve__pv
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__pv
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_task_line__pv
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_evm_status
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_plan_version_form_evm
+msgid "PV"
+msgstr "PV"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve__pv_cumulative
+msgid "PV (cumulative)"
+msgstr "PV (cumulato)"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_evm_status
+msgid "PV cum."
+msgstr "PV cum."
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,help:cmc_job_costing.field_cmc_job_cost_run__overhead_rate
+msgid "Per hour, or per currency unit of prime cost."
+msgstr "Per ora, o per unità di valuta di costo primo."
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_task_line__percent_complete
+msgid "Percent Complete"
+msgstr "Percentuale di completamento"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,help:cmc_job_costing.field_cmc_plan_version__management_reserve_percent
+msgid "Percent of the cost baseline, kept outside it (PCM)."
+msgstr ""
+"Percentuale della baseline dei costi, tenuta al di fuori di essa (PCM)."
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,help:cmc_job_costing.field_cmc_evm_risk__probability
+msgid "Percent, 0 to 100."
+msgstr "Percentuale, da 0 a 100."
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_job_cost_sheet
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_sheet_form
+msgid "Period"
+msgstr "Periodo"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__period_direct_cost
+msgid "Period Direct Cost"
+msgstr "Costo diretto del periodo"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__period_hours
+msgid "Period Hours"
+msgstr "Ore del periodo"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__period_job_cost
+msgid "Period Job Cost"
+msgstr "Costo di commessa del periodo"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__period_labour_cost
+msgid "Period Labour Cost"
+msgstr "Costo della manodopera del periodo"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__period_overhead_applied
+msgid "Period Overhead Applied"
+msgstr "Costi indiretti imputati nel periodo"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__period_revenue
+msgid "Period Revenue"
+msgstr "Ricavi del periodo"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_cost_run_form
+msgid "Period and jobs"
+msgstr "Periodo e commesse"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_cost_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_sheet_list
+msgid "Period cost"
+msgstr "Costo del periodo"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_cost_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_sheet_list
+msgid "Period revenue"
+msgstr "Ricavi del periodo"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_project_task__cmc_progress
+msgid "Physical Progress (%)"
+msgstr "Avanzamento fisico (%)"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_plan_version_form_evm
+msgid "Plan Baseline"
+msgstr "Baseline di piano"
+
+#. module: cmc_job_costing
+#: model:ir.model,name:cmc_job_costing.model_cmc_plan_version
+msgid "Plan Version"
+msgstr "Versione di piano"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_baseline_line__planned_value
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_plan_version_form_evm
+msgid "Planned Value"
+msgstr "Valore pianificato"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields.selection,name:cmc_job_costing.selection__cmc_evm_curve_series__series__pv
+msgid "Planned Value (PV)"
+msgstr "Valore pianificato (PV)"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__prime_cost
+msgid "Prime Cost"
+msgstr "Costo primo"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields.selection,name:cmc_job_costing.selection__cmc_job_cost_run__overhead_base__direct_cost
+msgid "Prime cost"
+msgstr "Costo primo"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_risk__probability
+msgid "Probability"
+msgstr "Probabilità"
+
+#. module: cmc_job_costing
+#: model:ir.model,name:cmc_job_costing.model_project_project
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve_series__project_id
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_curve_series_search
+msgid "Project"
+msgstr "Progetto"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_plan_version__project_budget
+msgid "Project Budget"
+msgstr "Budget di progetto"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet_labour__rate
+msgid "Rate"
+msgstr "Tariffa"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_plan_version__cmc_rate_driver_id
+msgid "Rate Card Unit"
+msgstr "Unità del listino tariffe"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_rate__rate_mode
+msgid "Rate Mode"
+msgstr "Modalità tariffa"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet_labour__rate_origin
+msgid "Rate Origin"
+msgstr "Origine della tariffa"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields.selection,name:cmc_job_costing.selection__cmc_job_cost_run__labour_rate_source__registry
+#: model:ir.model.fields.selection,name:cmc_job_costing.selection__cmc_job_cost_run__overhead_source__registry
+#: model:ir.model.fields.selection,name:cmc_job_costing.selection__cmc_job_sheet_labour__rate_origin__registry
+msgid "Rate registry"
+msgstr "Registro tariffe"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields.selection,name:cmc_job_costing.selection__cmc_job_cost_run__labour_rate_source__table
+#: model:ir.model.fields.selection,name:cmc_job_costing.selection__cmc_job_sheet_labour__rate_origin__table
+msgid "Rate table"
+msgstr "Tabella tariffe"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_cost_run_form
+msgid "Rates"
+msgstr "Tariffe"
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_job_cost_run.py:0
+msgid "Registry overhead rates are per center hour: use the hours base."
+msgstr ""
+"Le tariffe dei costi indiretti da registro sono per ora-centro: usare la "
+"base ore."
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,help:cmc_job_costing.field_cmc_job_cost_run__labour_driver_id
+msgid ""
+"Registry: the hourly rate to read. Table: when set, the center rates applied"
+" are published under it."
+msgstr ""
+"Registro: la tariffa oraria da leggere. Tabella: se impostata, le tariffe di"
+" centro applicate vengono pubblicate sotto di essa."
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_change_request_form
+msgid "Reject"
+msgstr "Rifiuta"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields.selection,name:cmc_job_costing.selection__cmc_evm_change_request__state__rejected
+msgid "Rejected"
+msgstr "Rifiutato"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_plan_version_form_evm
+msgid "Reserves"
+msgstr "Riserve"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_cost_run_form
+msgid "Reset to Draft"
+msgstr "Riporta in bozza"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_cost_run_form
+msgid "Resetting deletes the computed results. Continue?"
+msgstr ""
+"Riportando in bozza i risultati calcolati vengono cancellati. Continuare?"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__center_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_rate__center_id
+msgid "Resource Center"
+msgstr "Centro risorsa"
+
+#. module: cmc_job_costing
+#: model:ir.model,name:cmc_job_costing.model_cmc_job_rate
+msgid "Resource Center Hourly Rate"
+msgstr "Tariffa oraria del centro risorsa"
+
+#. module: cmc_job_costing
+#: model:ir.actions.act_window,name:cmc_job_costing.action_cmc_job_rate
+#: model:ir.ui.menu,name:cmc_job_costing.menu_cmc_job_rate
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_rate_list
+msgid "Resource Center Rates"
+msgstr "Tariffe dei centri risorsa"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_cost_run_form
+msgid "Result"
+msgstr "Risultato"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__revenue
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_job_cost_sheet
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_cost_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_job_sheet_list
+msgid "Revenue"
+msgstr "Ricavi"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_plan_version__risk_ids
+msgid "Risk"
+msgstr "Rischio"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_plan_version_form_evm
+msgid "Risks"
+msgstr "Rischi"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__rule_of_seven
+msgid "Rule Of Seven"
+msgstr "Regola dei sette"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_evm_status
+msgid "Rule of seven"
+msgstr "Regola dei sette"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve__run_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve_series__run_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_task_line__run_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet__run_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet_labour__run_id
+msgid "Run"
+msgstr "Elaborazione"
+
+#. module: cmc_job_costing
+#: model:ir.actions.act_window,name:cmc_job_costing.action_cmc_evm_curve_run
+#: model:ir.actions.act_window,name:cmc_job_costing.action_cmc_evm_curve_series
+#: model:ir.ui.menu,name:cmc_job_costing.menu_cmc_evm_curve
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_curve_graph
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_curve_series_graph
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_curve_series_list
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_curve_series_pivot
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_curve_series_search
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_run_form
+msgid "S-Curve"
+msgstr "Curva a S"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__spi
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_evm_status
+msgid "SPI"
+msgstr "SPI"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__sv
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_task_line__sv
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_evm_status
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_run_form
+msgid "SV"
+msgstr "SV"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve_series__series
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_curve_series_search
+msgid "Series"
+msgstr "Serie"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,help:cmc_job_costing.field_cmc_evm_estimate_line__hourly_rate
+msgid "Set from the rate card when the baseline is planned."
+msgstr "Impostato dal listino tariffe quando la baseline viene pianificata."
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,help:cmc_job_costing.field_cmc_evm_run__rule_of_seven
+msgid "Seven consecutive months of variance on the same side."
+msgstr "Sette mesi consecutivi di scostamento dallo stesso lato."
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,help:cmc_job_costing.field_cmc_job_rate__common_cost_share
+msgid "Share of the common costs charged to the center."
+msgstr "Quota dei costi comuni addebitata al centro."
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_cost_run__sheet_ids
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_sheet_labour__sheet_id
+msgid "Sheet"
+msgstr "Scheda"
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_job_cost_run.py:0
+msgid ""
+"Some jobs have hours without a cost center:\n"
+"%(jobs)s\n"
+"Set the cost center of each project on the analytic plan %(plans)s, then compute again."
+msgstr ""
+"Alcune commesse hanno ore senza centro di costo:\n"
+"%(jobs)s\n"
+"Imposta il centro di costo di ogni progetto sul piano analitico %(plans)s, poi calcola di nuovo."
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_rate__special_cost
+msgid "Special Cost"
+msgstr "Costo speciale"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_change_request__state
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__state
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_cost_run__state
+msgid "State"
+msgstr "Stato"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__status_date
+msgid "Status Date"
+msgstr "Data di stato"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_curve_series_search
+msgid "Status Report"
+msgstr "Rapporto di stato"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__tcpi
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_evm_status
+msgid "TCPI"
+msgstr "TCPI"
+
+#. module: cmc_job_costing
+#: model:ir.model,name:cmc_job_costing.model_project_task
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_baseline_line__task_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_change_request__task_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_risk__task_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_task_line__task_id
+msgid "Task"
+msgstr "Attività"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__task_line_ids
+msgid "Task Line"
+msgstr "Riga attività"
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_evm_run.py:0
+msgid "The baseline must be a baseline version of the job of the report."
+msgstr ""
+"La baseline deve essere una versione di baseline della commessa del "
+"rapporto."
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,help:cmc_job_costing.field_cmc_job_cost_run__overhead_center_ids
+msgid "The centers whose indirect cost is compared with the overhead applied."
+msgstr ""
+"I centri il cui costo indiretto è confrontato con i costi indiretti "
+"imputati."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_evm_change.py:0
+msgid "The change must fall inside the baseline span."
+msgstr "La modifica deve ricadere nell'intervallo della baseline."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_evm_change.py:0
+msgid "The change must fall on a task of the baseline job."
+msgstr ""
+"La modifica deve riguardare un'attività della commessa della baseline."
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,help:cmc_job_costing.field_cmc_evm_run__is_latest
+msgid "The computed report with the latest status date of its job."
+msgstr ""
+"Il rapporto calcolato con la data di stato più recente della sua commessa."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_job_cost_run.py:0
+msgid "The end date cannot precede the start date."
+msgstr "La data di fine non può precedere la data di inizio."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_job_rate.py:0
+msgid "The hourly rate cannot be negative."
+msgstr "La tariffa oraria non può essere negativa."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_evm_run.py:0
+msgid "The job cost run must be computed and end on the status date."
+msgstr ""
+"L'elaborazione del costo di commessa deve essere calcolata e terminare alla "
+"data di stato."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_plan_version.py:0
+msgid "The management reserve cannot be negative."
+msgstr "La riserva gestionale non può essere negativa."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_job_cost_run.py:0
+msgid "The overhead rate cannot be negative."
+msgstr "La tariffa dei costi indiretti non può essere negativa."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/project_task.py:0
+msgid "The progress is a percent between 0 and 100."
+msgstr "L'avanzamento è una percentuale tra 0 e 100."
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,help:cmc_job_costing.field_cmc_plan_version__cmc_rate_driver_id
+msgid "The unit of the hourly rates of the rate card."
+msgstr "L'unità delle tariffe orarie del listino."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_evm_baseline.py:0
+msgid "The work package must be a task of the baseline job."
+msgstr ""
+"Il pacchetto di lavoro deve essere un'attività della commessa della "
+"baseline."
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,help:cmc_job_costing.field_project_project__cmc_job_closed
+msgid "Transferred to finished goods."
+msgstr "Trasferito ai prodotti finiti."
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_evm_run.py:0
+msgid "Unsupported search on the latest status report."
+msgstr "Ricerca non supportata sull'ultimo rapporto di stato."
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,help:cmc_job_costing.field_project_task__display_name
+msgid ""
+"Use these keywords in the title to set new tasks:\n"
+"\n"
+"        30h Allocate 30 hours to the task\n"
+"        #tags Set tags on the task\n"
+"        @user Assign the task to a user\n"
+"        ! Set the task a medium priority\n"
+"        !! Set the task a high priority\n"
+"        !!! Set the task a urgent priority\n"
+"\n"
+"        Make sure to use the right format and order e.g. Improve the configuration screen 5h #feature #v16 @Mitchell !"
+msgstr ""
+"Usa queste parole chiave nel titolo per configurare nuovi lavori:\n"
+"\n"
+"        30h per assegnare 30 ore al lavoro\n"
+"        #tags per configurare tag nel lavoro\n"
+"        @user per assegnare il lavoro a un utente\n"
+"        ! per impostare la priorità su media\n"
+"        !! per impostare la priorità su alta\n"
+"        !!! per impostare la priorità su urgente\n"
+"\n"
+"        Assicurati di utilizzare il formato e l'ordine corretti, ad es. Migliorare la schermata di configurazione 5h #feature #v16 @Mitchell!"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_run__vac
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_evm_status
+msgid "VAC"
+msgstr "VAC"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,help:cmc_job_costing.field_cmc_job_rate__absence_hours
+msgid "Vacation, holidays, sick leave."
+msgstr "Ferie, festività, malattia."
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_curve_series__value
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.report_evm_status
+msgid "Value"
+msgstr "Valore"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_baseline_line__version_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__version_id
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_risk__version_id
+msgid "Version"
+msgstr "Versione"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_plan_version__version_type
+msgid "Version Type"
+msgstr "Tipo di versione"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_evm_estimate_line__task_id
+msgid "Work Package"
+msgstr "Pacchetto di lavoro"
+
+#. module: cmc_job_costing
+#: model_terms:ir.ui.view,arch_db:cmc_job_costing.view_cmc_evm_run_form
+msgid "Work Packages"
+msgstr "Pacchetti di lavoro"
+
+#. module: cmc_job_costing
+#: model:ir.model.fields,field_description:cmc_job_costing.field_cmc_job_cost_run__wip_total
+#: model:ir.model.fields.selection,name:cmc_job_costing.selection__cmc_job_sheet__job_status__wip
+msgid "Work in Progress"
+msgstr "Lavori in corso"
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/project_project.py:0
+msgid "project_id"
+msgstr "Progetto"

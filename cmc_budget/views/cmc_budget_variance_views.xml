@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_budget_variance_run_list" model="ir.ui.view">
+        <field name="name">cmc.budget.variance.run.list</field>
+        <field name="model">cmc.budget.variance.run</field>
+        <field name="arch" type="xml">
+            <list string="Variance Runs">
+                <field name="name"/>
+                <field name="version_id"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_budget_variance_run_form" model="ir.ui.view">
+        <field name="name">cmc.budget.variance.run.form</field>
+        <field name="model">cmc.budget.variance.run</field>
+        <field name="arch" type="xml">
+            <form string="Variance Run">
+                <header>
+                    <button name="action_compute" type="object" string="Compute"
+                            class="oe_highlight" invisible="state == 'done'"/>
+                    <button name="action_reset_to_draft" type="object"
+                            string="Reset to Draft" invisible="state != 'done'"
+                            confirm="Resetting deletes the computed results. Continue?"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="version_id" readonly="state == 'done'"/>
+                            <field name="company_id" readonly="state == 'done'" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="date_from" readonly="state == 'done'"/>
+                            <field name="date_to" readonly="state == 'done'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="results" string="Results">
+                            <field name="line_ids" readonly="1">
+                                <list create="false" edit="false">
+                                    <field name="center_id"/>
+                                    <field name="element_id" optional="hide"/>
+                                    <field name="driver_id"/>
+                                    <field name="planned_qty" optional="hide"/>
+                                    <field name="actual_qty" optional="hide"/>
+                                    <field name="flexible_amount" sum="Flexible budget"/>
+                                    <field name="actual_amount" sum="Actual"/>
+                                    <field name="spending_variance" sum="Spending"/>
+                                    <field name="efficiency_variance" sum="Efficiency"/>
+                                    <field name="volume_variance" sum="Volume"/>
+                                    <field name="budget_fixed" optional="hide"/>
+                                    <field name="budget_variable" optional="hide"/>
+                                    <field name="allowed_qty" optional="hide"/>
+                                    <field name="practical_qty" optional="hide"/>
+                                    <field name="capacity_rate" optional="hide"/>
+                                    <field name="capacity_assigned" optional="hide"/>
+                                    <field name="capacity_unused_budgeted" optional="hide"/>
+                                    <field name="capacity_unused_unexpected" optional="hide"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="inputs" string="Allowed Quantities">
+                            <field name="input_ids" readonly="state == 'done'">
+                                <list editable="bottom">
+                                    <field name="center_id"/>
+                                    <field name="driver_id"/>
+                                    <field name="allowed_qty"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_budget_variance_run" model="ir.actions.act_window">
+        <field name="name">Variance Runs</field>
+        <field name="res_model">cmc.budget.variance.run</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a variance run</p>
+            <p>Split the gap between budget and actual into spending, efficiency and volume variances.</p>
+        </field>
+    </record>
+</odoo>

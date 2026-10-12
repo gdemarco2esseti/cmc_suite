@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_kpi_scorecard_list" model="ir.ui.view">
+        <field name="name">cmc.kpi.scorecard.list</field>
+        <field name="model">cmc.kpi.scorecard</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="responsibility_id"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_kpi_scorecard_form" model="ir.ui.view">
+        <field name="name">cmc.kpi.scorecard.form</field>
+        <field name="model">cmc.kpi.scorecard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <field name="active" invisible="1"/>
+                        <field name="responsibility_id"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>
+                    <notebook>
+                        <page name="perspectives" string="Perspectives (weights total 100)">
+                            <field name="perspective_ids">
+                                <list editable="bottom">
+                                    <field name="perspective"/>
+                                    <field name="weight" sum="Total"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="lines" string="KPIs (weights total 100 per perspective)">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="kpi_id"/>
+                                    <field name="perspective"/>
+                                    <field name="weight" sum="Total"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_kpi_scorecard" model="ir.actions.act_window">
+        <field name="name">Balanced Scorecards</field>
+        <field name="res_model">cmc.kpi.scorecard</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_cmc_kpi_scorecard_result_list" model="ir.ui.view">
+        <field name="name">cmc.kpi.scorecard.result.list</field>
+        <field name="model">cmc.kpi.scorecard.result</field>
+        <field name="arch" type="xml">
+            <list create="false" edit="false" delete="false" decoration-bf="not perspective" decoration-muted="not computable">
+                <field name="run_id"/>
+                <field name="scorecard_id"/>
+                <field name="date"/>
+                <field name="perspective"/>
+                <field name="weight"/>
+                <field name="score" invisible="not computable"/>
+                <field name="computable" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_kpi_scorecard_result_pivot" model="ir.ui.view">
+        <field name="name">cmc.kpi.scorecard.result.pivot</field>
+        <field name="model">cmc.kpi.scorecard.result</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="scorecard_id" type="row"/>
+                <field name="perspective" type="row"/>
+                <field name="date" interval="month" type="col"/>
+                <field name="score" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_cmc_kpi_scorecard_result_search" model="ir.ui.view">
+        <field name="name">cmc.kpi.scorecard.result.search</field>
+        <field name="model">cmc.kpi.scorecard.result</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="run_id"/>
+                <field name="scorecard_id"/>
+                <filter name="overall" string="Overall scores" domain="[('perspective', '=', False)]"/>
+                <group>
+                    <filter name="group_scorecard" string="Scorecard" context="{'group_by': 'scorecard_id'}"/>
+                    <filter name="group_month" string="Month" context="{'group_by': 'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cmc_kpi_scorecard_result" model="ir.actions.act_window">
+        <field name="name">Scorecard Results</field>
+        <field name="res_model">cmc.kpi.scorecard.result</field>
+        <field name="view_mode">pivot,list</field>
+        <field name="context">{'search_default_overall': 1}</field>
+    </record>
+</odoo>

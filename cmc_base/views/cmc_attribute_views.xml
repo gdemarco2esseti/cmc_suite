@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_attribute_list" model="ir.ui.view">
+        <field name="name">cmc.attribute.list</field>
+        <field name="model">cmc.attribute</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="target_model_ids" widget="many2many_tags"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_attribute_form" model="ir.ui.view">
+        <field name="name">cmc.attribute.form</field>
+        <field name="model">cmc.attribute</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="target_model_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                        </group>
+                    </group>
+                    <field name="value_ids">
+                        <list editable="bottom">
+                            <field name="sequence" widget="handle"/>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="weight"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_attribute" model="ir.actions.act_window">
+        <field name="name">Attributes</field>
+        <field name="res_model">cmc.attribute</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_cmc_attribute"
+              name="Attributes"
+              parent="menu_cmc_cfg_master"
+              action="action_cmc_attribute"
+              sequence="20"
+              groups="cmc_base.group_cmc_manager"/>
+</odoo>

@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_cmc_process_run_user,cmc.process.run.user,model_cmc_process_run,cmc_base.group_cmc_user,1,1,1,1
+access_cmc_process_run_manager,cmc.process.run.manager,model_cmc_process_run,cmc_base.group_cmc_manager,1,1,1,1
+access_cmc_process_run_line_user,cmc.process.run.line.user,model_cmc_process_run_line,cmc_base.group_cmc_user,1,0,0,0
+access_cmc_process_run_line_manager,cmc.process.run.line.manager,model_cmc_process_run_line,cmc_base.group_cmc_manager,1,0,0,0

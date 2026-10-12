@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_closing_run_form_gpk" model="ir.ui.view">
+        <field name="name">cmc.closing.run.form.gpk</field>
+        <field name="model">cmc.closing.run</field>
+        <field name="inherit_id" ref="cmc_base.view_cmc_closing_run_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='method']" position="after">
+                <field name="allocation_basis" readonly="state != 'draft'"/>
+                <field name="gpk_version_id" invisible="allocation_basis != 'dual_rate'"
+                       required="allocation_basis == 'dual_rate'" readonly="state != 'draft'"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="cmc_base.CmcReclassTable">
+        <div class="cmc_reclass" t-if="data and data.columns and data.columns.length">
+            <div class="cmc_reclass_title" t-esc="data.title"/>
+            <div class="cmc_reclass_sub text-muted" t-esc="data.subtitle"/>
+            <div class="table-responsive">
+                <table class="table table-sm cmc_reclass_tbl">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th class="text-end" t-foreach="data.columns" t-as="c"
+                                t-key="c.key" t-esc="c.label"/>
+                            <th class="text-end">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="data.rows" t-as="r" t-key="r_index"
+                            t-att-class="'cmc_k_' + r.kind">
+                            <td t-esc="r.label"/>
+                            <t t-foreach="data.columns" t-as="c" t-key="c.key">
+                                <td class="text-end"
+                                    t-esc="r.values ? fmt(r.values[c.key], r.kind) : ''"/>
+                            </t>
+                            <td class="text-end cmc_reclass_tot"
+                                t-esc="fmt(r.total, r.kind)"/>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div t-else="" class="text-muted p-3">
+            Run the computation to see the reclassified view.
+        </div>
+    </t>
+</templates>

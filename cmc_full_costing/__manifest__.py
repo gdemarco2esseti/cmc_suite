@@ -1,0 +1,20 @@
+{
+    "name": "CMC - Full Costing",
+    "version": "19.0.1.3.1",
+    "category": "Accounting/Accounting",
+    "summary": "Full product cost (single/multiple base, 4 cost configurations, figurative)",
+    "author": "2ST",
+    "license": "LGPL-3",
+    "depends": ["cmc_base", "product"],
+    "data": [
+        "security/cmc_full_costing_security.xml",
+        "security/ir.model.access.csv",
+        "views/cmc_costing_simulate_views.xml",
+        "views/cmc_costing_views.xml",
+        "views/cmc_figurative_views.xml",
+        "report/report_actions.xml",
+    ],
+    "installable": True,
+    "application": False,
+    "auto_install": False,
+}

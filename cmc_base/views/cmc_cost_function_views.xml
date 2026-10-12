@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_cost_function_list" model="ir.ui.view">
+        <field name="name">cmc.cost.function.list</field>
+        <field name="model">cmc.cost.function</field>
+        <field name="arch" type="xml">
+            <list string="Cost Functions">
+                <field name="name"/>
+                <field name="center_id"/>
+                <field name="element_id" optional="show"/>
+                <field name="driver_id"/>
+                <field name="behavior"/>
+                <field name="fixed_amount" optional="show"/>
+                <field name="variable_rate" optional="show"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_cost_function_form" model="ir.ui.view">
+        <field name="name">cmc.cost.function.form</field>
+        <field name="model">cmc.cost.function</field>
+        <field name="arch" type="xml">
+            <form string="Cost Function">
+                <header>
+                    <button name="action_estimate" type="object" string="Estimate from History"
+                            class="oe_highlight" invisible="method == 'manual'"
+                            groups="cmc_base.group_cmc_manager"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="e.g. Energy - Press Shop"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="center_id"/>
+                            <field name="element_id"/>
+                            <field name="driver_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="behavior"/>
+                            <field name="fixed_amount" invisible="behavior in ('variable', 'step')"/>
+                            <field name="variable_rate" invisible="behavior in ('fixed', 'step')"/>
+                            <field name="range_min"/>
+                            <field name="range_max"/>
+                        </group>
+                    </group>
+                    <group string="Estimation">
+                        <group>
+                            <field name="method"/>
+                            <field name="r2" invisible="method != 'ols'"/>
+                        </group>
+                        <group invisible="method == 'manual'">
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+                    </group>
+                    <field name="step_ids" invisible="behavior != 'step'">
+                        <list string="Steps" editable="bottom">
+                            <field name="qty_from"/>
+                            <field name="qty_to"/>
+                            <field name="amount"/>
+                            <field name="currency_id" column_invisible="1"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cmc_cost_function_search" model="ir.ui.view">
+        <field name="name">cmc.cost.function.search</field>
+        <field name="model">cmc.cost.function</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="center_id"/>
+                <field name="driver_id"/>
+                <group name="groupby">
+                    <filter name="g_center" string="Center" context="{'group_by': 'center_id'}"/>
+                    <filter name="g_behavior" string="Behavior" context="{'group_by': 'behavior'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cmc_cost_function" model="ir.actions.act_window">
+        <field name="name">Cost Functions</field>
+        <field name="res_model">cmc.cost.function</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a cost function</p>
+            <p>Describe how the cost of a center reacts to its driver: fixed, variable, semi-variable or stepped.</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_cmc_cost_function"
+              name="Cost Functions"
+              parent="menu_cmc_cfg_master"
+              action="action_cmc_cost_function"
+              sequence="30"/>
+</odoo>

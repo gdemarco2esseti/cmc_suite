@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- shipped attribute: the strategic business unit of a product (FIN-12) -->
+    <record id="cmc_attribute_sbu" model="cmc.attribute">
+        <field name="name">Strategic business unit</field>
+        <field name="code">SBU</field>
+        <field name="sequence">60</field>
+        <field name="company_id" eval="False"/>
+        <field name="target_model_ids" eval="[(6, 0, [ref('product.model_product_template')])]"/>
+    </record>
+</odoo>

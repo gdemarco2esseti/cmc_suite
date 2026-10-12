@@ -1,0 +1,349 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* cmc_kpi_mrp
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 23:47+0000\n"
+"PO-Revision-Date: 2026-10-09 23:47+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+msgid "Cycle time (min per unit)"
+msgstr "Tempo di ciclo (min per unità)"
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+msgid "Defective parts per million"
+msgstr "Parti difettose per milione"
+
+#. module: cmc_kpi_mrp
+#: model:ir.model.fields,field_description:cmc_kpi_mrp.field_stock_picking__cmc_delivery_lead_time
+msgid "Delivery Lead Time (min)"
+msgstr "Lead time di consegna (min)"
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+#: model:cmc.cost.driver,name:cmc_kpi_mrp.cmc_measure_delivery_lead_minutes
+msgid "Delivery lead minutes"
+msgstr "Minuti di lead time di consegna"
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+msgid "Delivery lead time (days)"
+msgstr "Lead time di consegna (giorni)"
+
+#. module: cmc_kpi_mrp
+#: model:ir.model.fields,field_description:cmc_kpi_mrp.field_cmc_kpi__display_name
+#: model:ir.model.fields,field_description:cmc_kpi_mrp.field_cmc_measure_quantity__display_name
+#: model:ir.model.fields,field_description:cmc_kpi_mrp.field_mrp_production__display_name
+#: model:ir.model.fields,field_description:cmc_kpi_mrp.field_mrp_workorder__display_name
+#: model:ir.model.fields,field_description:cmc_kpi_mrp.field_stock_picking__display_name
+msgid "Display Name"
+msgstr "Nome visualizzato"
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+msgid "First-pass units"
+msgstr "Unità al primo passaggio"
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+msgid "First-pass yield (%)"
+msgstr "Resa al primo passaggio (%)"
+
+#. module: cmc_kpi_mrp
+#: model:ir.model.fields,field_description:cmc_kpi_mrp.field_cmc_kpi__id
+#: model:ir.model.fields,field_description:cmc_kpi_mrp.field_cmc_measure_quantity__id
+#: model:ir.model.fields,field_description:cmc_kpi_mrp.field_mrp_production__id
+#: model:ir.model.fields,field_description:cmc_kpi_mrp.field_mrp_workorder__id
+#: model:ir.model.fields,field_description:cmc_kpi_mrp.field_stock_picking__id
+msgid "ID"
+msgstr "ID"
+
+#. module: cmc_kpi_mrp
+#: model:ir.model,name:cmc_kpi_mrp.model_cmc_kpi
+msgid "KPI"
+msgstr "KPI"
+
+#. module: cmc_kpi_mrp
+#: model:ir.model.fields,field_description:cmc_kpi_mrp.field_mrp_production__cmc_lead_time
+msgid "Lead Time (min)"
+msgstr "Lead time (min)"
+
+#. module: cmc_kpi_mrp
+#: model_terms:ir.ui.view,arch_db:cmc_kpi_mrp.view_cmc_kpi_list_mrp
+msgid "Load manufacturing KPIs"
+msgstr "Carica KPI di produzione"
+
+#. module: cmc_kpi_mrp
+#: model:ir.model,name:cmc_kpi_mrp.model_mrp_production
+msgid "Manufacturing Order"
+msgstr "Ordine di produzione"
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+msgid "Manufacturing cycle efficiency (%)"
+msgstr "Efficienza del ciclo di produzione (%)"
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+#: model:cmc.cost.driver,name:cmc_kpi_mrp.cmc_measure_mo_lead_minutes
+msgid "Manufacturing lead minutes"
+msgstr "Minuti di lead time di produzione"
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+msgid "Manufacturing lead time (days)"
+msgstr "Lead time di produzione (giorni)"
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+#: model:cmc.cost.driver,name:cmc_kpi_mrp.cmc_measure_mo_done
+msgid "Manufacturing orders done"
+msgstr "Ordini di produzione completati"
+
+#. module: cmc_kpi_mrp
+#: model:ir.model,name:cmc_kpi_mrp.model_cmc_measure_quantity
+msgid "Measure Quantity"
+msgstr "Quantità misura"
+
+#. module: cmc_kpi_mrp
+#: model:ir.model.fields,help:cmc_kpi_mrp.field_mrp_production__cmc_lead_time
+msgid "Minutes from release (else creation) to close of a done order."
+msgstr ""
+"Minuti dal rilascio (altrimenti dalla creazione) alla chiusura di un ordine "
+"completato."
+
+#. module: cmc_kpi_mrp
+#: model:ir.model.fields,help:cmc_kpi_mrp.field_stock_picking__cmc_delivery_lead_time
+msgid ""
+"Minutes from the sale order date (else creation) to the validation of a done"
+" transfer."
+msgstr ""
+"Minuti dalla data dell'ordine di vendita (altrimenti dalla creazione) alla "
+"convalida di un trasferimento completato."
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+msgid "Produced quantity"
+msgstr "Quantità prodotta"
+
+#. module: cmc_kpi_mrp
+#: model:ir.model.fields,field_description:cmc_kpi_mrp.field_mrp_workorder__cmc_productive_minutes
+msgid "Productive Minutes"
+msgstr "Minuti produttivi"
+
+#. module: cmc_kpi_mrp
+#: model:ir.model.fields,help:cmc_kpi_mrp.field_mrp_workorder__cmc_productive_minutes
+msgid ""
+"Productive time entries merged: overlapping timers of concurrent operators "
+"count once."
+msgstr ""
+"Registrazioni di tempo produttivo unite: i timer sovrapposti di operatori "
+"concorrenti contano una volta."
+
+#. module: cmc_kpi_mrp
+#: model:ir.model.fields,help:cmc_kpi_mrp.field_mrp_production__cmc_is_rework
+msgid "Re-processes units that failed the first pass (first-pass yield KPI)."
+msgstr ""
+"Rilavora unità che non hanno superato il primo passaggio (KPI resa al primo "
+"passaggio)."
+
+#. module: cmc_kpi_mrp
+#: model:ir.model.fields,help:cmc_kpi_mrp.field_mrp_production__cmc_date_released
+msgid ""
+"Release to the shop floor: stamped at confirmation. Start of the "
+"manufacturing lead time."
+msgstr ""
+"Rilascio in reparto: registrato alla conferma. Inizio del lead time di "
+"produzione."
+
+#. module: cmc_kpi_mrp
+#: model:ir.model.fields,field_description:cmc_kpi_mrp.field_mrp_production__cmc_date_released
+msgid "Released On"
+msgstr "Rilasciato il"
+
+#. module: cmc_kpi_mrp
+#: model:ir.model.fields,field_description:cmc_kpi_mrp.field_mrp_production__cmc_is_rework
+msgid "Rework"
+msgstr "Rilavorazione"
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+#: model:cmc.cost.driver,name:cmc_kpi_mrp.cmc_measure_rework_qty
+msgid "Reworked quantity"
+msgstr "Quantità rilavorata"
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+#: model:cmc.cost.driver,name:cmc_kpi_mrp.cmc_measure_routed_mo_lead_minutes
+msgid "Routed manufacturing lead minutes"
+msgstr "Minuti di lead time di produzione (con ciclo)"
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+#: model:cmc.cost.driver,name:cmc_kpi_mrp.cmc_measure_routed_produced_qty
+msgid "Routed produced quantity"
+msgstr "Quantità prodotta (con ciclo)"
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+msgid "Scrapped quantity"
+msgstr "Quantità scartata"
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+msgid "Shipments"
+msgstr "Spedizioni"
+
+#. module: cmc_kpi_mrp
+#: model:ir.model,name:cmc_kpi_mrp.model_stock_picking
+msgid "Transfer"
+msgstr "Trasferimento"
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+#: model:cmc.cost.driver,name:cmc_kpi_mrp.cmc_measure_value_added_minutes
+msgid "Value-added minutes"
+msgstr "Minuti a valore aggiunto"
+
+#. module: cmc_kpi_mrp
+#: model:ir.model,name:cmc_kpi_mrp.model_mrp_workorder
+msgid "Work Order"
+msgstr "Ordine di lavoro"
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+#: model:cmc.cost.driver,name:cmc_kpi_mrp.cmc_measure_wo_minutes
+msgid "Work order minutes"
+msgstr "Minuti ordini di lavoro"
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+msgid "delivery_lead_minutes"
+msgstr ""
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+msgid "delivery_lead_time"
+msgstr ""
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+msgid "delivery_shipments"
+msgstr ""
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+msgid "mrp_cycle_time"
+msgstr ""
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+msgid "mrp_first_pass"
+msgstr ""
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+msgid "mrp_fpy"
+msgstr ""
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+msgid "mrp_lead_minutes"
+msgstr ""
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+msgid "mrp_lead_time"
+msgstr ""
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+msgid "mrp_mce"
+msgstr ""
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+msgid "mrp_mo_done"
+msgstr ""
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+msgid "mrp_ppm"
+msgstr ""
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+msgid "mrp_reworked"
+msgstr ""
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+msgid "mrp_routed_lead_minutes"
+msgstr ""
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+msgid "mrp_routed_produced"
+msgstr ""
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+msgid "mrp_scrapped"
+msgstr ""
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+msgid "mrp_value_added"
+msgstr ""
+
+#. module: cmc_kpi_mrp
+#. odoo-python
+#: code:addons/cmc_kpi_mrp/models/cmc_kpi.py:0
+msgid "mrp_wo_minutes"
+msgstr ""

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_cmc_sec_abb" name="Activity-Based Budgeting"
+              parent="cmc_base.menu_cmc_operations" sequence="27"/>
+    <menuitem id="menu_cmc_abb_run" name="Activity-Based Budgets" parent="menu_cmc_sec_abb"
+              action="action_cmc_abb_run" sequence="10"/>
+    <menuitem id="menu_cmc_abb_whatif" name="What-if Scenarios" parent="menu_cmc_sec_abb"
+              action="action_cmc_abb_whatif" sequence="20"/>
+    <menuitem id="menu_cmc_abb_capacity_state" name="Capacity Time States" parent="menu_cmc_sec_abb"
+              action="action_cmc_abb_capacity_state" sequence="30"/>
+    <menuitem id="menu_cmc_abb_bottleneck" name="Bottlenecks" parent="menu_cmc_sec_abb"
+              action="action_cmc_abb_bottleneck" sequence="40"/>
+    <menuitem id="menu_cmc_abb_variance_run" name="ABC Variances" parent="menu_cmc_sec_abb"
+              action="action_cmc_abb_variance_run" sequence="50"/>
+    <menuitem id="menu_cmc_abb_variance_line" name="Variance Analysis" parent="menu_cmc_sec_abb"
+              action="action_cmc_abb_variance_line" sequence="60"/>
+</odoo>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_job_cost_sheet" model="ir.actions.report">
+        <field name="name">Job Cost Sheets</field>
+        <field name="model">cmc.job.cost.run</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">cmc_job_costing.report_job_cost_sheet</field>
+        <field name="report_file">cmc_job_costing.report_job_cost_sheet</field>
+        <field name="print_report_name">'Job cost sheets - %s' % object.name</field>
+        <field name="binding_model_id" ref="model_cmc_job_cost_run"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_job_cost_sheet">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="run">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2 t-field="run.name"/>
+                        <p class="text-muted">
+                            <span t-field="run.date_from"/> - <span t-field="run.date_to"/>
+                        </p>
+                        <t t-foreach="run.sheet_ids" t-as="sheet">
+                            <div style="page-break-inside: avoid;">
+                                <h4><span t-field="sheet.project_id"/> <small class="text-muted" t-field="sheet.job_status"/></h4>
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr><th/><th class="text-end">Period</th><th class="text-end">Job to date</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>Hours</td><td class="text-end"><span t-field="sheet.period_hours"/></td><td class="text-end"><span t-field="sheet.hours"/></td></tr>
+                                        <tr><td>Direct costs</td><td class="text-end"><span t-field="sheet.period_direct_cost"/></td><td class="text-end"><span t-field="sheet.direct_cost"/></td></tr>
+                                        <tr><td>Labour</td><td class="text-end"><span t-field="sheet.period_labour_cost"/></td><td class="text-end"><span t-field="sheet.labour_cost"/></td></tr>
+                                        <tr><td>Applied overhead</td><td class="text-end"><span t-field="sheet.period_overhead_applied"/></td><td class="text-end"><span t-field="sheet.overhead_applied"/></td></tr>
+                                        <tr class="fw-bold"><td>Job cost</td><td class="text-end"><span t-field="sheet.period_job_cost"/></td><td class="text-end"><span t-field="sheet.job_cost"/></td></tr>
+                                        <tr><td>Revenue</td><td class="text-end"><span t-field="sheet.period_revenue"/></td><td class="text-end"><span t-field="sheet.revenue"/></td></tr>
+                                        <tr class="fw-bold"><td>Margin (job to date)</td><td/><td class="text-end"><span t-field="sheet.margin"/></td></tr>
+                                        <tr><td>Margin % (job to date)</td><td/><td class="text-end"><span t-esc="'%.2f' % sheet.margin_percent"/> %</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

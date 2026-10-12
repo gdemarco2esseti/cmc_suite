@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_joint_run_form" model="ir.ui.view">
+        <field name="name">cmc.joint.run.form</field>
+        <field name="model">cmc.joint.run</field>
+        <field name="arch" type="xml">
+            <form string="Joint Cost Run">
+                <header>
+                    <button name="action_compute" string="Compute" type="object"
+                            class="oe_highlight" invisible="state == 'done'"/>
+                    <button name="action_reset_to_draft" string="Reset to Draft"
+                            type="object" invisible="state != 'done'"
+                            confirm="Resetting deletes the computed results. Continue?"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="method" readonly="state == 'done'"/>
+                            <field name="joint_cost" readonly="state == 'done'"/>
+                        </group>
+                        <group>
+                            <field name="date_from" readonly="state == 'done'"/>
+                            <field name="date_to" readonly="state == 'done'"/>
+                            <field name="company_id" readonly="state == 'done'" groups="base.group_multi_company"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Joint Products" name="lines">
+                            <field name="line_ids" readonly="state == 'done'">
+                                <list editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="quantity"/>
+                                    <field name="unit_sales_value"/>
+                                    <field name="separable_cost"/>
+                                    <field name="is_byproduct"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                    <field name="company_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Results" name="results">
+                            <field name="result_ids" readonly="1">
+                                <list create="false" edit="false" delete="false">
+                                    <field name="product_id"/>
+                                    <field name="is_byproduct"/>
+                                    <field name="allocated_joint_cost"/>
+                                    <field name="separable_cost"/>
+                                    <field name="total_cost"/>
+                                    <field name="unit_cost"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cmc_joint_run_list" model="ir.ui.view">
+        <field name="name">cmc.joint.run.list</field>
+        <field name="model">cmc.joint.run</field>
+        <field name="arch" type="xml">
+            <list string="Joint Cost Runs">
+                <field name="name"/>
+                <field name="method"/>
+                <field name="joint_cost"/>
+                <field name="state" widget="badge"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cmc_joint_run" model="ir.actions.act_window">
+        <field name="name">Joint Costs</field>
+        <field name="res_model">cmc.joint.run</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_cmc_sec_joint"
+              name="Joint Costs"
+              parent="cmc_base.menu_cmc_operations"
+              sequence="60"/>
+    <menuitem id="menu_cmc_joint_run" name="Joint Cost Allocation"
+              parent="menu_cmc_sec_joint"
+              action="action_cmc_joint_run" sequence="10"/>
+</odoo>

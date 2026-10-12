@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- record rules live OUTSIDE noupdate: a domain fix must be able to
+         reach databases that already have the module installed -->
+    <data>
+        <record id="cmc_abc_activity_company_rule" model="ir.rule">
+            <field name="name">CMC ABC activity: multi-company</field>
+            <field name="model_id" ref="model_cmc_abc_activity"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_abc_run_company_rule" model="ir.rule">
+            <field name="name">CMC ABC run: multi-company</field>
+            <field name="model_id" ref="model_cmc_abc_run"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_abc_line_company_rule" model="ir.rule">
+            <field name="name">CMC ABC line: multi-company</field>
+            <field name="model_id" ref="model_cmc_abc_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_abc_result_company_rule" model="ir.rule">
+            <field name="name">CMC ABC result: multi-company</field>
+            <field name="model_id" ref="model_cmc_abc_result"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_abc_activity_result_company_rule" model="ir.rule">
+            <field name="name">CMC ABC activity result: multi-company</field>
+            <field name="model_id" ref="model_cmc_abc_activity_result"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_abc_resource_company_rule" model="ir.rule">
+            <field name="name">CMC ABC resource: multi-company</field>
+            <field name="model_id" ref="model_cmc_abc_resource"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_abc_driver_component_company_rule" model="ir.rule">
+            <field name="name">CMC ABC driver component: multi-company</field>
+            <field name="model_id" ref="model_cmc_abc_driver_component"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_abc_resource_line_company_rule" model="ir.rule">
+            <field name="name">CMC ABC resource line: multi-company</field>
+            <field name="model_id" ref="model_cmc_abc_resource_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_abc_capacity_company_rule" model="ir.rule">
+            <field name="name">CMC ABC capacity: multi-company</field>
+            <field name="model_id" ref="model_cmc_abc_capacity"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_abc_activity_cost_company_rule" model="ir.rule">
+            <field name="name">CMC ABC activity cost: multi-company</field>
+            <field name="model_id" ref="model_cmc_abc_activity_cost"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_abc_flow_company_rule" model="ir.rule">
+            <field name="name">CMC ABC flow: multi-company</field>
+            <field name="model_id" ref="model_cmc_abc_flow"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_abc_activity_measure_company_rule" model="ir.rule">
+            <field name="name">CMC ABC activity measure: multi-company</field>
+            <field name="model_id" ref="model_cmc_abc_activity_measure"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_abc_activity_performance_company_rule" model="ir.rule">
+            <field name="name">CMC ABC activity performance: multi-company</field>
+            <field name="model_id" ref="model_cmc_abc_activity_performance"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_abm_initiative_company_rule" model="ir.rule">
+            <field name="name">CMC ABM initiative: multi-company</field>
+            <field name="model_id" ref="model_cmc_abm_initiative"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_abm_benchmark_company_rule" model="ir.rule">
+            <field name="name">CMC ABM benchmark: multi-company</field>
+            <field name="model_id" ref="model_cmc_abm_benchmark"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_abm_benchmark_all_companies_rule" model="ir.rule">
+            <field name="name">CMC ABM benchmark: all its companies active</field>
+            <field name="model_id" ref="model_cmc_abm_benchmark"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_ids', 'not any', [('id', 'not in', company_ids)])]</field>
+        </record>
+        <record id="cmc_abm_benchmark_line_all_companies_rule" model="ir.rule">
+            <field name="name">CMC ABM benchmark line: all benchmark companies active</field>
+            <field name="model_id" ref="model_cmc_abm_benchmark_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('benchmark_id', 'any', [('company_ids', 'not any', [('id', 'not in', company_ids)])])]</field>
+        </record>
+        <record id="cmc_abm_benchmark_line_company_rule" model="ir.rule">
+            <field name="name">CMC ABM benchmark line: multi-company</field>
+            <field name="model_id" ref="model_cmc_abm_benchmark_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+    </data>
+</odoo>

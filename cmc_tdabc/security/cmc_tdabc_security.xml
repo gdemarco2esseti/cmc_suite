@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- record rules live OUTSIDE noupdate: a domain fix must be able to
+         reach databases that already have the module installed -->
+    <data>
+        <record id="cmc_tdabc_characteristic_company_rule" model="ir.rule">
+            <field name="name">CMC TDABC characteristic: multi-company</field>
+            <field name="model_id" ref="model_cmc_tdabc_characteristic"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_tdabc_char_value_company_rule" model="ir.rule">
+            <field name="name">CMC TDABC char value: multi-company</field>
+            <field name="model_id" ref="model_cmc_tdabc_char_value"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_tdabc_resource_company_rule" model="ir.rule">
+            <field name="name">CMC TDABC resource: multi-company</field>
+            <field name="model_id" ref="model_cmc_tdabc_resource"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_tdabc_activity_company_rule" model="ir.rule">
+            <field name="name">CMC TDABC activity: multi-company</field>
+            <field name="model_id" ref="model_cmc_tdabc_activity"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_tdabc_term_company_rule" model="ir.rule">
+            <field name="name">CMC TDABC term: multi-company</field>
+            <field name="model_id" ref="model_cmc_tdabc_term"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_tdabc_run_company_rule" model="ir.rule">
+            <field name="name">CMC TDABC run: multi-company</field>
+            <field name="model_id" ref="model_cmc_tdabc_run"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_tdabc_run_line_company_rule" model="ir.rule">
+            <field name="name">CMC TDABC run line: multi-company</field>
+            <field name="model_id" ref="model_cmc_tdabc_run_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_tdabc_result_company_rule" model="ir.rule">
+            <field name="name">CMC TDABC result: multi-company</field>
+            <field name="model_id" ref="model_cmc_tdabc_result"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_tdabc_capacity_result_company_rule" model="ir.rule">
+            <field name="name">CMC TDABC capacity result: multi-company</field>
+            <field name="model_id" ref="model_cmc_tdabc_capacity_result"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+    </data>
+</odoo>

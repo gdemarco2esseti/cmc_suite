@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_cmc_sec_fin_analysis" name="Financial Statement Analysis"
+              parent="cmc_base.menu_cmc_operations" sequence="30"/>
+    <menuitem id="menu_cmc_fin_analysis" name="Analyses" parent="menu_cmc_sec_fin_analysis"
+              action="action_cmc_fin_analysis" sequence="10"/>
+    <menuitem id="menu_cmc_fin_value" name="Values" parent="menu_cmc_sec_fin_analysis"
+              action="action_cmc_fin_value" sequence="20"/>
+    <menuitem id="menu_cmc_fin_ratio_value" name="Ratios" parent="menu_cmc_sec_fin_analysis"
+              action="action_cmc_fin_ratio_value" sequence="30"/>
+    <menuitem id="menu_cmc_fin_crisis" name="Crisis Panel" parent="menu_cmc_sec_fin_analysis"
+              action="action_cmc_fin_crisis" sequence="40"/>
+    <menuitem id="menu_cmc_fin_override" name="Choices Register" parent="menu_cmc_sec_fin_analysis"
+              action="action_cmc_fin_override" sequence="50"/>
+    <menuitem id="menu_cmc_fin_criteria_change" name="Criteria Changes" parent="menu_cmc_sec_fin_analysis"
+              action="action_cmc_fin_criteria_change" sequence="55"/>
+    <menuitem id="menu_cmc_fin_history" name="Historical Balances" parent="menu_cmc_sec_fin_analysis"
+              action="action_cmc_fin_history" sequence="60"/>
+    <menuitem id="menu_cmc_fin_input" name="Reference Inputs" parent="menu_cmc_sec_fin_analysis"
+              action="action_cmc_fin_input" sequence="70"/>
+    <menuitem id="menu_cmc_fin_benchmark" name="Sector Benchmarks" parent="menu_cmc_sec_fin_analysis"
+              action="action_cmc_fin_benchmark" sequence="80"/>
+
+    <menuitem id="menu_cmc_cfg_fin_analysis" name="Financial Statement Analysis"
+              parent="cmc_base.menu_cmc_config" sequence="40" groups="cmc_base.group_cmc_manager"/>
+    <menuitem id="menu_cmc_fin_scheme" name="Schemes" parent="menu_cmc_cfg_fin_analysis"
+              action="action_cmc_fin_scheme" sequence="10"/>
+    <menuitem id="menu_cmc_fin_mapping_rule" name="Mapping Rules" parent="menu_cmc_cfg_fin_analysis"
+              action="action_cmc_fin_mapping_rule" sequence="20"/>
+    <menuitem id="menu_cmc_fin_ratio" name="Ratios" parent="menu_cmc_cfg_fin_analysis"
+              action="action_cmc_fin_ratio" sequence="30"/>
+</odoo>

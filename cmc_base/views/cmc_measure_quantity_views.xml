@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_measure_quantity_list" model="ir.ui.view">
+        <field name="name">cmc.measure.quantity.list</field>
+        <field name="model">cmc.measure.quantity</field>
+        <field name="arch" type="xml">
+            <list string="Measure Quantities" editable="bottom">
+                <field name="date"/>
+                <field name="driver_id"/>
+                <field name="version_id"/>
+                <field name="center_id"/>
+                <field name="cost_object_id"/>
+                <field name="quantity" sum="Total"/>
+                <field name="feeder_key" readonly="1" optional="hide"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_measure_quantity_pivot" model="ir.ui.view">
+        <field name="name">cmc.measure.quantity.pivot</field>
+        <field name="model">cmc.measure.quantity</field>
+        <field name="arch" type="xml">
+            <pivot string="Measure Quantities">
+                <field name="driver_id" type="row"/>
+                <field name="date" interval="month" type="col"/>
+                <field name="quantity" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_cmc_measure_quantity_search" model="ir.ui.view">
+        <field name="name">cmc.measure.quantity.search</field>
+        <field name="model">cmc.measure.quantity</field>
+        <field name="arch" type="xml">
+            <search string="Measure Quantities">
+                <field name="driver_id"/>
+                <field name="version_id"/>
+                <field name="center_id"/>
+                <field name="cost_object_id"/>
+                <field name="feeder_key"/>
+                <filter name="actual" string="Actual" domain="[('version_id', '=', False)]"/>
+                <filter name="planned" string="Planned" domain="[('version_id', '!=', False)]"/>
+                <group>
+                    <filter name="group_driver" string="Driver" context="{'group_by': 'driver_id'}"/>
+                    <filter name="group_version" string="Version" context="{'group_by': 'version_id'}"/>
+                    <filter name="group_center" string="Cost Center" context="{'group_by': 'center_id'}"/>
+                    <filter name="group_month" string="Month" context="{'group_by': 'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cmc_measure_quantity" model="ir.actions.act_window">
+        <field name="name">Measure Quantities</field>
+        <field name="res_model">cmc.measure.quantity</field>
+        <field name="view_mode">list,pivot</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Record a driver quantity</p>
+            <p>Actual quantities are fed automatically or entered by hand;
+               planned quantities belong to a plan version.</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_cmc_measure_quantity"
+              name="Driver Quantities"
+              parent="menu_cmc_sec_base"
+              action="action_cmc_measure_quantity"
+              sequence="60"/>
+</odoo>

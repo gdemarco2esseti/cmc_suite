@@ -1,0 +1,1229 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* cmc_full_costing
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 23:35+0000\n"
+"PO-Revision-Date: 2026-10-09 23:35+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: cmc_full_costing
+#: model:ir.actions.report,print_report_name:cmc_full_costing.action_report_costing_reclass
+msgid "'Full cost - %s' % object.name"
+msgstr "'Costo pieno - %s' % object.name"
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid "A volume must be greater than zero."
+msgstr "Un volume deve essere maggiore di zero."
+
+#. module: cmc_full_costing
+#: model:ir.model.fields.selection,name:cmc_full_costing.selection__cmc_costing_result__prime_cost_origin__actual
+#: model:ir.model.fields.selection,name:cmc_full_costing.selection__cmc_costing_run__prime_cost_source__actual
+msgid "Actual direct cost"
+msgstr "Costo diretto effettivo"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields.selection,name:cmc_full_costing.selection__cmc_costing_run__capacity_basis__actual
+msgid "Actual driver"
+msgstr "Driver effettivo"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,help:cmc_full_costing.field_cmc_costing_run__capacity_basis
+msgid ""
+"Actual driver: the whole center pool is spread over the driver used. "
+"Practical capacity: the fixed pool is charged at fixed cost / practical "
+"capacity per driver unit used; the idle part is reported apart (multiple "
+"base only)."
+msgstr ""
+"Driver effettivo: l'intero monte costi del centro è ripartito sul driver "
+"utilizzato. Capacità pratica: il monte costi fisso è addebitato a costo "
+"fisso / capacità pratica per unità di driver utilizzata; la parte "
+"inutilizzata è esposta a parte (solo base multipla)."
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,help:cmc_full_costing.field_cmc_costing_result__produced_qty
+msgid "Actual facts of the produced measure in the period (snapshot)."
+msgstr "Dati a consuntivo della misura prodotta nel periodo (istantanea)."
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_quota__amount
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_figurative_cost__amount
+msgid "Amount"
+msgstr "Importo"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_quota__amount_fixed
+msgid "Amount Fixed"
+msgstr "Importo fisso"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_quota__amount_variable
+msgid "Amount Variable"
+msgstr "Importo variabile"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_figurative_cost__rate
+msgid "Annual Rate"
+msgstr "Tasso annuo"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__base
+msgid "Base"
+msgstr "Base"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_simulate_form
+msgid "Bid"
+msgstr "Offerta"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_simulate__bid_price
+msgid "Bid Price"
+msgstr "Prezzo di offerta"
+
+#. module: cmc_full_costing
+#: model:ir.model,name:cmc_full_costing.model_cmc_costing_simulate
+msgid "Bid and unit cost curve simulation"
+msgstr "Simulazione di offerta e curva del costo unitario"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__capacity_ids
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
+msgid "Capacity"
+msgstr "Capacità"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__capacity_basis
+msgid "Capacity Basis"
+msgstr "Base di capacità"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_capacity__capacity_practical
+msgid "Capacity Practical"
+msgstr "Capacità pratica"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_capacity__capacity_used
+msgid "Capacity Used"
+msgstr "Capacità utilizzata"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_figurative_cost__capital
+msgid "Capital"
+msgstr "Capitale"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_quota__coefficient
+msgid "Center Coefficient"
+msgstr "Coefficiente del centro"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_capacity_list
+msgid "Charged"
+msgstr "Addebitato"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_simulate_form
+msgid "Check"
+msgstr "Controllo"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_simulate_form
+msgid "Close"
+msgstr "Chiudi"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__closing_run_id
+msgid "Closing Run"
+msgstr "Elaborazione di chiusura"
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_closing.py:0
+msgid ""
+"Closing run %(closing)s is used by the computed costing runs %(costings)s. "
+"Reset them to draft first."
+msgstr ""
+"La chiusura %(closing)s è usata dai calcoli del costo pieno conclusi "
+"%(costings)s. Riportali prima in bozza."
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid ""
+"Closing run %(name)s is not computed: its final centers carry no reliable "
+"cost yet."
+msgstr ""
+"La chiusura %(name)s non è calcolata: i suoi centri finali non hanno ancora "
+"un costo affidabile."
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_figurative_cost__cmc_directness
+msgid "Cmc Directness"
+msgstr "Direttezza"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
+msgid "Comm/Admin"
+msgstr "Comm/Amm"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,help:cmc_full_costing.field_cmc_costing_simulate__volumes
+msgid "Comma-separated volumes for the unit cost curve."
+msgstr "Volumi separati da virgola per la curva del costo unitario."
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__cost_comm_admin
+msgid "Commercial & Admin"
+msgstr "Commerciali e amministrativi"
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid "Commercial & Administrative"
+msgstr "Commerciale e amministrativo"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_capacity__company_id
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_config__company_id
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_line__company_id
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_quota__company_id
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__company_id
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__company_id
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_figurative_cost__company_id
+msgid "Company"
+msgstr "Azienda"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_result_form
+msgid "Components & Reconciliation"
+msgstr "Componenti e riconciliazione"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
+msgid "Compute"
+msgstr "Calcola"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_simulate_form
+msgid "Compute Curve"
+msgstr "Calcola curva"
+
+#. module: cmc_full_costing
+#: model_terms:ir.actions.act_window,help:cmc_full_costing.action_cmc_costing_run
+msgid ""
+"Compute the full (absorbed) product cost with a single or multiple\n"
+"               allocation base from the closed final centers."
+msgstr ""
+"Calcola il costo pieno (assorbito) del prodotto con base di riparto unica o multipla\n"
+"               dai centri finali chiusi."
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__config_ids
+msgid "Config"
+msgstr "Configurazione"
+
+#. module: cmc_full_costing
+#: model:ir.model,name:cmc_full_costing.model_cmc_closing_run
+msgid "Cost Center Closing Run"
+msgstr "Chiusura dei centri di costo"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_result_form
+msgid "Cost Configurations"
+msgstr "Configurazioni di costo"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_figurative_cost__cost_element_id
+msgid "Cost Element"
+msgstr "Elemento di costo"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__cost_fixed
+msgid "Cost Fixed"
+msgstr "Costo fisso"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__cost_indiretto
+msgid "Cost Indiretto"
+msgstr "Costo indiretto"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__cost_industriale
+msgid "Cost Industriale"
+msgstr "Costo industriale"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_figurative_cost__cost_object_ref
+msgid "Cost Object"
+msgstr "Oggetto di costo"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__cost_primo
+msgid "Cost Primo"
+msgstr "Costo primo"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__cost_variable
+msgid "Cost Variable"
+msgstr "Costo variabile"
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid ""
+"Cost center %(name)s has cost %(amt)s but no allocation base (no product "
+"consumes its driver)."
+msgstr ""
+"Il centro di costo %(name)s ha un costo %(amt)s ma nessuna base di riparto "
+"(nessun prodotto consuma il suo driver)."
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid ""
+"Cost center %(name)s has no driver line on its capacity unit: the practical "
+"capacity cannot be matched to the driver used."
+msgstr ""
+"Il centro di costo %(name)s non ha righe di driver sulla propria unità di "
+"capacità: la capacità pratica non può essere abbinata al driver utilizzato."
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid ""
+"Cost center %(name)s has no practical capacity to charge its fixed cost on."
+msgstr ""
+"Il centro di costo %(name)s non ha capacità pratica su cui addebitare il "
+"costo fisso."
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid ""
+"Cost center %(name)s needs exactly one capacity analysis covering %(start)s "
+"- %(end)s for the practical capacity basis."
+msgstr ""
+"Il centro di costo %(name)s richiede esattamente un'analisi di capacità che "
+"copra %(start)s - %(end)s per la base di capacità pratica."
+
+#. module: cmc_full_costing
+#: model:ir.model,name:cmc_full_costing.model_cmc_costing_config
+msgid "Cost configuration level per product (traceability)"
+msgstr "Livello di configurazione di costo per prodotto (tracciabilità)"
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid "Costing"
+msgstr "Costing"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
+msgid "Costing Run"
+msgstr "Elaborazione di costing"
+
+#. module: cmc_full_costing
+#: model:ir.actions.act_window,name:cmc_full_costing.action_cmc_costing_run
+#: model:ir.ui.menu,name:cmc_full_costing.menu_cmc_costing_run
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_list
+msgid "Costing Runs"
+msgstr "Elaborazioni di costing"
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid ""
+"Costing run %(name)s has %(amt)s of period or figurative cost but no driver "
+"consumption to spread it on."
+msgstr ""
+"L'elaborazione di costing %(name)s ha %(amt)s di costo di periodo o "
+"figurativo ma nessun consumo di driver su cui ripartirlo."
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid ""
+"Costing run %(name)s uses actual direct cost or a produced quantity: its "
+"period must equal the closing run period (%(start)s - %(end)s)."
+msgstr ""
+"L'elaborazione di costing %(name)s usa il costo diretto effettivo o una "
+"quantità prodotta: il suo periodo deve coincidere con quello "
+"dell'elaborazione di chiusura (%(start)s - %(end)s)."
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_simulate__covers_full_cost
+msgid "Covers Full Cost"
+msgstr "Copre il costo pieno"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_simulate__covers_variable_cost
+msgid "Covers Variable Cost"
+msgstr "Copre il costo variabile"
+
+#. module: cmc_full_costing
+#: model_terms:ir.actions.act_window,help:cmc_full_costing.action_cmc_costing_run
+msgid "Create a costing run"
+msgstr "Crea un'elaborazione di costing"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_capacity__create_uid
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_config__create_uid
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_line__create_uid
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_quota__create_uid
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__create_uid
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__create_uid
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_simulate__create_uid
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_simulate_line__create_uid
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_figurative_cost__create_uid
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_capacity__create_date
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_config__create_date
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_line__create_date
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_quota__create_date
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__create_date
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__create_date
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_simulate__create_date
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_simulate_line__create_date
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_figurative_cost__create_date
+msgid "Created on"
+msgstr "Creato il"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_config__amount
+msgid "Cumulative"
+msgstr "Cumulato"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_config__unit_amount
+msgid "Cumulative per Unit"
+msgstr "Cumulato per unità"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_capacity__currency_id
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_config__currency_id
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_quota__currency_id
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__currency_id
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__currency_id
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_simulate__currency_id
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_figurative_cost__currency_id
+msgid "Currency"
+msgstr "Valuta"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_simulate__curve_line_ids
+msgid "Curve Line"
+msgstr "Riga della curva"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__date_from
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_figurative_cost__date_from
+msgid "Date From"
+msgstr "Data inizio"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__date_to
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_figurative_cost__date_to
+msgid "Date To"
+msgstr "Data fine"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields.selection,name:cmc_full_costing.selection__cmc_figurative_cost__cmc_directness__direct
+msgid "Direct"
+msgstr "Diretto"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_closing_run__display_name
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_capacity__display_name
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_config__display_name
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_line__display_name
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_quota__display_name
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__display_name
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__display_name
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_simulate__display_name
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_simulate_line__display_name
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_figurative_cost__display_name
+msgid "Display Name"
+msgstr "Nome visualizzato"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_line__driver_id
+msgid "Driver"
+msgstr "Driver"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
+msgid "Driver Consumption"
+msgstr "Consumo del driver"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_line__driver_qty
+msgid "Driver Quantity"
+msgstr "Quantità di driver"
+
+#. module: cmc_full_costing
+#: model:ir.model,name:cmc_full_costing.model_cmc_costing_line
+msgid "Driver consumption per product per final center"
+msgstr "Consumo del driver per prodotto per centro finale"
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid "Driver lines can only be prefilled on a draft run."
+msgstr ""
+"Le righe di driver possono essere precompilate solo su un'elaborazione in "
+"bozza."
+
+#. module: cmc_full_costing
+#: model:ir.model.constraint,message:cmc_full_costing.constraint_cmc_costing_line_qty_positive
+msgid ""
+"Driver quantity must be greater than zero (a product must consume the driver"
+" to receive a share of the center cost)."
+msgstr ""
+"La quantità di driver deve essere maggiore di zero (un prodotto deve "
+"consumare il driver per ricevere una quota del costo del centro)."
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
+msgid "Economic-Technical"
+msgstr "Economico-Tecnico"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__cost_economico_tecnico
+#: model:ir.model.fields.selection,name:cmc_full_costing.selection__cmc_costing_config__level__economico_tecnico
+msgid "Economic-Technical Cost"
+msgstr "Costo economico-tecnico"
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid "Economic-technical cost"
+msgstr "Costo economico-tecnico"
+
+#. module: cmc_full_costing
+#: model:ir.model.constraint,message:cmc_full_costing.constraint_cmc_costing_run_dates_ok
+msgid "End date must be on/after start date."
+msgstr "La data di fine deve essere uguale o successiva alla data di inizio."
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid "Enter at least one volume."
+msgstr "Inserire almeno un volume."
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__cost_figurativo
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
+msgid "Figurative"
+msgstr "Figurativo"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_figurative_form
+msgid "Figurative Cost"
+msgstr "Costo figurativo"
+
+#. module: cmc_full_costing
+#: model:ir.actions.act_window,name:cmc_full_costing.action_cmc_figurative
+#: model:ir.ui.menu,name:cmc_full_costing.menu_cmc_figurative
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_figurative_list
+msgid "Figurative Costs"
+msgstr "Costi figurativi"
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_figurative.py:0
+msgid "Figurative cost %(name)s must use a figurative cost element."
+msgstr ""
+"Il costo figurativo %(name)s deve usare un elemento di costo figurativo."
+
+#. module: cmc_full_costing
+#: model:ir.model,name:cmc_full_costing.model_cmc_figurative_cost
+msgid "Figurative cost (cost accounting only, economic-technical)"
+msgstr "Costo figurativo (solo co.an., economico-tecnico)"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_capacity__center_id
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_line__center_id
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_quota__center_id
+msgid "Final Center"
+msgstr "Centro finale"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_capacity_list
+msgid "Fixed"
+msgstr "Fisso"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_capacity__fixed_charged
+msgid "Fixed Charged"
+msgstr "Fisso addebitato"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_capacity__fixed_cost
+msgid "Fixed Cost"
+msgstr "Costo fisso"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_capacity__fixed_rate
+msgid "Fixed Rate"
+msgstr "Tariffa fissa"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,help:cmc_full_costing.field_cmc_costing_capacity__unabsorbed_cost
+msgid "Fixed cost of the capacity not used, kept out of every product."
+msgstr "Costo fisso della capacità non utilizzata, escluso da ogni prodotto."
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,help:cmc_full_costing.field_cmc_costing_run__unabsorbed_cost
+msgid "Fixed cost of the unused practical capacity."
+msgstr "Costo fisso della capacità pratica inutilizzata."
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,help:cmc_full_costing.field_cmc_costing_capacity__fixed_rate
+msgid "Fixed cost per unit of practical capacity."
+msgstr "Costo fisso per unità di capacità pratica."
+
+#. module: cmc_full_costing
+#: model:ir.model,name:cmc_full_costing.model_cmc_costing_run
+msgid "Full Cost Run (single/multiple allocation base)"
+msgstr "Elaborazione a costo pieno (base unica/multipla)"
+
+#. module: cmc_full_costing
+#: model:ir.ui.menu,name:cmc_full_costing.menu_cmc_sec_full
+msgid "Full Costing"
+msgstr "Costo pieno (full costing)"
+
+#. module: cmc_full_costing
+#: model:ir.actions.report,name:cmc_full_costing.action_report_costing_reclass
+msgid "Full cost (reclassified)"
+msgstr "Costo pieno (riclassificato)"
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid "Full cost per configuration"
+msgstr "Costo pieno per configurazione"
+
+#. module: cmc_full_costing
+#: model:ir.model,name:cmc_full_costing.model_cmc_costing_result
+msgid "Full cost per product (stored result)"
+msgstr "Costo pieno per prodotto (risultato memorizzato)"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_closing_run__id
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_capacity__id
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_config__id
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_line__id
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_quota__id
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__id
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__id
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_simulate__id
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_simulate_line__id
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_figurative_cost__id
+msgid "ID"
+msgstr "ID"
+
+#. module: cmc_full_costing
+#: model_terms:ir.actions.act_window,help:cmc_full_costing.action_cmc_figurative
+msgid ""
+"Imputed interest, notional director pay, notional rent. They enter\n"
+"               only the economico-tecnico cost level, never co.ge."
+msgstr ""
+"Interessi di computo, compenso figurativo dell'imprenditore, fitto figurativo.\n"
+"               Entrano solo nel livello di costo economico-tecnico, mai in co.ge."
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_config__increment
+msgid "Increment"
+msgstr "Incremento"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,help:cmc_full_costing.field_cmc_costing_result__std_price_delta
+msgid ""
+"Indicative: total industrial cost minus the reference unit standard price. A"
+" true per-unit inventory reconciliation requires the produced quantity (not "
+"modelled here)."
+msgstr ""
+"Indicativo: costo industriale totale meno il costo standard unitario di "
+"riferimento. Una vera riconciliazione di magazzino per unità richiede la "
+"quantità prodotta (non modellata qui)."
+
+#. module: cmc_full_costing
+#: model:ir.model.fields.selection,name:cmc_full_costing.selection__cmc_figurative_cost__cmc_directness__indirect
+msgid "Indirect"
+msgstr "Indiretto"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_quota_pivot
+msgid "Indirect Cost Matrix"
+msgstr "Matrice costi indiretti"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_result_form
+msgid "Indirect Quotas"
+msgstr "Quote indirette"
+
+#. module: cmc_full_costing
+#: model:ir.model,name:cmc_full_costing.model_cmc_costing_quota
+msgid "Indirect quota contributed by one center to one product"
+msgstr "Quota indiretta apportata da un centro a un prodotto"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_result_form
+msgid "Indirect quotas by center"
+msgstr "Quote indirette per centro"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
+msgid "Industrial"
+msgstr "Industriale"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields.selection,name:cmc_full_costing.selection__cmc_costing_config__level__industriale
+msgid "Industrial Cost"
+msgstr "Costo industriale"
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid "Industrial cost"
+msgstr "Costo industriale"
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid "Industrial overhead"
+msgstr "Overhead industriale"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__std_price_delta
+msgid "Industrial vs Std Delta"
+msgstr "Delta industriale vs standard"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields.selection,name:cmc_full_costing.selection__cmc_figurative_cost__method__interest
+msgid "Interest on capital"
+msgstr "Interesse sul capitale"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_capacity__write_uid
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_config__write_uid
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_line__write_uid
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_quota__write_uid
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__write_uid
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__write_uid
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_simulate__write_uid
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_simulate_line__write_uid
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_figurative_cost__write_uid
+msgid "Last Updated by"
+msgstr "Ultimo aggiornamento di"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_capacity__write_date
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_config__write_date
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_line__write_date
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_quota__write_date
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__write_date
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__write_date
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_simulate__write_date
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_simulate_line__write_date
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_figurative_cost__write_date
+msgid "Last Updated on"
+msgstr "Ultimo aggiornamento il"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_config__level
+msgid "Level"
+msgstr "Livello"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_result_form
+msgid "Levels"
+msgstr "Livelli"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__line_ids
+msgid "Line"
+msgstr "Riga"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields.selection,name:cmc_full_costing.selection__cmc_figurative_cost__method__lump
+msgid "Lump sum"
+msgstr "Importo forfettario"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_simulate__margin
+msgid "Margin"
+msgstr "Margine"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__markup_percent
+msgid "Mark-up %"
+msgstr "Ricarico %"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,help:cmc_full_costing.field_cmc_costing_run__markup_percent
+msgid "Mark-up on the total unit cost for the cost-plus price."
+msgstr "Ricarico sul costo unitario totale per il prezzo cost-plus."
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_figurative_cost__method
+msgid "Method"
+msgstr "Metodo"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields.selection,name:cmc_full_costing.selection__cmc_costing_run__base__multiple
+msgid "Multiple base"
+msgstr "Base multipla"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__name
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_figurative_cost__name
+msgid "Name"
+msgstr "Nome"
+
+#. module: cmc_full_costing
+#: model:ir.model.constraint,message:cmc_full_costing.constraint_cmc_costing_line_uniq
+msgid "One driver-consumption line per product/center/driver in a run."
+msgstr ""
+"Una riga di consumo driver per prodotto/centro/driver in un'elaborazione."
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
+msgid "Overhead"
+msgstr "Indiretto"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_result_form
+msgid "Per Unit"
+msgstr "Per unità"
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid "Plant"
+msgstr "Stabilimento"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__single_driver_id
+msgid "Plant-wide Driver"
+msgstr "Driver di stabilimento"
+
+#. module: cmc_full_costing
+#: model:ir.model,name:cmc_full_costing.model_cmc_costing_simulate_line
+msgid "Point of the unit cost curve"
+msgstr "Punto della curva del costo unitario"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_capacity_list
+msgid "Practical Capacity"
+msgstr "Capacità pratica"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields.selection,name:cmc_full_costing.selection__cmc_costing_run__capacity_basis__practical
+msgid "Practical capacity"
+msgstr "Capacità pratica"
+
+#. module: cmc_full_costing
+#: model:ir.model,name:cmc_full_costing.model_cmc_costing_capacity
+msgid "Practical capacity charge per final center"
+msgstr "Addebito a capacità pratica per centro finale"
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid ""
+"Practical capacity needs the multiple base: a single plant-wide base has no "
+"center capacity."
+msgstr ""
+"La capacità pratica richiede la base multipla: una base unica di "
+"stabilimento non ha capacità per centro."
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
+msgid "Prefill Lines"
+msgstr "Precompila righe"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
+msgid ""
+"Prefilling replaces the current lines with the quantities read from the "
+"data. Continue?"
+msgstr ""
+"La precompilazione sostituisce le righe attuali con le quantità lette dai "
+"dati. Continuare?"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__price_cost_plus
+msgid "Price Cost Plus"
+msgstr "Prezzo cost-plus"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
+msgid "Prime"
+msgstr "Primo"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields.selection,name:cmc_full_costing.selection__cmc_costing_config__level__primo
+msgid "Prime Cost"
+msgstr "Costo primo"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__prime_cost_origin
+msgid "Prime Cost Origin"
+msgstr "Origine del costo primo"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__prime_cost_source
+msgid "Prime Cost Source"
+msgstr "Sorgente del costo primo"
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid "Prime cost"
+msgstr "Costo primo"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__produced_qty
+msgid "Produced Qty"
+msgstr "Quantità prodotta"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__produced_measure_id
+msgid "Produced Quantity Measure"
+msgstr "Misura della quantità prodotta"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_line__product_id
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__product_id
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_quota__driver_qty
+msgid "Product Driver Qty"
+msgstr "Quantità driver del prodotto"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_result_form
+msgid "Product Full Cost"
+msgstr "Costo pieno del prodotto"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__product_ids
+msgid "Products in scope"
+msgstr "Prodotti considerati"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_simulate_line__quantity
+msgid "Quantity"
+msgstr "Quantità"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__quota_ids
+msgid "Quota"
+msgstr "Quota"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__cmc_reclass_json
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
+msgid "Reclassified"
+msgstr "Riclassificato"
+
+#. module: cmc_full_costing
+#: model_terms:ir.actions.act_window,help:cmc_full_costing.action_cmc_figurative
+msgid "Record a figurative cost"
+msgstr "Registra un costo figurativo"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
+msgid "Reset to Draft"
+msgstr "Riporta in bozza"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
+msgid "Resetting deletes the computed results. Continue?"
+msgstr ""
+"Riportando in bozza i risultati calcolati vengono cancellati. Continuare?"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_config__result_id
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_quota__result_id
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__result_ids
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_simulate__result_id
+msgid "Result"
+msgstr "Risultato"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
+msgid "Results"
+msgstr "Risultati"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_capacity__run_id
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_line__run_id
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__run_id
+msgid "Run"
+msgstr "Elaborazione"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_config__sequence
+msgid "Sequence"
+msgstr "Sequenza"
+
+#. module: cmc_full_costing
+#: model:ir.actions.act_window,name:cmc_full_costing.action_cmc_costing_simulate
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_result_form
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_simulate_form
+msgid "Simulate"
+msgstr "Simula"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,help:cmc_full_costing.field_cmc_costing_run__single_driver_id
+msgid "Single allocation base used only with 'Single base'."
+msgstr "Base di riparto unica, usata solo con 'Base unica'."
+
+#. module: cmc_full_costing
+#: model:ir.model.fields.selection,name:cmc_full_costing.selection__cmc_costing_run__base__single
+msgid "Single base"
+msgstr "Base unica"
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid "Single base requires a plant-wide driver."
+msgstr "La base unica richiede un driver di stabilimento."
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_config__source
+msgid "Source"
+msgstr "Origine"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,help:cmc_full_costing.field_cmc_costing_run__closing_run_id
+msgid "Source of the indirect cost landed on final centers."
+msgstr "Origine del costo indiretto ribaltato sui centri finali."
+
+#. module: cmc_full_costing
+#: model:ir.model.fields.selection,name:cmc_full_costing.selection__cmc_costing_result__prime_cost_origin__standard
+#: model:ir.model.fields.selection,name:cmc_full_costing.selection__cmc_costing_run__prime_cost_source__standard
+msgid "Standard price"
+msgstr "Prezzo standard"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields.selection,name:cmc_full_costing.selection__cmc_costing_result__prime_cost_origin__standard_fallback
+msgid "Standard price (fallback)"
+msgstr "Prezzo standard (alternativa)"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,help:cmc_full_costing.field_cmc_costing_run__prime_cost_source
+msgid ""
+"Standard price: the prime cost is a per-unit standard reference (product standard price) and the direct lines already stamped on the final centers stay in the overhead pool, so the pool is spread whole (sum of overhead = sum of final-center residuals); standard cost x quantity plus variances is the standard-cost run, not this one.\n"
+"Actual direct cost: the prime cost is the direct cost lines of the period stamped with the product cost object, taken out of the overhead pool so each cost is counted once. A product without such lines falls back to its standard price x produced quantity."
+msgstr ""
+"Prezzo standard: il costo primo è un riferimento standard per unità (prezzo standard del prodotto) e le righe dirette già imputate ai centri finali restano nel monte costi indiretti, che quindi viene ripartito per intero (somma dei costi indiretti = somma dei residui dei centri finali); costo standard x quantità più scostamenti è l'elaborazione a costo standard, non questa.\n"
+"Costo diretto effettivo: il costo primo è costituito dalle righe di costo diretto del periodo imputate all'oggetto di costo del prodotto, tolte dal monte costi indiretti in modo che ogni costo sia contato una sola volta. Un prodotto privo di tali righe ricade sul prezzo standard x quantità prodotta."
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__state
+msgid "State"
+msgstr "Stato"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,help:cmc_full_costing.field_cmc_costing_run__produced_measure_id
+msgid ""
+"Statistical measure whose actual facts give the produced quantity of each "
+"product."
+msgstr ""
+"Misura statistica i cui dati a consuntivo forniscono la quantità prodotta di"
+" ciascun prodotto."
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__standard_price_ref
+msgid "Std Price (ref)"
+msgstr "Prezzo std (rif.)"
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid ""
+"The costing period of %(name)s ends after its closing run period (%(end)s)."
+msgstr ""
+"Il periodo del costo pieno %(name)s finisce dopo il periodo della sua "
+"chiusura (%(end)s)."
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid ""
+"The costing period of %(name)s starts before its closing run period "
+"(%(start)s)."
+msgstr ""
+"Il periodo del costo pieno %(name)s inizia prima del periodo della sua "
+"chiusura (%(start)s)."
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid ""
+"There are no driver quantities of the allocation measures for the period "
+"(and the products) of this run: enter them in Cost Base > Driver Quantities,"
+" then prefill again. The current lines are unchanged."
+msgstr ""
+"Non ci sono quantità driver delle misure di allocazione per il periodo (e i "
+"prodotti) di questa elaborazione: inseriscile in Base di costo > Quantità "
+"driver, poi precompila di nuovo. Le righe attuali non sono modificate."
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_result_form
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_figurative_list
+msgid "Total"
+msgstr "Totale"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__cost_complessivo
+#: model:ir.model.fields.selection,name:cmc_full_costing.selection__cmc_costing_config__level__complessivo
+msgid "Total Cost"
+msgstr "Costo complessivo"
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid "Total cost"
+msgstr "Costo complessivo"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,help:cmc_full_costing.field_cmc_costing_result__price_cost_plus
+msgid "Total unit cost plus the run mark-up."
+msgstr "Costo unitario totale più il ricarico dell'elaborazione."
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_capacity_list
+msgid "Unabsorbed"
+msgstr "Non assorbito"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_capacity__unabsorbed_cost
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_run__unabsorbed_cost
+msgid "Unabsorbed Cost"
+msgstr "Costo non assorbito"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_simulate_line__unit_cost
+msgid "Unit Cost"
+msgstr "Costo unitario"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__unit_cost_complessivo
+msgid "Unit Cost Complessivo"
+msgstr "Costo unitario complessivo"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_simulate_form
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_simulate_line_graph
+msgid "Unit Cost Curve"
+msgstr "Curva del costo unitario"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__unit_cost_economico_tecnico
+msgid "Unit Cost Economico Tecnico"
+msgstr "Costo unitario economico-tecnico"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__unit_cost_fixed
+msgid "Unit Cost Fixed"
+msgstr "Costo unitario fisso"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__unit_cost_industriale
+msgid "Unit Cost Industriale"
+msgstr "Costo unitario industriale"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__unit_cost_primo
+msgid "Unit Cost Primo"
+msgstr "Costo unitario primo"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_result__unit_cost_variable
+msgid "Unit Cost Variable"
+msgstr "Costo unitario variabile"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_simulate_line__unit_fixed
+msgid "Unit Fixed"
+msgstr "Fisso unitario"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_simulate__unit_full_cost
+msgid "Unit Full Cost"
+msgstr "Costo pieno unitario"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_simulate_line__unit_variable
+msgid "Unit Variable"
+msgstr "Variabile unitario"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_simulate__unit_variable_cost
+msgid "Unit Variable Cost"
+msgstr "Costo variabile unitario"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_costing_capacity_list
+msgid "Variable"
+msgstr "Variabile"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_capacity__variable_cost
+msgid "Variable Cost"
+msgstr "Costo variabile"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_simulate__volumes
+msgid "Volumes"
+msgstr "Volumi"
+
+#. module: cmc_full_costing
+#. odoo-python
+#: code:addons/cmc_full_costing/models/cmc_costing.py:0
+msgid "Volumes must be numbers separated by commas."
+msgstr "I volumi devono essere numeri separati da virgole."
+
+#. module: cmc_full_costing
+#: model:ir.model.fields,field_description:cmc_full_costing.field_cmc_costing_simulate_line__wizard_id
+msgid "Wizard"
+msgstr "Procedura guidata"
+
+#. module: cmc_full_costing
+#: model_terms:ir.ui.view,arch_db:cmc_full_costing.view_cmc_figurative_form
+msgid "e.g. Interest on capital"
+msgstr "es. interesse sul capitale"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_costing_run__state__done
+msgid "Computed"
+msgstr "Calcolato"
+
+#. module: cmc_full_costing
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_costing_run__state__draft
+msgid "Draft"
+msgstr "Bozza"

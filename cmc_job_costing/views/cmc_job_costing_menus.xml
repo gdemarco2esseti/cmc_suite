@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_cmc_sec_job_costing"
+              name="Job Costing"
+              parent="cmc_base.menu_cmc_operations"
+              sequence="35"/>
+    <menuitem id="menu_cmc_job_cost_run"
+              name="Job Cost Runs"
+              parent="menu_cmc_sec_job_costing"
+              action="action_cmc_job_cost_run"
+              sequence="10"/>
+    <menuitem id="menu_cmc_job_sheet"
+              name="Job Cost Sheets"
+              parent="menu_cmc_sec_job_costing"
+              action="action_cmc_job_sheet"
+              sequence="20"/>
+    <menuitem id="menu_cmc_job_rate"
+              name="Resource Center Rates"
+              parent="menu_cmc_sec_job_costing"
+              action="action_cmc_job_rate"
+              sequence="30"/>
+    <menuitem id="menu_cmc_evm_baseline"
+              name="Baselines"
+              parent="menu_cmc_sec_job_costing"
+              action="action_cmc_evm_baseline"
+              sequence="40"/>
+    <menuitem id="menu_cmc_evm_change_request"
+              name="Change Requests"
+              parent="menu_cmc_sec_job_costing"
+              action="action_cmc_evm_change_request"
+              sequence="50"/>
+    <menuitem id="menu_cmc_evm_run"
+              name="EVM Status Reports"
+              parent="menu_cmc_sec_job_costing"
+              action="action_cmc_evm_run"
+              sequence="60"/>
+    <menuitem id="menu_cmc_evm_curve"
+              name="S-Curve"
+              parent="menu_cmc_sec_job_costing"
+              action="action_cmc_evm_curve_series"
+              sequence="70"/>
+</odoo>

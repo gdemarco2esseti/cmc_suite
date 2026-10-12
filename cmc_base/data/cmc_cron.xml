@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="ir_cron_cmc_measure_feeders" model="ir.cron">
+            <field name="name">CMC: refresh measure feeders</field>
+            <field name="model_id" ref="model_cmc_measure_quantity"/>
+            <field name="state">code</field>
+            <field name="code">model._cmc_cron_refresh_feeders()</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+        </record>
+    </data>
+</odoo>

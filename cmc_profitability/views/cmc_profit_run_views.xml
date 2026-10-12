@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_profit_run_list" model="ir.ui.view">
+        <field name="name">cmc.profit.run.list</field>
+        <field name="model">cmc.profit.run</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="revenue_total" sum="Revenue"/>
+                <field name="operating_profit"/>
+                <field name="economic_profit"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_profit_run_form" model="ir.ui.view">
+        <field name="name">cmc.profit.run.form</field>
+        <field name="model">cmc.profit.run</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_compute" string="Compute" type="object" class="oe_highlight" invisible="state == 'done'"/>
+                    <button name="action_reset_to_draft" string="Reset to Draft" type="object" invisible="state != 'done'"
+                            confirm="Resetting deletes the computed results. Continue?"/>
+                    <button name="action_cmc_direct_costing_product" string="Direct costing by product" type="object"
+                            invisible="state != 'done'"/>
+                    <button name="action_cmc_direct_costing_customer" string="Direct costing by customer" type="object"
+                            invisible="state != 'done'"/>
+                    <button name="action_cmc_direct_costing_segment" string="Direct costing by segment" type="object"
+                            invisible="state != 'done'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <h1><field name="name" readonly="state == 'done'"/></h1>
+                    <group>
+                        <group string="Span and sources">
+                            <field name="company_id" groups="base.group_multi_company" readonly="state == 'done'"/>
+                            <field name="date_from" readonly="state == 'done'"/>
+                            <field name="date_to" readonly="state == 'done'"/>
+                            <field name="abc_run_id" readonly="state == 'done'"/>
+                            <field name="cost_version_id" readonly="state == 'done'"/>
+                            <field name="unit_cost_driver_id" readonly="state == 'done'"/>
+                            <field name="capital_rate" readonly="state == 'done'"/>
+                            <field name="fin_analysis_id" readonly="state == 'done'"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group string="Layered statement" invisible="state != 'done'">
+                            <field name="revenue_total"/>
+                            <field name="variable_cost_total"/>
+                            <field name="contribution_total"/>
+                            <field name="product_sustaining_total"/>
+                            <field name="cost_to_serve_total"/>
+                            <field name="channel_cost_total"/>
+                            <field name="business_sustaining_cost"/>
+                            <field name="operating_profit"/>
+                            <field name="capital_charge_total"/>
+                            <field name="economic_profit"/>
+                        </group>
+                    </group>
+                    <group invisible="state != 'done'">
+                        <group string="Reconciliation">
+                            <field name="gl_revenue"/>
+                            <field name="ledger_cost"/>
+                            <field name="assigned_cost"/>
+                            <field name="unassigned_cost"/>
+                        </group>
+                        <group string="Whale curve and quadrants">
+                            <field name="whale_total"/>
+                            <field name="whale_peak"/>
+                            <field name="whale_unrealized"/>
+                            <field name="quadrant_margin_threshold"/>
+                            <field name="quadrant_cost_threshold"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="SBU capital" name="sbu_capital">
+                            <field name="sbu_line_ids" readonly="state == 'done'">
+                                <list editable="bottom">
+                                    <field name="sbu_value_id"/>
+                                    <field name="coin_open" column_invisible="parent.fin_analysis_id"/>
+                                    <field name="coin_close" column_invisible="parent.fin_analysis_id"/>
+                                    <field name="pfn" column_invisible="parent.fin_analysis_id"/>
+                                    <field name="capital_key" column_invisible="not parent.fin_analysis_id"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Customers" name="customers" invisible="state != 'done'">
+                            <field name="customer_ids"/>
+                        </page>
+                        <page string="Products" name="products" invisible="state != 'done'">
+                            <field name="product_ids"/>
+                        </page>
+                        <page string="Channels" name="channels" invisible="state != 'done'">
+                            <field name="channel_ids"/>
+                        </page>
+                        <page string="SBU" name="sbus" invisible="state != 'done'">
+                            <field name="sbu_ids"/>
+                        </page>
+                        <page string="Price elements" name="waterfall" invisible="state != 'done'">
+                            <field name="waterfall_ids"/>
+                        </page>
+                        <page string="Suppliers" name="suppliers" invisible="state != 'done'">
+                            <field name="supplier_ids"/>
+                        </page>
+                        <page string="Products without unit cost" name="missing" invisible="not missing_cost_product_ids">
+                            <field name="missing_cost_product_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_profit_run" model="ir.actions.act_window">
+        <field name="name">Profitability Runs</field>
+        <field name="res_model">cmc.profit.run</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a profitability run</p>
+            <p>Pick the period and, if you need them, a computed ABC run and a standard cost version: Compute fills the margins by product, customer, channel and business line.</p>
+        </field>
+    </record>
+</odoo>

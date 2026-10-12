@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- record rules live OUTSIDE noupdate: a domain fix must be able to
+         reach databases that already have the module installed -->
+    <data>
+        <record id="cmc_cvr_company_rule" model="ir.rule">
+            <field name="name">CMC CVR: multi-company</field>
+            <field name="model_id" ref="model_cmc_cvr_analysis"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_dc_company_rule" model="ir.rule">
+            <field name="name">CMC Direct Costing: multi-company</field>
+            <field name="model_id" ref="model_cmc_direct_costing"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_cvr_line_company_rule" model="ir.rule">
+            <field name="name">CMC CVR line: multi-company</field>
+            <field name="model_id" ref="model_cmc_cvr_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_dc_line_company_rule" model="ir.rule">
+            <field name="name">CMC Direct Costing line: multi-company</field>
+            <field name="model_id" ref="model_cmc_direct_costing_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_cvr_curve_company_rule" model="ir.rule">
+            <field name="name">CMC CVR curve: multi-company</field>
+            <field name="model_id" ref="model_cmc_cvr_curve"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_decision_company_rule" model="ir.rule">
+            <field name="name">CMC Decision: multi-company</field>
+            <field name="model_id" ref="model_cmc_decision"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_decision_line_company_rule" model="ir.rule">
+            <field name="name">CMC Decision line: multi-company</field>
+            <field name="model_id" ref="model_cmc_decision_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_decision_activity_company_rule" model="ir.rule">
+            <field name="name">CMC Decision activity: multi-company</field>
+            <field name="model_id" ref="model_cmc_decision_activity"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_decision_mix_line_company_rule" model="ir.rule">
+            <field name="name">CMC Decision mix line: multi-company</field>
+            <field name="model_id" ref="model_cmc_decision_mix_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_decision_cash_flow_company_rule" model="ir.rule">
+            <field name="name">CMC Decision cash flow: multi-company</field>
+            <field name="model_id" ref="model_cmc_decision_cash_flow"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_decision_mix_result_company_rule" model="ir.rule">
+            <field name="name">CMC Decision mix result: multi-company</field>
+            <field name="model_id" ref="model_cmc_decision_mix_result"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+        <record id="cmc_decision_cash_flow_result_company_rule" model="ir.rule">
+            <field name="name">CMC Decision cash flow result: multi-company</field>
+            <field name="model_id" ref="model_cmc_decision_cash_flow_result"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+    </data>
+</odoo>

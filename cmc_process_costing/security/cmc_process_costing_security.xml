@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- record rules live OUTSIDE noupdate: a domain fix must reach installed databases -->
+    <data>
+        <record id="cmc_process_run_company_rule" model="ir.rule">
+            <field name="name">CMC process run: multi-company</field>
+            <field name="model_id" ref="model_cmc_process_run"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_process_run_line_company_rule" model="ir.rule">
+            <field name="name">CMC process run line: multi-company</field>
+            <field name="model_id" ref="model_cmc_process_run_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,7 @@
+__pycache__/
+*.py[cod]
+*.mo
+.DS_Store
+.worktrees/
+stress-test/evidenze/
+.stress.env

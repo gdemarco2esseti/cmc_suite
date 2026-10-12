@@ -1,0 +1,1255 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* cmc_kpi
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-11 16:26+0000\n"
+"PO-Revision-Date: 2026-10-09 23:35+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_kpi.py:0
+msgid "%(code)s needs: %(fields)s"
+msgstr "%(code)s richiede: %(fields)s"
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_kpi_run.py:0
+msgid "%(code)s reads the archived KPI %(names)s."
+msgstr "%(code)s legge il KPI archiviato %(names)s."
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_kpi.py:0
+msgid "%(code)s: invalid formula: %(error)s"
+msgstr "%(code)s: formula non valida: %(error)s"
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_kpi_run.py:0
+msgid "%(code)s: no engine registered for the key %(key)s."
+msgstr "%(code)s: nessun motore registrato per la chiave %(key)s."
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_kpi_run.py:0
+msgid "%(code)s: the budget version %(version)s is not computed."
+msgstr "%(code)s: la versione di budget %(version)s non è calcolata."
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_kpi_run.py:0
+msgid "%(code)s: the weights of the child KPIs do not total 100."
+msgstr "%(code)s: i pesi dei KPI figli non sommano a 100."
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_kpi_run.py:0
+msgid "%(code)s: unknown names in the formula: %(names)s"
+msgstr "%(code)s: nomi sconosciuti nella formula: %(names)s"
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_kpi_run.py:0
+msgid "%s is not computable"
+msgstr "%s non è calcolabile"
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_kpi.py:0
+msgid "%s: the red tolerance cannot be below the amber one."
+msgstr "%s: la tolleranza rossa non può essere inferiore a quella ambra."
+
+#. module: cmc_kpi
+#: model:ir.actions.report,print_report_name:cmc_kpi.action_report_cmc_kpi_pack
+msgid "'Management Pack - %s' % object.name"
+msgstr "'Management Pack - %s' % object.name"
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_kpi.py:0
+msgid "A KPI cannot be its own ancestor."
+msgstr "Un KPI non può essere antenato di se stesso."
+
+#. module: cmc_kpi
+#: model:ir.model.constraint,message:cmc_kpi.constraint_cmc_kpi_code_company_uniq
+msgid "A KPI code is unique in a company."
+msgstr "Il codice KPI è univoco in un'azienda."
+
+#. module: cmc_kpi
+#: model:ir.model.constraint,message:cmc_kpi.constraint_cmc_kpi_target_version_kpi_month_uniq
+msgid "A KPI has one target per month and plan version."
+msgstr "Un KPI ha un solo obiettivo per mese e versione di piano."
+
+#. module: cmc_kpi
+#: model:ir.model.constraint,message:cmc_kpi.constraint_cmc_kpi_scorecard_perspective_scorecard_perspective_uniq
+msgid "A perspective is weighted once per scorecard."
+msgstr "Una prospettiva è ponderata una sola volta per scheda di valutazione."
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_kpi_target.py:0
+msgid "A target must fall inside the span of its plan version."
+msgstr "Un obiettivo deve rientrare nell'arco temporale della sua versione di piano."
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__active
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard__active
+msgid "Active"
+msgstr "Attivo"
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_kpi.py:0
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__activity_ref
+msgid "Activity"
+msgstr "Attività"
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.report_cmc_kpi_pack_document
+msgid "Actual (month)"
+msgstr "Effettivo (mese)"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_bva__actual_month
+msgid "Actual Month"
+msgstr "Mese effettivo"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_bva__actual_ytd
+msgid "Actual Ytd"
+msgstr "Effettivo da inizio anno (YTD)"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__aggregation
+msgid "Aggregation"
+msgstr "Aggregazione"
+
+#. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi_run_ratio__status__alert
+msgid "Alert"
+msgstr "Avviso"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_bva__alert_month
+msgid "Alert Month"
+msgstr "Mese dell'allerta"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_bva__alert_ytd
+msgid "Alert Ytd"
+msgstr "Allerta da inizio anno (YTD)"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__amber_tolerance_pct
+msgid "Amber Tolerance %"
+msgstr "Tolleranza ambra %"
+
+#. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi__unit__amount
+msgid "Amount"
+msgstr "Importo"
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_form
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_scorecard_form
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_search
+msgid "Archived"
+msgstr "In archivio"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,help:cmc_kpi.field_cmc_kpi_target__target_input
+msgid "As a percentage for percent KPIs (15 = 15 %)."
+msgstr "In percentuale per i KPI percentuali (15 = 15 %)."
+
+#. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi_value__status__amber
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_value_search
+msgid "Attention"
+msgstr "Attenzione"
+
+#. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi__aggregation__avg
+msgid "Average"
+msgstr "Media"
+
+#. module: cmc_kpi
+#: model:ir.model,name:cmc_kpi.model_cmc_kpi_scorecard
+msgid "Balanced Scorecard"
+msgstr "Scheda di valutazione bilanciata (BSC)"
+
+#. module: cmc_kpi
+#: model:ir.model,name:cmc_kpi.model_cmc_kpi_scorecard_line
+msgid "Balanced Scorecard KPI"
+msgstr "KPI della scheda di valutazione bilanciata"
+
+#. module: cmc_kpi
+#: model:ir.model,name:cmc_kpi.model_cmc_kpi_scorecard_perspective
+msgid "Balanced Scorecard Perspective"
+msgstr "Prospettiva della scheda di valutazione bilanciata"
+
+#. module: cmc_kpi
+#: model:ir.model,name:cmc_kpi.model_cmc_kpi_scorecard_result
+msgid "Balanced Scorecard Result"
+msgstr "Risultato della scheda di valutazione bilanciata"
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.report_cmc_kpi_pack_document
+msgid "Balanced Scorecard:"
+msgstr "Scheda di valutazione bilanciata:"
+
+#. module: cmc_kpi
+#: model:ir.actions.act_window,name:cmc_kpi.action_cmc_kpi_scorecard
+#: model:ir.ui.menu,name:cmc_kpi.menu_cmc_kpi_scorecard
+msgid "Balanced Scorecards"
+msgstr "Schede di valutazione bilanciate"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__variance_version_id
+msgid "Budget Version"
+msgstr "Versione del budget"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run__bva_version_id
+msgid "Budget for the Pack"
+msgstr "Budget per il Pack"
+
+#. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi__source_type__variance
+msgid "Budget variance"
+msgstr "Scostamento dal budget"
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.report_cmc_kpi_pack_document
+msgid "Budget vs Actual:"
+msgstr "Budget vs effettivo:"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run__bva_ids
+msgid "Bva"
+msgstr "BvA"
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_form
+msgid "Cascade"
+msgstr "A cascata"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__cascade_weight
+msgid "Cascade Weight"
+msgstr "Peso nella cascata"
+
+#. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi__source_type__cascade
+msgid "Cascade of child KPIs"
+msgstr "Cascata di KPI figli"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__child_ids
+msgid "Child KPIs"
+msgstr "KPI figli"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__code
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_ratio__code
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__code
+msgid "Code"
+msgstr "Codice"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,help:cmc_kpi.field_cmc_kpi__ratio_code
+msgid "Code of a financial analysis ratio."
+msgstr "Codice di un indice dell'analisi finanziaria."
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__company_id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run__company_id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_bva__company_id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_ratio__company_id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard__company_id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_line__company_id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_perspective__company_id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_result__company_id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_target__company_id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__company_id
+msgid "Company"
+msgstr "Azienda"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_result__computable
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__computable
+msgid "Computable"
+msgstr "Calcolabile"
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_run_form
+msgid "Compute"
+msgstr "Calcola"
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_run_search
+msgid "Computed"
+msgstr "Calcolato"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__center_id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_bva__center_id
+msgid "Cost Center"
+msgstr "Centro di costo"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__element_id
+msgid "Cost Element"
+msgstr "Elemento di costo"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__cost_object_id
+msgid "Cost Object"
+msgstr "Oggetto di costo"
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.report_cmc_kpi_pack_document
+msgid "Cost center"
+msgstr "Centro di costo"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__create_uid
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run__create_uid
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_bva__create_uid
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_ratio__create_uid
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard__create_uid
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_line__create_uid
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_perspective__create_uid
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_result__create_uid
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_target__create_uid
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__create_uid
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__create_date
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run__create_date
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_bva__create_date
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_ratio__create_date
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard__create_date
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_line__create_date
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_perspective__create_date
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_result__create_date
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_target__create_date
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__create_date
+msgid "Created on"
+msgstr "Data creazione"
+
+#. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi__perspective__customer
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi_scorecard_perspective__perspective__customer
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi_scorecard_result__perspective__customer
+msgid "Customer"
+msgstr "Cliente"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_target__date
+msgid "Date"
+msgstr "Data"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run__date_from
+msgid "Date From"
+msgstr "Data da"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run__date_to
+msgid "Date To"
+msgstr "Data a"
+
+#. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi__unit__days
+msgid "Days"
+msgstr "Giorni"
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_form
+msgid "Definition"
+msgstr "Definizione"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_stock_picking__cmc_on_time
+msgid "Delivered On Time"
+msgstr "Consegnato in orario"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__description
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_form
+msgid "Description"
+msgstr "Descrizione"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__direction
+msgid "Direction"
+msgstr "Direzione"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__display_name
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run__display_name
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_bva__display_name
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_ratio__display_name
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard__display_name
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_line__display_name
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_perspective__display_name
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_result__display_name
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_target__display_name
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__display_name
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_measure_quantity__display_name
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_plan_version__display_name
+#: model:ir.model.fields,field_description:cmc_kpi.field_stock_picking__display_name
+msgid "Display Name"
+msgstr "Nome visualizzato"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__denominator_driver_id
+msgid "Divided By"
+msgstr "Diviso per"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,help:cmc_kpi.field_stock_picking__cmc_on_time
+msgid "Done no later than the day of the deadline (else of the scheduled date), in the company timezone."
+msgstr "Completato entro il giorno della scadenza (altrimenti della data pianificata), nel fuso orario dell'azienda."
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_run_search
+msgid "Draft"
+msgstr "Bozza"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,help:cmc_kpi.field_cmc_kpi_run__kpi_ids
+msgid "Empty = every active KPI."
+msgstr "Vuoto = ogni KPI attivo."
+
+#. module: cmc_kpi
+#: model:ir.model.fields,help:cmc_kpi.field_cmc_kpi_run__scorecard_ids
+msgid "Empty = every active scorecard."
+msgstr "Vuoto = ogni scheda di valutazione attiva."
+
+#. module: cmc_kpi
+#: model:ir.model.fields,help:cmc_kpi.field_cmc_kpi_scorecard_result__perspective
+msgid "Empty = the overall score of the scorecard."
+msgstr "Vuoto = il punteggio complessivo della scheda di valutazione."
+
+#. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi__source_type__hook
+msgid "Engine"
+msgstr "Motore"
+
+#. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi__perspective__financial
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi_scorecard_perspective__perspective__financial
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi_scorecard_result__perspective__financial
+msgid "Financial"
+msgstr "Finanziaria"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run__fin_analysis_id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_ratio__fin_analysis_id
+msgid "Financial Analysis"
+msgstr "Analisi finanziaria"
+
+#. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi__source_type__ratio
+msgid "Financial ratio"
+msgstr "Indice finanziario"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,help:cmc_kpi.field_cmc_kpi_target__date
+msgid "First day of the month."
+msgstr "Primo giorno del mese."
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__formula
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi__source_type__formula
+msgid "Formula"
+msgstr "Formula"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__gap_pct
+msgid "Gap %"
+msgstr "Scostamento %"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,help:cmc_kpi.field_cmc_kpi__amber_tolerance_pct
+msgid "Gap beyond which the light turns amber."
+msgstr "Scostamento oltre il quale il semaforo diventa ambra."
+
+#. module: cmc_kpi
+#: model:ir.model.fields,help:cmc_kpi.field_cmc_kpi__red_tolerance_pct
+msgid "Gap beyond which the light turns red."
+msgstr "Scostamento oltre il quale il semaforo diventa rosso."
+
+#. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi__direction__higher
+msgid "Higher is better"
+msgstr "Più alto è meglio"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__hook_key
+msgid "Hook Key"
+msgstr "Chiave dell'hook"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run__id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_bva__id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_ratio__id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard__id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_line__id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_perspective__id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_result__id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_target__id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_measure_quantity__id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_plan_version__id
+#: model:ir.model.fields,field_description:cmc_kpi.field_stock_picking__id
+msgid "ID"
+msgstr "ID"
+
+#. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi_value__trend__improving
+msgid "Improving"
+msgstr "In miglioramento"
+
+#. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi__perspective__internal
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi_scorecard_perspective__perspective__internal
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi_scorecard_result__perspective__internal
+msgid "Internal Process"
+msgstr "Processi interni"
+
+#. module: cmc_kpi
+#: model:ir.model,name:cmc_kpi.model_cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_line__kpi_id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_target__kpi_id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__kpi_id
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi_value__target_source__static
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.report_cmc_kpi_pack_document
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_value_search
+msgid "KPI"
+msgstr "KPI"
+
+#. module: cmc_kpi
+#: model:ir.ui.menu,name:cmc_kpi.menu_cmc_sec_kpi
+msgid "KPI & Scorecard"
+msgstr "KPI e scheda di valutazione"
+
+#. module: cmc_kpi
+#: model:ir.actions.act_window,name:cmc_kpi.action_cmc_kpi
+#: model:ir.ui.menu,name:cmc_kpi.menu_cmc_kpi
+msgid "KPI Library"
+msgstr "Libreria KPI"
+
+#. module: cmc_kpi
+#: model:ir.model,name:cmc_kpi.model_cmc_kpi_run
+msgid "KPI Measurement Run"
+msgstr "Esecuzione di misurazione KPI"
+
+#. module: cmc_kpi
+#: model:ir.actions.act_window,name:cmc_kpi.action_cmc_kpi_value
+msgid "KPI Measurements"
+msgstr "Misurazioni KPI"
+
+#. module: cmc_kpi
+#: model:ir.model,name:cmc_kpi.model_cmc_kpi_run_bva
+msgid "KPI Run Budget vs Actual Snapshot"
+msgstr "Istantanea budget vs effettivo dell'esecuzione KPI"
+
+#. module: cmc_kpi
+#: model:ir.model,name:cmc_kpi.model_cmc_kpi_run_ratio
+msgid "KPI Run Key Ratio Snapshot"
+msgstr "Istantanea degli indici chiave dell'esecuzione KPI"
+
+#. module: cmc_kpi
+#: model:ir.actions.act_window,name:cmc_kpi.action_cmc_kpi_run
+msgid "KPI Runs"
+msgstr "Esecuzioni KPI"
+
+#. module: cmc_kpi
+#: model:ir.model,name:cmc_kpi.model_cmc_kpi_target
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__target_display
+msgid "KPI Target"
+msgstr "Obiettivo KPI"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_plan_version__kpi_target_ids
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_plan_version_form_kpi
+msgid "KPI Targets"
+msgstr "Obiettivi KPI"
+
+#. module: cmc_kpi
+#: model:ir.model,name:cmc_kpi.model_cmc_kpi_value
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__value_display
+msgid "KPI Value"
+msgstr "Valore KPI"
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_kpi_run.py:0
+msgid "KPI measurement"
+msgstr "Misurazione KPI"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run__kpi_ids
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard__line_ids
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.report_cmc_kpi_pack_document
+msgid "KPIs"
+msgstr "KPI"
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_scorecard_form
+msgid "KPIs (weights total 100 per perspective)"
+msgstr "KPI (pesi che sommano a 100 per prospettiva)"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,help:cmc_kpi.field_cmc_kpi__hook_key
+msgid "Key of the engine evaluator registered in cmc.kpi.run._cmc_kpi_evaluators."
+msgstr "Chiave del valutatore del motore registrato in cmc.kpi.run._cmc_kpi_evaluators."
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.report_cmc_kpi_pack_document
+msgid "Key ratios"
+msgstr "Indici chiave"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__write_uid
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run__write_uid
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_bva__write_uid
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_ratio__write_uid
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard__write_uid
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_line__write_uid
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_perspective__write_uid
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_result__write_uid
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_target__write_uid
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__write_uid
+msgid "Last Updated by"
+msgstr "Ultimo aggiornamento di"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__write_date
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run__write_date
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_bva__write_date
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_ratio__write_date
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard__write_date
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_line__write_date
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_perspective__write_date
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_result__write_date
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_target__write_date
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__write_date
+msgid "Last Updated on"
+msgstr "Ultimo aggiornamento il"
+
+#. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi__perspective__learning
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi_scorecard_perspective__perspective__learning
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi_scorecard_result__perspective__learning
+msgid "Learning and Growth"
+msgstr "Apprendimento e crescita"
+
+#. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi__direction__lower
+msgid "Lower is better"
+msgstr "Più basso è meglio"
+
+#. module: cmc_kpi
+#: model:ir.actions.report,name:cmc_kpi.action_report_cmc_kpi_pack
+msgid "Management Pack"
+msgstr "Management Pack"
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.report_cmc_kpi_pack_document
+msgid "Management Pack:"
+msgstr "Management Pack:"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__driver_id
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi__source_type__measure
+msgid "Measure"
+msgstr "Misura"
+
+#. module: cmc_kpi
+#: model:ir.model,name:cmc_kpi.model_cmc_measure_quantity
+msgid "Measure Quantity"
+msgstr "Quantità misurata"
+
+#. module: cmc_kpi
+#: model:ir.ui.menu,name:cmc_kpi.menu_cmc_kpi_run
+msgid "Measurement Runs"
+msgstr "Esecuzioni di misurazione"
+
+#. module: cmc_kpi
+#: model:ir.ui.menu,name:cmc_kpi.menu_cmc_kpi_value
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_run_form
+msgid "Measurements"
+msgstr "Misurazioni"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_bva__date
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_result__date
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__date
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi__variance_basis__month
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_scorecard_result_search
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_value_search
+msgid "Month"
+msgstr "Mese"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,help:cmc_kpi.field_cmc_kpi__scale
+msgid "Multiplier of the value (100 for a percentage of two measures)."
+msgstr "Moltiplicatore del valore (100 per una percentuale di due misure)."
+
+#. module: cmc_kpi
+#: model:ir.ui.menu,name:cmc_kpi.menu_cmc_kpi_own
+msgid "My KPIs"
+msgstr "I miei KPI"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__name
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run__name
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_ratio__name
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard__name
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__name
+msgid "Name"
+msgstr "Nome"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,help:cmc_kpi.field_cmc_kpi__code
+#: model:ir.model.fields,help:cmc_kpi.field_cmc_kpi_value__code
+msgid "Name of the KPI in the formulas: a Python identifier."
+msgstr "Nome del KPI nelle formule: un identificatore Python."
+
+#. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi_value__status__no_data
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_value_search
+msgid "No data"
+msgstr "Nessun dato"
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_kpi_run.py:0
+msgid "No data for %s"
+msgstr "Nessun dato per %s"
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_kpi_run.py:0
+msgid "No data for the month"
+msgstr "Nessun dato nel mese"
+
+#. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi_value__trend__none
+msgid "No trend"
+msgstr "Nessun andamento"
+
+#. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi_run_ratio__status__not_computable
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi_value__status__none
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_value_search
+msgid "Not computable"
+msgstr "Non calcolabile"
+
+#. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi__unit__number
+msgid "Number"
+msgstr "Numero"
+
+#. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi_run_ratio__status__ok
+msgid "OK"
+msgstr "OK"
+
+#. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi_value__status__red
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_value_search
+msgid "Off target"
+msgstr "Fuori obiettivo"
+
+#. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi_value__status__green
+msgid "On target"
+msgstr "In linea con l'obiettivo"
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.report_cmc_kpi_pack_document
+msgid "Overall"
+msgstr "Complessivo"
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_scorecard_result_search
+msgid "Overall scores"
+msgstr "Punteggi complessivi"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__owner_id
+msgid "Owner"
+msgstr "Proprietario"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__parent_id
+msgid "Parent KPI"
+msgstr "KPI padre"
+
+#. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi__unit__percent
+msgid "Percent"
+msgstr "Percentuale"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,help:cmc_kpi.field_cmc_kpi_scorecard_line__weight
+msgid "Percent; the KPIs of a perspective total 100."
+msgstr "Percentuale; i KPI di una prospettiva sommano a 100."
+
+#. module: cmc_kpi
+#: model:ir.model.fields,help:cmc_kpi.field_cmc_kpi_scorecard_perspective__weight
+msgid "Percent; the perspectives of a scorecard total 100."
+msgstr "Percentuale; le prospettive di una scheda di valutazione sommano a 100."
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__perspective
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_line__perspective
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_perspective__perspective
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_result__perspective
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__perspective
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.report_cmc_kpi_pack_document
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_search
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_value_search
+msgid "Perspective"
+msgstr "Prospettiva"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard__perspective_ids
+msgid "Perspectives"
+msgstr "Prospettive"
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_scorecard_form
+msgid "Perspectives (weights total 100)"
+msgstr "Prospettive (pesi che sommano a 100)"
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.report_cmc_kpi_pack_document
+msgid "Plan (month)"
+msgstr "Piano (mese)"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_bva__plan_month
+msgid "Plan Month"
+msgstr "Mese di piano"
+
+#. module: cmc_kpi
+#: model:ir.model,name:cmc_kpi.model_cmc_plan_version
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_target__version_id
+msgid "Plan Version"
+msgstr "Versione di piano"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_bva__plan_ytd
+msgid "Plan Ytd"
+msgstr "Piano da inizio anno (YTD)"
+
+#. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi_value__target_source__version
+msgid "Plan version"
+msgstr "Versione di piano"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,help:cmc_kpi.field_cmc_kpi_run__version_id
+msgid "Plan version holding the KPI targets; without a target the static one applies."
+msgstr "Versione di piano che contiene gli obiettivi KPI; senza un obiettivo vale quello statico."
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__previous_value
+msgid "Previous Value"
+msgstr "Valore precedente"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,help:cmc_kpi.field_cmc_kpi__formula
+msgid "Python expression over the codes of the other KPIs, e.g. good_qty / (good_qty + scrap_qty) * 100."
+msgstr "Espressione Python sui codici degli altri KPI, ad es. good_qty / (good_qty + scrap_qty) * 100."
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run__ratio_ids
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.report_cmc_kpi_pack_document
+msgid "Ratio"
+msgstr "Rapporto"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__ratio_code
+msgid "Ratio Code"
+msgstr "Codice dell'indice"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__reason
+msgid "Reason"
+msgstr "Motivo"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__red_tolerance_pct
+msgid "Red Tolerance %"
+msgstr "Tolleranza rossa %"
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_run_form
+msgid "Reset to Draft"
+msgstr "Riporta in bozza"
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_run_form
+msgid "Resetting deletes the computed results. Continue?"
+msgstr "Riportando in bozza i risultati calcolati vengono cancellati. Continuare?"
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_search
+msgid "Responsibility"
+msgstr "Responsabilità"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__responsibility_id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard__responsibility_id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__responsibility_id
+msgid "Responsibility Center"
+msgstr "Centro di responsabilità"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_bva__run_id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_ratio__run_id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_result__run_id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__run_id
+msgid "Run"
+msgstr "Esecuzione"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__scale
+msgid "Scale"
+msgstr "Scala"
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_run_form
+msgid "Scope"
+msgstr "Ambito"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_result__score
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__score
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.report_cmc_kpi_pack_document
+msgid "Score"
+msgstr "Punteggio"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_line__scorecard_id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_perspective__scorecard_id
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_result__scorecard_id
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_scorecard_result_search
+msgid "Scorecard"
+msgstr "Scheda di valutazione"
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_kpi_run.py:0
+msgid "Scorecard %(name)s: %(kpi)s sits in a perspective with no weight."
+msgstr "Scheda di valutazione %(name)s: %(kpi)s si trova in una prospettiva senza peso."
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_kpi_run.py:0
+msgid "Scorecard %(name)s: the KPI weights of the perspective %(perspective)s do not total 100."
+msgstr "Scheda di valutazione %(name)s: i pesi dei KPI della prospettiva %(perspective)s non sommano a 100."
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_kpi_run.py:0
+msgid "Scorecard %s: the perspective weights do not total 100."
+msgstr "Scheda di valutazione %s: i pesi delle prospettive non sommano a 100."
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run__scorecard_result_ids
+msgid "Scorecard Result"
+msgstr "Risultato della scheda di valutazione"
+
+#. module: cmc_kpi
+#: model:ir.actions.act_window,name:cmc_kpi.action_cmc_kpi_scorecard_result
+#: model:ir.ui.menu,name:cmc_kpi.menu_cmc_kpi_scorecard_result
+msgid "Scorecard Results"
+msgstr "Risultati delle schede di valutazione"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run__scorecard_ids
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_run_form
+msgid "Scorecards"
+msgstr "Schede di valutazione"
+
+#. module: cmc_kpi
+#: model:cmc.cost.driver,name:cmc_kpi.cmc_measure_scrap_qty
+msgid "Scrapped quantity (stock)"
+msgstr "Quantità scartata (magazzino)"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__sequence
+msgid "Sequence"
+msgstr "Sequenza"
+
+#. module: cmc_kpi
+#: model:cmc.cost.driver,name:cmc_kpi.cmc_measure_shipments
+msgid "Shipments"
+msgstr "Spedizioni"
+
+#. module: cmc_kpi
+#: model:cmc.cost.driver,name:cmc_kpi.cmc_measure_shipments_on_time
+msgid "Shipments on time"
+msgstr "Spedizioni in orario"
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_form
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_search
+msgid "Source"
+msgstr "Origine"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__source_type
+msgid "Source Type"
+msgstr "Tipo di fonte"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,help:cmc_kpi.field_cmc_kpi_run__fin_analysis_id
+msgid "Source of the ratio KPIs and of the key ratios of the pack; empty = the latest computed analysis."
+msgstr "Fonte degli indici KPI e degli indici chiave del pack; vuoto = l'ultima analisi calcolata."
+
+#. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi_value__trend__stable
+msgid "Stable"
+msgstr "Stabile"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run__state
+msgid "State"
+msgstr "Stato"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,help:cmc_kpi.field_cmc_kpi__target_value
+msgid "Static target, used when the run version has none for the month."
+msgstr "Obiettivo statico, usato quando la versione dell'esecuzione non ne ha uno per il mese."
+
+#. module: cmc_kpi
+#: model:ir.model.fields,help:cmc_kpi.field_cmc_kpi__target_input
+msgid "Static target, used when the run version has none for the month. As a percentage for percent KPIs (15 = 15 %)."
+msgstr "Obiettivo statico, usato quando la versione dell'elaborazione non ne ha uno per il mese. In percentuale per i KPI percentuali (15 = 15 %)."
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_ratio__status
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__status
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.report_cmc_kpi_pack_document
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_value_search
+msgid "Status"
+msgstr "Stato"
+
+#. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi__aggregation__sum
+msgid "Sum"
+msgstr "Totale"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__target_input
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_target__target_input
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__target
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.report_cmc_kpi_pack_document
+msgid "Target"
+msgstr "Obiettivo"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__target_source
+msgid "Target Source"
+msgstr "Origine dell'obiettivo"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__target_value
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_target__target_value
+msgid "Target Value"
+msgstr "Valore obiettivo"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run__version_id
+msgid "Target Version"
+msgstr "Versione obiettivo"
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_form
+msgid "Target and thresholds"
+msgstr "Obiettivo e soglie"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__target_ids
+msgid "Targets"
+msgstr "Obiettivi"
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_form
+msgid "Targets per version"
+msgstr "Obiettivi per versione"
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_kpi.py:0
+msgid "The code %s is not a valid identifier: it is the name of the KPI in the formulas."
+msgstr "Il codice %s non è un identificatore valido: è il nome del KPI nelle formule."
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_kpi_run.py:0
+msgid "The last month cannot precede the first month."
+msgstr "L'ultimo mese non può precedere il primo."
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_kpi_run.py:0
+msgid "These KPIs depend on each other: %s"
+msgstr "Questi KPI dipendono l'uno dall'altro: %s"
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_scorecard_form
+msgid "Total"
+msgstr "Totale"
+
+#. module: cmc_kpi
+#: model:ir.model,name:cmc_kpi.model_stock_picking
+msgid "Transfer"
+msgstr "Trasferimento"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__trend
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.report_cmc_kpi_pack_document
+msgid "Trend"
+msgstr "Andamento"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__trend_delta
+msgid "Trend Delta"
+msgstr "Delta dell'andamento"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__unit
+msgid "Unit"
+msgstr "Unità"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run__value_ids
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_ratio__value
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__value
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.report_cmc_kpi_pack_document
+msgid "Value"
+msgstr "Valore"
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.report_cmc_kpi_pack_document
+msgid "Variance %"
+msgstr "Scostamento %"
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.report_cmc_kpi_pack_document
+msgid "Variance % (YTD)"
+msgstr "Scostamento % (YTD)"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi__variance_basis
+msgid "Variance Basis"
+msgstr "Base dello scostamento"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_bva__variance_month
+msgid "Variance Month"
+msgstr "Scostamento del mese"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_bva__variance_month_pct
+msgid "Variance Month Pct"
+msgstr "Scostamento % del mese"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_bva__variance_ytd
+msgid "Variance Ytd"
+msgstr "Scostamento da inizio anno (YTD)"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_bva__variance_ytd_pct
+msgid "Variance Ytd Pct"
+msgstr "Scostamento % da inizio anno (YTD)"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_line__weight
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_perspective__weight
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_result__weight
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.report_cmc_kpi_pack_document
+msgid "Weight"
+msgstr "Peso"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,help:cmc_kpi.field_cmc_kpi__cascade_weight
+msgid "Weight (percent) of this KPI in its parent."
+msgstr "Peso (percentuale) di questo KPI nel suo padre."
+
+#. module: cmc_kpi
+#: model:ir.model.fields,help:cmc_kpi.field_cmc_kpi_value__reason
+msgid "Why the value is not computable; empty when it is."
+msgstr "Perché il valore non è calcolabile; vuoto quando lo è."
+
+#. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi_value__trend__worsening
+msgid "Worsening"
+msgstr "In peggioramento"
+
+#. module: cmc_kpi
+#: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_run_ratio__year
+msgid "Year"
+msgstr "Anno"
+
+#. module: cmc_kpi
+#: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi__variance_basis__ytd
+msgid "Year to date"
+msgstr "Anno fino alla data"
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_form
+msgid "e.g. On-time delivery"
+msgstr "ad es. Consegna in orario"
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.report_cmc_kpi_pack_document
+msgid "n.c."
+msgstr "n.c."
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_kpi_run.py:0
+msgid "no computable child KPI for %s"
+msgstr "nessun KPI figlio calcolabile per %s"
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_kpi_run.py:0
+msgid "no data for %s"
+msgstr "nessun dato per %s"
+
+#. module: cmc_kpi
+#: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_form
+msgid "on_time_delivery"
+msgstr "on_time_delivery"
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_kpi_run.py:0
+msgid "the formula cannot be evaluated"
+msgstr "la formula non può essere valutata"

@@ -1,0 +1,100 @@
+.o_cmc_cockpit {
+    // runtime CSS custom props (--bs-*, --o-*) flip automatically in dark mode,
+    // so no separate .dark.scss is needed
+    .o_cmc_body {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .o_cmc_next {
+        background-color: var(--o-cc1-bg, var(--bs-tertiary-bg));
+        border: 1px solid var(--border-color, var(--bs-border-color));
+        border-left: 4px solid var(--bs-primary);
+    }
+
+    .o_cmc_section_label {
+        letter-spacing: 0.03em;
+        .o_cmc_hint {
+            text-transform: none;
+            letter-spacing: normal;
+        }
+    }
+
+    .o_cmc_steps {
+        .o_cmc_step {
+            min-width: 12rem;
+            flex: 1 1 12rem;
+            transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+
+            &:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+            }
+            &.o_cmc_step_next {
+                font-weight: 600;
+            }
+            .o_cmc_num {
+                background-color: var(--bs-secondary-bg);
+                color: var(--body-color, var(--bs-body-color));
+                width: 1.5rem;
+                height: 1.5rem;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                flex: 0 0 auto;
+            }
+            &.o_cmc_step_next .o_cmc_num {
+                background-color: rgba(255, 255, 255, 0.25);
+                color: inherit;
+            }
+        }
+    }
+
+    // costing methodologies: parallel choice cards
+    .o_cmc_method {
+        background-color: var(--card-bg, var(--bs-body-bg));
+        border: 1px solid var(--border-color, var(--bs-border-color)) !important;
+        transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+
+        &:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        }
+        &.o_cmc_m_done {
+            border-left: 3px solid var(--bs-success) !important;
+        }
+        &.o_cmc_m_available {
+            border-left: 3px solid var(--bs-primary) !important;
+        }
+        &.o_cmc_m_locked {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+    }
+
+    .o_cmc_kpi {
+        border: 1px solid var(--border-color, var(--bs-border-color));
+        transition: box-shadow 0.15s ease-out;
+
+        &:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .o_cmc_kpi_value {
+            font-variant-numeric: tabular-nums; // stable number columns
+            color: var(--body-color, var(--bs-body-color));
+        }
+    }
+
+    .o_cmc_chart_wrap {
+        position: relative;
+        height: 260px;
+    }
+
+    // respect reduced-motion
+    @media (prefers-reduced-motion: reduce) {
+        .o_cmc_step,
+        .o_cmc_kpi {
+            transition: none;
+        }
+    }
+}

@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ===== Spending profile on the ABC resource form ===== -->
+    <record id="view_cmc_abc_resource_form_abb" model="ir.ui.view">
+        <field name="name">cmc.abc.resource.form.abb</field>
+        <field name="model">cmc.abc.resource</field>
+        <field name="inherit_id" ref="cmc_abc.view_cmc_abc_resource_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="Spending profile (Activity-Based Budgeting)">
+                    <group>
+                        <field name="spending_profile"/>
+                        <field name="unit_size"/>
+                        <field name="unit_cost"/>
+                        <field name="committed_units" invisible="spending_profile == 'flexible'"/>
+                        <field name="currency_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="budget_element_id"/>
+                        <field name="idle_responsibility_id" invisible="spending_profile == 'flexible'"/>
+                        <field name="nonproductive_responsibility_id"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ===== ABB run ===== -->
+    <record id="view_cmc_abb_run_list" model="ir.ui.view">
+        <field name="name">cmc.abb.run.list</field>
+        <field name="model">cmc.abb.run</field>
+        <field name="arch" type="xml">
+            <list string="Activity-Based Budgets">
+                <field name="name"/>
+                <field name="source_version_id"/>
+                <field name="target_version_id"/>
+                <field name="total_budgeted_cost" sum="Budgeted"/>
+                <field name="total_assigned_cost" sum="Assigned" optional="show"/>
+                <field name="total_unused_cost" sum="Unused" optional="show"/>
+                <field name="extrapolation_warning" widget="boolean" optional="show"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_abb_run_search" model="ir.ui.view">
+        <field name="name">cmc.abb.run.search</field>
+        <field name="model">cmc.abb.run</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="source_version_id"/>
+                <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="done" string="Computed" domain="[('state', '=', 'done')]"/>
+                <filter name="warning" string="Extrapolation warning" domain="[('extrapolation_warning', '=', True)]"/>
+                <filter name="what_if" string="What-if" domain="[('baseline_run_id', '!=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_cmc_abb_run_form" model="ir.ui.view">
+        <field name="name">cmc.abb.run.form</field>
+        <field name="model">cmc.abb.run</field>
+        <field name="arch" type="xml">
+            <form string="Activity-Based Budget">
+                <header>
+                    <button name="action_compute" string="Compute" type="object" class="oe_highlight" invisible="state == 'done'"/>
+                    <button name="action_prefill_bill" string="Prefill Bill from Calibration" type="object"
+                            invisible="state == 'done' or not calibration_run_id"
+                            confirm="Prefilling replaces the current lines with the quantities read from the data. Continue?"/>
+                    <button name="action_open_what_if" string="What-if" type="object" invisible="state != 'done'"/>
+                    <button name="action_reset_to_draft" string="Reset to Draft" type="object" invisible="state != 'done'"
+                            confirm="Resetting deletes the results, the budget lines and the prospective rates of this run. Continue?"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_rates" type="object" class="oe_stat_button" icon="fa-percent"
+                                string="Prospective Rates" invisible="state != 'done' or not target_version_id"/>
+                    </div>
+                    <div class="alert alert-warning" role="alert" invisible="not extrapolation_warning">
+                        The planned volume or mix lies outside the range the rates were calibrated on: see the Warnings tab.
+                    </div>
+                    <div class="alert alert-info" role="alert" invisible="not driver_override_ids">
+                        An activity driver quantity is overridden: the cost object results are not reconciled to the activity demand.
+                    </div>
+                    <h1><field name="name" readonly="state == 'done'"/></h1>
+                    <group>
+                        <group string="Sources">
+                            <field name="company_id" groups="base.group_multi_company" readonly="state == 'done'"/>
+                            <field name="source_version_id" readonly="state == 'done'"/>
+                            <field name="output_measure_id" readonly="state == 'done'"/>
+                            <field name="calibration_run_id" readonly="state == 'done'"/>
+                            <field name="calibration_tolerance" readonly="state == 'done'"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group string="Output">
+                            <field name="target_version_id" readonly="state == 'done'"/>
+                            <field name="total_budgeted_cost" invisible="state != 'done'"/>
+                            <field name="total_assigned_cost" invisible="state != 'done'"/>
+                            <field name="total_unused_cost" invisible="state != 'done'"/>
+                            <field name="bottleneck_resource_id" invisible="state != 'done'"/>
+                            <field name="mix_capacity_factor" invisible="state != 'done'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="inputs" string="Bill of Activities">
+                            <field name="bill_line_ids" readonly="state == 'done'">
+                                <list editable="bottom">
+                                    <field name="cost_object_id"/>
+                                    <field name="activity_id"/>
+                                    <field name="qty_per_unit"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="usage" string="Resource Usage">
+                            <field name="usage_line_ids" readonly="state == 'done'">
+                                <list editable="bottom">
+                                    <field name="activity_id"/>
+                                    <field name="resource_id"/>
+                                    <field name="usage_per_unit"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="scenario" string="Overrides and Time">
+                            <group string="Activity driver overrides">
+                                <field name="driver_override_ids" nolabel="1" readonly="state == 'done'">
+                                    <list editable="bottom">
+                                        <field name="activity_id"/>
+                                        <field name="quantity"/>
+                                    </list>
+                                </field>
+                            </group>
+                            <group string="Non-productive time">
+                                <field name="time_state_ids" nolabel="1" readonly="state == 'done'">
+                                    <list editable="bottom">
+                                        <field name="resource_id"/>
+                                        <field name="mode"/>
+                                        <field name="quantity"/>
+                                        <field name="responsibility_id"/>
+                                    </list>
+                                </field>
+                            </group>
+                        </page>
+                        <page name="demand" string="Demand by Activity" invisible="state != 'done'">
+                            <field name="activity_result_ids" readonly="1">
+                                <list>
+                                    <field name="activity_id"/>
+                                    <field name="driver_id" optional="hide"/>
+                                    <field name="demand_qty"/>
+                                    <field name="calibration_qty" optional="show"/>
+                                    <field name="deviation_percent" optional="show"/>
+                                    <field name="rate"/>
+                                    <field name="fixed_rate" optional="hide"/>
+                                    <field name="variable_rate" optional="hide"/>
+                                    <field name="assigned_cost" sum="Assigned"/>
+                                    <field name="capacity_qty" optional="show"/>
+                                    <field name="constraining_resource_id" optional="show"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="supply" string="Resource Supply" invisible="state != 'done'">
+                            <field name="resource_result_ids" readonly="1">
+                                <list decoration-danger="shortage_units &gt; 0" decoration-warning="excess_units &gt; 0">
+                                    <field name="resource_id"/>
+                                    <field name="spending_profile" optional="show"/>
+                                    <field name="demand_qty"/>
+                                    <field name="nonproductive_qty" optional="hide"/>
+                                    <field name="required_units" string="Required (FTE)"/>
+                                    <field name="supply_units"/>
+                                    <field name="committed_units" optional="show"/>
+                                    <field name="shortage_units"/>
+                                    <field name="excess_units"/>
+                                    <field name="unused_qty" optional="hide"/>
+                                    <field name="budgeted_cost" sum="Budgeted"/>
+                                    <field name="assigned_cost" sum="Assigned" optional="show"/>
+                                    <field name="unused_cost" sum="Unused"/>
+                                    <field name="rate" optional="show"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="objects" string="Cost Objects" invisible="state != 'done'">
+                            <field name="object_result_ids" readonly="1">
+                                <list>
+                                    <field name="cost_object_id"/>
+                                    <field name="planned_qty"/>
+                                    <field name="unit_cost"/>
+                                    <field name="amount" sum="Amount"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="capacity" string="Capacity States" invisible="state != 'done'">
+                            <field name="capacity_state_ids" readonly="1">
+                                <list>
+                                    <field name="resource_id"/>
+                                    <field name="state"/>
+                                    <field name="mode"/>
+                                    <field name="quantity"/>
+                                    <field name="cost" sum="Cost"/>
+                                    <field name="responsibility_id"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="warnings" string="Warnings" invisible="not extrapolation_warning">
+                            <field name="warning_ids" readonly="1">
+                                <list>
+                                    <field name="warning_type"/>
+                                    <field name="activity_id"/>
+                                    <field name="cost_object_id"/>
+                                    <field name="calibration_qty"/>
+                                    <field name="planned_qty"/>
+                                    <field name="deviation_percent"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="budget" string="Budget Lines" invisible="state != 'done' or not target_version_id">
+                            <field name="budget_line_ids" readonly="1">
+                                <list>
+                                    <field name="date"/>
+                                    <field name="center_id"/>
+                                    <field name="element_id"/>
+                                    <field name="behavior"/>
+                                    <field name="abb_resource_id"/>
+                                    <field name="figure" sum="Total"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_abb_run" model="ir.actions.act_window">
+        <field name="name">Activity-Based Budgets</field>
+        <field name="res_model">cmc.abb.run</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('baseline_run_id', '=', False)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create an activity-based budget</p>
+            <p>Start from the approved volume forecast, the bill of activities and the resource usage: the run sizes the
+               resources, writes the budget lines and publishes the prospective rates.</p>
+        </field>
+    </record>
+
+    <!-- ===== What-if ===== -->
+    <record id="view_cmc_abb_whatif_form" model="ir.ui.view">
+        <field name="name">cmc.abb.run.whatif.form</field>
+        <field name="model">cmc.abb.run</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <form string="What-if Scenario">
+                <header>
+                    <button name="action_compute" string="Compute" type="object" class="oe_highlight" invisible="state == 'done'"/>
+                    <button name="action_reset_to_draft" string="Reset to Draft" type="object" invisible="state != 'done'"
+                            confirm="Resetting deletes the computed results. Continue?"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-info" role="alert">
+                        Change a driver quantity, a usage or a non-productive time and compute: the scenario never writes budget lines nor rates.
+                    </div>
+                    <h1><field name="name" readonly="state == 'done'"/></h1>
+                    <group>
+                        <group>
+                            <field name="baseline_run_id" readonly="1"/>
+                            <field name="source_version_id" readonly="1"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group invisible="state != 'done'">
+                            <field name="total_budgeted_cost"/>
+                            <field name="delta_cost"/>
+                            <field name="predicted_cost"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="override" string="Driver Overrides">
+                            <field name="driver_override_ids" readonly="state == 'done'">
+                                <list editable="bottom">
+                                    <field name="activity_id"/>
+                                    <field name="quantity"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="usage" string="Resource Usage">
+                            <field name="usage_line_ids" readonly="state == 'done'">
+                                <list editable="bottom">
+                                    <field name="activity_id"/>
+                                    <field name="resource_id"/>
+                                    <field name="usage_per_unit"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="bill" string="Bill of Activities">
+                            <field name="bill_line_ids" readonly="state == 'done'">
+                                <list editable="bottom">
+                                    <field name="cost_object_id"/>
+                                    <field name="activity_id"/>
+                                    <field name="qty_per_unit"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="time" string="Non-productive Time">
+                            <field name="time_state_ids" readonly="state == 'done'">
+                                <list editable="bottom">
+                                    <field name="resource_id"/>
+                                    <field name="mode"/>
+                                    <field name="quantity"/>
+                                    <field name="responsibility_id"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="supply" string="Resource Supply" invisible="state != 'done'">
+                            <field name="resource_result_ids" readonly="1">
+                                <list>
+                                    <field name="resource_id"/>
+                                    <field name="supply_units"/>
+                                    <field name="delta_supply_units"/>
+                                    <field name="shortage_units"/>
+                                    <field name="excess_units"/>
+                                    <field name="budgeted_cost" sum="Budgeted"/>
+                                    <field name="delta_cost" sum="Delta"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_abb_whatif" model="ir.actions.act_window">
+        <field name="name">What-if Scenarios</field>
+        <field name="res_model">cmc.abb.run</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('baseline_run_id', '!=', False)]</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_cmc_abb_run_list')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('view_cmc_abb_whatif_form')})]"/>
+    </record>
+
+    <!-- ===== Capacity time states and responsibility ===== -->
+    <record id="view_cmc_abb_capacity_state_list" model="ir.ui.view">
+        <field name="name">cmc.abb.capacity.state.list</field>
+        <field name="model">cmc.abb.capacity.state</field>
+        <field name="arch" type="xml">
+            <list string="Capacity States" create="false" edit="false">
+                <field name="run_id"/>
+                <field name="resource_id"/>
+                <field name="state"/>
+                <field name="mode"/>
+                <field name="quantity" sum="Quantity"/>
+                <field name="cost" sum="Cost"/>
+                <field name="responsibility_id"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_abb_capacity_state_search" model="ir.ui.view">
+        <field name="name">cmc.abb.capacity.state.search</field>
+        <field name="model">cmc.abb.capacity.state</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="resource_id"/>
+                <field name="responsibility_id"/>
+                <filter name="unused" string="Unused capacity" domain="[('state', '!=', 'productive')]"/>
+                <filter name="nonproductive" string="Non-productive" domain="[('state', '=', 'nonproductive')]"/>
+                <filter name="idle" string="Idle" domain="[('state', '=', 'idle')]"/>
+                <group>
+                    <filter name="group_run" string="Run" context="{'group_by': 'run_id'}"/>
+                    <filter name="group_resource" string="Resource" context="{'group_by': 'resource_id'}"/>
+                    <filter name="group_state" string="State" context="{'group_by': 'state'}"/>
+                    <filter name="group_resp" string="Responsibility" context="{'group_by': 'responsibility_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_cmc_abb_capacity_state_pivot" model="ir.ui.view">
+        <field name="name">cmc.abb.capacity.state.pivot</field>
+        <field name="model">cmc.abb.capacity.state</field>
+        <field name="arch" type="xml">
+            <pivot string="Unused Capacity by Owner">
+                <field name="responsibility_id" type="row"/>
+                <field name="state" type="col"/>
+                <field name="cost" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="action_cmc_abb_capacity_state" model="ir.actions.act_window">
+        <field name="name">Capacity Time States</field>
+        <field name="res_model">cmc.abb.capacity.state</field>
+        <field name="view_mode">list,pivot</field>
+        <field name="context">{'search_default_unused': 1, 'search_default_group_resp': 1}</field>
+    </record>
+
+    <!-- ===== Bottleneck: first constraining resource per activity ===== -->
+    <record id="view_cmc_abb_activity_result_list" model="ir.ui.view">
+        <field name="name">cmc.abb.activity.result.list</field>
+        <field name="model">cmc.abb.activity.result</field>
+        <field name="arch" type="xml">
+            <list string="Constraining Resources" create="false" edit="false">
+                <field name="run_id"/>
+                <field name="activity_id"/>
+                <field name="demand_qty"/>
+                <field name="capacity_qty"/>
+                <field name="constraining_resource_id"/>
+                <field name="rate"/>
+                <field name="assigned_cost" sum="Assigned"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cmc_abb_bottleneck" model="ir.actions.act_window">
+        <field name="name">Bottlenecks</field>
+        <field name="res_model">cmc.abb.activity.result</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <!-- ===== ABC variance ===== -->
+    <record id="view_cmc_abb_variance_run_list" model="ir.ui.view">
+        <field name="name">cmc.abb.variance.run.list</field>
+        <field name="model">cmc.abb.variance.run</field>
+        <field name="arch" type="xml">
+            <list string="ABC Variances">
+                <field name="name"/>
+                <field name="abb_run_id"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="total_spending_variance" optional="show"/>
+                <field name="total_utilisation_variance" optional="show"/>
+                <field name="total_budgeted_unused_cost" optional="show"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_abb_variance_run_form" model="ir.ui.view">
+        <field name="name">cmc.abb.variance.run.form</field>
+        <field name="model">cmc.abb.variance.run</field>
+        <field name="arch" type="xml">
+            <form string="ABC Variances">
+                <header>
+                    <button name="action_compute" string="Compute" type="object" class="oe_highlight" invisible="state == 'done'"/>
+                    <button name="action_reset_to_draft" string="Reset to Draft" type="object" invisible="state != 'done'"
+                            confirm="Resetting deletes the computed results. Continue?"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <h1><field name="name" readonly="state == 'done'"/></h1>
+                    <group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company" readonly="state == 'done'"/>
+                            <field name="abb_run_id" readonly="state == 'done'"/>
+                            <field name="date_from" readonly="state == 'done'"/>
+                            <field name="date_to" readonly="state == 'done'"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group string="Budget = assigned + unused + unexpected utilisation" invisible="state != 'done'">
+                            <field name="total_budget_cost"/>
+                            <field name="total_assigned_cost"/>
+                            <field name="total_budgeted_unused_cost"/>
+                            <field name="total_utilisation_variance"/>
+                            <field name="total_actual_cost"/>
+                            <field name="total_spending_variance"/>
+                        </group>
+                    </group>
+                    <field name="line_ids" readonly="1" invisible="state != 'done'">
+                        <list>
+                            <field name="center_id"/>
+                            <field name="resource_id"/>
+                            <field name="spending_profile" optional="hide"/>
+                            <field name="budget_cost" sum="Budget"/>
+                            <field name="actual_cost" sum="Actual"/>
+                            <field name="assigned_cost" sum="Assigned"/>
+                            <field name="budgeted_unused_cost" sum="Budgeted unused"/>
+                            <field name="utilisation_variance" sum="Utilisation"/>
+                            <field name="spending_variance" sum="Spending"/>
+                            <field name="abc_variance" sum="ABC variance"/>
+                            <field name="budget_demand_qty" optional="hide"/>
+                            <field name="actual_demand_qty" optional="hide"/>
+                            <field name="rate" optional="hide"/>
+                            <field name="currency_id" column_invisible="1"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_abb_variance_run" model="ir.actions.act_window">
+        <field name="name">ABC Variances</field>
+        <field name="res_model">cmc.abb.variance.run</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create an ABC variance run</p>
+            <p>Split the gap between the activity-based budget and the actual cost into spending, unexpected utilisation and unused capacity.</p>
+        </field>
+    </record>
+
+    <record id="view_cmc_abb_variance_line_search" model="ir.ui.view">
+        <field name="name">cmc.abb.variance.line.search</field>
+        <field name="model">cmc.abb.variance.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="resource_id"/>
+                <field name="center_id"/>
+                <group>
+                    <filter name="group_center" string="Cost center" context="{'group_by': 'center_id'}"/>
+                    <filter name="group_resource" string="Resource" context="{'group_by': 'resource_id'}"/>
+                    <filter name="group_month" string="Month" context="{'group_by': 'date_from:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_cmc_abb_variance_line_pivot" model="ir.ui.view">
+        <field name="name">cmc.abb.variance.line.pivot</field>
+        <field name="model">cmc.abb.variance.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Actual / ABC / ABB by center">
+                <field name="center_id" type="row"/>
+                <field name="actual_cost" type="measure"/>
+                <field name="assigned_cost" type="measure"/>
+                <field name="static_budget_cost" type="measure"/>
+                <field name="abc_variance" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_cmc_abb_variance_line_graph" model="ir.ui.view">
+        <field name="name">cmc.abb.variance.line.graph</field>
+        <field name="model">cmc.abb.variance.line</field>
+        <field name="arch" type="xml">
+            <graph string="Idle capacity trend" type="line">
+                <field name="date_from" interval="month"/>
+                <field name="resource_id"/>
+                <field name="budgeted_unused_cost" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_cmc_abb_variance_line_list" model="ir.ui.view">
+        <field name="name">cmc.abb.variance.line.list</field>
+        <field name="model">cmc.abb.variance.line</field>
+        <field name="arch" type="xml">
+            <list string="ABC Variance Lines" create="false" edit="false">
+                <field name="run_id"/>
+                <field name="center_id"/>
+                <field name="resource_id"/>
+                <field name="budget_cost" sum="Budget"/>
+                <field name="actual_cost" sum="Actual"/>
+                <field name="assigned_cost" sum="Assigned"/>
+                <field name="budgeted_unused_cost" sum="Budgeted unused"/>
+                <field name="utilisation_variance" sum="Utilisation"/>
+                <field name="spending_variance" sum="Spending"/>
+                <field name="abc_variance" sum="ABC variance"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cmc_abb_variance_line" model="ir.actions.act_window">
+        <field name="name">ABC Variance Analysis</field>
+        <field name="res_model">cmc.abb.variance.line</field>
+        <field name="view_mode">pivot,graph,list</field>
+        <field name="context">{'search_default_group_center': 1}</field>
+    </record>
+</odoo>

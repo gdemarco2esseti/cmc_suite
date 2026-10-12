@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="module_category_cmc" model="ir.module.category">
+            <field name="name">Cost Management &amp; Controlling</field>
+            <field name="sequence">90</field>
+        </record>
+
+        <record id="res_groups_privilege_cmc" model="res.groups.privilege">
+            <field name="name">Cost Management &amp; Controlling</field>
+            <field name="category_id" ref="module_category_cmc"/>
+            <field name="sequence">90</field>
+        </record>
+
+        <record id="group_cmc_responsible" model="res.groups">
+            <field name="name">Controlling Responsible</field>
+            <field name="privilege_id" ref="res_groups_privilege_cmc"/>
+        </record>
+
+        <record id="group_cmc_user" model="res.groups">
+            <field name="name">Controlling User</field>
+            <field name="privilege_id" ref="res_groups_privilege_cmc"/>
+            <field name="implied_ids" eval="[(4, ref('analytic.group_analytic_accounting')), (4, ref('cmc_base.group_cmc_responsible'))]"/>
+        </record>
+
+        <record id="group_cmc_manager" model="res.groups">
+            <field name="name">Controlling Manager</field>
+            <field name="privilege_id" ref="res_groups_privilege_cmc"/>
+            <field name="implied_ids" eval="[(4, ref('cmc_base.group_cmc_user'))]"/>
+        </record>
+    </data>
+
+    <!-- record rules live OUTSIDE noupdate: a domain fix must be able to
+         reach databases that already have the module installed -->
+    <data>
+        <record id="cmc_attribute_company_rule" model="ir.rule">
+            <field name="name">CMC attribute: multi-company</field>
+            <field name="model_id" ref="model_cmc_attribute"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_attribute_value_company_rule" model="ir.rule">
+            <field name="name">CMC attribute value: multi-company</field>
+            <field name="model_id" ref="model_cmc_attribute_value"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_cost_driver_company_rule" model="ir.rule">
+            <field name="name">CMC cost driver: multi-company</field>
+            <field name="model_id" ref="model_cmc_cost_driver"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_allocation_company_rule" model="ir.rule">
+            <field name="name">CMC allocation: multi-company</field>
+            <field name="model_id" ref="model_cmc_allocation"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_allocation_line_company_rule" model="ir.rule">
+            <field name="name">CMC allocation line: multi-company</field>
+            <field name="model_id" ref="model_cmc_allocation_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_center_service_company_rule" model="ir.rule">
+            <field name="name">CMC center service: multi-company</field>
+            <field name="model_id" ref="model_cmc_center_service"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_closing_run_company_rule" model="ir.rule">
+            <field name="name">CMC closing run: multi-company</field>
+            <field name="model_id" ref="model_cmc_closing_run"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_closing_line_company_rule" model="ir.rule">
+            <field name="name">CMC closing line: multi-company</field>
+            <field name="model_id" ref="model_cmc_closing_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_capacity_company_rule" model="ir.rule">
+            <field name="name">CMC capacity analysis: multi-company</field>
+            <field name="model_id" ref="model_cmc_capacity_analysis"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_cost_element_company_rule" model="ir.rule">
+            <field name="name">CMC cost element: multi-company</field>
+            <field name="model_id" ref="model_cmc_cost_element"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_cost_analysis_company_rule" model="ir.rule">
+            <field name="name">CMC cost analysis: multi-company</field>
+            <field name="model_id" ref="model_cmc_cost_analysis_line"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_plan_version_company_rule" model="ir.rule">
+            <field name="name">CMC plan version: multi-company</field>
+            <field name="model_id" ref="model_cmc_plan_version"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_plan_version_assumption_company_rule" model="ir.rule">
+            <field name="name">CMC plan version assumption: multi-company</field>
+            <field name="model_id" ref="model_cmc_plan_version_assumption"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_measure_quantity_company_rule" model="ir.rule">
+            <field name="name">CMC measure quantity: multi-company</field>
+            <field name="model_id" ref="model_cmc_measure_quantity"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_rate_company_rule" model="ir.rule">
+            <field name="name">CMC rate: multi-company</field>
+            <field name="model_id" ref="model_cmc_rate"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_cost_object_company_rule" model="ir.rule">
+            <field name="name">CMC cost object: multi-company</field>
+            <field name="model_id" ref="model_cmc_cost_object"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_run_usage_company_rule" model="ir.rule">
+            <field name="name">CMC run usage: multi-company</field>
+            <field name="model_id" ref="model_cmc_run_usage"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_cost_function_company_rule" model="ir.rule">
+            <field name="name">CMC cost function: multi-company</field>
+            <field name="model_id" ref="model_cmc_cost_function"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_cost_function_step_company_rule" model="ir.rule">
+            <field name="name">CMC cost function step: multi-company</field>
+            <field name="model_id" ref="model_cmc_cost_function_step"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_responsibility_center_company_rule" model="ir.rule">
+            <field name="name">CMC responsibility center: multi-company</field>
+            <field name="model_id" ref="model_cmc_responsibility_center"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_responsibility_capital_company_rule" model="ir.rule">
+            <field name="name">CMC responsibility capital: multi-company</field>
+            <field name="model_id" ref="model_cmc_responsibility_capital"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_center_cost_report_company_rule" model="ir.rule">
+            <field name="name">CMC center cost report: multi-company</field>
+            <field name="model_id" ref="model_cmc_center_cost_report"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_closing_step_company_rule" model="ir.rule">
+            <field name="name">CMC closing step: multi-company</field>
+            <field name="model_id" ref="model_cmc_closing_step"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+        </record>
+
+        <record id="cmc_responsibility_center_responsible_rule" model="ir.rule">
+            <field name="name">CMC responsibility center: own responsibility</field>
+            <field name="model_id" ref="model_cmc_responsibility_center"/>
+            <field name="groups" eval="[(4, ref('cmc_base.group_cmc_responsible'))]"/>
+            <field name="domain_force">[('owner_id', '=', user.id)]</field>
+        </record>
+
+        <record id="cmc_responsibility_center_user_rule" model="ir.rule">
+            <field name="name">CMC responsibility center: all (controlling user)</field>
+            <field name="model_id" ref="model_cmc_responsibility_center"/>
+            <field name="groups" eval="[(4, ref('cmc_base.group_cmc_user'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <record id="cmc_responsibility_capital_responsible_rule" model="ir.rule">
+            <field name="name">CMC responsibility capital: own responsibility</field>
+            <field name="model_id" ref="model_cmc_responsibility_capital"/>
+            <field name="groups" eval="[(4, ref('cmc_base.group_cmc_responsible'))]"/>
+            <field name="domain_force">[('responsibility_id.owner_id', '=', user.id)]</field>
+        </record>
+
+        <record id="cmc_responsibility_capital_user_rule" model="ir.rule">
+            <field name="name">CMC responsibility capital: all (controlling user)</field>
+            <field name="model_id" ref="model_cmc_responsibility_capital"/>
+            <field name="groups" eval="[(4, ref('cmc_base.group_cmc_user'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <record id="cmc_center_cost_report_responsible_rule" model="ir.rule">
+            <field name="name">CMC center cost report: own responsibility</field>
+            <field name="model_id" ref="model_cmc_center_cost_report"/>
+            <field name="groups" eval="[(4, ref('cmc_base.group_cmc_responsible'))]"/>
+            <field name="domain_force">[('rollup_center_id.cmc_responsibility_ids.owner_id', '=', user.id)]</field>
+        </record>
+
+        <record id="cmc_center_cost_report_user_rule" model="ir.rule">
+            <field name="name">CMC center cost report: all (controlling user)</field>
+            <field name="model_id" ref="model_cmc_center_cost_report"/>
+            <field name="groups" eval="[(4, ref('cmc_base.group_cmc_user'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+    </data>
+</odoo>

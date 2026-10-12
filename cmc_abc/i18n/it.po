@@ -1,0 +1,2350 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* cmc_abc
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 23:35+0000\n"
+"PO-Revision-Date: 2026-10-09 23:35+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_activity_cost__cumulative_share
+msgid "% of the total activity cost up to this rank."
+msgstr "% del costo totale delle attività fino a questa posizione."
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_activity_cost__cost_share
+msgid "% of the total activity cost."
+msgstr "% del costo totale delle attività."
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abm.py:0
+msgid "%(activity)s has more than one %(role)s measure."
+msgstr "%(activity)s ha più di una misura %(role)s."
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abc.py:0
+msgid ""
+"%(name)s is a %(level)s-level activity: its driver must measure the same "
+"level."
+msgstr ""
+"%(name)s è un'attività di livello %(level)s: il suo driver deve misurare lo "
+"stesso livello."
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abc.py:0
+msgid ""
+"%(name)s: a process has no parent, an activity sits under a process and a "
+"task under an activity."
+msgstr ""
+"%(name)s: un processo non ha genitore, un'attività sta sotto un processo e "
+"un compito sotto un'attività."
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abc.py:0
+msgid ""
+"%(name)s: a statistical measure cannot allocate cost; use an allocation "
+"driver."
+msgstr ""
+"%(name)s: una misura statistica non può allocare costo; usare un driver di "
+"allocazione."
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abm.py:0
+msgid "%s: an allocation driver is not a performance measure."
+msgstr "%s: un driver di allocazione non è una misura di performance."
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abm.py:0
+msgid "%s: measures are kept on activities, not on processes or tasks."
+msgstr "%s: le misure sono tenute sulle attività, non su processi o compiti."
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abm.py:0
+msgid "%s: some runs belong to companies that are not active."
+msgstr "%s: alcune esecuzioni appartengono ad aziende non attive."
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abm.py:0
+msgid "%s: the runs have different currencies, unit costs are not comparable."
+msgstr ""
+"%s: le esecuzioni hanno valute diverse, i costi unitari non sono "
+"confrontabili."
+
+#. module: cmc_abc
+#: model:ir.actions.report,print_report_name:cmc_abc.action_report_abc_reclass
+msgid "'ABC - %s' % object.name"
+msgstr "'ABC - %s' % object.name"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_result__distortion_percent
+msgid "(ABC - traditional) / traditional x 100."
+msgstr "(ABC - tradizionale) / tradizionale x 100."
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abm_benchmark_line__gap_percent
+msgid "(unit cost - best) / best x 100."
+msgstr "(costo unitario - migliore) / migliore x 100."
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_activity_cost__pareto_rank
+msgid "1 = costliest activity of the run (stage-1 cost)."
+msgstr "1 = attività più costosa dell'esecuzione (costo di fase 1)."
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_activity_cost__pareto_class__a
+msgid "A (up to 80%)"
+msgstr "A (fino all'80%)"
+
+#. module: cmc_abc
+#: model:ir.model.constraint,message:cmc_abc.constraint_cmc_abc_driver_component_component_uniq
+msgid "A component is listed once per index driver."
+msgstr "Un componente è elencato una sola volta per ogni driver indice."
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abc_extend.py:0
+msgid "A driver cannot be a component of itself."
+msgstr "Un driver non può essere componente di se stesso."
+
+#. module: cmc_abc
+#: model:ir.actions.report,name:cmc_abc.action_report_abc_reclass
+msgid "ABC (reclassified)"
+msgstr "ABC (riclassificato)"
+
+#. module: cmc_abc
+#: model:ir.actions.act_window,name:cmc_abc.action_cmc_abc_activity
+#: model:ir.ui.menu,name:cmc_abc.menu_cmc_abc_activity
+msgid "ABC Activities"
+msgstr "Attività ABC"
+
+#. module: cmc_abc
+#: model:ir.model,name:cmc_abc.model_cmc_abc_activity
+#: model:ir.model.fields,field_description:cmc_abc.field_account_analytic_line__cmc_activity_id
+msgid "ABC Activity"
+msgstr "Attività ABC"
+
+#. module: cmc_abc
+#: model:ir.model,name:cmc_abc.model_cmc_abc_activity_cost
+msgid "ABC Activity Cost (stage results)"
+msgstr "Costo delle attività ABC (risultati di fase)"
+
+#. module: cmc_abc
+#: model:ir.model,name:cmc_abc.model_cmc_abc_activity_performance
+msgid "ABC Activity Performance"
+msgstr "Performance delle attività ABC"
+
+#. module: cmc_abc
+#: model:ir.model,name:cmc_abc.model_cmc_abc_activity_measure
+msgid "ABC Activity Performance Measure"
+msgstr "Misura di performance dell'attività ABC"
+
+#. module: cmc_abc
+#: model:ir.model,name:cmc_abc.model_cmc_abc_activity_result
+msgid "ABC Activity Pool Snapshot"
+msgstr "Snapshot del pool di attività ABC"
+
+#. module: cmc_abc
+#: model:ir.ui.menu,name:cmc_abc.menu_cmc_abc_run
+msgid "ABC Computation"
+msgstr "Calcolo ABC"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__amount
+msgid "ABC Cost"
+msgstr "Costo ABC"
+
+#. module: cmc_abc
+#: model:ir.model,name:cmc_abc.model_cmc_abc_flow
+msgid "ABC Cost Flow (drill-back)"
+msgstr "Flusso dei costi ABC (drill-back)"
+
+#. module: cmc_abc
+#: model:ir.model,name:cmc_abc.model_cmc_abc_run
+msgid "ABC Costing Run"
+msgstr "Elaborazione ABC"
+
+#. module: cmc_abc
+#: model:ir.model,name:cmc_abc.model_cmc_abc_driver_component
+msgid "ABC Index Driver Component"
+msgstr "Componente del driver indice ABC"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_cost_driver__cmc_abc_level
+msgid "ABC Level"
+msgstr "Livello ABC"
+
+#. module: cmc_abc
+#: model:ir.model,name:cmc_abc.model_cmc_abc_line
+msgid "ABC Network Edge (activity driver consumption)"
+msgstr "Arco della rete ABC (consumo del driver di attività)"
+
+#. module: cmc_abc
+#: model:ir.model,name:cmc_abc.model_cmc_abc_capacity
+msgid "ABC Practical Capacity"
+msgstr "Capacità pratica ABC"
+
+#. module: cmc_abc
+#: model:ir.model,name:cmc_abc.model_cmc_abc_resource
+msgid "ABC Resource"
+msgstr "Risorsa ABC"
+
+#. module: cmc_abc
+#: model:ir.model,name:cmc_abc.model_cmc_abc_resource_line
+msgid "ABC Resource Driver (resource -> activity)"
+msgstr "Driver di risorsa ABC (risorsa -> attività)"
+
+#. module: cmc_abc
+#: model:ir.actions.act_window,name:cmc_abc.action_cmc_abc_resource
+#: model:ir.ui.menu,name:cmc_abc.menu_cmc_abc_resource
+msgid "ABC Resources"
+msgstr "Risorse ABC"
+
+#. module: cmc_abc
+#: model:ir.model,name:cmc_abc.model_cmc_abc_result
+msgid "ABC Result (cost per object)"
+msgstr "Risultato ABC (costo per oggetto)"
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abc.py:0
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_run_form
+msgid "ABC Run"
+msgstr "Elaborazione ABC"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_run_list
+msgid "ABC Runs"
+msgstr "Elaborazioni ABC"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_result__full_cost
+msgid "ABC cost + idle capacity and business-sustaining burdens."
+msgstr "Costo ABC + capacità inutilizzata e oneri di sostegno dell'azienda."
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_result__unit_cost
+msgid "ABC cost per output unit."
+msgstr "Costo ABC per unità di output."
+
+#. module: cmc_abc
+#: model:ir.actions.act_window,name:cmc_abc.action_cmc_abc_traditional
+#: model:ir.ui.menu,name:cmc_abc.menu_cmc_abc_traditional
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_result_list
+msgid "ABC vs Traditional"
+msgstr "ABC vs tradizionale"
+
+#. module: cmc_abc
+#: model:ir.model,name:cmc_abc.model_cmc_abm_benchmark
+msgid "ABM Activity Benchmark"
+msgstr "Benchmark delle attività ABM"
+
+#. module: cmc_abc
+#: model:ir.model,name:cmc_abc.model_cmc_abm_benchmark_line
+msgid "ABM Benchmark Line"
+msgstr "Riga di benchmark ABM"
+
+#. module: cmc_abc
+#: model:ir.model,name:cmc_abc.model_cmc_abm_initiative
+msgid "ABM Improvement Initiative"
+msgstr "Iniziativa di miglioramento ABM"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__active
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_resource__active
+msgid "Active"
+msgstr "Attivo"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_list
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_search
+msgid "Activities"
+msgstr "Attività"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_result__activity_cost
+msgid "Activities consumed: driver quantity x rate."
+msgstr "Attività consumate: quantità del driver x tariffa."
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__activity_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_measure__activity_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_performance__activity_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_result__activity_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_capacity__activity_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_resource_line__activity_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_benchmark_line__activity_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_initiative__activity_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_measure_quantity__activity_id
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_activity__node_type__activity
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_form
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_performance_search
+msgid "Activity"
+msgstr "Attività"
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abc_engine.py:0
+msgid ""
+"Activity %(name)s is used for %(used)s but its practical capacity is "
+"%(capacity)s."
+msgstr ""
+"L'attività %(name)s è usata per %(used)s ma la sua capacità pratica è "
+"%(capacity)s."
+
+#. module: cmc_abc
+#: model:ir.actions.act_window,name:cmc_abc.action_cmc_abm_benchmark
+#: model:ir.ui.menu,name:cmc_abc.menu_cmc_abm_benchmark
+msgid "Activity Benchmark"
+msgstr "Benchmark delle attività"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_benchmark_line__activity_code
+msgid "Activity Code"
+msgstr "Codice attività"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_performance__activity_cost
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__activity_cost
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__activity_cost_ids
+msgid "Activity Cost"
+msgstr "Costo dell'attività"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_cost_list
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_cost_pivot
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_run_form
+msgid "Activity Costs"
+msgstr "Costi delle attività"
+
+#. module: cmc_abc
+#: model:ir.actions.act_window,name:cmc_abc.action_cmc_abm_measure
+#: model:ir.ui.menu,name:cmc_abc.menu_cmc_abm_measure
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_measure_list
+msgid "Activity Measures"
+msgstr "Misure delle attività"
+
+#. module: cmc_abc
+#: model:ir.actions.act_window,name:cmc_abc.action_cmc_abm_performance
+#: model:ir.ui.menu,name:cmc_abc.menu_cmc_abm_performance
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_performance_list
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_performance_pivot
+msgid "Activity Performance"
+msgstr "Performance delle attività"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_result__pool_amount
+msgid "Activity Pool"
+msgstr "Pool dell'attività"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_run_form
+msgid "Activity Pools"
+msgstr "Pool delle attività"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__activity_result_ids
+msgid "Activity Result"
+msgstr "Risultato per attività"
+
+#. module: cmc_abc
+#: model:ir.model.constraint,message:cmc_abc.constraint_cmc_abc_activity_code_uniq
+msgid "Activity code must be unique per company."
+msgstr "Il codice attività deve essere univoco per azienda."
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_flow__stage__tag
+msgid "Activity tag to activity"
+msgstr "Etichetta di attività verso attività"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_flow__stage__activity
+msgid "Activity to activity"
+msgstr "Da attività ad attività"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_account_analytic_line__cmc_activity_id
+msgid "Activity whose resource cost pool this line contributes to."
+msgstr "Attività al cui pool di costo delle risorse questa riga contribuisce."
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_flow_pivot
+msgid "Activity x Center"
+msgstr "Attività x centro"
+
+#. module: cmc_abc
+#: model:ir.actions.act_window,name:cmc_abc.action_cmc_abm_matrix
+#: model:ir.ui.menu,name:cmc_abc.menu_cmc_abm_matrix
+msgid "Activity x Center Matrix"
+msgstr "Matrice attività x centro"
+
+#. module: cmc_abc
+#: model:ir.actions.act_window,name:cmc_abc.action_cmc_abc_run
+#: model:ir.ui.menu,name:cmc_abc.menu_cmc_sec_abc
+msgid "Activity-Based Costing"
+msgstr "Activity-Based Costing"
+
+#. module: cmc_abc
+#: model:ir.ui.menu,name:cmc_abc.menu_cmc_sec_abm
+msgid "Activity-Based Management"
+msgstr "Gestione basata sulle attività (ABM)"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_result__costing_flag__aligned
+msgid "Aligned"
+msgstr "Allineato"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_result__amount
+msgid "Allocated Cost"
+msgstr "Costo allocato"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_flow__amount
+msgid "Amount"
+msgstr "Importo"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_line__driver_qty
+msgid "Amount of the activity driver consumed by the receiver."
+msgstr "Quantità del driver di attività consumata dal ricevente."
+
+#. module: cmc_abc
+#: model:ir.model.constraint,message:cmc_abc.constraint_cmc_abc_capacity_activity_uniq
+msgid "An activity has one practical capacity per run."
+msgstr "Un'attività ha una sola capacità pratica per esecuzione."
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abc.py:0
+msgid ""
+"An edge goes from exactly one activity or object to exactly one activity or "
+"object."
+msgstr ""
+"Un arco va da esattamente un'attività o oggetto a esattamente un'attività o "
+"oggetto."
+
+#. module: cmc_abc
+#: model:ir.model.constraint,message:cmc_abc.constraint_cmc_abc_line_edge_uniq
+msgid "An edge of the network is entered once per run."
+msgstr "Un arco della rete è inserito una sola volta per esecuzione."
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abm.py:0
+msgid "An initiative targets an activity, not a process or a task."
+msgstr ""
+"Un'iniziativa ha come obiettivo un'attività, non un processo o un compito."
+
+#. module: cmc_abc
+#: model:ir.model,name:cmc_abc.model_account_analytic_line
+msgid "Analytic Line"
+msgstr "Riga analitica"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_run__traditional_basis__rate
+msgid "Approved rates"
+msgstr "Tariffe approvate"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__cmc_attribute_value_ids
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_form
+msgid "Attributes"
+msgstr "Attributi"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_activity_cost__pareto_class__b
+msgid "B (up to 95%)"
+msgstr "B (fino al 95%)"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_initiative__baseline_annual_cost
+msgid "Baseline Annual Cost"
+msgstr "Costo annuo di base"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_initiative__baseline_run_id
+msgid "Baseline Run"
+msgstr "Esecuzione di base"
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abm.py:0
+msgid "Baseline and review must be computed runs."
+msgstr "Esecuzione di base e di verifica devono essere esecuzioni calcolate."
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_activity__cost_level__batch
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_activity_cost__cost_level__batch
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_cost_driver__cmc_abc_level__batch
+msgid "Batch"
+msgstr "Lotto"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__batch_size
+msgid "Batch Size"
+msgstr "Dimensione lotto"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_benchmark_line__benchmark_id
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abm_benchmark_form
+msgid "Benchmark"
+msgstr "Benchmark"
+
+#. module: cmc_abc
+#: model:ir.actions.act_window,name:cmc_abc.action_cmc_abm_benchmark_line
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abm_benchmark_line_list
+msgid "Benchmark Lines"
+msgstr "Righe di benchmark"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abm_benchmark_list
+msgid "Benchmarks"
+msgstr "Benchmark"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_initiative__benefit_status
+msgid "Benefit Status"
+msgstr "Stato del beneficio"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_benchmark_line__best_unit_cost
+msgid "Best Unit Cost"
+msgstr "Miglior costo unitario"
+
+#. module: cmc_abc
+#: model:ir.actions.act_window,name:cmc_abc.action_cmc_abc_bill_of_activities
+#: model:ir.ui.menu,name:cmc_abc.menu_cmc_abc_bill_of_activities
+msgid "Bill of Activities"
+msgstr "Distinta delle attività"
+
+#. module: cmc_abc
+#: model:ir.actions.act_window,name:cmc_abc.action_cmc_abc_bill_of_costs
+#: model:ir.ui.menu,name:cmc_abc.menu_cmc_abc_bill_of_costs
+msgid "Bill of Costs"
+msgstr "Distinta dei costi"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abm_initiative_form
+msgid "Business case"
+msgstr "Business case"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__is_sustaining
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_flow__stage__sustaining
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_cost_object__object_type__sustaining
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_search
+msgid "Business-sustaining"
+msgstr "Di sostegno all'azienda"
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abc_engine.py:0
+msgid ""
+"Business-sustaining activities (%(names)s) cannot be charged to cost "
+"objects."
+msgstr ""
+"Le attività di sostegno all'azienda (%(names)s) non possono essere "
+"addebitate agli oggetti di costo."
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_activity_cost__pareto_class__c
+msgid "C"
+msgstr "C"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abm_initiative_form
+msgid "Case"
+msgstr "Caso"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_flow__center_id
+msgid "Center"
+msgstr "Centro"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_flow__center_id
+msgid "Center the cost came from."
+msgstr "Centro da cui proviene il costo."
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_cost_object__object_type__channel
+msgid "Channel"
+msgstr "Canale"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__charged_cost
+msgid "Charged Cost"
+msgstr "Costo addebitato"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__child_ids
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_form
+msgid "Children"
+msgstr "Figli"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_cost_search
+msgid "Class A"
+msgstr "Classe A"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__code
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_resource__code
+msgid "Code"
+msgstr "Codice"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_benchmark__company_ids
+msgid "Companies"
+msgstr "Aziende"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abm_benchmark__company_ids
+msgid ""
+"Companies of the runs: the record rule shows the benchmark only to users who"
+" see all of them."
+msgstr ""
+"Aziende delle esecuzioni: la regola di record mostra il benchmark solo agli "
+"utenti che le vedono tutte."
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__company_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__company_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_measure__company_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_performance__company_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_result__company_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_capacity__company_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_driver_component__company_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_flow__company_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__company_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_resource__company_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_resource_line__company_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__company_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__company_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_benchmark__company_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_benchmark_line__company_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_initiative__company_id
+msgid "Company"
+msgstr "Azienda"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__traditional_basis
+msgid "Compare With"
+msgstr "Confronta con"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_driver_component__component_driver_id
+msgid "Component"
+msgstr "Componente"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abm_benchmark_form
+msgid "Compute"
+msgstr "Calcola"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__compute_burdens
+msgid "Compute Burdens"
+msgstr "Calcola gli oneri"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_resource__center_id
+msgid "Cost Center"
+msgstr "Centro di costo"
+
+#. module: cmc_abc
+#: model:ir.model,name:cmc_abc.model_cmc_cost_driver
+msgid "Cost Driver (allocation base)"
+msgstr "Driver di costo (base di allocazione)"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_flow__cost_element_id
+msgid "Cost Element"
+msgstr "Elemento di costo"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_resource__cost_element_ids
+msgid "Cost Elements"
+msgstr "Elementi di costo"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_flow_list
+msgid "Cost Flows"
+msgstr "Flussi di costo"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__cost_level
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__cost_level
+msgid "Cost Level"
+msgstr "Livello di costo"
+
+#. module: cmc_abc
+#: model:ir.model,name:cmc_abc.model_cmc_cost_object
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_result__cost_object_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__cost_object_id
+msgid "Cost Object"
+msgstr "Oggetto di costo"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_performance__cost_per_output
+msgid "Cost Per Output"
+msgstr "Costo per output"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__cost_share
+msgid "Cost Share"
+msgstr "Quota di costo"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_run__in_scope_cost
+msgid "Cost base of the resource centers in the period."
+msgstr "Base di costo dei centri risorsa nel periodo."
+
+#. module: cmc_abc
+#: model:ir.actions.act_window,name:cmc_abc.action_cmc_abc_process_costs
+#: model:ir.ui.menu,name:cmc_abc.menu_cmc_abc_process_costs
+msgid "Cost by Process"
+msgstr "Costo per processo"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_activity__driver_id
+msgid "Cost driver that typically measures this activity's output."
+msgstr "Driver di costo che misura tipicamente l'output di questa attività."
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_result__object_cost
+msgid ""
+"Cost forwarded by other objects (customers from products, channels from "
+"customers)."
+msgstr ""
+"Costo trasferito da altri oggetti (clienti dai prodotti, canali dai "
+"clienti)."
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_activity__cost_level
+msgid "Cost hierarchy level (Kaplan & Cooper)."
+msgstr "Livello gerarchico del costo (Kaplan & Cooper)."
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_search
+msgid "Cost level"
+msgstr "Livello di costo"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__copq_amount
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__copq_total
+msgid "Cost of Poor Quality"
+msgstr "Costo della non qualità"
+
+#. module: cmc_abc
+#: model:ir.actions.act_window,name:cmc_abc.action_cmc_abm_coq
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__coq_value_id
+#: model:ir.ui.menu,name:cmc_abc.menu_cmc_abm_coq
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_cost_coq_pivot
+msgid "Cost of Quality"
+msgstr "Costo della qualità"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_cost_coq_graph
+msgid "Cost of Quality Trend"
+msgstr "Andamento del costo della qualità"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_cost_search
+msgid "Cost of quality"
+msgstr "Costo della qualità"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_run_form
+msgid ""
+"Cost of the resource centers that no resource or direct trace picked up "
+"(reported, never charged):"
+msgstr ""
+"Costo dei centri risorsa che nessuna risorsa o tracciamento diretto ha "
+"raccolto (rendicontato, mai addebitato):"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_performance_graph
+msgid "Cost per Output Trend"
+msgstr "Andamento del costo per output"
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abc.py:0
+msgid "Cost per activity (ABC)"
+msgstr "Costo per attività (ABC)"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_activity_cost__received_cost
+msgid "Cost reassigned by other activities."
+msgstr "Costo riassegnato da altre attività."
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_run__unallocated_amount
+msgid ""
+"Cost tagged to activities the run has no driver line for. It is NOT part of "
+"the ABC cost of any object."
+msgstr ""
+"Costo attribuito ad attività per cui l'elaborazione non ha righe di driver. "
+"NON fa parte del costo ABC di alcun oggetto."
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_run__total_object_cost
+msgid "Cost that rests on the final cost objects."
+msgstr "Costo che grava sugli oggetti di costo finali."
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__costing_flag
+msgid "Costing Flag"
+msgstr "Flag di costing"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_run__trace_direct
+msgid ""
+"Costs stamped direct on a cost object go straight to it, bypassing the "
+"activities."
+msgstr ""
+"I costi marcati come diretti su un oggetto di costo vanno direttamente a "
+"esso, senza passare dalle attività."
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__create_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__create_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_measure__create_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_performance__create_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_result__create_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_capacity__create_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_driver_component__create_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_flow__create_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__create_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_resource__create_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_resource_line__create_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__create_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__create_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_benchmark__create_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_benchmark_line__create_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_initiative__create_uid
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__create_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__create_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_measure__create_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_performance__create_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_result__create_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_capacity__create_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_driver_component__create_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_flow__create_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__create_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_resource__create_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_resource_line__create_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__create_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__create_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_benchmark__create_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_benchmark_line__create_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_initiative__create_date
+msgid "Created on"
+msgstr "Creato il"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__cumulative_share
+msgid "Cumulative Share"
+msgstr "Quota cumulata"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__currency_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_performance__currency_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_result__currency_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_flow__currency_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__currency_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__currency_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_initiative__currency_id
+msgid "Currency"
+msgstr "Valuta"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_activity__cost_level__customer
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_activity_cost__cost_level__customer
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_cost_driver__cmc_abc_level__customer
+msgid "Customer"
+msgstr "Cliente"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_performance__cycle_time
+msgid "Cycle Time"
+msgstr "Tempo di ciclo"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_activity_measure__role__cycle_time
+msgid "Cycle time"
+msgstr "Tempo di ciclo"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_activity_performance__cycle_time
+msgid "Cycle time measure per output unit."
+msgstr "Misura del tempo di ciclo per unità di output."
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__date_from
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_benchmark_line__period
+msgid "Date From"
+msgstr "Data inizio"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__date_to
+msgid "Date To"
+msgstr "Data fine"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__driver_id
+msgid "Default Activity Driver"
+msgstr "Activity driver predefinito"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__defect_measure_id
+msgid "Defect Measure"
+msgstr "Misura dei difetti"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_performance__defect_qty
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__defect_qty
+msgid "Defect Qty"
+msgstr "Quantità di difetti"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_run__copq_total
+msgid "Defect units x ABC unit cost of the objects."
+msgstr "Unità difettose x costo unitario ABC degli oggetti."
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_result__copq_amount
+msgid "Defect units x ABC unit cost."
+msgstr "Unità difettose x costo unitario ABC."
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_result__defect_qty
+msgid "Defective units of the period (defect measure)."
+msgstr "Unità difettose del periodo (misura dei difetti)."
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_activity_performance__quality_rate
+msgid "Defects per 100 output units."
+msgstr "Difetti ogni 100 unità di output."
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_result__traced_cost
+msgid "Direct costs stamped on the object."
+msgstr "Costi diretti marcati sull'oggetto."
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abc.py:0
+msgid "Direct trace"
+msgstr "Tracciamento diretto"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_flow__stage__trace
+msgid "Direct trace to object"
+msgstr "Tracciamento diretto sull'oggetto"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_account_analytic_line__display_name
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__display_name
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__display_name
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_measure__display_name
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_performance__display_name
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_result__display_name
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_capacity__display_name
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_driver_component__display_name
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_flow__display_name
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__display_name
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_resource__display_name
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_resource_line__display_name
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__display_name
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__display_name
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_benchmark__display_name
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_benchmark_line__display_name
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_initiative__display_name
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_cost_driver__display_name
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_cost_object__display_name
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_measure_quantity__display_name
+msgid "Display Name"
+msgstr "Nome visualizzato"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__distortion_percent
+msgid "Distortion Percent"
+msgstr "Percentuale di distorsione"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__driver_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_driver_component__driver_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__driver_id
+msgid "Driver"
+msgstr "Driver"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_resource__driver_basis
+msgid "Driver Basis"
+msgstr "Base del driver"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_flow__driver_qty
+msgid "Driver Qty"
+msgstr "Quantità del driver"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_result__driver_qty
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__driver_qty
+msgid "Driver Quantity"
+msgstr "Quantità di driver"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__driver_type
+msgid "Driver Type"
+msgstr "Tipo di driver"
+
+#. module: cmc_abc
+#: model:ir.model.constraint,message:cmc_abc.constraint_cmc_abc_line_qty_positive
+msgid "Driver quantity must be greater than zero."
+msgstr "La quantità di driver deve essere maggiore di zero."
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_capacity__practical_capacity
+msgid "Driver units the activity can supply in the period."
+msgstr "Unità di driver che l'attività può fornire nel periodo."
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_activity_cost__driver_type__duration
+msgid "Duration"
+msgstr "Durata"
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abc.py:0
+msgid "Edges can only be prefilled on a draft run."
+msgstr "Gli archi possono essere precompilati solo su un'esecuzione in bozza."
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__efficiency_value_id
+msgid "Efficiency"
+msgstr "Efficienza"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abm_initiative__project_type__eliminate
+msgid "Eliminate"
+msgstr "Eliminare"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_resource__cost_element_ids
+msgid "Empty: every cost element of the center."
+msgstr "Vuoto: ogni elemento di costo del centro."
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_initiative__expected_annual_saving
+msgid "Expected Annual Saving"
+msgstr "Risparmio annuo atteso"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_initiative__expected_driver_reduction
+msgid "Expected Reduction (%)"
+msgstr "Riduzione attesa (%)"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_activity__cost_level__facility
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_activity_cost__cost_level__facility
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_cost_driver__cmc_abc_level__facility
+msgid "Facility"
+msgstr "Struttura"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_activity_performance__month
+msgid "First day of the month of the run."
+msgstr "Primo giorno del mese dell'esecuzione."
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_flow__fixed_amount
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__fixed_amount
+msgid "Fixed Amount"
+msgstr "Importo fisso"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__fixed_cost
+msgid "Fixed Cost"
+msgstr "Costo fisso"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__fixed_rate
+msgid "Fixed Rate"
+msgstr "Tariffa fissa"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__flow_ids
+msgid "Flow"
+msgstr "Flusso"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_run_form
+msgid "Flows"
+msgstr "Flussi"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__forwarded_amount
+msgid "Forwarded Amount"
+msgstr "Importo trasferito"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_initiative__freed_capacity_cost
+msgid "Freed Capacity Cost"
+msgstr "Costo della capacità liberata"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_initiative__freed_capacity_qty
+msgid "Freed Capacity Qty"
+msgstr "Quantità di capacità liberata"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abm_initiative__freed_capacity_cost
+msgid "Freed quantity x baseline rate: not a saving until spending falls."
+msgstr ""
+"Quantità liberata x tariffa di base: non è un risparmio finché la spesa non "
+"scende."
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__activity_id
+msgid "From Activity"
+msgstr "Da attività"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__source_object_id
+msgid "From Object"
+msgstr "Da oggetto"
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abc.py:0
+msgid "From other objects"
+msgstr "Da altri oggetti"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__full_cost
+msgid "Full Cost"
+msgstr "Costo pieno"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_benchmark_line__gap_percent
+msgid "Gap Percent"
+msgstr "Percentuale di scostamento"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_measure_quantity__activity_id
+msgid ""
+"Grain of an activity performance measure (volume, cycle time, defects)."
+msgstr ""
+"Granularità di una misura di performance dell'attività (volume, tempo di "
+"ciclo, difetti)."
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abm_initiative__resource_action__grow
+msgid "Grow the business"
+msgstr "Far crescere l'azienda"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_cost_driver__cmc_abc_level
+msgid "Hierarchy level this driver measures."
+msgstr "Livello gerarchico misurato da questo driver."
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_account_analytic_line__id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_measure__id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_performance__id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_result__id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_capacity__id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_driver_component__id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_flow__id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_resource__id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_resource_line__id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_benchmark__id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_benchmark_line__id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_initiative__id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_cost_driver__id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_cost_object__id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_measure_quantity__id
+msgid "ID"
+msgstr "ID"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__idle_burden
+msgid "Idle Burden"
+msgstr "Onere della capacità inutilizzata"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__idle_burden_rate
+msgid "Idle Burden Rate"
+msgstr "Tariffa dell'onere della capacità inutilizzata"
+
+#. module: cmc_abc
+#: model:ir.actions.act_window,name:cmc_abc.action_cmc_abm_initiative
+#: model:ir.ui.menu,name:cmc_abc.menu_cmc_abm_initiative
+msgid "Improvement Initiatives"
+msgstr "Iniziative di miglioramento"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__in_scope_cost
+msgid "In Scope Cost"
+msgstr "Costo nel perimetro"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_run__unassigned_cost
+msgid ""
+"In-scope cost that no resource or direct trace picked up: reported, never "
+"charged."
+msgstr ""
+"Costo nel perimetro che nessuna risorsa o tracciamento diretto ha raccolto: "
+"rendicontato, mai addebitato."
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_cost_driver__cmc_component_ids
+msgid "Index Components"
+msgstr "Componenti dell'indice"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abm_initiative_form
+msgid "Initiative"
+msgstr "Iniziativa"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abm_initiative_list
+msgid "Initiatives"
+msgstr "Iniziative"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_activity_cost__driver_type__intensity
+msgid "Intensity"
+msgstr "Intensità"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_benchmark_line__is_best
+msgid "Is Best"
+msgstr "È il migliore"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_activity__is_sustaining
+msgid ""
+"Its cost goes to the business-sustaining object, never to products or "
+"customers."
+msgstr ""
+"Il suo costo va all'oggetto di sostegno all'azienda, mai a prodotti o "
+"clienti."
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__write_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__write_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_measure__write_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_performance__write_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_result__write_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_capacity__write_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_driver_component__write_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_flow__write_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__write_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_resource__write_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_resource_line__write_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__write_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__write_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_benchmark__write_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_benchmark_line__write_uid
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_initiative__write_uid
+msgid "Last Updated by"
+msgstr "Ultimo aggiornamento di"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__write_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__write_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_measure__write_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_performance__write_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_result__write_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_capacity__write_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_driver_component__write_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_flow__write_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__write_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_resource__write_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_resource_line__write_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__write_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__write_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_benchmark__write_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_benchmark_line__write_date
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_initiative__write_date
+msgid "Last Updated on"
+msgstr "Ultimo aggiornamento il"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_benchmark__line_ids
+msgid "Lines"
+msgstr "Righe"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_run__compute_burdens
+msgid ""
+"Load idle capacity and business-sustaining cost on the objects as burdens (a"
+" view: the ABC cost is unchanged)."
+msgstr ""
+"Carica sugli oggetti, come oneri, la capacità inutilizzata e il costo di "
+"sostegno all'azienda (una vista: il costo ABC non cambia)."
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_measure__measure_id
+msgid "Measure"
+msgstr "Misura"
+
+#. module: cmc_abc
+#: model:ir.model,name:cmc_abc.model_cmc_measure_quantity
+msgid "Measure Quantity"
+msgstr "Quantità misurata"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_resource_line__quantity
+msgid ""
+"Measured usage of the resource by the activity (quantity-basis resources)."
+msgstr ""
+"Utilizzo misurato della risorsa da parte dell'attività (risorse a base "
+"quantità)."
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_performance__month
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_cost_search
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_performance_search
+msgid "Month"
+msgstr "Mese"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__nva_cost
+msgid "NVA Cost"
+msgstr "Costo NVA"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__name
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_resource__name
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__name
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_benchmark__name
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_initiative__name
+msgid "Name"
+msgstr "Nome"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__line_ids
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_run_form
+msgid "Network Edges"
+msgstr "Archi della rete"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__node_type
+msgid "Node Type"
+msgstr "Tipo di nodo"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abm_initiative__benefit_status__not_realized
+msgid "Not realized"
+msgstr "Non realizzato"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__object_cost
+msgid "Object Cost"
+msgstr "Costo dell'oggetto"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_cost_object__object_type
+msgid "Object Type"
+msgstr "Tipo di oggetto"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_initiative__one_time_cost
+msgid "One Time Cost"
+msgstr "Costo una tantum"
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abm.py:0
+msgid "Only computed runs can be benchmarked."
+msgstr "Si possono confrontare solo le esecuzioni calcolate."
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_cost_object__object_type__order
+msgid "Order"
+msgstr "Ordina"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__output_measure_id
+msgid "Output Measure"
+msgstr "Misura di output"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_performance__output_qty
+msgid "Output Qty"
+msgstr "Quantità di output"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__output_units
+msgid "Output Units"
+msgstr "Unità di output"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_result__quantity
+msgid "Output units of the period (output measure)."
+msgstr "Unità di output del periodo (misura di output)."
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_activity_measure__role__output
+msgid "Output volume"
+msgstr "Volume di output"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_result__costing_flag__over
+msgid "Over-costed"
+msgstr "Sovra-costato"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__owner_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_initiative__owner_id
+msgid "Owner"
+msgstr "Proprietario"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__parent_id
+msgid "Parent"
+msgstr "Principale"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_cost_pareto_list
+msgid "Pareto"
+msgstr "Pareto"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__pareto_class
+msgid "Pareto Class"
+msgstr "Classe Pareto"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__pareto_rank
+msgid "Pareto Rank"
+msgstr "Posizione Pareto"
+
+#. module: cmc_abc
+#: model:ir.actions.act_window,name:cmc_abc.action_cmc_abm_pareto
+#: model:ir.ui.menu,name:cmc_abc.menu_cmc_abm_pareto
+msgid "Pareto of Activities"
+msgstr "Pareto delle attività"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_cost_pareto_graph
+msgid "Pareto of Activity Costs"
+msgstr "Pareto dei costi delle attività"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_result__nva_cost
+msgid ""
+"Part of the activity cost charged by non-value-added activities (waste)."
+msgstr ""
+"Parte del costo dell'attività addebitata da attività senza valore aggiunto "
+"(spreco)."
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_result__forwarded_amount
+msgid "Part of the cost passed on to other objects."
+msgstr "Parte del costo trasferita ad altri oggetti."
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abm_initiative__benefit_status__partial
+msgid "Partially realized"
+msgstr "Parzialmente realizzato"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_initiative__payback_months
+msgid "Payback Months"
+msgstr "Mesi di recupero"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_initiative__payback_years
+msgid "Payback Years"
+msgstr "Anni di recupero"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abm_initiative__benefit_status__pending
+msgid "Pending"
+msgstr "In sospeso"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_resource_line__percent
+msgid "Percent"
+msgstr "Percentuale"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_resource__driver_basis__percent
+msgid "Percent (survey)"
+msgstr "Percentuale (indagine)"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__performance_ids
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_run_form
+msgid "Performance"
+msgstr "Rendimento"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity__measure_line_ids
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_form
+msgid "Performance Measures"
+msgstr "Misure di performance"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__period
+msgid "Period"
+msgstr "Periodo"
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abc_engine.py:0
+msgid "Pick the volume driver of the traditional comparison."
+msgstr ""
+"Scegliere il driver di volume del confronto con il costing tradizionale."
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__practical_capacity
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_capacity__practical_capacity
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__capacity_line_ids
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_run_form
+msgid "Practical Capacity"
+msgstr "Capacità pratica"
+
+#. module: cmc_abc
+#: model:ir.model.constraint,message:cmc_abc.constraint_cmc_abc_capacity_capacity_positive
+msgid "Practical capacity must be greater than zero."
+msgstr "La capacità pratica deve essere maggiore di zero."
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_run_form
+msgid "Prefill Edges from Facts"
+msgstr "Precompila gli archi dai fatti"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_run_form
+msgid ""
+"Prefilling replaces the current lines with the quantities read from the "
+"data. Continue?"
+msgstr ""
+"La precompilazione sostituisce le righe attuali con le quantità lette dai "
+"dati. Continuare?"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__process_id
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_activity__node_type__process
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_cost_search
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_search
+msgid "Process"
+msgstr "Processo"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_activity__node_type
+msgid ""
+"Process > activity > task. Only activities carry cost: a process is the "
+"roll-up of its activities."
+msgstr ""
+"Processo > attività > compito. Solo le attività portano costo: un processo è"
+" l'aggregazione delle sue attività."
+
+#. module: cmc_abc
+#: model:ir.actions.act_window,name:cmc_abc.action_cmc_abm_process
+#: model:ir.ui.menu,name:cmc_abc.menu_cmc_abm_process
+msgid "Process View"
+msgstr "Vista per processo"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_search
+msgid "Processes"
+msgstr "Processi"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_result__product_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__product_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__product_id
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_activity__cost_level__product
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_activity_cost__cost_level__product
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_cost_driver__cmc_abc_level__product
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_initiative__project_type
+msgid "Project Type"
+msgstr "Tipo di progetto"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abm_initiative_search
+msgid "Project type"
+msgstr "Tipo di progetto"
+
+#. module: cmc_abc
+#: model:ir.ui.menu,name:cmc_abc.menu_cmc_abm_quadrant
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_cost_quadrant_list
+msgid "Quadrant"
+msgstr "Quadrante"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_activity_measure__role__quality
+msgid "Quality (defects)"
+msgstr "Qualità (difetti)"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_performance__quality_rate
+msgid "Quality Rate"
+msgstr "Tasso di qualità"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_resource_line__quantity
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__quantity
+msgid "Quantity"
+msgstr "Quantità"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_resource__driver_basis__quantity
+msgid "Quantity (measured usage)"
+msgstr "Quantità (utilizzo misurato)"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__rate
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_flow__rate
+msgid "Rate"
+msgstr "Tariffa"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__traditional_version_id
+msgid "Rate Version"
+msgstr "Versione della tariffa"
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abc_engine.py:0
+msgid ""
+"Rate comparison needs an approved version, the output measure and the "
+"period."
+msgstr ""
+"Il confronto delle tariffe richiede una versione approvata, la misura di "
+"output e il periodo."
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_activity_cost__charged_cost
+msgid "Rate x used quantity: what the consumers are charged."
+msgstr ""
+"Tariffa x quantità utilizzata: quanto viene addebitato ai consumatori."
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abm_initiative_form
+msgid "Realisation"
+msgstr "Realizzazione"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_initiative__realization_percent
+msgid "Realization Percent"
+msgstr "Percentuale di realizzazione"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abm_initiative__benefit_status__realized
+msgid "Realized"
+msgstr "Realizzato"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_initiative__realized_annual_saving
+msgid "Realized Annual Saving"
+msgstr "Risparmio annuo realizzato"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__received_cost
+msgid "Received Cost"
+msgstr "Costo ricevuto"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__cmc_reclass_json
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_run_form
+msgid "Reclassified"
+msgstr "Riclassificato"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abm_initiative__resource_action__redeploy
+msgid "Redeploy"
+msgstr "Ridistribuire"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abm_initiative__project_type__reduce
+msgid "Reduce"
+msgstr "Ridurre"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abm_initiative__resource_action__remove
+msgid "Remove"
+msgstr "Rimuovi"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_run_form
+msgid "Reset to Draft"
+msgstr "Riporta in bozza"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_run_form
+msgid "Resetting deletes the computed results. Continue?"
+msgstr ""
+"Riportando in bozza i risultati calcolati vengono cancellati. Continuare?"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_resource_line__resource_id
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_resource_form
+msgid "Resource"
+msgstr "Risorsa"
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abc_engine.py:0
+msgid ""
+"Resource %(name)s: its drivers add up to %(total)s, they must %(rule)s."
+msgstr "Risorsa %(name)s: i suoi driver sommano a %(total)s, devono %(rule)s."
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_initiative__resource_action
+msgid "Resource Action"
+msgstr "Azione sulla risorsa"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__resource_cost
+msgid "Resource Cost"
+msgstr "Costo della risorsa"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__resource_line_ids
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_run_form
+msgid "Resource Drivers"
+msgstr "Driver di risorsa"
+
+#. module: cmc_abc
+#: model:ir.model.constraint,message:cmc_abc.constraint_cmc_abc_resource_code_uniq
+msgid "Resource code must be unique per company."
+msgstr "Il codice risorsa deve essere univoco per azienda."
+
+#. module: cmc_abc
+#: model:ir.model.constraint,message:cmc_abc.constraint_cmc_abc_resource_line_weight_positive
+msgid "Resource drivers cannot be negative."
+msgstr "I driver di risorsa non possono essere negativi."
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_run__total_resource_cost
+msgid "Resource pools and activity tags entering the model."
+msgstr "Pool di risorse ed etichette di attività che entrano nel modello."
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_flow__stage__resource
+msgid "Resource to activity"
+msgstr "Da risorsa ad attività"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_resource_list
+msgid "Resources"
+msgstr "Risorse"
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abc_resource.py:0
+msgid ""
+"Resources %(a)s and %(b)s both cover cost of %(center)s: the same cost would"
+" be counted twice."
+msgstr ""
+"Le risorse %(a)s e %(b)s coprono entrambe il costo di %(center)s: lo stesso "
+"costo verrebbe contato due volte."
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abc_resource.py:0
+msgid ""
+"Resources are assigned to activities: a process or a task carries no cost."
+msgstr ""
+"Le risorse sono assegnate alle attività: un processo o un compito non porta "
+"costo."
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__result_ids
+msgid "Result"
+msgstr "Risultato"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_run_form
+msgid "Results"
+msgstr "Risultati"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_initiative__review_run_id
+msgid "Review Run"
+msgstr "Esecuzione di verifica"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_measure__role
+msgid "Role"
+msgstr "Ruolo"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__run_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_performance__run_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_result__run_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_capacity__run_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_flow__run_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__run_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_resource_line__run_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__run_id
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_benchmark_line__run_id
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_cost_search
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_flow_search
+msgid "Run"
+msgstr "Elaborazione"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abm_initiative__review_run_id
+msgid ""
+"Run that repeats the model after the improvement, to verify the benefit."
+msgstr ""
+"Esecuzione che ripete il modello dopo il miglioramento, per verificare il "
+"beneficio."
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_benchmark__run_ids
+msgid "Runs"
+msgstr "Esecuzioni"
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abc.py:0
+msgid "Set the period of the run to prefill its edges from the measure facts."
+msgstr ""
+"Impostare il periodo dell'esecuzione per precompilare i suoi archi dai fatti"
+" di misura."
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_activity_result__unallocated
+msgid ""
+"Set when the activity carries cost but the run has no driver line for it: "
+"the pool could not be allocated to any cost object."
+msgstr ""
+"Impostato quando l'attività porta costo ma l'elaborazione non ha una riga di"
+" driver per essa: il pool non è stato allocato ad alcun oggetto di costo."
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abc_engine.py:0
+msgid ""
+"Several resources of %(center)s cover the same cost: it would be counted "
+"twice."
+msgstr ""
+"Più risorse di %(center)s coprono lo stesso costo: verrebbe contato due "
+"volte."
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abm_initiative__project_type__share
+msgid "Share"
+msgstr "Condividi"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_resource_line__percent
+msgid "Share of the resource used by the activity (percent-basis resources)."
+msgstr ""
+"Quota della risorsa utilizzata dall'attività (risorse a base percentuale)."
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_line__product_id
+msgid "Shortcut for the cost object of a product (v1 input)."
+msgstr "Scorciatoia per l'oggetto di costo di un prodotto (input v1)."
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_run_form
+msgid ""
+"Some activities carry cost but have no driver line in\n"
+"                        this run: that cost is NOT allocated to any cost object.\n"
+"                        Unallocated:"
+msgstr ""
+"Alcune attività portano costo ma non hanno righe di driver in questa "
+"elaborazione: quel costo NON è allocato ad alcun oggetto di costo. Non "
+"allocato:"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_flow__source_activity_id
+msgid "Source Activity"
+msgstr "Attività di origine"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_flow__source_object_id
+msgid "Source Object"
+msgstr "Oggetto di origine"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_flow__source_resource_id
+msgid "Source Resource"
+msgstr "Risorsa di origine"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_flow__stage
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_flow_search
+msgid "Stage"
+msgstr "Fase"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_activity_cost__resource_cost
+msgid "Stage 1: resources and tags."
+msgstr "Fase 1: risorse ed etichette."
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__state
+msgid "State"
+msgstr "Stato"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_run__defect_measure_id
+msgid ""
+"Statistical measure of the defective units of each cost object (cost of poor"
+" quality = defects x unit cost)."
+msgstr ""
+"Misura statistica delle unità difettose di ogni oggetto di costo (costo "
+"della non qualità = difetti x costo unitario)."
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_run__output_measure_id
+msgid ""
+"Statistical measure of the output units of each cost object (unit cost = "
+"cost / units)."
+msgstr ""
+"Misura statistica delle unità di output di ogni oggetto di costo (costo "
+"unitario = costo / unità)."
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abm_initiative_search
+msgid "Status"
+msgstr "Stato"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abm_initiative__project_type__substitute
+msgid "Substitute"
+msgstr "Sostituire"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_run__total_activity_cost
+msgid "Sum of the stage-1 cost of the activities."
+msgstr "Somma del costo di fase 1 delle attività."
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__sustaining_burden
+msgid "Sustaining Burden"
+msgstr "Onere di sostegno all'azienda"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__sustaining_burden_rate
+msgid "Sustaining Burden Rate"
+msgstr "Tariffa dell'onere di sostegno all'azienda"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__sustaining_cost
+msgid "Sustaining Cost"
+msgstr "Costo di sostegno all'azienda"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__sustaining_object_id
+msgid "Sustaining Object"
+msgstr "Oggetto di sostegno all'azienda"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_measure__target
+msgid "Target"
+msgstr "Obiettivi"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_flow__target_activity_id
+msgid "Target Activity"
+msgstr "Attività di destinazione"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_flow__target_object_id
+msgid "Target Object"
+msgstr "Oggetto di destinazione"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_activity_measure__target
+msgid "Target of the measure per period."
+msgstr "Obiettivo della misura per periodo."
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_activity__node_type__task
+msgid "Task"
+msgstr "Lavoro"
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abc_engine.py:0
+msgid ""
+"The activities %(names)s reassign cost to each other in a loop: reciprocal "
+"allocation is not supported."
+msgstr ""
+"Le attività %(names)s si riassegnano costo a vicenda in un ciclo: "
+"l'allocazione reciproca non è supportata."
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abc_engine.py:0
+msgid "The cost network does not conserve: %(inflow)s in, %(outflow)s out."
+msgstr ""
+"La rete dei costi non si conserva: %(inflow)s in entrata, %(outflow)s in "
+"uscita."
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abc_engine.py:0
+msgid ""
+"The cost objects %(names)s pass cost to each other in a loop: reciprocal "
+"allocation is not supported."
+msgstr ""
+"Gli oggetti di costo %(names)s si trasferiscono costo a vicenda in un ciclo:"
+" l'allocazione reciproca non è supportata."
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abm.py:0
+msgid "The defect measure must be a statistical measure."
+msgstr "La misura dei difetti deve essere una misura statistica."
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abm.py:0
+msgid "The review run must differ from the baseline run."
+msgstr "L'esecuzione di verifica deve essere diversa da quella di base."
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abc.py:0
+msgid ""
+"There are no driver quantities of the activities for the period of this run:"
+" enter them in Cost Base > Driver Quantities, then prefill again. The "
+"current edges are unchanged."
+msgstr ""
+"Non ci sono quantità driver delle attività per il periodo di questa "
+"elaborazione: inseriscile in Base di costo > Quantità driver, poi precompila"
+" di nuovo. Gli archi attuali non sono modificati."
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abm.py:0
+msgid ""
+"These runs are read by other documents: %(names)s. Delete or change them "
+"first."
+msgstr ""
+"Queste esecuzioni sono lette da altri documenti: %(names)s. Eliminarle o "
+"modificarle prima."
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__target_activity_id
+msgid "To Activity"
+msgstr "Verso attività"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_line__cost_object_id
+msgid "To Object"
+msgstr "Verso oggetto"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_flow__stage__object
+msgid "To object"
+msgstr "Verso oggetto"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_cost_list
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_cost_pareto_list
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_cost_quadrant_list
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_performance_list
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_flow_list
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_result_list
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_result_waste_list
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_run_form
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abm_initiative_list
+msgid "Total"
+msgstr "Totale"
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abc.py:0
+msgid "Total ABC cost"
+msgstr "Costo ABC totale"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__total_activity_cost
+msgid "Total Activity Cost"
+msgstr "Costo totale delle attività"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__total_cost
+msgid "Total Cost"
+msgstr "Costo totale"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__total_object_cost
+msgid "Total Object Cost"
+msgstr "Costo totale degli oggetti"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__total_resource_cost
+msgid "Total Resource Cost"
+msgstr "Costo totale delle risorse"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__total_traced_cost
+msgid "Total Traced Cost"
+msgstr "Costo totale tracciato"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_run_form
+msgid "Totals"
+msgstr "Totali"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__trace_direct
+msgid "Trace Direct Costs"
+msgstr "Traccia i costi diretti"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_result__amount
+msgid "Traced + activity + object cost."
+msgstr "Costo tracciato + attività + oggetto."
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__traced_cost
+msgid "Traced Cost"
+msgstr "Costo tracciato"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__traditional_cost
+msgid "Traditional Cost"
+msgstr "Costo tradizionale"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_run__traditional_basis
+msgid "Traditional costing to compare the ABC cost with."
+msgstr "Costing tradizionale con cui confrontare il costo ABC."
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_activity_cost__driver_type__transaction
+msgid "Transaction"
+msgstr "Transazione"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_search
+msgid "Type"
+msgstr "Tipologia"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_result__unallocated
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_flow__stage__unallocated
+msgid "Unallocated"
+msgstr "Non allocato"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__unallocated_amount
+msgid "Unallocated Activity Cost"
+msgstr "Costo attività non allocato"
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abc.py:0
+msgid "Unallocated · %(activity)s"
+msgstr "Non allocato · %(activity)s"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__unassigned_cost
+msgid "Unassigned Cost"
+msgstr "Costo non assegnato"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_result__costing_flag__under
+msgid "Under-costed"
+msgstr "Sotto-costato"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_resource__driver_id
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_activity__cost_level__unit
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_activity_cost__cost_level__unit
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_cost_driver__cmc_abc_level__unit
+msgid "Unit"
+msgstr "Unità"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__unit_cost
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abm_benchmark_line__unit_cost
+msgid "Unit Cost"
+msgstr "Costo unitario"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_line__output_units
+msgid ""
+"Units of output of the receiver; with the batch size gives the driver "
+"quantity."
+msgstr ""
+"Unità di output del ricevente; con la dimensione del lotto dà la quantità "
+"del driver."
+
+#. module: cmc_abc
+#: model:ir.actions.act_window,name:cmc_abc.action_cmc_abc_unused_capacity
+#: model:ir.ui.menu,name:cmc_abc.menu_cmc_abc_unused_capacity
+msgid "Unused Capacity"
+msgstr "Capacità inutilizzata"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__unused_capacity_cost
+msgid "Unused Capacity Cost"
+msgstr "Costo della capacità inutilizzata"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__unused_cost
+msgid "Unused Cost"
+msgstr "Costo inutilizzato"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_flow__stage__unused
+msgid "Unused capacity"
+msgstr "Capacità inutilizzata"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_activity_cost__unused_cost
+msgid "Unused practical capacity x fixed rate: reported, never charged."
+msgstr ""
+"Capacità pratica inutilizzata x tariffa fissa: rendicontata, mai addebitata."
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__used_qty
+msgid "Used Qty"
+msgstr "Quantità utilizzata"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__va_class_value_id
+msgid "Value-Added Class"
+msgstr "Classe di valore aggiunto"
+
+#. module: cmc_abc
+#: model:ir.actions.act_window,name:cmc_abc.action_cmc_abm_value_added
+#: model:ir.ui.menu,name:cmc_abc.menu_cmc_abm_value_added
+msgid "Value-Added Roll-up"
+msgstr "Aggregazione del valore aggiunto"
+
+#. module: cmc_abc
+#: model:ir.actions.act_window,name:cmc_abc.action_cmc_abm_quadrant
+msgid "Value-Added x Efficiency Quadrant"
+msgstr "Quadrante valore aggiunto x efficienza"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_cost_search
+msgid "Value-added class"
+msgstr "Classe di valore aggiunto"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_flow__variable_amount
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_result__variable_amount
+msgid "Variable Amount"
+msgstr "Importo variabile"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__variable_cost
+msgid "Variable Cost"
+msgstr "Costo variabile"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_activity_cost__variable_rate
+msgid "Variable Rate"
+msgstr "Tariffa variabile"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_run__traditional_driver_id
+msgid "Volume Driver"
+msgstr "Driver di volume"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_run__traditional_basis__volume
+msgid "Volume driver"
+msgstr "Driver di volume"
+
+#. module: cmc_abc
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_result_pivot
+#: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_result_waste_list
+msgid "Waste per Product"
+msgstr "Spreco per prodotto"
+
+#. module: cmc_abc
+#: model:ir.actions.act_window,name:cmc_abc.action_cmc_abm_waste
+#: model:ir.ui.menu,name:cmc_abc.menu_cmc_abm_waste
+msgid "Waste per Product (NVA)"
+msgstr "Spreco per prodotto (NVA)"
+
+#. module: cmc_abc
+#: model:ir.model.fields,field_description:cmc_abc.field_cmc_abc_driver_component__weight
+msgid "Weight"
+msgstr "Peso"
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_cost_driver__cmc_component_ids
+msgid ""
+"Weighted index driver: quantity = sum of weight x quantity of each "
+"component."
+msgstr ""
+"Driver indice ponderato: quantità = somma di peso x quantità di ciascun "
+"componente."
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_result__costing_flag
+msgid "What the traditional costing does to the object compared with ABC."
+msgstr "Effetto del costing tradizionale sull'oggetto rispetto all'ABC."
+
+#. module: cmc_abc
+#: model:ir.model.fields,help:cmc_abc.field_cmc_abc_activity_result__pool_amount
+msgid "Whole cost pool of the activity, as frozen when the run was computed."
+msgstr "Intero pool di costo dell'attività, congelato al momento del calcolo."
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abc_engine.py:0
+msgid "total 100%"
+msgstr "totale 100%"
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_abc_engine.py:0
+msgid "total more than zero"
+msgstr "totale maggiore di zero"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_abc_run__state__done
+msgid "Computed"
+msgstr "Calcolato"
+
+#. module: cmc_abc
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_abc_run__state__draft
+msgid "Draft"
+msgstr "Bozza"

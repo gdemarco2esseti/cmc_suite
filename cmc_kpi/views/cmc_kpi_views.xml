@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_kpi_list" model="ir.ui.view">
+        <field name="name">cmc.kpi.list</field>
+        <field name="model">cmc.kpi</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="perspective"/>
+                <field name="source_type"/>
+                <field name="unit"/>
+                <field name="direction"/>
+                <field name="target_input"/>
+                <field name="responsibility_id" optional="show"/>
+                <field name="parent_id" optional="hide"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_kpi_form" model="ir.ui.view">
+        <field name="name">cmc.kpi.form</field>
+        <field name="model">cmc.kpi</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="e.g. On-time delivery"/></h1>
+                        <h3><field name="code" placeholder="on_time_delivery"/></h3>
+                    </div>
+                    <group>
+                        <group string="Definition">
+                            <field name="active" invisible="1"/>
+                            <field name="perspective"/>
+                            <field name="unit"/>
+                            <field name="direction"/>
+                            <field name="responsibility_id"/>
+                            <field name="owner_id"/>
+                            <field name="activity_ref" invisible="not activity_ref and not id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="Target and thresholds">
+                            <field name="target_input"/>
+                            <field name="amber_tolerance_pct"/>
+                            <field name="red_tolerance_pct"/>
+                        </group>
+                    </group>
+                    <group string="Source">
+                        <group>
+                            <field name="source_type"/>
+                            <field name="driver_id" invisible="source_type not in ('measure', 'hook')" required="source_type == 'measure'"/>
+                            <field name="aggregation" invisible="source_type != 'measure'"/>
+                            <field name="denominator_driver_id" invisible="source_type != 'measure'"/>
+                            <field name="scale" invisible="source_type != 'measure'"/>
+                            <field name="cost_object_id" invisible="source_type != 'measure'"/>
+                            <field name="ratio_code" invisible="source_type != 'ratio'" required="source_type == 'ratio'"/>
+                            <field name="formula" invisible="source_type != 'formula'" required="source_type == 'formula'"/>
+                            <field name="hook_key" invisible="source_type != 'hook'" required="source_type == 'hook'"/>
+                        </group>
+                        <group>
+                            <field name="center_id" invisible="source_type not in ('measure', 'variance', 'hook')" required="source_type == 'variance'"/>
+                            <field name="variance_version_id" invisible="source_type != 'variance'" required="source_type == 'variance'"/>
+                            <field name="element_id" invisible="source_type != 'variance'"/>
+                            <field name="variance_basis" invisible="source_type != 'variance'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="targets" string="Targets per version">
+                            <field name="target_ids" readonly="1">
+                                <list>
+                                    <field name="version_id"/>
+                                    <field name="date"/>
+                                    <field name="target_input"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="cascade" string="Cascade">
+                            <group>
+                                <field name="parent_id"/>
+                                <field name="cascade_weight" invisible="not parent_id"/>
+                            </group>
+                            <field name="child_ids">
+                                <list>
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                    <field name="cascade_weight"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="notes" string="Description">
+                            <field name="description"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cmc_kpi_search" model="ir.ui.view">
+        <field name="name">cmc.kpi.search</field>
+        <field name="model">cmc.kpi</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" filter_domain="['|', ('name', 'ilike', self), ('code', 'ilike', self)]"/>
+                <field name="responsibility_id"/>
+                <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
+                <group>
+                    <filter name="group_perspective" string="Perspective" context="{'group_by': 'perspective'}"/>
+                    <filter name="group_source" string="Source" context="{'group_by': 'source_type'}"/>
+                    <filter name="group_responsibility" string="Responsibility" context="{'group_by': 'responsibility_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cmc_kpi" model="ir.actions.act_window">
+        <field name="name">KPI Library</field>
+        <field name="res_model">cmc.kpi</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_group_perspective': 1}</field>
+    </record>
+
+    <record id="view_cmc_plan_version_form_kpi" model="ir.ui.view">
+        <field name="name">cmc.plan.version.form.kpi</field>
+        <field name="model">cmc.plan.version</field>
+        <field name="inherit_id" ref="cmc_base.view_cmc_plan_version_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page name="kpi_targets" string="KPI Targets" groups="cmc_base.group_cmc_user">
+                    <field name="kpi_target_ids" readonly="state == 'done'" context="{'default_version_id': id}">
+                        <list editable="bottom">
+                            <field name="date"/>
+                            <field name="kpi_id"/>
+                            <field name="target_input"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

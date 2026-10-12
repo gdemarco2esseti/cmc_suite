@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_costing_run_list" model="ir.ui.view">
+        <field name="name">cmc.costing.run.list</field>
+        <field name="model">cmc.costing.run</field>
+        <field name="arch" type="xml">
+            <list string="Costing Runs">
+                <field name="name"/>
+                <field name="closing_run_id"/>
+                <field name="base"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_costing_run_form" model="ir.ui.view">
+        <field name="name">cmc.costing.run.form</field>
+        <field name="model">cmc.costing.run</field>
+        <field name="arch" type="xml">
+            <form string="Costing Run">
+                <header>
+                    <button name="action_compute" type="object" string="Compute"
+                            class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_cmc_prefill_lines" type="object" string="Prefill Lines"
+                            invisible="state != 'draft'"
+                            confirm="Prefilling replaces the current lines with the quantities read from the data. Continue?"/>
+                    <button name="action_reset_to_draft" type="object"
+                            string="Reset to Draft" invisible="state != 'done'"
+                            confirm="Resetting deletes the computed results. Continue?"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="closing_run_id" readonly="state != 'draft'"/>
+                            <field name="base" readonly="state != 'draft'"/>
+                            <field name="single_driver_id" readonly="state != 'draft'"
+                                   invisible="base != 'single'"
+                                   required="base == 'single'"/>
+                            <field name="prime_cost_source" readonly="state != 'draft'"/>
+                            <field name="capacity_basis" readonly="state != 'draft'"/>
+                            <field name="unabsorbed_cost" invisible="capacity_basis != 'practical'"/>
+                        </group>
+                        <group>
+                            <field name="date_from" readonly="state != 'draft'"/>
+                            <field name="date_to" readonly="state != 'draft'"/>
+                            <field name="company_id" readonly="state != 'draft'" groups="base.group_multi_company"/>
+                            <field name="produced_measure_id" readonly="state != 'draft'"/>
+                            <field name="markup_percent" readonly="state != 'draft'"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <field name="product_ids" readonly="state != 'draft'" widget="many2many_tags"/>
+                    <notebook>
+                        <page string="Driver Consumption" name="lines">
+                            <field name="line_ids" readonly="state != 'draft'">
+                                <list editable="bottom">
+                                    <field name="center_id"/>
+                                    <field name="product_id"/>
+                                    <field name="driver_id"/>
+                                    <field name="driver_qty"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Results" name="results">
+                            <field name="result_ids" readonly="1">
+                                <list create="false" edit="false">
+                                    <field name="product_id"/>
+                                    <field name="produced_qty" column_invisible="not parent.produced_measure_id"/>
+                                    <field name="cost_primo" sum="Prime"/>
+                                    <field name="prime_cost_origin" widget="badge" optional="hide"
+                                           decoration-info="prime_cost_origin == 'actual'"
+                                           decoration-warning="prime_cost_origin == 'standard_fallback'"/>
+                                    <field name="cost_indiretto" sum="Overhead"/>
+                                    <field name="cost_industriale" sum="Industrial"/>
+                                    <field name="cost_comm_admin" sum="Comm/Admin" optional="show"/>
+                                    <field name="cost_complessivo" sum="Total" optional="show"/>
+                                    <field name="cost_figurativo" sum="Figurative" optional="hide"/>
+                                    <field name="cost_economico_tecnico" sum="Economic-Technical"/>
+                                    <field name="std_price_delta" optional="hide"/>
+                                    <field name="unit_cost_primo" column_invisible="not parent.produced_measure_id" optional="hide"/>
+                                    <field name="unit_cost_industriale" column_invisible="not parent.produced_measure_id" optional="hide"/>
+                                    <field name="unit_cost_variable" column_invisible="not parent.produced_measure_id"/>
+                                    <field name="unit_cost_complessivo" column_invisible="not parent.produced_measure_id"/>
+                                    <field name="price_cost_plus" column_invisible="not parent.produced_measure_id"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Capacity" name="capacity"
+                              invisible="capacity_basis != 'practical' and not capacity_ids">
+                            <field name="capacity_ids" readonly="1"
+                                   context="{'list_view_ref': 'cmc_full_costing.view_cmc_costing_capacity_list'}"/>
+                        </page>
+                        <page string="Reclassified" name="reclass">
+                            <field name="cmc_reclass_json" widget="cmc_reclass" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cmc_costing_result_form" model="ir.ui.view">
+        <field name="name">cmc.costing.result.form</field>
+        <field name="model">cmc.costing.result</field>
+        <field name="arch" type="xml">
+            <form string="Product Full Cost">
+                <header>
+                    <button name="cmc_full_costing.action_cmc_costing_simulate" type="action" string="Simulate"
+                            context="{'default_result_id': id}"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Cost Configurations">
+                            <field name="product_id"/>
+                            <field name="cost_primo"/>
+                            <field name="cost_industriale"/>
+                            <field name="cost_complessivo"/>
+                            <field name="cost_economico_tecnico"/>
+                        </group>
+                        <group string="Components &amp; Reconciliation">
+                            <field name="cost_indiretto"/>
+                            <field name="cost_comm_admin"/>
+                            <field name="cost_figurativo"/>
+                            <field name="standard_price_ref"/>
+                            <field name="std_price_delta"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <group string="Per Unit" invisible="not produced_qty">
+                        <group>
+                            <field name="prime_cost_origin"/>
+                            <field name="produced_qty"/>
+                            <field name="unit_cost_primo"/>
+                            <field name="unit_cost_industriale"/>
+                            <field name="unit_cost_complessivo"/>
+                            <field name="unit_cost_economico_tecnico"/>
+                        </group>
+                        <group>
+                            <field name="cost_variable"/>
+                            <field name="cost_fixed"/>
+                            <field name="unit_cost_variable"/>
+                            <field name="unit_cost_fixed"/>
+                            <field name="price_cost_plus"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Levels" name="levels">
+                            <field name="config_ids">
+                                <list create="false" edit="false">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="level"/>
+                                    <field name="increment"/>
+                                    <field name="amount"/>
+                                    <field name="unit_amount" optional="show"/>
+                                    <field name="source"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Indirect Quotas" name="quotas">
+                    <field name="quota_ids">
+                        <list string="Indirect quotas by center" create="false" edit="false">
+                            <field name="center_id"/>
+                            <field name="coefficient"/>
+                            <field name="driver_qty"/>
+                            <field name="amount" sum="Total"/>
+                            <field name="amount_fixed" optional="hide"/>
+                            <field name="amount_variable" optional="hide"/>
+                            <field name="currency_id" column_invisible="1"/>
+                        </list>
+                    </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cmc_costing_quota_pivot" model="ir.ui.view">
+        <field name="name">cmc.costing.quota.pivot</field>
+        <field name="model">cmc.costing.quota</field>
+        <field name="arch" type="xml">
+            <pivot string="Indirect Cost Matrix">
+                <field name="result_id" type="row"/>
+                <field name="center_id" type="col"/>
+                <field name="amount" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="action_cmc_costing_run" model="ir.actions.act_window">
+        <field name="name">Costing Runs</field>
+        <field name="res_model">cmc.costing.run</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a costing run</p>
+            <p>Compute the full (absorbed) product cost with a single or multiple
+               allocation base from the closed final centers.</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_cmc_sec_full"
+              name="Full Costing"
+              parent="cmc_base.menu_cmc_operations"
+              sequence="30"/>
+    <menuitem id="menu_cmc_costing_run"
+              name="Costing Runs"
+              parent="menu_cmc_sec_full"
+              action="action_cmc_costing_run"
+              sequence="10"/>
+</odoo>

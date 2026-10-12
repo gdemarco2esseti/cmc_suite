@@ -1,0 +1,837 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* cmc_scenario
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 23:35+0000\n"
+"PO-Revision-Date: 2026-10-09 23:35+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: cmc_scenario
+#. odoo-python
+#: code:addons/cmc_scenario/models/cmc_scenario_simulation.py:0
+msgid "%(path)s: %(error)s"
+msgstr "%(path)s: %(error)s"
+
+#. module: cmc_scenario
+#. odoo-python
+#: code:addons/cmc_scenario/models/cmc_scenario_simulation.py:0
+msgid "%(variables)s variable(s) need at least %(trials)s trials."
+msgstr "%(variables)s variabili richiedono almeno %(trials)s prove."
+
+#. module: cmc_scenario
+#. odoo-python
+#: code:addons/cmc_scenario/models/cmc_plan_version.py:0
+msgid "%s (scenario)"
+msgstr "%s (scenario)"
+
+#. module: cmc_scenario
+#. odoo-python
+#: code:addons/cmc_scenario/models/cmc_scenario_simulation.py:0
+msgid "%s (without dominant inputs)"
+msgstr "%s (senza input dominanti)"
+
+#. module: cmc_scenario
+#. odoo-python
+#: code:addons/cmc_scenario/models/cmc_scenario_comparison.py:0
+msgid "%s has no baseline: choose the version to compare it with."
+msgstr ""
+"%s non ha una base di confronto: scegliere la versione con cui confrontarla."
+
+#. module: cmc_scenario
+#. odoo-python
+#: code:addons/cmc_scenario/models/cmc_scenario_consolidation.py:0
+msgid "%s is not approved: a consolidation reads approved versions only."
+msgstr "%s non è approvata: un consolidamento legge solo versioni approvate."
+
+#. module: cmc_scenario
+#. odoo-python
+#: code:addons/cmc_scenario/models/cmc_scenario_consolidation.py:0
+msgid "A version cannot be consolidated into itself."
+msgstr "Una versione non può essere consolidata in se stessa."
+
+#. module: cmc_scenario
+#. odoo-python
+#: code:addons/cmc_scenario/models/cmc_scenario_simulation.py:0
+msgid "Add at least one uncertain input."
+msgstr "Aggiungere almeno un input incerto."
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_consolidation_line__amount
+msgid "Amount"
+msgstr "Importo"
+
+#. module: cmc_scenario
+#. odoo-python
+#: code:addons/cmc_scenario/models/cmc_scenario_simulation.py:0
+msgid "An input can have one distribution only in %s."
+msgstr "In %s un input può avere una sola distribuzione."
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__base_output
+msgid "Base Output"
+msgstr "Output di base"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_tornado__base_value
+msgid "Base Value"
+msgstr "Valore base"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison__baseline_id
+msgid "Baseline"
+msgstr "Base"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison_line__baseline_amount
+msgid "Baseline Amount"
+msgstr "Importo di base"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison__baseline_profit
+msgid "Baseline Profit"
+msgstr "Utile di base"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__bin_ids
+msgid "Bin"
+msgstr "Classe"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__bin_count
+msgid "Bin Count"
+msgstr "Numero di classi"
+
+#. module: cmc_scenario
+#: model:ir.model,name:cmc_scenario.model_cmc_scenario_run_mixin
+msgid "CMC scenario run"
+msgstr "Esecuzione di scenario CMC"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_consolidation__child_version_ids
+msgid "Child Versions"
+msgstr "Versioni figlie"
+
+#. module: cmc_scenario
+#. odoo-python
+#: code:addons/cmc_scenario/models/cmc_scenario_consolidation.py:0
+msgid "Choose the child versions to consolidate."
+msgstr "Scegliere le versioni figlie da consolidare."
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_bin__company_id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison__company_id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison_line__company_id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_consolidation__company_id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_consolidation_line__company_id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_run_mixin__company_id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_sensitivity__company_id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__company_id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_tornado__company_id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_variable__company_id
+msgid "Company"
+msgstr "Azienda"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison_line__comparison_id
+msgid "Comparison"
+msgstr "Confronto"
+
+#. module: cmc_scenario
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_comparison_form
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_consolidation_form
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_simulation_form
+msgid "Compute"
+msgstr "Calcola"
+
+#. module: cmc_scenario
+#. odoo-python
+#: code:addons/cmc_scenario/models/cmc_scenario_simulation.py:0
+msgid "Compute the simulation before re-running it."
+msgstr "Calcolare la simulazione prima di rieseguirla."
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_consolidation_line__consolidation_id
+#: model:ir.ui.menu,name:cmc_scenario.menu_cmc_scenario_consolidation
+msgid "Consolidation"
+msgstr "Consolidamento"
+
+#. module: cmc_scenario
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_consolidation_list
+msgid "Consolidations"
+msgstr "Consolidamenti"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison_line__center_id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_consolidation_line__center_id
+msgid "Cost Center"
+msgstr "Centro di costo"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison_line__element_id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_consolidation_line__element_id
+msgid "Cost Element"
+msgstr "Elemento di costo"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_bin__count
+msgid "Count"
+msgstr "Numero totale"
+
+#. module: cmc_scenario
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_plan_version_form_scenario
+msgid "Create Scenario"
+msgstr "Crea scenario"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_bin__create_uid
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison__create_uid
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison_line__create_uid
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_consolidation__create_uid
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_consolidation_line__create_uid
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_sensitivity__create_uid
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__create_uid
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_tornado__create_uid
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_variable__create_uid
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_bin__create_date
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison__create_date
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison_line__create_date
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_consolidation__create_date
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_consolidation_line__create_date
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_sensitivity__create_date
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__create_date
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_tornado__create_date
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_variable__create_date
+msgid "Created on"
+msgstr "Data creazione"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison__currency_id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison_line__currency_id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_consolidation__currency_id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_consolidation_line__currency_id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_run_mixin__currency_id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__currency_id
+msgid "Currency"
+msgstr "Valuta"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,help:cmc_scenario.field_cmc_scenario_comparison__baseline_id
+msgid "Defaults to the version the scenario was copied from."
+msgstr ""
+"Per impostazione predefinita è la versione da cui è stato copiato lo "
+"scenario."
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison_line__delta
+msgid "Delta"
+msgstr "Delta"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison_line__delta_pct
+msgid "Delta %"
+msgstr "Delta %"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison__delta_profit
+msgid "Delta Profit"
+msgstr "Delta utile"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_plan_version__display_name
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_bin__display_name
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison__display_name
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison_line__display_name
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_consolidation__display_name
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_consolidation_line__display_name
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_run_mixin__display_name
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_sensitivity__display_name
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__display_name
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_tornado__display_name
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_variable__display_name
+msgid "Display Name"
+msgstr "Nome visualizzato"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_variable__distribution
+msgid "Distribution"
+msgstr "Distribuzione"
+
+#. module: cmc_scenario
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_sensitivity_search
+msgid "Dominant"
+msgstr "Dominante"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__dominant_threshold
+msgid "Dominant Threshold"
+msgstr "Soglia di dominanza"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison__evaluator_key
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_consolidation__evaluator_key
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_run_mixin__evaluator_key
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__evaluator_key
+msgid "Evaluator Key"
+msgstr "Chiave del valutatore"
+
+#. module: cmc_scenario
+#. odoo-python
+#: code:addons/cmc_scenario/models/cmc_scenario_simulation.py:0
+msgid "Every input is dominant: nothing would be left to simulate."
+msgstr "Ogni input è dominante: non resterebbe nulla da simulare."
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_bin__frequency_pct
+msgid "Frequency %"
+msgstr "Frequenza %"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_variable__high
+msgid "High"
+msgstr "Alta"
+
+#. module: cmc_scenario
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_bin_list
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_simulation_form
+msgid "Histogram"
+msgstr "Istogramma"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_plan_version__id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_bin__id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison__id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison_line__id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_consolidation__id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_consolidation_line__id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_run_mixin__id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_sensitivity__id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_tornado__id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_variable__id
+msgid "ID"
+msgstr "ID"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_sensitivity__input_path
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_tornado__input_path
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_variable__input_path
+msgid "Input Path"
+msgstr "Percorso dell'input"
+
+#. module: cmc_scenario
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_comparison_form
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_consolidation_form
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_simulation_form
+msgid "Inputs"
+msgstr "Input"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_sensitivity__is_dominant
+msgid "Is Dominant"
+msgstr "È dominante"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_sensitivity__is_significant
+msgid "Is Significant"
+msgstr "È significativo"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,help:cmc_scenario.field_cmc_scenario_variable__input_path
+msgid "Key of one input read by the evaluator."
+msgstr "Chiave di un input letto dal valutatore."
+
+#. module: cmc_scenario
+#: model:ir.model.fields,help:cmc_scenario.field_cmc_scenario_comparison__evaluator_key
+#: model:ir.model.fields,help:cmc_scenario.field_cmc_scenario_consolidation__evaluator_key
+#: model:ir.model.fields,help:cmc_scenario.field_cmc_scenario_run_mixin__evaluator_key
+#: model:ir.model.fields,help:cmc_scenario.field_cmc_scenario_simulation__evaluator_key
+msgid "Key of the evaluator that turns a plan version into profit amounts."
+msgstr ""
+"Chiave del valutatore che trasforma una versione di piano in importi di "
+"utile."
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_bin__write_uid
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison__write_uid
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison_line__write_uid
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_consolidation__write_uid
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_consolidation_line__write_uid
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_sensitivity__write_uid
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__write_uid
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_tornado__write_uid
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_variable__write_uid
+msgid "Last Updated by"
+msgstr "Ultimo aggiornamento di"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_bin__write_date
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison__write_date
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison_line__write_date
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_consolidation__write_date
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_consolidation_line__write_date
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_sensitivity__write_date
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__write_date
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_tornado__write_date
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_variable__write_date
+msgid "Last Updated on"
+msgstr "Ultimo aggiornamento il"
+
+#. module: cmc_scenario
+#: model:ir.model.fields.selection,name:cmc_scenario.selection__cmc_scenario_simulation__sampling__lhs
+msgid "Latin Hypercube"
+msgstr "Ipercubo latino"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison__line_ids
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_consolidation__line_ids
+msgid "Line"
+msgstr "Riga"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_variable__low
+msgid "Low"
+msgstr "Bassa"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_bin__lower
+msgid "Lower"
+msgstr "Inferiore"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__max_output
+msgid "Max Output"
+msgstr "Output massimo"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_variable__mean
+msgid "Mean"
+msgstr "Media"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__mean_output
+msgid "Mean Output"
+msgstr "Output medio"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__min_output
+msgid "Min Output"
+msgstr "Output minimo"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_variable__mode
+msgid "Mode"
+msgstr "Modalità"
+
+#. module: cmc_scenario
+#: model:ir.model,name:cmc_scenario.model_cmc_scenario_simulation
+msgid "Monte Carlo Simulation"
+msgstr "Simulazione Monte Carlo"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison_line__date
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_consolidation_line__date
+msgid "Month"
+msgstr "Mese"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison__name
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_consolidation__name
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_run_mixin__name
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__name
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_variable__name
+msgid "Name"
+msgstr "Nome"
+
+#. module: cmc_scenario
+#. odoo-python
+#: code:addons/cmc_scenario/models/cmc_scenario_simulation.py:0
+msgid "No input is dominant: there is nothing to remove."
+msgstr "Nessun input è dominante: non c'è nulla da rimuovere."
+
+#. module: cmc_scenario
+#: model:ir.model.fields.selection,name:cmc_scenario.selection__cmc_scenario_variable__distribution__normal
+msgid "Normal"
+msgstr "Normale"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_tornado__output_high
+msgid "Output High"
+msgstr "Output alto"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_tornado__output_low
+msgid "Output Low"
+msgstr "Output basso"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__prob_positive_pct
+msgid "P(profit > 0) %"
+msgstr "P(utile > 0) %"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__p5_output
+msgid "P5 Output"
+msgstr "Output P5"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__p50_output
+msgid "P50 Output"
+msgstr "Output P50"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__p95_output
+msgid "P95 Output"
+msgstr "Output P95"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__parent_simulation_id
+msgid "Parent Simulation"
+msgstr "Simulazione madre"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_consolidation__version_id
+msgid "Parent Version"
+msgstr "Versione madre"
+
+#. module: cmc_scenario
+#: model:ir.model,name:cmc_scenario.model_cmc_plan_version
+msgid "Plan Version"
+msgstr "Versione di piano"
+
+#. module: cmc_scenario
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_comparison_form
+msgid "Profit"
+msgstr "Utile"
+
+#. module: cmc_scenario
+#: model:ir.actions.act_window,name:cmc_scenario.action_cmc_scenario_bin
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_bin_graph
+msgid "Profit Histogram"
+msgstr "Istogramma dell'utile"
+
+#. module: cmc_scenario
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_simulation_form
+msgid "Profit Statistics"
+msgstr "Statistiche dell'utile"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_sensitivity__rank
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_tornado__rank
+msgid "Rank"
+msgstr "Posizione"
+
+#. module: cmc_scenario
+#: model:ir.actions.act_window,name:cmc_scenario.action_cmc_scenario_sensitivity
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_sensitivity__rank_correlation
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_sensitivity_list
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_simulation_form
+msgid "Rank Correlation"
+msgstr "Correlazione di rango"
+
+#. module: cmc_scenario
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_simulation_form
+msgid "Re-run without Dominant Inputs"
+msgstr "Riesegui senza input dominanti"
+
+#. module: cmc_scenario
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_comparison_form
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_consolidation_form
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_simulation_form
+msgid "Reset to Draft"
+msgstr "Riporta in bozza"
+
+#. module: cmc_scenario
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_comparison_form
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_consolidation_form
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_simulation_form
+msgid "Resetting deletes the computed results. Continue?"
+msgstr ""
+"Riportando in bozza i risultati calcolati vengono cancellati. Continuare?"
+
+#. module: cmc_scenario
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_consolidation_form
+msgid "Result"
+msgstr "Risultato"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__sampling
+msgid "Sampling"
+msgstr "Campionamento"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison__scenario_id
+msgid "Scenario"
+msgstr "Scenario"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,help:cmc_scenario.field_cmc_scenario_comparison__delta_profit
+#: model:ir.model.fields,help:cmc_scenario.field_cmc_scenario_comparison_line__delta
+msgid "Scenario - baseline: positive is favourable."
+msgstr "Scenario - base: il positivo è favorevole."
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison_line__scenario_amount
+msgid "Scenario Amount"
+msgstr "Importo dello scenario"
+
+#. module: cmc_scenario
+#: model:ir.model,name:cmc_scenario.model_cmc_scenario_comparison
+#: model:ir.ui.menu,name:cmc_scenario.menu_cmc_scenario_comparison
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_comparison_form
+msgid "Scenario Comparison"
+msgstr "Confronto di scenari"
+
+#. module: cmc_scenario
+#: model:ir.model,name:cmc_scenario.model_cmc_scenario_comparison_line
+msgid "Scenario Comparison Line"
+msgstr "Riga di confronto di scenari"
+
+#. module: cmc_scenario
+#: model:ir.actions.act_window,name:cmc_scenario.action_cmc_scenario_comparison
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_comparison_list
+msgid "Scenario Comparisons"
+msgstr "Confronti di scenari"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison__scenario_profit
+msgid "Scenario Profit"
+msgstr "Utile dello scenario"
+
+#. module: cmc_scenario
+#: model:ir.ui.menu,name:cmc_scenario.menu_cmc_sec_scenario
+msgid "Scenarios & Risk"
+msgstr "Scenari e rischio"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__seed
+msgid "Seed"
+msgstr "Seme (seed)"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__sensitivity_ids
+msgid "Sensitivity"
+msgstr "Sensitività"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_bin__sequence
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_variable__sequence
+msgid "Sequence"
+msgstr "Sequenza"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__significance_threshold
+msgid "Significance Threshold"
+msgstr "Soglia di significatività"
+
+#. module: cmc_scenario
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_sensitivity_search
+msgid "Significant"
+msgstr "Significativo"
+
+#. module: cmc_scenario
+#: model:ir.model.fields.selection,name:cmc_scenario.selection__cmc_scenario_simulation__sampling__srs
+msgid "Simple random"
+msgstr "Casuale semplice"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_bin__simulation_id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_sensitivity__simulation_id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_tornado__simulation_id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_variable__simulation_id
+#: model:ir.ui.menu,name:cmc_scenario.menu_cmc_scenario_simulation
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_simulation_form
+msgid "Simulation"
+msgstr "Simulazione"
+
+#. module: cmc_scenario
+#: model:ir.model,name:cmc_scenario.model_cmc_scenario_bin
+msgid "Simulation Histogram Bin"
+msgstr "Classe dell'istogramma della simulazione"
+
+#. module: cmc_scenario
+#: model:ir.model,name:cmc_scenario.model_cmc_scenario_sensitivity
+msgid "Simulation Rank Correlation"
+msgstr "Correlazione di rango della simulazione"
+
+#. module: cmc_scenario
+#: model:ir.model,name:cmc_scenario.model_cmc_scenario_tornado
+msgid "Simulation Tornado Row"
+msgstr "Riga tornado della simulazione"
+
+#. module: cmc_scenario
+#: model:ir.actions.act_window,name:cmc_scenario.action_cmc_scenario_simulation
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_simulation_list
+msgid "Simulations"
+msgstr "Simulazioni"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_comparison__state
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_consolidation__state
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_run_mixin__state
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__state
+msgid "State"
+msgstr "Stato"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_variable__stdev
+msgid "Stdev"
+msgstr "Deviazione standard"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__stdev_output
+msgid "Stdev Output"
+msgstr "Output deviazione standard"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_tornado__swing
+msgid "Swing"
+msgstr "Oscillazione (swing)"
+
+#. module: cmc_scenario
+#. odoo-python
+#: code:addons/cmc_scenario/models/cmc_scenario_mixin.py:0
+msgid ""
+"The evaluator %s does not depend on the version: comparing or consolidating "
+"versions with it is meaningless."
+msgstr ""
+"Il valutatore %s non dipende dalla versione: confrontare o consolidare "
+"versioni con esso non ha senso."
+
+#. module: cmc_scenario
+#. odoo-python
+#: code:addons/cmc_scenario/models/cmc_scenario_simulation.py:0
+msgid "The evaluator does not read the input(s) %s."
+msgstr "Il valutatore non legge gli input %s."
+
+#. module: cmc_scenario
+#. odoo-python
+#: code:addons/cmc_scenario/models/cmc_scenario_simulation.py:0
+msgid "The histogram needs between 1 and 100 bins."
+msgstr "L'istogramma richiede da 1 a 100 classi."
+
+#. module: cmc_scenario
+#. odoo-python
+#: code:addons/cmc_scenario/models/cmc_scenario_simulation.py:0
+msgid "The tornado swing must be positive."
+msgstr "L'oscillazione del tornado deve essere positiva."
+
+#. module: cmc_scenario
+#: model:ir.actions.act_window,name:cmc_scenario.action_cmc_scenario_tornado
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__tornado_ids
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_simulation_form
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_tornado_graph
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_tornado_list
+msgid "Tornado"
+msgstr "Tornado"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__swing_pct
+msgid "Tornado Swing %"
+msgstr "Oscillazione tornado %"
+
+#. module: cmc_scenario
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_comparison_form
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_consolidation_form
+msgid "Total"
+msgstr "Totale"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_consolidation__total_amount
+msgid "Total Amount"
+msgstr "Importo totale"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__trials
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_bin_list
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_simulation_form
+msgid "Trials"
+msgstr "Prove"
+
+#. module: cmc_scenario
+#. odoo-python
+#: code:addons/cmc_scenario/models/cmc_scenario_simulation.py:0
+msgid "Trials must be between 1 and %s."
+msgstr "Le prove devono essere comprese tra 1 e %s."
+
+#. module: cmc_scenario
+#: model:ir.model.fields.selection,name:cmc_scenario.selection__cmc_scenario_variable__distribution__triangular
+msgid "Triangular"
+msgstr "Triangolare"
+
+#. module: cmc_scenario
+#: model:ir.model,name:cmc_scenario.model_cmc_scenario_variable
+msgid "Uncertain Input"
+msgstr "Input incerto"
+
+#. module: cmc_scenario
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_simulation_form
+msgid "Uncertain Inputs"
+msgstr "Input incerti"
+
+#. module: cmc_scenario
+#: model:ir.model.fields.selection,name:cmc_scenario.selection__cmc_scenario_variable__distribution__uniform
+msgid "Uniform"
+msgstr "Uniforme"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_bin__upper
+msgid "Upper"
+msgstr "Superiore"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_sensitivity__variable_id
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__variable_ids
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_tornado__variable_id
+msgid "Variable"
+msgstr "Variabile"
+
+#. module: cmc_scenario
+#: model:ir.model.fields,field_description:cmc_scenario.field_cmc_scenario_simulation__version_id
+msgid "Version"
+msgstr "Versione"
+
+#. module: cmc_scenario
+#: model:ir.model,name:cmc_scenario.model_cmc_scenario_consolidation
+#: model_terms:ir.ui.view,arch_db:cmc_scenario.view_cmc_scenario_consolidation_form
+msgid "Version Consolidation"
+msgstr "Consolidamento di versioni"
+
+#. module: cmc_scenario
+#: model:ir.model,name:cmc_scenario.model_cmc_scenario_consolidation_line
+msgid "Version Consolidation Line"
+msgstr "Riga di consolidamento di versioni"
+
+#. module: cmc_scenario
+#: model:ir.actions.act_window,name:cmc_scenario.action_cmc_scenario_consolidation
+msgid "Version Consolidations"
+msgstr "Consolidamenti di versioni"
+
+#. module: cmc_scenario
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_scenario_comparison__state__done
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_scenario_consolidation__state__done
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_scenario_run_mixin__state__done
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_scenario_simulation__state__done
+msgid "Computed"
+msgstr "Calcolato"
+
+#. module: cmc_scenario
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_scenario_comparison__state__draft
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_scenario_consolidation__state__draft
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_scenario_run_mixin__state__draft
+#: model:ir.model.fields.selection,name:cmc_base.selection__cmc_scenario_simulation__state__draft
+msgid "Draft"
+msgstr "Bozza"

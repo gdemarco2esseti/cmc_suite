@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_coge_reconciliation_list" model="ir.ui.view">
+        <field name="name">cmc.coge.reconciliation.list</field>
+        <field name="model">cmc.coge.reconciliation</field>
+        <field name="arch" type="xml">
+            <list string="COGE - COAN Reconciliations">
+                <field name="name"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="coge_amount" optional="show"/>
+                <field name="coan_amount" optional="show"/>
+                <field name="unexplained_amount" optional="show"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_coge_reconciliation_form" model="ir.ui.view">
+        <field name="name">cmc.coge.reconciliation.form</field>
+        <field name="model">cmc.coge.reconciliation</field>
+        <field name="arch" type="xml">
+            <form string="COGE - COAN Reconciliation">
+                <header>
+                    <button name="action_compute" type="object" string="Compute"
+                            class="oe_highlight" invisible="state == 'done'"/>
+                    <button name="action_reset_to_draft" type="object" string="Reset to Draft"
+                            confirm="Resetting deletes the computed results. Continue?"
+                            invisible="state != 'done'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="e.g. Q1 reconciliation"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date_from" readonly="state == 'done'"/>
+                            <field name="date_to" readonly="state == 'done'"/>
+                        </group>
+                        <group>
+                            <field name="company_id" readonly="state == 'done'" groups="base.group_multi_company"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <group string="Results">
+                        <group>
+                            <field name="coge_amount"
+                                   help="General ledger expense (posted, in the period)."/>
+                            <field name="coan_amount"
+                                   help="Management accounting cost: analytic cost lines of the period, excluding excluded lines and revenue accounts."/>
+                            <field name="figurative_amount"
+                                   help="Part of the management accounting cost made of figurative cost elements (no general ledger counterpart)."/>
+                            <field name="neutral_amount"
+                                   help="General ledger expense items without any analytic distribution."/>
+                            <field name="coan_no_gl"
+                                   help="Analytic cost lines without a general ledger account and not figurative (e.g. manual Cost Entries): kept out of the Management Accounting Cost."/>
+                        </group>
+                        <group>
+                            <field name="unexplained_amount" class="fw-bold"
+                                   help="General Ledger Cost - (Management Accounting Cost - Figurative + Neutral). Zero when the two ledgers are fully reconciled."/>
+                        </group>
+                    </group>
+                    <div class="text-muted">
+                        Unexplained = General Ledger Cost - (Management Accounting Cost - Figurative + Neutral)
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cmc_coge_reconciliation_search" model="ir.ui.view">
+        <field name="name">cmc.coge.reconciliation.search</field>
+        <field name="model">cmc.coge.reconciliation</field>
+        <field name="arch" type="xml">
+            <search string="COGE - COAN Reconciliations">
+                <field name="name"/>
+                <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="done" string="Computed" domain="[('state', '=', 'done')]"/>
+                <group>
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="group_date_to" string="End Date" context="{'group_by': 'date_to:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cmc_coge_reconciliation" model="ir.actions.act_window">
+        <field name="name">COGE - COAN Reconciliation</field>
+        <field name="res_model">cmc.coge.reconciliation</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a reconciliation run</p>
+            <p>Compare the general ledger cost with the management accounting cost of a period and see what is left unexplained.</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_cmc_coge_reconciliation" name="COGE - COAN Reconciliation"
+              parent="cmc_base.menu_cmc_sec_analysis"
+              action="action_cmc_coge_reconciliation" sequence="8"/>
+</odoo>

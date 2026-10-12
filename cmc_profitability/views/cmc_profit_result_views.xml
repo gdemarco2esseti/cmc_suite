@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Facts: the cube (product x customer x salesperson x month) -->
+    <record id="view_cmc_profit_fact_list" model="ir.ui.view">
+        <field name="name">cmc.profit.fact.list</field>
+        <field name="model">cmc.profit.fact</field>
+        <field name="arch" type="xml">
+            <list create="false" edit="false" delete="false" decoration-danger="floor_status == 'below_variable'"
+                  decoration-warning="floor_status == 'below_full'">
+                <field name="run_id" optional="hide"/>
+                <field name="date"/>
+                <field name="product_id"/>
+                <field name="partner_id"/>
+                <field name="salesperson_id"/>
+                <field name="quantity" sum="Quantity"/>
+                <field name="revenue" sum="Revenue"/>
+                <field name="variable_cost" sum="Variable cost"/>
+                <field name="contribution_margin" sum="Contribution"/>
+                <field name="product_sustaining_cost" sum="Product-sustaining" optional="show"/>
+                <field name="discount_amount" sum="Discount" optional="hide"/>
+                <field name="floor_status" widget="badge" optional="show"/>
+                <field name="currency_id" column_invisible="1"/>
+                <button name="action_cmc_open_journal_items" type="object" icon="fa-list" title="Journal items"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_profit_fact_pivot" model="ir.ui.view">
+        <field name="name">cmc.profit.fact.pivot</field>
+        <field name="model">cmc.profit.fact</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="partner_id" type="row"/>
+                <field name="date" interval="month" type="col"/>
+                <field name="revenue" type="measure"/>
+                <field name="contribution_margin" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_cmc_profit_fact_graph" model="ir.ui.view">
+        <field name="name">cmc.profit.fact.graph</field>
+        <field name="model">cmc.profit.fact</field>
+        <field name="arch" type="xml">
+            <graph type="bar">
+                <field name="product_id"/>
+                <field name="revenue" type="measure"/>
+                <field name="contribution_margin" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_cmc_profit_fact_search" model="ir.ui.view">
+        <field name="name">cmc.profit.fact.search</field>
+        <field name="model">cmc.profit.fact</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="run_id"/>
+                <field name="product_id"/>
+                <field name="partner_id"/>
+                <field name="salesperson_id"/>
+                <filter name="below_floor" string="Below cost" domain="[('floor_status', '!=', 'ok')]"/>
+                <group>
+                    <filter name="group_run" string="Run" context="{'group_by': 'run_id'}"/>
+                    <filter name="group_product" string="Product" context="{'group_by': 'product_id'}"/>
+                    <filter name="group_partner" string="Customer" context="{'group_by': 'partner_id'}"/>
+                    <filter name="group_salesperson" string="Salesperson" context="{'group_by': 'salesperson_id'}"/>
+                    <filter name="group_segment" string="Segment" context="{'group_by': 'segment_value_id'}"/>
+                    <filter name="group_channel" string="Channel" context="{'group_by': 'channel_value_id'}"/>
+                    <filter name="group_month" string="Month" context="{'group_by': 'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cmc_profit_fact" model="ir.actions.act_window">
+        <field name="name">Profit Facts</field>
+        <field name="res_model">cmc.profit.fact</field>
+        <field name="view_mode">pivot,graph,list</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No profitability results yet</p>
+            <p>Compute a profitability run for the period: margins by product, customer and channel appear here.</p>
+        </field>
+    </record>
+
+    <!-- Customers: layered margin M1..M4 -->
+    <record id="view_cmc_profit_customer_list" model="ir.ui.view">
+        <field name="name">cmc.profit.customer.list</field>
+        <field name="model">cmc.profit.customer</field>
+        <field name="arch" type="xml">
+            <list create="false" edit="false" delete="false" decoration-danger="customer_profit &lt; 0">
+                <field name="run_id" optional="hide"/>
+                <field name="partner_id"/>
+                <field name="segment_value_id" optional="show"/>
+                <field name="channel_value_id" optional="show"/>
+                <field name="revenue" sum="Revenue"/>
+                <field name="contribution_margin" sum="M1"/>
+                <field name="product_margin" sum="M2"/>
+                <field name="served_margin" sum="M3"/>
+                <field name="customer_profit" sum="M4"/>
+                <field name="capital_charge" sum="Capital charge" optional="hide"/>
+                <field name="economic_profit" sum="Economic profit" optional="show"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_profit_customer_form" model="ir.ui.view">
+        <field name="name">cmc.profit.customer.form</field>
+        <field name="model">cmc.profit.customer</field>
+        <field name="arch" type="xml">
+            <form create="false" edit="false" delete="false">
+                <sheet>
+                    <group>
+                        <group string="Layers">
+                            <field name="partner_id"/>
+                            <field name="revenue"/>
+                            <field name="variable_cost"/>
+                            <field name="contribution_margin"/>
+                            <field name="product_sustaining_cost"/>
+                            <field name="product_margin"/>
+                            <field name="cost_to_serve"/>
+                            <field name="served_margin"/>
+                            <field name="channel_cost"/>
+                            <field name="customer_profit"/>
+                        </group>
+                        <group string="Price waterfall and capital">
+                            <field name="list_amount"/>
+                            <field name="discount_amount"/>
+                            <field name="off_invoice_amount"/>
+                            <field name="pocket_amount"/>
+                            <field name="receivable_balance"/>
+                            <field name="capital_charge"/>
+                            <field name="economic_profit"/>
+                            <field name="order_count"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cmc_profit_customer_whale_graph" model="ir.ui.view">
+        <field name="name">cmc.profit.customer.whale.graph</field>
+        <field name="model">cmc.profit.customer</field>
+        <field name="arch" type="xml">
+            <graph type="line">
+                <field name="rank"/>
+                <field name="cumulative_profit_pct" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_cmc_profit_customer_whale_list" model="ir.ui.view">
+        <field name="name">cmc.profit.customer.whale.list</field>
+        <field name="model">cmc.profit.customer</field>
+        <field name="arch" type="xml">
+            <list create="false" edit="false" delete="false" default_order="rank">
+                <field name="run_id" optional="hide"/>
+                <field name="rank"/>
+                <field name="partner_id"/>
+                <field name="customer_profit"/>
+                <field name="cumulative_profit"/>
+                <field name="cumulative_profit_pct"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_profit_customer_quadrant_list" model="ir.ui.view">
+        <field name="name">cmc.profit.customer.quadrant.list</field>
+        <field name="model">cmc.profit.customer</field>
+        <field name="arch" type="xml">
+            <list create="false" edit="false" delete="false" decoration-danger="quadrant == 'aggressive'"
+                  decoration-warning="quadrant == 'carriage'" decoration-success="quadrant == 'passive'">
+                <field name="run_id" optional="hide"/>
+                <field name="partner_id"/>
+                <field name="revenue"/>
+                <field name="net_margin_pct"/>
+                <field name="cost_to_serve_pct"/>
+                <field name="quadrant" widget="badge"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_profit_customer_waterfall_list" model="ir.ui.view">
+        <field name="name">cmc.profit.customer.waterfall.list</field>
+        <field name="model">cmc.profit.customer</field>
+        <field name="arch" type="xml">
+            <list create="false" edit="false" delete="false">
+                <field name="run_id" optional="hide"/>
+                <field name="partner_id"/>
+                <field name="list_amount" sum="List"/>
+                <field name="discount_amount" sum="On-invoice discount"/>
+                <field name="revenue" sum="Invoice price"/>
+                <field name="off_invoice_amount" sum="Off-invoice"/>
+                <field name="pocket_amount" sum="Pocket price"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_profit_customer_search" model="ir.ui.view">
+        <field name="name">cmc.profit.customer.search</field>
+        <field name="model">cmc.profit.customer</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="run_id"/>
+                <field name="partner_id"/>
+                <filter name="loss" string="Loss-making" domain="[('customer_profit', '&lt;', 0)]"/>
+                <group>
+                    <filter name="group_run" string="Run" context="{'group_by': 'run_id'}"/>
+                    <filter name="group_segment" string="Segment" context="{'group_by': 'segment_value_id'}"/>
+                    <filter name="group_channel" string="Channel" context="{'group_by': 'channel_value_id'}"/>
+                    <filter name="group_quadrant" string="Quadrant" context="{'group_by': 'quadrant'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cmc_profit_customer" model="ir.actions.act_window">
+        <field name="name">Customer Profitability</field>
+        <field name="res_model">cmc.profit.customer</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_cmc_profit_customer_list"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No profitability results yet</p>
+            <p>Compute a profitability run for the period: margins by product, customer and channel appear here.</p>
+        </field>
+    </record>
+
+    <record id="action_cmc_profit_whale" model="ir.actions.act_window">
+        <field name="name">Whale Curve</field>
+        <field name="res_model">cmc.profit.customer</field>
+        <field name="view_mode">graph,list</field>
+        <field name="domain">[('rank', '&gt;', 0)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No profitability results yet</p>
+            <p>Compute a profitability run for the period: margins by product, customer and channel appear here.</p>
+        </field>
+    </record>
+    <record id="action_cmc_profit_whale_graph" model="ir.actions.act_window.view">
+        <field name="sequence">1</field>
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="view_cmc_profit_customer_whale_graph"/>
+        <field name="act_window_id" ref="action_cmc_profit_whale"/>
+    </record>
+    <record id="action_cmc_profit_whale_list" model="ir.actions.act_window.view">
+        <field name="sequence">2</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_cmc_profit_customer_whale_list"/>
+        <field name="act_window_id" ref="action_cmc_profit_whale"/>
+    </record>
+
+    <record id="action_cmc_profit_quadrant" model="ir.actions.act_window">
+        <field name="name">Customer Quadrants</field>
+        <field name="res_model">cmc.profit.customer</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_cmc_profit_customer_quadrant_list"/>
+        <field name="domain">[('rank', '&gt;', 0)]</field>
+        <field name="context">{'search_default_group_quadrant': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No profitability results yet</p>
+            <p>Compute a profitability run for the period: margins by product, customer and channel appear here.</p>
+        </field>
+    </record>
+
+    <record id="action_cmc_profit_waterfall_customer" model="ir.actions.act_window">
+        <field name="name">Price Waterfall</field>
+        <field name="res_model">cmc.profit.customer</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_cmc_profit_customer_waterfall_list"/>
+        <field name="domain">[('partner_id', '!=', False)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No profitability results yet</p>
+            <p>Compute a profitability run for the period: margins by product, customer and channel appear here.</p>
+        </field>
+    </record>
+
+    <!-- Products -->
+    <record id="view_cmc_profit_product_list" model="ir.ui.view">
+        <field name="name">cmc.profit.product.list</field>
+        <field name="model">cmc.profit.product</field>
+        <field name="arch" type="xml">
+            <list create="false" edit="false" delete="false" decoration-danger="floor_status == 'below_variable'"
+                  decoration-warning="floor_status == 'below_full'">
+                <field name="run_id" optional="hide"/>
+                <field name="rank" optional="show"/>
+                <field name="product_id"/>
+                <field name="sbu_value_id" optional="show"/>
+                <field name="quantity" sum="Quantity"/>
+                <field name="revenue" sum="Revenue"/>
+                <field name="contribution_margin" sum="M1"/>
+                <field name="product_margin" sum="M2"/>
+                <field name="avg_price"/>
+                <field name="variable_unit_cost" optional="show"/>
+                <field name="full_unit_cost" optional="show"/>
+                <field name="floor_status" widget="badge"/>
+                <field name="cumulative_profit_pct" optional="hide"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_profit_product_graph" model="ir.ui.view">
+        <field name="name">cmc.profit.product.graph</field>
+        <field name="model">cmc.profit.product</field>
+        <field name="arch" type="xml">
+            <graph type="line">
+                <field name="rank"/>
+                <field name="cumulative_profit_pct" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_cmc_profit_product_search" model="ir.ui.view">
+        <field name="name">cmc.profit.product.search</field>
+        <field name="model">cmc.profit.product</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="run_id"/>
+                <field name="product_id"/>
+                <filter name="below_floor" string="Below cost" domain="[('floor_status', '!=', 'ok')]"/>
+                <group>
+                    <filter name="group_run" string="Run" context="{'group_by': 'run_id'}"/>
+                    <filter name="group_sbu" string="SBU" context="{'group_by': 'sbu_value_id'}"/>
+                    <filter name="group_floor" string="Price floor" context="{'group_by': 'floor_status'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cmc_profit_product" model="ir.actions.act_window">
+        <field name="name">Product Profitability</field>
+        <field name="res_model">cmc.profit.product</field>
+        <field name="view_mode">list,graph</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No profitability results yet</p>
+            <p>Compute a profitability run for the period: margins by product, customer and channel appear here.</p>
+        </field>
+    </record>
+
+    <!-- Channels -->
+    <record id="view_cmc_profit_channel_list" model="ir.ui.view">
+        <field name="name">cmc.profit.channel.list</field>
+        <field name="model">cmc.profit.channel</field>
+        <field name="arch" type="xml">
+            <list create="false" edit="false" delete="false">
+                <field name="run_id" optional="hide"/>
+                <field name="channel_value_id"/>
+                <field name="revenue" sum="Revenue"/>
+                <field name="served_margin" sum="M3"/>
+                <field name="channel_cost" sum="Channel cost"/>
+                <field name="channel_margin" sum="Channel margin"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cmc_profit_channel" model="ir.actions.act_window">
+        <field name="name">Channel Profitability</field>
+        <field name="res_model">cmc.profit.channel</field>
+        <field name="view_mode">list</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No profitability results yet</p>
+            <p>Compute a profitability run for the period: margins by product, customer and channel appear here.</p>
+        </field>
+    </record>
+
+    <!-- Waterfall elements -->
+    <record id="view_cmc_profit_waterfall_list" model="ir.ui.view">
+        <field name="name">cmc.profit.waterfall.list</field>
+        <field name="model">cmc.profit.waterfall</field>
+        <field name="arch" type="xml">
+            <list create="false" edit="false" delete="false">
+                <field name="run_id" optional="hide"/>
+                <field name="partner_id"/>
+                <field name="element_id"/>
+                <field name="amount" sum="Amount"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Suppliers: TCO -->
+    <record id="view_cmc_profit_supplier_list" model="ir.ui.view">
+        <field name="name">cmc.profit.supplier.list</field>
+        <field name="model">cmc.profit.supplier</field>
+        <field name="arch" type="xml">
+            <list create="false" edit="false" delete="false">
+                <field name="run_id" optional="hide"/>
+                <field name="rank"/>
+                <field name="partner_id"/>
+                <field name="purchase_amount" sum="Purchases"/>
+                <field name="activity_cost" sum="Activity cost"/>
+                <field name="tco" sum="TCO"/>
+                <field name="tco_index"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cmc_profit_supplier" model="ir.actions.act_window">
+        <field name="name">Supplier TCO</field>
+        <field name="res_model">cmc.profit.supplier</field>
+        <field name="view_mode">list</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No profitability results yet</p>
+            <p>Compute a profitability run for the period: margins by product, customer and channel appear here.</p>
+        </field>
+    </record>
+
+    <!-- SBU -->
+    <record id="view_cmc_profit_sbu_list" model="ir.ui.view">
+        <field name="name">cmc.profit.sbu.list</field>
+        <field name="model">cmc.profit.sbu</field>
+        <field name="arch" type="xml">
+            <list create="false" edit="false" delete="false" decoration-danger="not sustainable">
+                <field name="run_id" optional="hide"/>
+                <field name="sbu_value_id"/>
+                <field name="revenue" sum="Revenue"/>
+                <field name="mslc" sum="MSLC"/>
+                <field name="coin_open"/>
+                <field name="coin_close"/>
+                <field name="pfn"/>
+                <field name="equity"/>
+                <field name="roce"/>
+                <field name="growth"/>
+                <field name="cash_flow" sum="FCN"/>
+                <field name="sustainable" widget="boolean"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cmc_profit_sbu" model="ir.actions.act_window">
+        <field name="name">SBU Report</field>
+        <field name="res_model">cmc.profit.sbu</field>
+        <field name="view_mode">list</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No profitability results yet</p>
+            <p>Compute a profitability run for the period: margins by product, customer and channel appear here.</p>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,17 @@
+<section class="oe_container">
+<div class="oe_row oe_spaced">
+<div class="oe_span12">
+<h1>CMC – Costo Primo da Produzione (cmc_mrp)</h1>
+<p>Modulo <strong>ponte</strong> della suite CMC. Dipende da <code>cmc_account</code> e <code>mrp_account</code>.</p>
+<h2>Obiettivo</h2>
+<p>Alimentare il <strong>costo primo</strong> (materie prime MP + manodopera di produzione MOD) dai dati reali della <strong>produzione MRP</strong>, generando righe analitiche già classificate e imputate al centro di costo di produzione.</p>
+<h2>Configurazione (step-by-step)</h2>
+<ol><li>Installa <code>cmc_mrp</code> (richiede <code>cmc_account</code> + <code>mrp_account</code>).</li><li>Sui <strong>centri di lavoro</strong> / ordini di produzione, associa il <strong>Centro di costo CMC</strong> (<code>cmc_center_id</code>) che deve assorbire il costo di produzione.</li><li>Verifica/estendi le <strong>regole di classificazione</strong> (<code>cmc_account</code>) perché i movimenti di materiale siano imputati all&#x27;elemento <strong>Materie prime</strong> e la manodopera a</li></ol>
+<p><strong>Manodopera diretta</strong>.</p>
+<h2>Utilizzo (step-by-step)</h2>
+<ol><li>Esegui la produzione normalmente (ordini MRP, consumi di componenti, registrazione ore).</li><li>Alla valorizzazione, il ponte crea/collega le <strong>righe analitiche di costo primo</strong> (<code>_cmc_create_material_lines</code>) per materiali e manodopera sul centro indicato, con auto-classificazione.</li><li>Le righe confluiscono nella base di costo di <code>cmc_base</code> e alimentano il full costing (costo primo → industriale) e le altre metodologie.</li></ol>
+<h2>Note</h2>
+<ul><li>Estende <code>mrp.production</code>, <code>stock.move</code> e <code>account.analytic.line</code>.</li><li>Ponte &quot;invisibile&quot;: non aggiunge menu propri; il legame è il <strong>Centro di costo CMC</strong> sull&#x27;ordine di produzione.</li><li>Evita il doppio conteggio riconciliando i consumi MRP con le righe analitiche generate.</li></ul>
+</div>
+</div>
+</section>

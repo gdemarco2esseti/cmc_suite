@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_cmc_root"
+              name="Cost Management"
+              web_icon="cmc_base,static/description/icon.png"
+              sequence="95"
+              groups="cmc_base.group_cmc_user,cmc_base.group_cmc_responsible"/>
+
+    <menuitem id="menu_cmc_operations"
+              name="Operations"
+              parent="menu_cmc_root"
+              sequence="10"
+              groups="cmc_base.group_cmc_user"/>
+
+    <menuitem id="menu_cmc_responsibility"
+              name="Responsibility"
+              parent="menu_cmc_root"
+              sequence="15"
+              groups="cmc_base.group_cmc_responsible"/>
+
+    <!-- ===== Sezioni tematiche (sempre presenti, cmc_base) ===== -->
+    <menuitem id="menu_cmc_sec_base"
+              name="Cost Base"
+              parent="menu_cmc_operations"
+              sequence="10"/>
+    <menuitem id="menu_cmc_sec_analysis"
+              name="Analysis &amp; Control"
+              parent="menu_cmc_operations"
+              sequence="20"/>
+
+    <menuitem id="menu_cmc_cost_center"
+              name="Cost Centers"
+              parent="menu_cmc_sec_base"
+              action="action_cmc_cost_center"
+              sequence="10"/>
+    <menuitem id="menu_cmc_allocation"
+              name="Cost Allocations"
+              parent="menu_cmc_sec_base"
+              action="action_cmc_allocation"
+              sequence="20"/>
+    <menuitem id="menu_cmc_center_service"
+              name="Inter-Center Services"
+              parent="menu_cmc_sec_base"
+              action="action_cmc_center_service"
+              sequence="30"/>
+
+    <menuitem id="menu_cmc_config"
+              name="Configuration"
+              parent="menu_cmc_root"
+              sequence="90"
+              groups="cmc_base.group_cmc_manager"/>
+    <menuitem id="menu_cmc_cfg_master"
+              name="Master Data"
+              parent="menu_cmc_config"
+              sequence="10"/>
+    <menuitem id="menu_cmc_cost_driver"
+              name="Cost Drivers"
+              parent="menu_cmc_cfg_master"
+              action="action_cmc_cost_driver"
+              sequence="10"/>
+</odoo>

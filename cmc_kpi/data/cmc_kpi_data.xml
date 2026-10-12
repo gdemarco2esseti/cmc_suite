@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="cmc_measure_scrap_qty" model="cmc.cost.driver">
+        <field name="name">Scrapped quantity (stock)</field>
+        <field name="code">KPI_SCRAP_QTY</field>
+        <field name="measure_kind">statistical</field>
+        <field name="measure_type">transaction</field>
+        <field name="company_id" eval="False"/>
+        <field name="source">feeder</field>
+        <field name="feeder_key">stock_scrap_qty</field>
+    </record>
+    <record id="cmc_measure_shipments" model="cmc.cost.driver">
+        <field name="name">Shipments</field>
+        <field name="code">KPI_SHIPMENTS</field>
+        <field name="measure_kind">statistical</field>
+        <field name="measure_type">transaction</field>
+        <field name="company_id" eval="False"/>
+        <field name="source">feeder</field>
+        <field name="feeder_key">stock_otd_shipped</field>
+    </record>
+    <record id="cmc_measure_shipments_on_time" model="cmc.cost.driver">
+        <field name="name">Shipments on time</field>
+        <field name="code">KPI_SHIPMENTS_ON_TIME</field>
+        <field name="measure_kind">statistical</field>
+        <field name="measure_type">transaction</field>
+        <field name="company_id" eval="False"/>
+        <field name="source">feeder</field>
+        <field name="feeder_key">stock_otd_on_time</field>
+    </record>
+</odoo>

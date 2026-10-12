@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+        <record id="rule_it_bs_functional_11" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="company_id" eval="False"/>
+            <field name="chart_template">it</field>
+            <field name="sequence">11</field>
+            <field name="account_code_prefix">11</field>
+            <field name="line_id" ref="line_intangible"/>
+        </record>
+        <record id="rule_it_bs_functional_12" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="company_id" eval="False"/>
+            <field name="chart_template">it</field>
+            <field name="sequence">12</field>
+            <field name="account_code_prefix">12</field>
+            <field name="line_id" ref="line_tangible"/>
+        </record>
+        <record id="rule_it_bs_functional_13" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="company_id" eval="False"/>
+            <field name="chart_template">it</field>
+            <field name="sequence">13</field>
+            <field name="account_code_prefix">13</field>
+            <field name="line_id" ref="line_fin_assets_nc"/>
+        </record>
+        <record id="rule_it_bs_functional_1401" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="company_id" eval="False"/>
+            <field name="chart_template">it</field>
+            <field name="sequence">14</field>
+            <field name="account_code_prefix">1401</field>
+            <field name="line_id" ref="line_inv_raw"/>
+        </record>
+        <record id="rule_it_bs_functional_14" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="company_id" eval="False"/>
+            <field name="chart_template">it</field>
+            <field name="sequence">15</field>
+            <field name="account_code_prefix">14</field>
+            <field name="line_id" ref="line_inv_finished"/>
+        </record>
+        <record id="rule_it_bs_functional_154" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="company_id" eval="False"/>
+            <field name="chart_template">it</field>
+            <field name="sequence">16</field>
+            <field name="account_code_prefix">154</field>
+            <field name="line_id" ref="line_receivables"/>
+        </record>
+        <record id="rule_it_bs_functional_2301" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="company_id" eval="False"/>
+            <field name="chart_template">it</field>
+            <field name="sequence">20</field>
+            <field name="account_code_prefix">2301</field>
+            <field name="line_id" ref="line_op_liab_nc"/>
+        </record>
+        <record id="rule_it_bs_functional_2410" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="company_id" eval="False"/>
+            <field name="chart_template">it</field>
+            <field name="sequence">21</field>
+            <field name="account_code_prefix">2410</field>
+            <field name="line_id" ref="line_fin_debt_nc"/>
+        </record>
+        <record id="rule_it_bs_functional_2411" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="company_id" eval="False"/>
+            <field name="chart_template">it</field>
+            <field name="sequence">22</field>
+            <field name="account_code_prefix">2411</field>
+            <field name="line_id" ref="line_fin_debt_c"/>
+        </record>
+        <record id="rule_it_bs_functional_2423" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="company_id" eval="False"/>
+            <field name="chart_template">it</field>
+            <field name="sequence">23</field>
+            <field name="account_code_prefix">2423</field>
+            <field name="line_id" ref="line_fin_debt_c"/>
+        </record>
+        <record id="rule_it_bs_functional_2440" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_bs_functional"/>
+            <field name="company_id" eval="False"/>
+            <field name="chart_template">it</field>
+            <field name="sequence">24</field>
+            <field name="account_code_prefix">2440</field>
+            <field name="line_id" ref="line_fin_debt_c"/>
+        </record>
+        <record id="rule_it_pl_value_added_4121" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="company_id" eval="False"/>
+            <field name="chart_template">it</field>
+            <field name="sequence">30</field>
+            <field name="account_code_prefix">4121</field>
+            <field name="line_id" ref="line_raw_inv_change"/>
+        </record>
+        <record id="rule_it_pl_value_added_4131" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="company_id" eval="False"/>
+            <field name="chart_template">it</field>
+            <field name="sequence">31</field>
+            <field name="account_code_prefix">4131</field>
+            <field name="line_id" ref="line_raw_inv_change"/>
+        </record>
+        <record id="rule_it_pl_value_added_41" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="company_id" eval="False"/>
+            <field name="chart_template">it</field>
+            <field name="sequence">32</field>
+            <field name="account_code_prefix">41</field>
+            <field name="line_id" ref="line_purchases"/>
+        </record>
+        <record id="rule_it_pl_value_added_4403" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="company_id" eval="False"/>
+            <field name="chart_template">it</field>
+            <field name="sequence">33</field>
+            <field name="account_code_prefix">4403</field>
+            <field name="line_id" ref="line_severance"/>
+        </record>
+        <record id="rule_it_pl_value_added_44" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="company_id" eval="False"/>
+            <field name="chart_template">it</field>
+            <field name="sequence">34</field>
+            <field name="account_code_prefix">44</field>
+            <field name="line_id" ref="line_personnel"/>
+        </record>
+        <record id="rule_it_pl_value_added_45" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="company_id" eval="False"/>
+            <field name="chart_template">it</field>
+            <field name="sequence">35</field>
+            <field name="account_code_prefix">45</field>
+            <field name="line_id" ref="line_depreciation"/>
+        </record>
+        <record id="rule_it_pl_value_added_46" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="company_id" eval="False"/>
+            <field name="chart_template">it</field>
+            <field name="sequence">36</field>
+            <field name="account_code_prefix">46</field>
+            <field name="line_id" ref="line_depreciation"/>
+        </record>
+        <record id="rule_it_pl_value_added_47" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="company_id" eval="False"/>
+            <field name="chart_template">it</field>
+            <field name="sequence">37</field>
+            <field name="account_code_prefix">47</field>
+            <field name="line_id" ref="line_depreciation"/>
+        </record>
+        <record id="rule_it_pl_value_added_48" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="company_id" eval="False"/>
+            <field name="chart_template">it</field>
+            <field name="sequence">38</field>
+            <field name="account_code_prefix">48</field>
+            <field name="line_id" ref="line_provisions"/>
+        </record>
+        <record id="rule_it_pl_value_added_51" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="company_id" eval="False"/>
+            <field name="chart_template">it</field>
+            <field name="sequence">40</field>
+            <field name="account_code_prefix">51</field>
+            <field name="line_id" ref="line_fin_income"/>
+        </record>
+        <record id="rule_it_pl_value_added_52" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="company_id" eval="False"/>
+            <field name="chart_template">it</field>
+            <field name="sequence">41</field>
+            <field name="account_code_prefix">52</field>
+            <field name="line_id" ref="line_fin_charges"/>
+        </record>
+        <record id="rule_it_pl_value_added_81" model="cmc.fin.mapping.rule">
+            <field name="scheme_id" ref="scheme_pl_value_added"/>
+            <field name="company_id" eval="False"/>
+            <field name="chart_template">it</field>
+            <field name="sequence">42</field>
+            <field name="account_code_prefix">81</field>
+            <field name="line_id" ref="line_taxes"/>
+        </record>
+</odoo>

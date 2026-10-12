@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_cost_object_list" model="ir.ui.view">
+        <field name="name">cmc.cost.object.list</field>
+        <field name="model">cmc.cost.object</field>
+        <field name="arch" type="xml">
+            <list string="Cost Objects" create="false" edit="false" delete="false">
+                <field name="object_type"/>
+                <field name="res_model"/>
+                <field name="res_id"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_cost_object_search" model="ir.ui.view">
+        <field name="name">cmc.cost.object.search</field>
+        <field name="model">cmc.cost.object</field>
+        <field name="arch" type="xml">
+            <search string="Cost Objects">
+                <field name="res_model"/>
+                <filter name="product" string="Products" domain="[('object_type', '=', 'product')]"/>
+                <filter name="customer" string="Customers" domain="[('object_type', '=', 'customer')]"/>
+                <filter name="supplier" string="Suppliers" domain="[('object_type', '=', 'supplier')]"/>
+                <filter name="project" string="Projects" domain="[('object_type', '=', 'project')]"/>
+                <group>
+                    <filter name="group_type" string="Type" context="{'group_by': 'object_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cmc_cost_object" model="ir.actions.act_window">
+        <field name="name">Cost Objects</field>
+        <field name="res_model">cmc.cost.object</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <menuitem id="menu_cmc_cost_object"
+              name="Cost Objects"
+              parent="menu_cmc_cfg_master"
+              action="action_cmc_cost_object"
+              sequence="20"/>
+</odoo>

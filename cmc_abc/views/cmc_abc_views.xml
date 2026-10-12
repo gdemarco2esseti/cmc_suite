@@ -1,0 +1,1055 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Activity dictionary: process > activity > task -->
+    <record id="view_cmc_abc_activity_list" model="ir.ui.view">
+        <field name="name">cmc.abc.activity.list</field>
+        <field name="model">cmc.abc.activity</field>
+        <field name="arch" type="xml">
+            <list string="Activities">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="node_type"/>
+                <field name="parent_id"/>
+                <field name="cost_level" optional="show"/>
+                <field name="driver_id"/>
+                <field name="is_sustaining" optional="show"/>
+                <field name="owner_id" optional="hide"/>
+                <field name="cmc_attribute_value_ids" widget="many2many_tags" optional="show"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_abc_activity_search" model="ir.ui.view">
+        <field name="name">cmc.abc.activity.search</field>
+        <field name="model">cmc.abc.activity</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" filter_domain="['|', ('name', 'ilike', self), ('code', 'ilike', self)]"/>
+                <filter name="processes" string="Processes" domain="[('node_type', '=', 'process')]"/>
+                <filter name="activities" string="Activities" domain="[('node_type', '=', 'activity')]"/>
+                <filter name="sustaining" string="Business-sustaining" domain="[('is_sustaining', '=', True)]"/>
+                <group>
+                    <filter name="group_parent" string="Process" context="{'group_by': 'parent_id'}"/>
+                    <filter name="group_level" string="Cost level" context="{'group_by': 'cost_level'}"/>
+                    <filter name="group_type" string="Type" context="{'group_by': 'node_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_cmc_abc_activity_form" model="ir.ui.view">
+        <field name="name">cmc.abc.activity.form</field>
+        <field name="model">cmc.abc.activity</field>
+        <field name="arch" type="xml">
+            <form string="Activity">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="node_type"/>
+                            <field name="parent_id"
+                                   domain="[('node_type', '=', 'process' if node_type == 'activity' else 'activity')]"
+                                   invisible="node_type == 'process'" required="node_type == 'task'"/>
+                            <field name="owner_id"/>
+                        </group>
+                        <group>
+                            <field name="cost_level"/>
+                            <field name="is_sustaining"/>
+                            <field name="driver_id" domain="[('measure_kind', '=', 'allocation')]"
+                                   invisible="node_type != 'activity'"/>
+                            <field name="active"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Attributes" name="attributes">
+                            <field name="cmc_attribute_value_ids" widget="many2many_tags"/>
+                        </page>
+                        <page string="Performance Measures" name="measures" invisible="node_type != 'activity'">
+                            <field name="measure_line_ids">
+                                <list editable="bottom">
+                                    <field name="role"/>
+                                    <field name="measure_id" domain="[('measure_kind', '=', 'statistical')]"/>
+                                    <field name="target"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Children" name="children" invisible="node_type == 'task'">
+                            <field name="child_ids">
+                                <list>
+                                    <field name="code"/>
+                                    <field name="name"/>
+                                    <field name="node_type"/>
+                                    <field name="cost_level"/>
+                                    <field name="driver_id"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_abc_activity" model="ir.actions.act_window">
+        <field name="name">ABC Activities</field>
+        <field name="res_model">cmc.abc.activity</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_group_parent': 1}</field>
+    </record>
+
+    <!-- Resources -->
+    <record id="view_cmc_abc_resource_list" model="ir.ui.view">
+        <field name="name">cmc.abc.resource.list</field>
+        <field name="model">cmc.abc.resource</field>
+        <field name="arch" type="xml">
+            <list string="Resources">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="center_id"/>
+                <field name="cost_element_ids" widget="many2many_tags"/>
+                <field name="driver_basis"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_abc_resource_form" model="ir.ui.view">
+        <field name="name">cmc.abc.resource.form</field>
+        <field name="model">cmc.abc.resource</field>
+        <field name="arch" type="xml">
+            <form string="Resource">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="center_id"/>
+                            <field name="cost_element_ids" widget="many2many_tags"/>
+                        </group>
+                        <group>
+                            <field name="driver_basis"/>
+                            <field name="driver_id"/>
+                            <field name="active"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_abc_resource" model="ir.actions.act_window">
+        <field name="name">ABC Resources</field>
+        <field name="res_model">cmc.abc.resource</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Cost driver: ABC level and index components -->
+    <record id="view_cmc_cost_driver_form_abc" model="ir.ui.view">
+        <field name="name">cmc.cost.driver.form.abc</field>
+        <field name="model">cmc.cost.driver</field>
+        <field name="inherit_id" ref="cmc_base.view_cmc_cost_driver_form"/>
+        <field name="arch" type="xml">
+            <field name="measure_type" position="after">
+                <field name="cmc_abc_level"/>
+            </field>
+            <field name="note" position="before">
+                <field name="cmc_component_ids" invisible="measure_kind == 'statistical'">
+                    <list editable="bottom">
+                        <field name="component_driver_id"/>
+                        <field name="weight"/>
+                    </list>
+                </field>
+            </field>
+        </field>
+    </record>
+
+    <!-- Run -->
+    <record id="view_cmc_abc_run_form" model="ir.ui.view">
+        <field name="name">cmc.abc.run.form</field>
+        <field name="model">cmc.abc.run</field>
+        <field name="arch" type="xml">
+            <form string="ABC Run">
+                <header>
+                    <button name="action_compute" string="Compute" type="object"
+                            class="oe_highlight" invisible="state == 'done'"/>
+                    <button name="action_cmc_prefill_lines" string="Prefill Edges from Facts" type="object"
+                            invisible="state == 'done'"
+                            confirm="Prefilling replaces the current lines with the quantities read from the data. Continue?"/>
+                    <button name="action_reset_to_draft" string="Reset to Draft"
+                            type="object" invisible="state != 'done'"
+                            confirm="Resetting deletes the computed results. Continue?"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-warning" role="alert"
+                         invisible="not unallocated_amount">
+                        Some activities carry cost but have no driver line in
+                        this run: that cost is NOT allocated to any cost object.
+                        Unallocated:
+                        <field name="unallocated_amount" class="oe_inline"/>
+                    </div>
+                    <div class="alert alert-info" role="alert"
+                         invisible="state != 'done' or not unassigned_cost">
+                        Cost of the resource centers that no resource or direct trace picked up (reported, never charged):
+                        <field name="unassigned_cost" class="oe_inline"/>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date_from" readonly="state == 'done'"/>
+                            <field name="date_to" readonly="state == 'done'"/>
+                            <field name="trace_direct" readonly="state == 'done'"/>
+                            <field name="compute_burdens" readonly="state == 'done'"/>
+                        </group>
+                        <group>
+                            <field name="output_measure_id" readonly="state == 'done'"/>
+                            <field name="defect_measure_id" readonly="state == 'done'"/>
+                            <field name="traditional_basis" readonly="state == 'done'"/>
+                            <field name="traditional_driver_id" readonly="state == 'done'"
+                                   invisible="traditional_basis != 'volume'" required="traditional_basis == 'volume'"/>
+                            <field name="traditional_version_id" readonly="state == 'done'"
+                                   invisible="traditional_basis != 'rate'" required="traditional_basis == 'rate'"/>
+                            <field name="company_id" readonly="state == 'done'" groups="base.group_multi_company"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <group string="Totals" invisible="state != 'done'">
+                        <group>
+                            <field name="total_resource_cost"/>
+                            <field name="total_traced_cost"/>
+                            <field name="total_activity_cost"/>
+                            <field name="in_scope_cost"/>
+                        </group>
+                        <group>
+                            <field name="total_object_cost"/>
+                            <field name="unused_capacity_cost"/>
+                            <field name="sustaining_cost"/>
+                            <field name="copq_total" invisible="not defect_measure_id"/>
+                            <field name="idle_burden_rate" invisible="not compute_burdens"/>
+                            <field name="sustaining_burden_rate" invisible="not compute_burdens"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Resource Drivers" name="resource_lines">
+                            <field name="resource_line_ids" readonly="state == 'done'">
+                                <list editable="bottom">
+                                    <field name="resource_id"/>
+                                    <field name="activity_id" domain="[('node_type', '=', 'activity')]"/>
+                                    <field name="percent"/>
+                                    <field name="quantity"/>
+                                    <field name="company_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Network Edges" name="lines">
+                            <field name="line_ids" readonly="state == 'done'">
+                                <list editable="bottom">
+                                    <field name="activity_id"/>
+                                    <field name="source_object_id"/>
+                                    <field name="target_activity_id"/>
+                                    <field name="cost_object_id"/>
+                                    <field name="product_id" optional="hide"/>
+                                    <field name="driver_id"/>
+                                    <field name="output_units" optional="hide"/>
+                                    <field name="batch_size" optional="hide"/>
+                                    <field name="driver_qty"/>
+                                    <field name="company_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Practical Capacity" name="capacity">
+                            <field name="capacity_line_ids" readonly="state == 'done'">
+                                <list editable="bottom">
+                                    <field name="activity_id"/>
+                                    <field name="practical_capacity"/>
+                                    <field name="company_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Activity Costs" name="activity_costs" invisible="state != 'done'">
+                            <field name="activity_cost_ids" readonly="1">
+                                <list create="false" edit="false">
+                                    <field name="process_id"/>
+                                    <field name="activity_id"/>
+                                    <field name="cost_level" optional="hide"/>
+                                    <field name="resource_cost" sum="Total"/>
+                                    <field name="received_cost" sum="Total"/>
+                                    <field name="total_cost" sum="Total"/>
+                                    <field name="fixed_cost" optional="hide"/>
+                                    <field name="variable_cost" optional="hide"/>
+                                    <field name="used_qty"/>
+                                    <field name="practical_capacity" optional="hide"/>
+                                    <field name="rate"/>
+                                    <field name="fixed_rate" optional="hide"/>
+                                    <field name="variable_rate" optional="hide"/>
+                                    <field name="charged_cost" sum="Total"/>
+                                    <field name="unused_cost" sum="Total"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Results" name="results" invisible="state != 'done'">
+                            <field name="result_ids" readonly="1">
+                                <list create="false" edit="false">
+                                    <field name="cost_object_id"/>
+                                    <field name="traced_cost" sum="Total"/>
+                                    <field name="activity_cost" sum="Total"/>
+                                    <field name="object_cost" sum="Total"/>
+                                    <field name="amount" sum="Total"/>
+                                    <field name="fixed_amount" optional="hide"/>
+                                    <field name="variable_amount" optional="hide"/>
+                                    <field name="quantity" optional="hide"/>
+                                    <field name="unit_cost" optional="show"/>
+                                    <field name="traditional_cost" optional="show"/>
+                                    <field name="distortion_percent" optional="show"/>
+                                    <field name="costing_flag" widget="badge" optional="show"/>
+                                    <field name="idle_burden" optional="hide"/>
+                                    <field name="sustaining_burden" optional="hide"/>
+                                    <field name="full_cost" optional="hide"/>
+                                    <field name="nva_cost" optional="hide"/>
+                                    <field name="defect_qty" optional="hide"/>
+                                    <field name="copq_amount" optional="hide"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Performance" name="performance" invisible="state != 'done' or not performance_ids">
+                            <field name="performance_ids" readonly="1">
+                                <list create="false" edit="false">
+                                    <field name="activity_id"/>
+                                    <field name="activity_cost" sum="Total"/>
+                                    <field name="output_qty"/>
+                                    <field name="cost_per_output"/>
+                                    <field name="cycle_time"/>
+                                    <field name="defect_qty"/>
+                                    <field name="quality_rate"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Flows" name="flows" invisible="state != 'done'">
+                            <field name="flow_ids" readonly="1">
+                                <list create="false" edit="false">
+                                    <field name="stage"/>
+                                    <field name="center_id" optional="hide"/>
+                                    <field name="source_resource_id" optional="show"/>
+                                    <field name="cost_element_id" optional="hide"/>
+                                    <field name="source_activity_id"/>
+                                    <field name="source_object_id" optional="hide"/>
+                                    <field name="target_activity_id"/>
+                                    <field name="target_object_id"/>
+                                    <field name="driver_qty"/>
+                                    <field name="rate"/>
+                                    <field name="amount" sum="Total"/>
+                                    <field name="fixed_amount" optional="hide"/>
+                                    <field name="variable_amount" optional="hide"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Activity Pools" name="activity_results" invisible="state != 'done'">
+                            <field name="activity_result_ids" readonly="1">
+                                <list create="false" edit="false">
+                                    <field name="activity_id"/>
+                                    <field name="cost_object_id"/>
+                                    <field name="driver_qty"/>
+                                    <field name="pool_amount"/>
+                                    <field name="amount" sum="Total"/>
+                                    <field name="unallocated"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Reclassified" name="reclass">
+                            <field name="cmc_reclass_json" widget="cmc_reclass" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cmc_abc_run_list" model="ir.ui.view">
+        <field name="name">cmc.abc.run.list</field>
+        <field name="model">cmc.abc.run</field>
+        <field name="arch" type="xml">
+            <list string="ABC Runs">
+                <field name="name"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="state" widget="badge"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cmc_abc_run" model="ir.actions.act_window">
+        <field name="name">Activity-Based Costing</field>
+        <field name="res_model">cmc.abc.run</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Drill-back and analysis over the computed runs -->
+    <record id="view_cmc_abc_flow_list" model="ir.ui.view">
+        <field name="name">cmc.abc.flow.list</field>
+        <field name="model">cmc.abc.flow</field>
+        <field name="arch" type="xml">
+            <list string="Cost Flows" create="false" edit="false">
+                <field name="run_id" optional="hide"/>
+                <field name="stage"/>
+                <field name="source_resource_id"/>
+                <field name="cost_element_id" optional="show"/>
+                <field name="source_activity_id"/>
+                <field name="source_object_id" optional="hide"/>
+                <field name="target_activity_id"/>
+                <field name="target_object_id"/>
+                <field name="driver_qty"/>
+                <field name="rate"/>
+                <field name="amount" sum="Total"/>
+                <field name="fixed_amount" optional="hide" sum="Total"/>
+                <field name="variable_amount" optional="hide" sum="Total"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_abc_flow_search" model="ir.ui.view">
+        <field name="name">cmc.abc.flow.search</field>
+        <field name="model">cmc.abc.flow</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="run_id"/>
+                <field name="target_object_id"/>
+                <field name="target_activity_id"/>
+                <field name="source_activity_id"/>
+                <group>
+                    <filter name="group_run" string="Run" context="{'group_by': 'run_id'}"/>
+                    <filter name="group_stage" string="Stage" context="{'group_by': 'stage'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cmc_abc_bill_of_activities" model="ir.actions.act_window">
+        <field name="name">Bill of Activities</field>
+        <field name="res_model">cmc.abc.flow</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[('stage', 'in', ('trace', 'object'))]</field>
+        <field name="context">{'group_by': ['run_id', 'target_object_id']}</field>
+    </record>
+
+    <record id="action_cmc_abc_bill_of_costs" model="ir.actions.act_window">
+        <field name="name">Bill of Costs</field>
+        <field name="res_model">cmc.abc.flow</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[('stage', 'in', ('resource', 'tag', 'activity'))]</field>
+        <field name="context">{'group_by': ['run_id', 'target_activity_id']}</field>
+    </record>
+
+    <record id="view_cmc_abc_result_list" model="ir.ui.view">
+        <field name="name">cmc.abc.result.list</field>
+        <field name="model">cmc.abc.result</field>
+        <field name="arch" type="xml">
+            <list string="ABC vs Traditional" create="false" edit="false">
+                <field name="run_id"/>
+                <field name="cost_object_id"/>
+                <field name="amount" sum="Total"/>
+                <field name="traditional_cost" sum="Total"/>
+                <field name="distortion_percent"/>
+                <field name="costing_flag" widget="badge"/>
+                <field name="unit_cost" optional="hide"/>
+                <field name="full_cost" optional="hide"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cmc_abc_traditional" model="ir.actions.act_window">
+        <field name="name">ABC vs Traditional</field>
+        <field name="res_model">cmc.abc.result</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[('costing_flag', '!=', False)]</field>
+        <field name="context">{'group_by': ['run_id']}</field>
+    </record>
+
+    <record id="view_cmc_abc_activity_cost_list" model="ir.ui.view">
+        <field name="name">cmc.abc.activity.cost.list</field>
+        <field name="model">cmc.abc.activity.cost</field>
+        <field name="arch" type="xml">
+            <list string="Activity Costs" create="false" edit="false">
+                <field name="run_id"/>
+                <field name="process_id"/>
+                <field name="activity_id"/>
+                <field name="cost_level" optional="hide"/>
+                <field name="resource_cost" sum="Total"/>
+                <field name="received_cost" sum="Total"/>
+                <field name="total_cost" sum="Total"/>
+                <field name="practical_capacity"/>
+                <field name="used_qty"/>
+                <field name="rate"/>
+                <field name="charged_cost" sum="Total"/>
+                <field name="unused_cost" sum="Total"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cmc_abc_unused_capacity" model="ir.actions.act_window">
+        <field name="name">Unused Capacity</field>
+        <field name="res_model">cmc.abc.activity.cost</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[('unused_cost', '!=', 0)]</field>
+        <field name="context">{'group_by': ['run_id']}</field>
+    </record>
+
+    <record id="action_cmc_abc_process_costs" model="ir.actions.act_window">
+        <field name="name">Cost by Process</field>
+        <field name="res_model">cmc.abc.activity.cost</field>
+        <field name="view_mode">list</field>
+        <field name="context">{'group_by': ['run_id', 'process_id']}</field>
+    </record>
+
+    <!-- Activity-Based Management (WP-08) -->
+    <record id="view_cmc_measure_quantity_list_abc" model="ir.ui.view">
+        <field name="name">cmc.measure.quantity.list.abc</field>
+        <field name="model">cmc.measure.quantity</field>
+        <field name="inherit_id" ref="cmc_base.view_cmc_measure_quantity_list"/>
+        <field name="arch" type="xml">
+            <field name="cost_object_id" position="after">
+                <field name="activity_id" optional="show"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Process view and activity x center matrix -->
+    <record id="view_cmc_abc_activity_cost_pivot" model="ir.ui.view">
+        <field name="name">cmc.abc.activity.cost.pivot</field>
+        <field name="model">cmc.abc.activity.cost</field>
+        <field name="arch" type="xml">
+            <pivot string="Activity Costs">
+                <field name="process_id" type="row"/>
+                <field name="activity_id" type="row"/>
+                <field name="run_id" type="col"/>
+                <field name="resource_cost" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_cmc_abc_activity_cost_search" model="ir.ui.view">
+        <field name="name">cmc.abc.activity.cost.search</field>
+        <field name="model">cmc.abc.activity.cost</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="run_id"/>
+                <field name="activity_id"/>
+                <field name="process_id"/>
+                <filter name="pareto_a" string="Class A" domain="[('pareto_class', '=', 'A')]"/>
+                <group>
+                    <filter name="group_run" string="Run" context="{'group_by': 'run_id'}"/>
+                    <filter name="group_period" string="Month" context="{'group_by': 'period:month'}"/>
+                    <filter name="group_process" string="Process" context="{'group_by': 'process_id'}"/>
+                    <filter name="group_va" string="Value-added class" context="{'group_by': 'va_class_value_id'}"/>
+                    <filter name="group_coq" string="Cost of quality" context="{'group_by': 'coq_value_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cmc_abm_process" model="ir.actions.act_window">
+        <field name="name">Process View</field>
+        <field name="res_model">cmc.abc.activity.cost</field>
+        <field name="view_mode">pivot,list</field>
+    </record>
+
+    <record id="view_cmc_abc_flow_pivot" model="ir.ui.view">
+        <field name="name">cmc.abc.flow.pivot</field>
+        <field name="model">cmc.abc.flow</field>
+        <field name="arch" type="xml">
+            <pivot string="Activity x Center">
+                <field name="target_activity_id" type="row"/>
+                <field name="center_id" type="col"/>
+                <field name="amount" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="action_cmc_abm_matrix" model="ir.actions.act_window">
+        <field name="name">Activity x Center Matrix</field>
+        <field name="res_model">cmc.abc.flow</field>
+        <field name="view_mode">pivot,list</field>
+        <field name="domain">[('stage', 'in', ('resource', 'tag'))]</field>
+        <field name="context">{'search_default_group_run': 1}</field>
+    </record>
+
+    <!-- VA / NVA roll-up per product and activity -->
+    <record id="action_cmc_abm_value_added" model="ir.actions.act_window">
+        <field name="name">Value-Added Roll-up</field>
+        <field name="res_model">cmc.abc.activity.cost</field>
+        <field name="view_mode">pivot,list</field>
+        <field name="context">{'pivot_row_groupby': ['va_class_value_id', 'activity_id'], 'pivot_column_groupby': ['run_id'], 'pivot_measures': ['resource_cost']}</field>
+    </record>
+
+    <record id="view_cmc_abc_result_pivot" model="ir.ui.view">
+        <field name="name">cmc.abc.result.pivot</field>
+        <field name="model">cmc.abc.result</field>
+        <field name="arch" type="xml">
+            <pivot string="Waste per Product">
+                <field name="cost_object_id" type="row"/>
+                <field name="run_id" type="col"/>
+                <field name="activity_cost" type="measure"/>
+                <field name="nva_cost" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_cmc_abc_result_waste_list" model="ir.ui.view">
+        <field name="name">cmc.abc.result.waste.list</field>
+        <field name="model">cmc.abc.result</field>
+        <field name="arch" type="xml">
+            <list string="Waste per Product" create="false" edit="false">
+                <field name="run_id"/>
+                <field name="cost_object_id"/>
+                <field name="activity_cost" sum="Total"/>
+                <field name="nva_cost" sum="Total"/>
+                <field name="defect_qty" optional="hide"/>
+                <field name="copq_amount" optional="show" sum="Total"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cmc_abm_waste" model="ir.actions.act_window">
+        <field name="name">Waste per Product (NVA)</field>
+        <field name="res_model">cmc.abc.result</field>
+        <field name="view_mode">pivot,list</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_cmc_abc_result_pivot')}),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_cmc_abc_result_waste_list')})]"/>
+    </record>
+
+    <!-- Pareto and quadrant -->
+    <record id="view_cmc_abc_activity_cost_pareto_graph" model="ir.ui.view">
+        <field name="name">cmc.abc.activity.cost.pareto.graph</field>
+        <field name="model">cmc.abc.activity.cost</field>
+        <field name="arch" type="xml">
+            <graph string="Pareto of Activity Costs" type="bar" order="DESC">
+                <field name="activity_id"/>
+                <field name="resource_cost" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_cmc_abc_activity_cost_pareto_list" model="ir.ui.view">
+        <field name="name">cmc.abc.activity.cost.pareto.list</field>
+        <field name="model">cmc.abc.activity.cost</field>
+        <field name="arch" type="xml">
+            <list string="Pareto" create="false" edit="false" default_order="run_id, pareto_rank">
+                <field name="run_id"/>
+                <field name="pareto_rank"/>
+                <field name="activity_id"/>
+                <field name="resource_cost" sum="Total"/>
+                <field name="cost_share"/>
+                <field name="cumulative_share"/>
+                <field name="pareto_class" widget="badge"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cmc_abm_pareto" model="ir.actions.act_window">
+        <field name="name">Pareto of Activities</field>
+        <field name="res_model">cmc.abc.activity.cost</field>
+        <field name="view_mode">graph,list</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'graph', 'view_id': ref('view_cmc_abc_activity_cost_pareto_graph')}),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_cmc_abc_activity_cost_pareto_list')})]"/>
+    </record>
+
+    <record id="view_cmc_abc_activity_cost_quadrant_list" model="ir.ui.view">
+        <field name="name">cmc.abc.activity.cost.quadrant.list</field>
+        <field name="model">cmc.abc.activity.cost</field>
+        <field name="arch" type="xml">
+            <list string="Quadrant" create="false" edit="false" default_group_by="va_class_value_id">
+                <field name="run_id"/>
+                <field name="activity_id"/>
+                <field name="va_class_value_id"/>
+                <field name="efficiency_value_id"/>
+                <field name="coq_value_id" optional="hide"/>
+                <field name="resource_cost" sum="Total"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cmc_abm_quadrant" model="ir.actions.act_window">
+        <field name="name">Value-Added x Efficiency Quadrant</field>
+        <field name="res_model">cmc.abc.activity.cost</field>
+        <field name="view_mode">pivot,list</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'pivot'}),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_cmc_abc_activity_cost_quadrant_list')})]"/>
+        <field name="context">{'pivot_row_groupby': ['va_class_value_id'], 'pivot_column_groupby': ['efficiency_value_id'], 'pivot_measures': ['resource_cost']}</field>
+    </record>
+
+    <!-- Performance measures per activity -->
+    <record id="view_cmc_abc_activity_measure_list" model="ir.ui.view">
+        <field name="name">cmc.abc.activity.measure.list</field>
+        <field name="model">cmc.abc.activity.measure</field>
+        <field name="arch" type="xml">
+            <list string="Activity Measures" editable="bottom">
+                <field name="activity_id"/>
+                <field name="role"/>
+                <field name="measure_id"/>
+                <field name="target"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cmc_abm_measure" model="ir.actions.act_window">
+        <field name="name">Activity Measures</field>
+        <field name="res_model">cmc.abc.activity.measure</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <record id="view_cmc_abc_activity_performance_list" model="ir.ui.view">
+        <field name="name">cmc.abc.activity.performance.list</field>
+        <field name="model">cmc.abc.activity.performance</field>
+        <field name="arch" type="xml">
+            <list string="Activity Performance" create="false" edit="false">
+                <field name="month"/>
+                <field name="run_id" optional="hide"/>
+                <field name="activity_id"/>
+                <field name="activity_cost" sum="Total"/>
+                <field name="output_qty"/>
+                <field name="cost_per_output"/>
+                <field name="cycle_time"/>
+                <field name="defect_qty"/>
+                <field name="quality_rate"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_abc_activity_performance_graph" model="ir.ui.view">
+        <field name="name">cmc.abc.activity.performance.graph</field>
+        <field name="model">cmc.abc.activity.performance</field>
+        <field name="arch" type="xml">
+            <graph string="Cost per Output Trend" type="line">
+                <field name="month" interval="month"/>
+                <field name="activity_id"/>
+                <field name="cost_per_output" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_cmc_abc_activity_performance_pivot" model="ir.ui.view">
+        <field name="name">cmc.abc.activity.performance.pivot</field>
+        <field name="model">cmc.abc.activity.performance</field>
+        <field name="arch" type="xml">
+            <pivot string="Activity Performance">
+                <field name="activity_id" type="row"/>
+                <field name="month" interval="month" type="col"/>
+                <field name="cost_per_output" type="measure"/>
+                <field name="output_qty" type="measure"/>
+                <field name="quality_rate" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_cmc_abc_activity_performance_search" model="ir.ui.view">
+        <field name="name">cmc.abc.activity.performance.search</field>
+        <field name="model">cmc.abc.activity.performance</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="activity_id"/>
+                <field name="run_id"/>
+                <group>
+                    <filter name="group_activity" string="Activity" context="{'group_by': 'activity_id'}"/>
+                    <filter name="group_month" string="Month" context="{'group_by': 'month:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cmc_abm_performance" model="ir.actions.act_window">
+        <field name="name">Activity Performance</field>
+        <field name="res_model">cmc.abc.activity.performance</field>
+        <field name="view_mode">graph,pivot,list</field>
+    </record>
+
+    <!-- Improvement initiatives -->
+    <record id="view_cmc_abm_initiative_list" model="ir.ui.view">
+        <field name="name">cmc.abm.initiative.list</field>
+        <field name="model">cmc.abm.initiative</field>
+        <field name="arch" type="xml">
+            <list string="Initiatives">
+                <field name="name"/>
+                <field name="activity_id"/>
+                <field name="project_type" optional="show"/>
+                <field name="owner_id" optional="show"/>
+                <field name="expected_annual_saving" sum="Total"/>
+                <field name="one_time_cost" sum="Total"/>
+                <field name="payback_months"/>
+                <field name="realized_annual_saving" sum="Total"/>
+                <field name="realization_percent"/>
+                <field name="benefit_status" widget="badge"/>
+                <field name="currency_id" column_invisible="1"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_abm_initiative_form" model="ir.ui.view">
+        <field name="name">cmc.abm.initiative.form</field>
+        <field name="model">cmc.abm.initiative</field>
+        <field name="arch" type="xml">
+            <form string="Initiative">
+                <header>
+                    <field name="benefit_status" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group string="Case">
+                            <field name="activity_id"/>
+                            <field name="project_type"/>
+                            <field name="owner_id"/>
+                            <field name="baseline_run_id"/>
+                            <field name="expected_driver_reduction"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group string="Business case">
+                            <field name="baseline_annual_cost"/>
+                            <field name="expected_annual_saving"/>
+                            <field name="one_time_cost"/>
+                            <field name="payback_years"/>
+                            <field name="payback_months"/>
+                        </group>
+                    </group>
+                    <group string="Realisation">
+                        <group>
+                            <field name="review_run_id"/>
+                            <field name="resource_action"/>
+                        </group>
+                        <group>
+                            <field name="realized_annual_saving"/>
+                            <field name="realization_percent"/>
+                            <field name="freed_capacity_qty"/>
+                            <field name="freed_capacity_cost"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cmc_abm_initiative_search" model="ir.ui.view">
+        <field name="name">cmc.abm.initiative.search</field>
+        <field name="model">cmc.abm.initiative</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="activity_id"/>
+                <field name="owner_id"/>
+                <group>
+                    <filter name="group_status" string="Status" context="{'group_by': 'benefit_status'}"/>
+                    <filter name="group_type" string="Project type" context="{'group_by': 'project_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cmc_abm_initiative" model="ir.actions.act_window">
+        <field name="name">Improvement Initiatives</field>
+        <field name="res_model">cmc.abm.initiative</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Benchmark -->
+    <record id="view_cmc_abm_benchmark_list" model="ir.ui.view">
+        <field name="name">cmc.abm.benchmark.list</field>
+        <field name="model">cmc.abm.benchmark</field>
+        <field name="arch" type="xml">
+            <list string="Benchmarks">
+                <field name="name"/>
+                <field name="run_ids" widget="many2many_tags"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_abm_benchmark_form" model="ir.ui.view">
+        <field name="name">cmc.abm.benchmark.form</field>
+        <field name="model">cmc.abm.benchmark</field>
+        <field name="arch" type="xml">
+            <form string="Benchmark">
+                <header>
+                    <button name="action_compute" string="Compute" type="object" class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <field name="run_ids" widget="many2many_tags"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>
+                    <field name="line_ids" readonly="1">
+                        <list create="false" edit="false" default_order="activity_code, unit_cost">
+                            <field name="activity_code"/>
+                            <field name="activity_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="period"/>
+                            <field name="unit_cost"/>
+                            <field name="best_unit_cost"/>
+                            <field name="gap_percent"/>
+                            <field name="is_best"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cmc_abm_benchmark_line_list" model="ir.ui.view">
+        <field name="name">cmc.abm.benchmark.line.list</field>
+        <field name="model">cmc.abm.benchmark.line</field>
+        <field name="arch" type="xml">
+            <list string="Benchmark Lines" create="false" edit="false" default_group_by="activity_code">
+                <field name="benchmark_id" optional="hide"/>
+                <field name="activity_code"/>
+                <field name="activity_id"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="period"/>
+                <field name="unit_cost"/>
+                <field name="best_unit_cost"/>
+                <field name="gap_percent"/>
+                <field name="is_best"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cmc_abm_benchmark" model="ir.actions.act_window">
+        <field name="name">Activity Benchmark</field>
+        <field name="res_model">cmc.abm.benchmark</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_cmc_abm_benchmark_line" model="ir.actions.act_window">
+        <field name="name">Benchmark Lines</field>
+        <field name="res_model">cmc.abm.benchmark.line</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <!-- Cost of quality -->
+    <record id="view_cmc_abc_activity_cost_coq_pivot" model="ir.ui.view">
+        <field name="name">cmc.abc.activity.cost.coq.pivot</field>
+        <field name="model">cmc.abc.activity.cost</field>
+        <field name="arch" type="xml">
+            <pivot string="Cost of Quality">
+                <field name="coq_value_id" type="row"/>
+                <field name="period" interval="month" type="col"/>
+                <field name="resource_cost" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_cmc_abc_activity_cost_coq_graph" model="ir.ui.view">
+        <field name="name">cmc.abc.activity.cost.coq.graph</field>
+        <field name="model">cmc.abc.activity.cost</field>
+        <field name="arch" type="xml">
+            <graph string="Cost of Quality Trend" type="bar" stacked="1">
+                <field name="period" interval="month"/>
+                <field name="coq_value_id"/>
+                <field name="resource_cost" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="action_cmc_abm_coq" model="ir.actions.act_window">
+        <field name="name">Cost of Quality</field>
+        <field name="res_model">cmc.abc.activity.cost</field>
+        <field name="view_mode">pivot,graph,list</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_cmc_abc_activity_cost_coq_pivot')}),
+            (0, 0, {'view_mode': 'graph', 'view_id': ref('view_cmc_abc_activity_cost_coq_graph')}),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_cmc_abc_activity_cost_list')})]"/>
+    </record>
+
+    <!-- Menus -->
+    <menuitem id="menu_cmc_sec_abm"
+              name="Activity-Based Management"
+              parent="cmc_base.menu_cmc_operations"
+              sequence="55"/>
+    <menuitem id="menu_cmc_abm_process" name="Process View"
+              parent="menu_cmc_sec_abm" action="action_cmc_abm_process" sequence="10"/>
+    <menuitem id="menu_cmc_abm_matrix" name="Activity x Center Matrix"
+              parent="menu_cmc_sec_abm" action="action_cmc_abm_matrix" sequence="20"/>
+    <menuitem id="menu_cmc_abm_value_added" name="Value-Added Roll-up"
+              parent="menu_cmc_sec_abm" action="action_cmc_abm_value_added" sequence="30"/>
+    <menuitem id="menu_cmc_abm_waste" name="Waste per Product (NVA)"
+              parent="menu_cmc_sec_abm" action="action_cmc_abm_waste" sequence="40"/>
+    <menuitem id="menu_cmc_abm_pareto" name="Pareto of Activities"
+              parent="menu_cmc_sec_abm" action="action_cmc_abm_pareto" sequence="50"/>
+    <menuitem id="menu_cmc_abm_quadrant" name="Quadrant"
+              parent="menu_cmc_sec_abm" action="action_cmc_abm_quadrant" sequence="60"/>
+    <menuitem id="menu_cmc_abm_performance" name="Activity Performance"
+              parent="menu_cmc_sec_abm" action="action_cmc_abm_performance" sequence="70"/>
+    <menuitem id="menu_cmc_abm_coq" name="Cost of Quality"
+              parent="menu_cmc_sec_abm" action="action_cmc_abm_coq" sequence="80"/>
+    <menuitem id="menu_cmc_abm_initiative" name="Improvement Initiatives"
+              parent="menu_cmc_sec_abm" action="action_cmc_abm_initiative" sequence="90"/>
+    <menuitem id="menu_cmc_abm_benchmark" name="Activity Benchmark"
+              parent="menu_cmc_sec_abm" action="action_cmc_abm_benchmark" sequence="100"/>
+    <menuitem id="menu_cmc_abm_measure" name="Activity Measures"
+              parent="cmc_base.menu_cmc_cfg_master" action="action_cmc_abm_measure" sequence="42"/>
+
+    <!-- Menus ABC -->
+    <menuitem id="menu_cmc_sec_abc"
+              name="Activity-Based Costing"
+              parent="cmc_base.menu_cmc_operations"
+              sequence="50"/>
+    <menuitem id="menu_cmc_abc_run" name="ABC Computation"
+              parent="menu_cmc_sec_abc"
+              action="action_cmc_abc_run" sequence="10"/>
+    <menuitem id="menu_cmc_abc_bill_of_activities" name="Bill of Activities"
+              parent="menu_cmc_sec_abc"
+              action="action_cmc_abc_bill_of_activities" sequence="20"/>
+    <menuitem id="menu_cmc_abc_bill_of_costs" name="Bill of Costs"
+              parent="menu_cmc_sec_abc"
+              action="action_cmc_abc_bill_of_costs" sequence="30"/>
+    <menuitem id="menu_cmc_abc_process_costs" name="Cost by Process"
+              parent="menu_cmc_sec_abc"
+              action="action_cmc_abc_process_costs" sequence="40"/>
+    <menuitem id="menu_cmc_abc_traditional" name="ABC vs Traditional"
+              parent="menu_cmc_sec_abc"
+              action="action_cmc_abc_traditional" sequence="50"/>
+    <menuitem id="menu_cmc_abc_unused_capacity" name="Unused Capacity"
+              parent="menu_cmc_sec_abc"
+              action="action_cmc_abc_unused_capacity" sequence="60"/>
+    <menuitem id="menu_cmc_abc_activity" name="ABC Activities"
+              parent="cmc_base.menu_cmc_cfg_master"
+              action="action_cmc_abc_activity" sequence="40"/>
+    <menuitem id="menu_cmc_abc_resource" name="ABC Resources"
+              parent="cmc_base.menu_cmc_cfg_master"
+              action="action_cmc_abc_resource" sequence="41"/>
+</odoo>

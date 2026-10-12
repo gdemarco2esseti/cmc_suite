@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_reclass">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="d" t-value="o.cmc_reclass_json"/>
+                <t t-if="not d">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <p>No reclassified data: compute the run first.</p>
+                        </div>
+                    </t>
+                </t>
+                <t t-else="">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h3 t-esc="d['title']"/>
+                        <p class="text-muted" t-esc="d['subtitle']"/>
+                        <table class="table table-sm o_main_table">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th class="text-end" t-foreach="d['columns']"
+                                        t-as="c" t-esc="c['label']"/>
+                                    <th class="text-end">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="d['rows']" t-as="r"
+                                    t-att-class="'fw-bold' if r['kind'] in ('subtotal', 'result') else ('fst-italic text-muted' if r['kind'] == 'percent' else '')">
+                                    <td t-esc="r['label']"/>
+                                    <t t-foreach="d['columns']" t-as="c">
+                                        <td class="text-end">
+                                            <t t-if="r['values']"
+                                               t-esc="o._reclass_fmt(r['values'].get(c['key']), r['kind'], d['currency'])"/>
+                                        </td>
+                                    </t>
+                                    <td class="text-end"
+                                        t-esc="o._reclass_fmt(r['total'], r['kind'], d['currency'])"/>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

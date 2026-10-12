@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_rate_list" model="ir.ui.view">
+        <field name="name">cmc.rate.list</field>
+        <field name="model">cmc.rate</field>
+        <field name="arch" type="xml">
+            <list string="Rates" create="false" edit="false" delete="false">
+                <field name="date"/>
+                <field name="driver_id"/>
+                <field name="cost_element_id"/>
+                <field name="component"/>
+                <field name="value"/>
+                <field name="holder_model" optional="hide"/>
+                <field name="holder_id" optional="hide"/>
+                <field name="origin_model" optional="hide"/>
+                <field name="origin_id" optional="hide"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_rate_search" model="ir.ui.view">
+        <field name="name">cmc.rate.search</field>
+        <field name="model">cmc.rate</field>
+        <field name="arch" type="xml">
+            <search string="Rates">
+                <field name="driver_id"/>
+                <field name="cost_element_id"/>
+                <field name="holder_model"/>
+                <field name="origin_model"/>
+                <group>
+                    <filter name="group_driver" string="Driver" context="{'group_by': 'driver_id'}"/>
+                    <filter name="group_component" string="Component" context="{'group_by': 'component'}"/>
+                    <filter name="group_month" string="Month" context="{'group_by': 'date:month'}"/>
+                    <filter name="group_origin" string="Origin" context="{'group_by': 'origin_model'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_cmc_rate" model="ir.actions.act_window">
+        <field name="name">Rates</field>
+        <field name="res_model">cmc.rate</field>
+        <field name="view_mode">list</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No rates yet</p>
+            <p>Rates are published by computed runs and approved plan versions.</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_cmc_rate"
+              name="Rates"
+              parent="menu_cmc_sec_analysis"
+              action="action_cmc_rate"
+              sequence="50"/>
+</odoo>

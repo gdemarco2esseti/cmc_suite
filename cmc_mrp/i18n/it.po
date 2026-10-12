@@ -1,0 +1,172 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* cmc_mrp
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-09 23:35+0000\n"
+"PO-Revision-Date: 2026-10-09 23:35+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: cmc_mrp
+#: model:ir.model,name:cmc_mrp.model_account_analytic_line
+msgid "Analytic Line"
+msgstr "Riga analitica"
+
+#. module: cmc_mrp
+#: model:ir.model.fields,field_description:cmc_mrp.field_account_analytic_line__cmc_mrp_move_id
+msgid "CMC Consumption Move"
+msgstr "Movimento di consumo CMC"
+
+#. module: cmc_mrp
+#: model:ir.model.fields,field_description:cmc_mrp.field_mrp_production__cmc_center_id
+msgid "CMC Cost Center"
+msgstr "Centro di costo CMC"
+
+#. module: cmc_mrp
+#: model:ir.model.fields,field_description:cmc_mrp.field_stock_move__cmc_mrp_analytic_line_ids
+msgid "CMC Material Cost Lines"
+msgstr "Righe di costo materiali CMC"
+
+#. module: cmc_mrp
+#. odoo-python
+#: code:addons/cmc_mrp/models/mrp_production.py:0
+msgid ""
+"CMC cost center %(center)s belongs to company %(center_company)s and cannot "
+"absorb the cost of a manufacturing order of %(company)s."
+msgstr ""
+"Il centro di costo CMC %(center)s appartiene all'azienda %(center_company)s "
+"e non può assorbire il costo di un ordine di produzione di %(company)s."
+
+#. module: cmc_mrp
+#. odoo-python
+#: code:addons/cmc_mrp/models/mrp_production.py:0
+msgid ""
+"CMC cost center %(center)s must belong to the root analytic plan to absorb "
+"manufacturing cost."
+msgstr ""
+"Il centro di costo CMC %(center)s deve appartenere al piano analitico radice"
+" per assorbire il costo di produzione."
+
+#. module: cmc_mrp
+#: model:ir.model.fields,help:cmc_mrp.field_mrp_production__cmc_center_id
+msgid ""
+"Cost center that absorbs the direct material (MP) cost of this manufacturing"
+" order in management control. Must belong to the root analytic plan and to "
+"the company of the order."
+msgstr ""
+"Centro di costo che assorbe nel controllo di gestione il costo delle materie"
+" prime (MP) di questo ordine di produzione. Deve appartenere al piano "
+"analitico radice."
+
+#. module: cmc_mrp
+#: model:ir.model.fields,field_description:cmc_mrp.field_account_analytic_line__display_name
+#: model:ir.model.fields,field_description:cmc_mrp.field_account_move__display_name
+#: model:ir.model.fields,field_description:cmc_mrp.field_account_move_line__display_name
+#: model:ir.model.fields,field_description:cmc_mrp.field_cmc_measure_quantity__display_name
+#: model:ir.model.fields,field_description:cmc_mrp.field_mrp_production__display_name
+#: model:ir.model.fields,field_description:cmc_mrp.field_mrp_workorder__display_name
+#: model:ir.model.fields,field_description:cmc_mrp.field_stock_move__display_name
+msgid "Display Name"
+msgstr "Nome visualizzato"
+
+#. module: cmc_mrp
+#: model:ir.model.fields,field_description:cmc_mrp.field_account_move_line__cmc_excluded
+msgid "Excluded from Cost Base"
+msgstr "Escluso dalla base di costo"
+
+#. module: cmc_mrp
+#: model:ir.model.fields,field_description:cmc_mrp.field_account_analytic_line__id
+#: model:ir.model.fields,field_description:cmc_mrp.field_account_move__id
+#: model:ir.model.fields,field_description:cmc_mrp.field_account_move_line__id
+#: model:ir.model.fields,field_description:cmc_mrp.field_cmc_measure_quantity__id
+#: model:ir.model.fields,field_description:cmc_mrp.field_mrp_production__id
+#: model:ir.model.fields,field_description:cmc_mrp.field_mrp_workorder__id
+#: model:ir.model.fields,field_description:cmc_mrp.field_stock_move__id
+msgid "ID"
+msgstr "ID"
+
+#. module: cmc_mrp
+#: model:ir.model.fields,help:cmc_mrp.field_account_move_line__cmc_excluded
+msgid ""
+"Its analytic lines are system twins of a cost already counted elsewhere "
+"(manufacturing labour): core rebuilds analytic lines on repost, distribution"
+" edit and reversal, this flag is what re-excludes them."
+msgstr ""
+"Le sue righe analitiche sono gemelli di sistema di un costo già contato "
+"altrove (manodopera di produzione): il sistema le ricrea a ogni "
+"ripubblicazione, modifica della distribuzione o storno, e restano escluse."
+
+#. module: cmc_mrp
+#: model:ir.model,name:cmc_mrp.model_account_move
+msgid "Journal Entry"
+msgstr "Registrazione contabile"
+
+#. module: cmc_mrp
+#: model:ir.model,name:cmc_mrp.model_account_move_line
+msgid "Journal Item"
+msgstr "Movimento contabile"
+
+#. module: cmc_mrp
+#: model:ir.model.fields,help:cmc_mrp.field_stock_move__cmc_mrp_analytic_line_ids
+msgid ""
+"Management-control material cost lines posted from this consumption move; "
+"used to avoid double imputation."
+msgstr ""
+"Righe di costo materiali di controllo di gestione registrate da questo "
+"movimento di consumo; usate per evitare la doppia imputazione."
+
+#. module: cmc_mrp
+#: model:ir.model,name:cmc_mrp.model_mrp_production
+msgid "Manufacturing Order"
+msgstr "Ordine di produzione"
+
+#. module: cmc_mrp
+#: model:ir.model.fields,help:cmc_mrp.field_account_analytic_line__cmc_mrp_move_id
+msgid ""
+"Manufacturing consumption move this management-control material cost line "
+"was posted from (or adopted for); the link is what prevents double "
+"imputation."
+msgstr ""
+"Movimento di consumo di produzione da cui è stata registrata (o adottata) "
+"questa riga di costo materiale del controllo di gestione; il collegamento "
+"evita la doppia imputazione."
+
+#. module: cmc_mrp
+#: model:ir.model,name:cmc_mrp.model_cmc_measure_quantity
+msgid "Measure Quantity"
+msgstr "Quantità della misura"
+
+#. module: cmc_mrp
+#: model:cmc.cost.driver,name:cmc_mrp.cmc_measure_produced_qty
+msgid "Produced quantity"
+msgstr "Quantità prodotta"
+
+#. module: cmc_mrp
+#: model:cmc.cost.driver,name:cmc_mrp.cmc_measure_scrap_qty
+msgid "Scrapped quantity"
+msgstr "Quantità scartata"
+
+#. module: cmc_mrp
+#: model:ir.model,name:cmc_mrp.model_stock_move
+msgid "Stock Move"
+msgstr "Movimento di magazzino"
+
+#. module: cmc_mrp
+#. odoo-python
+#: code:addons/cmc_mrp/models/account_move_line.py:0
+msgid "The cost base exclusion is set by the system only."
+msgstr "L'esclusione dalla base di costo la imposta solo il sistema."
+
+#. module: cmc_mrp
+#: model:ir.model,name:cmc_mrp.model_mrp_workorder
+msgid "Work Order"
+msgstr "Ordine di lavoro"

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_cmc_kpi_pack" model="ir.actions.report">
+        <field name="name">Management Pack</field>
+        <field name="model">cmc.kpi.run</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">cmc_kpi.report_cmc_kpi_pack_document</field>
+        <field name="report_file">cmc_kpi.report_cmc_kpi_pack_document</field>
+        <field name="print_report_name">'Management Pack - %s' % object.name</field>
+        <field name="binding_model_id" ref="model_cmc_kpi_run"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_cmc_kpi_pack_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <t t-set="data" t-value="doc._cmc_pack_data()"/>
+                    <t t-set="light" t-value="{'green': 'text-bg-success', 'amber': 'text-bg-warning', 'red': 'text-bg-danger', 'none': 'text-bg-secondary', 'ok': 'text-bg-success', 'alert': 'text-bg-danger', 'not_computable': 'text-bg-secondary', 'no_data': 'text-bg-secondary'}"/>
+                    <div class="page">
+                        <h2>Management Pack: <span t-field="doc.name"/></h2>
+                        <p><span t-out="data['month']" t-options='{"widget": "date", "format": "MMMM yyyy"}'/></p>
+
+                        <h3>KPIs</h3>
+                        <table class="table table-sm o_main_table">
+                            <thead>
+                                <tr>
+                                    <th>KPI</th>
+                                    <th class="text-end">Value</th>
+                                    <th class="text-end">Target</th>
+                                    <th>Status</th>
+                                    <th>Trend</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="data['kpis']" t-as="row">
+                                    <tr>
+                                        <td><t t-out="row['kpi'].name"/></td>
+                                        <td class="text-end">
+                                            <t t-if="row['computable']" t-out="row['value_display']"/>
+                                            <t t-else="">n.c.</t>
+                                        </td>
+                                        <td class="text-end"><t t-out="row['target_display']"/></td>
+                                        <td><span t-att-class="'badge ' + light[row['status']]" t-out="row['status']"/></td>
+                                        <td><t t-out="row['trend']"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <t t-foreach="data['scorecards']" t-as="block">
+                            <h3>Balanced Scorecard: <t t-out="block['scorecard'].name"/></h3>
+                            <table class="table table-sm o_main_table">
+                                <thead>
+                                    <tr><th>Perspective</th><th class="text-end">Weight</th><th class="text-end">Score</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="block['perspectives']" t-as="perspective">
+                                        <td><t t-out="perspective['label']"/></td>
+                                        <td class="text-end"><t t-out="perspective['weight']" t-options='{"widget": "float", "precision": 0}'/></td>
+                                        <td class="text-end">
+                                            <t t-if="perspective['computable']" t-out="perspective['score']" t-options='{"widget": "float", "precision": 1}'/>
+                                            <t t-else="">n.c.</t>
+                                        </td>
+                                    </tr>
+                                    <tr class="fw-bold">
+                                        <td>Overall</td>
+                                        <td/>
+                                        <td class="text-end">
+                                            <t t-if="block['overall'] is not None" t-out="block['overall']" t-options='{"widget": "float", "precision": 1}'/>
+                                            <t t-else="">n.c.</t>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+
+                        <t t-if="data['bva']">
+                            <h3>Budget vs Actual: <span t-field="doc.bva_version_id.name"/></h3>
+                            <table class="table table-sm o_main_table">
+                                <thead>
+                                    <tr>
+                                        <th>Cost center</th>
+                                        <th class="text-end">Plan (month)</th>
+                                        <th class="text-end">Actual (month)</th>
+                                        <th class="text-end">Variance %</th>
+                                        <th class="text-end">Variance % (YTD)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="data['bva']" t-as="row">
+                                        <td><t t-out="row['center_id'].name"/></td>
+                                        <td class="text-end"><t t-out="row['plan_month']" t-options='{"widget": "float", "precision": 2}'/></td>
+                                        <td class="text-end"><t t-out="row['actual_month']" t-options='{"widget": "float", "precision": 2}'/></td>
+                                        <td class="text-end" t-att-class="'text-end text-danger' if row['alert_month'] else 'text-end'">
+                                            <t t-out="row['variance_month_pct']" t-options='{"widget": "float", "precision": 1}'/>
+                                        </td>
+                                        <td class="text-end"><t t-out="row['variance_ytd_pct']" t-options='{"widget": "float", "precision": 1}'/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+
+                        <t t-if="data['ratios']">
+                            <h3>Key ratios</h3>
+                            <table class="table table-sm o_main_table">
+                                <thead>
+                                    <tr><th>Ratio</th><th class="text-end">Value</th><th>Status</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="data['ratios']" t-as="row">
+                                        <td><t t-out="row['name']"/></td>
+                                        <td class="text-end">
+                                            <t t-if="row['status'] != 'not_computable'" t-out="row['value_display']"/>
+                                            <t t-else="">n.c.</t>
+                                        </td>
+                                        <td><span t-att-class="'badge ' + light[row['status']]" t-out="row['status']"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

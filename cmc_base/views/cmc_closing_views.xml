@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_closing_run_list" model="ir.ui.view">
+        <field name="name">cmc.closing.run.list</field>
+        <field name="model">cmc.closing.run</field>
+        <field name="arch" type="xml">
+            <list string="Closing Runs">
+                <field name="name"/>
+                <field name="method"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'done'"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_closing_run_form" model="ir.ui.view">
+        <field name="name">cmc.closing.run.form</field>
+        <field name="model">cmc.closing.run</field>
+        <field name="arch" type="xml">
+            <form string="Closing Run">
+                <header>
+                    <button name="action_compute" type="object" string="Compute"
+                            class="oe_highlight" invisible="state == 'done'"/>
+                    <button name="action_reset_to_draft" type="object"
+                            string="Reset to Draft" invisible="state != 'done'"
+                            confirm="Resetting deletes the computed results. Continue?"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="method" readonly="state == 'done'"/>
+                            <field name="step_order" readonly="state == 'done'"
+                                   invisible="method != 'step_down'"/>
+                            <field name="company_id" readonly="state == 'done'" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="date_from" readonly="state == 'done'"/>
+                            <field name="date_to" readonly="state == 'done'"/>
+                        </group>
+                    </group>
+                    <field name="step_ids" readonly="state == 'done'"
+                           invisible="method != 'step_down' or step_order != 'manual'">
+                        <list string="Closing Sequence" editable="bottom">
+                            <field name="sequence" widget="handle"/>
+                            <field name="center_id"/>
+                        </list>
+                    </field>
+                    <field name="line_ids" readonly="1">
+                        <list string="Results" create="false" edit="false">
+                            <field name="center_id"/>
+                            <field name="center_type"/>
+                            <field name="cost_initial" sum="Initial"/>
+                            <field name="cost_received" sum="Received"/>
+                            <field name="cost_distributed" sum="Distributed"/>
+                            <field name="cost_residual" sum="Residual"
+                                   decoration-danger="cost_residual != 0 and center_type != 'final'"/>
+                            <field name="currency_id" column_invisible="1"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cmc_closing_run" model="ir.actions.act_window">
+        <field name="name">Closing Runs</field>
+        <field name="res_model">cmc.closing.run</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a closing run</p>
+            <p>Close auxiliary and intermediate cost centers onto final centers
+               (direct, step-down or reciprocal method).</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_cmc_closing_run"
+              name="Closing Runs"
+              parent="menu_cmc_sec_base"
+              action="action_cmc_closing_run"
+              sequence="40"/>
+</odoo>

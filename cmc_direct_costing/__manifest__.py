@@ -1,0 +1,20 @@
+{
+    "name": "CMC - Direct Costing & Decisional",
+    "version": "19.0.1.2.2",
+    "category": "Accounting/Accounting",
+    "summary": "Contribution margin, break-even (CVR), operating leverage, decisions",
+    "author": "2ST",
+    "license": "LGPL-3",
+    "depends": ["cmc_base", "product"],
+    "data": [
+        "security/cmc_direct_costing_security.xml",
+        "security/ir.model.access.csv",
+        "views/cmc_cvr_views.xml",
+        "views/cmc_direct_costing_views.xml",
+        "views/cmc_decision_views.xml",
+        "report/report_actions.xml",
+    ],
+    "installable": True,
+    "application": False,
+    "auto_install": False,
+}

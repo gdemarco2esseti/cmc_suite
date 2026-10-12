@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_cmc_budget_line_list" model="ir.ui.view">
+        <field name="name">cmc.budget.line.list</field>
+        <field name="model">cmc.budget.line</field>
+        <field name="arch" type="xml">
+            <list string="Budget Lines" editable="bottom">
+                <field name="version_id" column_invisible="context.get('default_version_id')"/>
+                <field name="date"/>
+                <field name="kind"/>
+                <field name="center_id"/>
+                <field name="element_id"/>
+                <field name="behavior"/>
+                <field name="driver_id" optional="hide"/>
+                <field name="responsibility_id" optional="hide"/>
+                <field name="business_line_id" optional="hide"/>
+                <field name="payment_term_id" optional="hide"/>
+                <field name="figure" sum="Total"/>
+                <field name="amount" optional="hide"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_cmc_budget_line_search" model="ir.ui.view">
+        <field name="name">cmc.budget.line.search</field>
+        <field name="model">cmc.budget.line</field>
+        <field name="arch" type="xml">
+            <search string="Budget Lines">
+                <field name="version_id"/>
+                <field name="center_id"/>
+                <field name="element_id"/>
+                <filter name="cost" string="Costs" domain="[('kind', '=', 'cost')]"/>
+                <filter name="revenue" string="Revenues" domain="[('kind', '=', 'revenue')]"/>
+                <group>
+                    <filter name="group_version" string="Version" context="{'group_by': 'version_id'}"/>
+                    <filter name="group_center" string="Cost Center" context="{'group_by': 'center_id'}"/>
+                    <filter name="group_element" string="Cost Element" context="{'group_by': 'element_id'}"/>
+                    <filter name="group_month" string="Month" context="{'group_by': 'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_cmc_budget_line_pivot" model="ir.ui.view">
+        <field name="name">cmc.budget.line.pivot</field>
+        <field name="model">cmc.budget.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Budget">
+                <field name="center_id" type="row"/>
+                <field name="element_id" type="row"/>
+                <field name="date" interval="month" type="col"/>
+                <field name="amount" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="action_cmc_budget_line" model="ir.actions.act_window">
+        <field name="name">Budget Lines</field>
+        <field name="res_model">cmc.budget.line</field>
+        <field name="view_mode">list,pivot</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Add a budget line</p>
+            <p>Plan costs and revenues by month, cost center and cost element on a budget version.</p>
+        </field>
+    </record>
+</odoo>

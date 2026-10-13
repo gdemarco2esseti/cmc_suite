@@ -102,5 +102,5 @@
               name="Cost Functions"
               parent="menu_cmc_cfg_master"
               action="action_cmc_cost_function"
-              sequence="30"/>
+              sequence="40"/>
 </odoo>

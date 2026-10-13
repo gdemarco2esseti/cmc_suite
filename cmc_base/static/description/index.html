@@ -10,15 +10,15 @@
 <h2>Configurazione (step-by-step)</h2>
 <ol><li><strong>Installa</strong> <code>cmc_base</code> (le app capillari si installano sopra, quando servono).</li><li>Assegna all&#x27;utente il gruppo <strong>Controllo di gestione / Manager</strong> (o Utente) da</li></ol>
 <p><em>Impostazioni › Utenti</em>.</p>
-<ol><li>Vai in <strong>Controllo di gestione › Configurazione › Anagrafiche</strong>:</li></ol>
+<ol><li>Vai in <strong>Controllo di gestione › Configurazione › Struttura dei costi</strong>:</li></ol>
 <ul><li><strong>Elementi di costo</strong> (<em>Cost Elements</em>): crea la tassonomia per natura (es. Materie prime, Manodopera diretta, Ammortamenti). Marca come <em>figurativo</em> gli elementi che non transitano in co.ge. (es. interessi di computo).</li><li><strong>Cost Driver</strong>: crea le basi di ripartizione (es. <em>Ore macchina</em>, <em>Ore servizio</em>).</li></ul>
-<ol><li>In <strong>Operazioni › Base di costo › Centri di costo</strong> crea i centri e assegna il</li></ol>
+<ol><li>In <strong>Rilevazione costi › Base di costo › Centri di costo</strong> crea i centri e assegna il</li></ol>
 <p><strong>Tipo di centro</strong> (finale / ausiliario) oppure marca <em>centro di periodo</em> per i costi che restano fuori dal ribaltamento (es. Commerciale).</p>
 <p><img src="cost_center.png" alt="Centri di costo" class="img img-fluid"/></p>
 <h2>Utilizzo (step-by-step)</h2>
-<ol><li><strong>Registra i costi</strong>: <em>Operazioni › Base di costo › Registrazione costi</em> — ogni riga analitica porta centro, importo, comportamento ed elemento di costo.</li><li><strong>Servizi inter-centro</strong>: <em>Base di costo › Servizi inter-centro</em> — dichiara le prestazioni dei centri ausiliari verso gli altri centri (provider → receiver, driver, quantità).</li><li><strong>Ribaltamento</strong>: <em>Base di costo › Ribaltamento</em> → nuovo record, scegli il <strong>Metodo</strong> (diretto / step-down / reciproco) e premi <strong>Calcola</strong>. I centri ausiliari si azzerano sui finali; la matrice centro × elemento viene generata.</li></ol>
+<ol><li><strong>Registra i costi</strong>: <em>Rilevazione costi › Base di costo › Registrazioni di costo</em> — ogni riga analitica porta centro, importo, comportamento ed elemento di costo.</li><li><strong>Servizi inter-centro</strong>: <em>Rilevazione costi › Base di costo › Servizi inter-centro</em> — dichiara le prestazioni dei centri ausiliari verso gli altri centri (provider → receiver, driver, quantità).</li><li><strong>Ribaltamento</strong>: <em>Rilevazione costi › Base di costo › Ripartizioni di costo</em> → nuovo record, scegli il <strong>Metodo</strong> (diretto / step-down / reciproco) e premi <strong>Calcola</strong>. I centri ausiliari si azzerano sui finali; la matrice centro × elemento viene generata.</li></ol>
 <p><img src="closing.png" alt="Ribaltamento" class="img img-fluid"/></p>
-<ol><li><strong>Capacità</strong>: <em>Analisi &amp; controllo › Unused Capacity</em> → inserisci capacità teorica, pratica e consuntiva del centro; il sistema isola il <strong>costo della capacità inutilizzata</strong> (costi fissi su base pratica).</li></ol>
+<ol><li><strong>Capacità</strong>: <em>Analisi e decisioni › Analisi dei costi › Analisi di capacità</em> → inserisci capacità teorica, pratica e consuntiva del centro; il sistema isola il <strong>costo della capacità inutilizzata</strong> (costi fissi su base pratica).</li></ol>
 <p><img src="capacity.png" alt="Capacità" class="img img-fluid"/></p>
 <ol><li><strong>Cruscotto</strong>: <em>Cruscotto</em> (home della suite) mostra la pipeline della base di costo, le metodologie installate, i KPI e il grafico costi per natura. È il punto di partenza: completa la pipeline (Centri → Costi → Servizi → Ribaltamento), poi applica una o più metodologie di costing (moduli capillari).</li></ol>
 <h2>Note</h2>

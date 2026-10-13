@@ -1,7 +1,7 @@
 {
     "name": "CMC - Joint Costs",
     "summary": "Allocate joint production cost to joint products and by-products",
-    "version": "19.0.1.1.1",
+    "version": "19.0.1.1.2",
     "category": "Accounting/Management Control",
     "license": "LGPL-3",
     "author": "2ST",

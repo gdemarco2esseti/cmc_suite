@@ -209,7 +209,7 @@
     <menuitem id="menu_cmc_sec_full"
               name="Full Costing"
               parent="cmc_base.menu_cmc_operations"
-              sequence="30"/>
+              sequence="10"/>
     <menuitem id="menu_cmc_costing_run"
               name="Costing Runs"
               parent="menu_cmc_sec_full"

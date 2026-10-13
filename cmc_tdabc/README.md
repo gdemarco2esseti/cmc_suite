@@ -23,17 +23,17 @@ Caratteristiche distintive:
 ## Configurazione (step-by-step)
 
 1. Installa `cmc_tdabc` (richiede `cmc_base`).
-2. **Configurazione › Anagrafiche › Resources**: crea le **risorse** con costo di
+2. **Configurazione › Time-Driven ABC › Risorse TDABC**: crea le **risorse** con costo di
    periodo, tempo teorico (min) e **% di utilizzo** → il sistema calcola capacità pratica
    e **tariffa €/min**.
 
    ![Risorsa TDABC](static/description/tdabc_resource.png)
 
-3. **Configurazione › Anagrafiche › Characteristics**: crea le **caratteristiche**
+3. **Configurazione › Time-Driven ABC › Caratteristiche**: crea le **caratteristiche**
    riusabili (bool o numeriche, es. *Fuori misura*, *VIP*) che alimentano le equazioni.
 4. Assegna i valori delle caratteristiche ai prodotti/clienti (tab *TDABC Characteristics*
    sulla scheda prodotto o cliente).
-5. **Configurazione › Anagrafiche › TDABC Activities**: crea le **attività**, collega la
+5. **Configurazione › Time-Driven ABC › Attività TDABC**: crea le **attività**, collega la
    risorsa, imposta il **tempo base** e aggiungi i **termini** dell'equazione
    (caratteristica × coefficiente).
 6. (Solo scenario timesheet) tagga le righe analitiche di ore reali con il campo
@@ -41,7 +41,7 @@ Caratteristiche distintive:
 
 ## Utilizzo (step-by-step)
 
-1. **Operazioni › Time-Driven ABC › Calcolo TDABC** → **Nuovo**.
+1. **Calcolo costi › Time-Driven ABC › Calcolo TDABC** → **Nuovo**.
 
    ![Form TDABC – Input](static/description/tdabc_form.png)
 

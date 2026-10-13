@@ -1138,11 +1138,6 @@ msgid "Quadrant Margin Threshold"
 msgstr "Soglia di margine dei quadranti"
 
 #. module: cmc_profitability
-#: model:ir.ui.menu,name:cmc_profitability.menu_cmc_profit_quadrant
-msgid "Quadrants"
-msgstr "Quadranti"
-
-#. module: cmc_profitability
 #: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__quantity
 #: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_product__quantity
 #: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_fact_list
@@ -1640,3 +1635,8 @@ msgstr "Calcolato"
 #: model:ir.model.fields.selection,name:cmc_base.selection__cmc_transfer_charge__state__draft
 msgid "Draft"
 msgstr "Bozza"
+
+#. module: cmc_profitability
+#: model:ir.ui.menu,name:cmc_profitability.menu_cmc_profit_quadrant
+msgid "Profitability Quadrants"
+msgstr "Quadranti di redditività"

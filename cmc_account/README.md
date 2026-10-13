@@ -26,7 +26,7 @@ alternative: lavorano insieme sulla stessa riga).
 
 3. **Strato 2 — Regole di classificazione** (assegnano *il resto*: comportamento e
    diretto/indiretto, più l'elemento come **ripiego**). *Controllo di gestione ›
-   Configurazione › Integrazione contabile › Classification Rules* → **Nuovo**.
+   Configurazione › Integrazione contabile › Regole di classificazione* → **Nuovo**.
    - **Match** (lascia vuoto = qualsiasi): conto, prefisso codice conto, categoria
      prodotto, partner, centro.
    - **Assegna** (solo fill): comportamento (fisso/variabile), diretto/indiretto, e —
@@ -44,7 +44,7 @@ alternative: lavorano insieme sulla stessa riga).
 
 1. Registra normalmente in contabilità con conto analitico: alla creazione della riga
    analitica scatta l'**auto-classificazione** (`_cmc_auto_classify`) secondo le regole.
-2. **Verifica gli scoperti**: *Operazioni › Analisi & controllo › Unclassified Cost Lines*
+2. **Verifica gli scoperti**: *Rilevazione costi › Qualità dei dati › Righe di costo non classificate*
    elenca le righe non ancora classificate — aggiungi/riordina le regole finché la lista
    si svuota.
 3. Le righe classificate confluiscono automaticamente nella base di costo di `cmc_base`

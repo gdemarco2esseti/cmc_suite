@@ -105,5 +105,5 @@
               name="Capacity Analysis"
               parent="menu_cmc_sec_analysis"
               action="action_cmc_capacity"
-              sequence="50"/>
+              sequence="20"/>
 </odoo>

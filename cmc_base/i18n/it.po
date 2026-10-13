@@ -350,11 +350,6 @@ msgstr ""
 "già contato altrove."
 
 #. module: cmc_base
-#: model:ir.ui.menu,name:cmc_base.menu_cmc_sec_analysis
-msgid "Analysis & Control"
-msgstr "Analisi & controllo"
-
-#. module: cmc_base
 #: model:ir.model,name:cmc_base.model_account_analytic_account
 msgid "Analytic Account"
 msgstr "Conto analitico"
@@ -1014,6 +1009,7 @@ msgstr "Ripartizioni di costo"
 #. module: cmc_base
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_closing_run__cost_analysis_ids
 #: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_cost_analysis_list
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_sec_analysis
 msgid "Cost Analysis"
 msgstr "Analisi dei costi"
 
@@ -1323,7 +1319,6 @@ msgstr "Costo della qualità"
 
 #. module: cmc_base
 #: model:ir.actions.act_window,name:cmc_base.action_dash_cost_center
-#: model:ir.ui.menu,name:cmc_base.menu_dash_cost_center
 #: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_closing_line_graph
 #: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_closing_line_pivot
 msgid "Cost per Center"
@@ -1495,11 +1490,6 @@ msgstr "Segmento di clientela"
 #: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_cost_object_search
 msgid "Customers"
 msgstr "Clienti"
-
-#. module: cmc_base
-#: model:ir.ui.menu,name:cmc_base.menu_cmc_dashboard
-msgid "Dashboard"
-msgstr "Dashboard"
 
 #. module: cmc_base
 #: model:ir.model,name:cmc_base.model_cmc_data_check_wizard
@@ -2191,11 +2181,6 @@ msgid "Manual sequence"
 msgstr "Sequenza manuale"
 
 #. module: cmc_base
-#: model:ir.ui.menu,name:cmc_base.menu_cmc_cfg_master
-msgid "Master Data"
-msgstr "Anagrafiche"
-
-#. module: cmc_base
 #: model:cmc.cost.element,name:cmc_base.cmc_element_mp
 msgid "Materie prime (MP)"
 msgstr "Materie prime (MP)"
@@ -2366,11 +2351,6 @@ msgid "Only a Controlling Manager approves or reopens a plan version."
 msgstr ""
 "Solo un Responsabile del controllo di gestione approva o riapre una versione"
 " di piano."
-
-#. module: cmc_base
-#: model:ir.ui.menu,name:cmc_base.menu_cmc_operations
-msgid "Operations"
-msgstr "Operazioni"
 
 #. module: cmc_base
 #: model:ir.model.fields,help:cmc_base.field_cmc_closing_run__step_order
@@ -2697,7 +2677,6 @@ msgstr "Residuo"
 #. module: cmc_base
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_responsibility_capital__responsibility_id
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_responsibility_summary_line__responsibility_id
-#: model:ir.ui.menu,name:cmc_base.menu_cmc_responsibility
 msgid "Responsibility"
 msgstr "Responsabilità"
 
@@ -3427,3 +3406,63 @@ msgstr "· <strong>Al:</strong>"
 #: code:addons/cmc_base/static/src/cockpit/cmc_cockpit.xml:0
 msgid "— pick the one you need and apply it"
 msgstr "— scegli e applica quella che ti serve"
+
+#. module: cmc_base
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_tab_decision
+msgid "Analysis & Decisions"
+msgstr "Analisi e decisioni"
+
+#. module: cmc_base
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_tab_planning
+msgid "Budget & Scenarios"
+msgstr "Budget e scenari"
+
+#. module: cmc_base
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_tab_recording
+msgid "Cost Recording"
+msgstr "Rilevazione costi"
+
+#. module: cmc_base
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_cfg_master
+msgid "Cost Structure"
+msgstr "Struttura dei costi"
+
+#. module: cmc_base
+#: model:ir.ui.menu,name:cmc_base.menu_dash_cost_center
+msgid "Cost per Center (Closing)"
+msgstr "Costo per centro (chiusure)"
+
+#. module: cmc_base
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_sec_dashboards
+msgid "Dashboards"
+msgstr "Dashboard"
+
+#. module: cmc_base
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_sec_data_quality
+msgid "Data Quality"
+msgstr "Qualità dei dati"
+
+#. module: cmc_base
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_tab_fin
+msgid "Financial Analysis"
+msgstr "Analisi di bilancio"
+
+#. module: cmc_base
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_responsibility
+msgid "Performance"
+msgstr "Performance"
+
+#. module: cmc_base
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_cfg_planning
+msgid "Planning"
+msgstr "Pianificazione"
+
+#. module: cmc_base
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_operations
+msgid "Product Costing"
+msgstr "Calcolo costi"
+
+#. module: cmc_base
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_sec_responsibility
+msgid "Responsibility Accounting"
+msgstr "Contabilità per responsabilità"

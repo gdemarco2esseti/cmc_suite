@@ -74,7 +74,7 @@
 
     <menuitem id="menu_cmc_center_cost_report"
               name="Cost by Center"
-              parent="menu_cmc_responsibility"
+              parent="menu_cmc_sec_responsibility"
               action="action_cmc_center_cost_report"
-              sequence="30"/>
+              sequence="20"/>
 </odoo>

@@ -136,9 +136,11 @@
 
     <menuitem id="menu_cmc_sec_direct"
               name="Direct Costing &amp; Decisions"
-              parent="cmc_base.menu_cmc_operations"
-              sequence="40"/>
-    <menuitem id="menu_cmc_cvr" name="CVR / Break-even"
+              parent="cmc_base.menu_cmc_tab_decision"
+              sequence="20"/>
+    <menuitem id="menu_cmc_cvr"
+              name="CVR / Break-even"
               parent="menu_cmc_sec_direct"
-              action="action_cmc_cvr_analysis" sequence="20"/>
+              action="action_cmc_cvr_analysis"
+              sequence="20"/>
 </odoo>

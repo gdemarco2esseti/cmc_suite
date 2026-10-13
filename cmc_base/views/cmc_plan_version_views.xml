@@ -97,5 +97,5 @@
               name="Plan Versions"
               parent="menu_cmc_sec_base"
               action="action_cmc_plan_version"
-              sequence="50"/>
+              sequence="70"/>
 </odoo>

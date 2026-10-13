@@ -85,5 +85,5 @@
               name="Closing Runs"
               parent="menu_cmc_sec_base"
               action="action_cmc_closing_run"
-              sequence="40"/>
+              sequence="60"/>
 </odoo>

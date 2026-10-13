@@ -173,6 +173,8 @@ msgid "As a percentage for percent KPIs (15 = 15 %)."
 msgstr "In percentuale per i KPI percentuali (15 = 15 %)."
 
 #. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_cockpit.py:0
 #: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi_value__status__amber
 #: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_value_search
 msgid "Attention"
@@ -774,12 +776,16 @@ msgid "OK"
 msgstr "OK"
 
 #. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_cockpit.py:0
 #: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi_value__status__red
 #: model_terms:ir.ui.view,arch_db:cmc_kpi.view_cmc_kpi_value_search
 msgid "Off target"
 msgstr "Fuori obiettivo"
 
 #. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_cockpit.py:0
 #: model:ir.model.fields.selection,name:cmc_kpi.selection__cmc_kpi_value__status__green
 msgid "On target"
 msgstr "In linea con l'obiettivo"
@@ -944,6 +950,8 @@ msgid "Scope"
 msgstr "Ambito"
 
 #. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_cockpit.py:0
 #: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_result__score
 #: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_value__score
 #: model_terms:ir.ui.view,arch_db:cmc_kpi.report_cmc_kpi_pack_document
@@ -951,6 +959,8 @@ msgid "Score"
 msgstr "Punteggio"
 
 #. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_cockpit.py:0
 #: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_line__scorecard_id
 #: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_perspective__scorecard_id
 #: model:ir.model.fields,field_description:cmc_kpi.field_cmc_kpi_scorecard_result__scorecard_id
@@ -1253,3 +1263,44 @@ msgstr "on_time_delivery"
 #: code:addons/cmc_kpi/models/cmc_kpi_run.py:0
 msgid "the formula cannot be evaluated"
 msgstr "la formula non può essere valutata"
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_cockpit.py:0
+msgid "%(delta)s pts vs previous"
+msgstr "%(delta)s punti vs precedente"
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_cockpit.py:0
+msgid "%s KPIs in red"
+msgstr "%s KPI in rosso"
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_cockpit.py:0
+msgid "Balanced scorecard"
+msgstr "Scheda di valutazione bilanciata"
+
+#. module: cmc_kpi
+#: model:ir.model,name:cmc_kpi.model_cmc_cockpit
+msgid "Cost Management Cockpit"
+msgstr "Cruscotto controllo di gestione"
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_cockpit.py:0
+msgid "No data in this period"
+msgstr "Nessun dato nel periodo"
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_cockpit.py:0
+msgid "from Balanced Scorecard"
+msgstr "da Scheda di valutazione bilanciata"
+
+#. module: cmc_kpi
+#. odoo-python
+#: code:addons/cmc_kpi/models/cmc_cockpit.py:0
+msgid "1 KPI in red"
+msgstr "1 KPI in rosso"

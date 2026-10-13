@@ -1749,3 +1749,32 @@ msgstr "Definizioni degli indici"
 #: model:ir.ui.menu,name:cmc_fin_analysis.menu_cmc_sec_fin_analysis
 msgid "Results"
 msgstr "Risultati"
+
+#. module: cmc_fin_analysis
+#. odoo-python
+#: code:addons/cmc_fin_analysis/models/cmc_cockpit.py:0
+msgid "%s financial ratios on alert"
+msgstr "%s indici di bilancio in allerta"
+
+#. module: cmc_fin_analysis
+#: model:ir.model,name:cmc_fin_analysis.model_cmc_cockpit
+msgid "Cost Management Cockpit"
+msgstr "Cruscotto controllo di gestione"
+
+#. module: cmc_fin_analysis
+#. odoo-python
+#: code:addons/cmc_fin_analysis/models/cmc_cockpit.py:0
+msgid "Ratios OK"
+msgstr "Indici regolari"
+
+#. module: cmc_fin_analysis
+#. odoo-python
+#: code:addons/cmc_fin_analysis/models/cmc_cockpit.py:0
+msgid "Ratios on alert"
+msgstr "Indici in allerta"
+
+#. module: cmc_fin_analysis
+#. odoo-python
+#: code:addons/cmc_fin_analysis/models/cmc_cockpit.py:0
+msgid "1 financial ratio on alert"
+msgstr "1 indice di bilancio in allerta"

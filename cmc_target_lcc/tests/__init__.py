@@ -6,3 +6,4 @@ from . import test_performance
 from . import test_security
 from . import test_target_cost
 from . import test_lcc_stress_fixes
+from . import test_dashboard

@@ -2228,6 +2228,8 @@ msgid "Unused Cost"
 msgstr "Costo inutilizzato"
 
 #. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_cockpit.py:0
 #: model:ir.model.fields.selection,name:cmc_abc.selection__cmc_abc_flow__stage__unused
 msgid "Unused capacity"
 msgstr "Capacità inutilizzata"
@@ -2357,3 +2359,44 @@ msgstr "ABC e ABM"
 #: model:ir.ui.menu,name:cmc_abc.menu_cmc_abm_quadrant
 msgid "Activity Quadrant"
 msgstr "Quadrante delle attività"
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_cockpit.py:0
+msgid "ABC cost not assigned: %s"
+msgstr "Costi non assegnati (ABC): %s"
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_cockpit.py:0
+msgid "Activity-based costing"
+msgstr "Activity-Based Costing"
+
+#. module: cmc_abc
+#: model:ir.model,name:cmc_abc.model_cmc_cockpit
+msgid "Cost Management Cockpit"
+msgstr "Cruscotto controllo di gestione"
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_cockpit.py:0
+msgid "Cost on objects"
+msgstr "Costo sugli oggetti"
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_cockpit.py:0
+msgid "No data in this period"
+msgstr "Nessun dato nel periodo"
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_cockpit.py:0
+msgid "Sustaining cost"
+msgstr "Costo di sostegno all'azienda"
+
+#. module: cmc_abc
+#. odoo-python
+#: code:addons/cmc_abc/models/cmc_cockpit.py:0
+msgid "from ABC"
+msgstr "da ABC"

@@ -204,6 +204,8 @@ msgid "Line"
 msgstr "Riga"
 
 #. module: cmc_joint_costs
+#. odoo-python
+#: code:addons/cmc_joint_costs/models/cmc_cockpit.py:0
 #: model:ir.model.fields,field_description:cmc_joint_costs.field_cmc_joint_run__method
 msgid "Method"
 msgstr "Metodo"
@@ -335,3 +337,20 @@ msgstr "Valore di vendita unitario"
 
 #~ msgid "Draft"
 #~ msgstr "Bozza"
+
+#. module: cmc_joint_costs
+#: model:ir.model,name:cmc_joint_costs.model_cmc_cockpit
+msgid "Cost Management Cockpit"
+msgstr "Cruscotto controllo di gestione"
+
+#. module: cmc_joint_costs
+#. odoo-python
+#: code:addons/cmc_joint_costs/models/cmc_cockpit.py:0
+msgid "Joint cost"
+msgstr "Costo congiunto"
+
+#. module: cmc_joint_costs
+#. odoo-python
+#: code:addons/cmc_joint_costs/models/cmc_cockpit.py:0
+msgid "Joint costs"
+msgstr "Costi congiunti"

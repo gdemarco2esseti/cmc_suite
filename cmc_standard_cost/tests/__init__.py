@@ -7,3 +7,4 @@ from . import test_std_security
 from . import test_std_performance
 from . import test_std_stress_fixes
 from . import test_stress_rilancio
+from . import test_dashboard

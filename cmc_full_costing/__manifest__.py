@@ -1,6 +1,6 @@
 {
     "name": "CMC - Full Costing",
-    "version": "19.0.1.3.2",
+    "version": "19.0.1.3.3",
     "category": "Accounting/Accounting",
     "summary": "Full product cost (single/multiple base, 4 cost configurations, figurative)",
     "author": "2ST",

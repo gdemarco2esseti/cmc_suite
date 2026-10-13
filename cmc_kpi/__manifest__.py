@@ -2,7 +2,7 @@
     "name": "CMC - KPI and Balanced Scorecard",
     "summary": "KPI library (measures, ratios, variances, formulas, engine hooks), targets, traffic lights, trends, "
     "non-financial feeders (scrap, OTD), balanced scorecard with cascade and the monthly management pack",
-    "version": "19.0.1.1.1",
+    "version": "19.0.1.1.2",
     "category": "Accounting/Management Control",
     "license": "LGPL-3",
     "author": "EsseTech by DueEsseTi Srl",

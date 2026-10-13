@@ -8,3 +8,4 @@ from . import test_kpi_security
 from . import test_kpi_snapshot
 from . import test_kpi_stress_fixes
 from . import test_stress_rilancio
+from . import test_dashboard

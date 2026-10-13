@@ -349,6 +349,8 @@ msgstr ""
 "Calcolare l'esecuzione prima di generare un prospetto di direct costing."
 
 #. module: cmc_profitability
+#. odoo-python
+#: code:addons/cmc_profitability/models/cmc_cockpit.py:0
 #: model_terms:ir.ui.view,arch_db:cmc_profitability.view_cmc_profit_fact_list
 msgid "Contribution"
 msgstr "Contributo"
@@ -1214,6 +1216,8 @@ msgid "Results"
 msgstr "Risultati"
 
 #. module: cmc_profitability
+#. odoo-python
+#: code:addons/cmc_profitability/models/cmc_cockpit.py:0
 #: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_channel__revenue
 #: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_customer__revenue
 #: model:ir.model.fields,field_description:cmc_profitability.field_cmc_profit_fact__revenue
@@ -1640,3 +1644,38 @@ msgstr "Bozza"
 #: model:ir.ui.menu,name:cmc_profitability.menu_cmc_profit_quadrant
 msgid "Profitability Quadrants"
 msgstr "Quadranti di redditività"
+
+#. module: cmc_profitability
+#: model:ir.model,name:cmc_profitability.model_cmc_cockpit
+msgid "Cost Management Cockpit"
+msgstr "Cruscotto controllo di gestione"
+
+#. module: cmc_profitability
+#. odoo-python
+#: code:addons/cmc_profitability/models/cmc_cockpit.py:0
+msgid "No data in this period"
+msgstr "Nessun dato nel periodo"
+
+#. module: cmc_profitability
+#. odoo-python
+#: code:addons/cmc_profitability/models/cmc_cockpit.py:0
+msgid "Operating result"
+msgstr "Risultato operativo"
+
+#. module: cmc_profitability
+#. odoo-python
+#: code:addons/cmc_profitability/models/cmc_cockpit.py:0
+msgid "Revenue %(revenue)s · Margin %(margin)s"
+msgstr "Ricavi %(revenue)s · Margine %(margin)s"
+
+#. module: cmc_profitability
+#. odoo-python
+#: code:addons/cmc_profitability/models/cmc_cockpit.py:0
+msgid "Unassigned costs (profitability): %s"
+msgstr "Costi non assegnati (redditività): %s"
+
+#. module: cmc_profitability
+#. odoo-python
+#: code:addons/cmc_profitability/models/cmc_cockpit.py:0
+msgid "from Profitability"
+msgstr "da Redditività"

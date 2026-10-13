@@ -5,3 +5,4 @@ from . import test_consolidation
 from . import test_security
 from . import test_performance
 from . import test_real_evaluators
+from . import test_dashboard

@@ -1,0 +1,80 @@
+.o_cmc_dashboard {
+    .o_cmc_dash_body {
+        max-width: 1600px;
+        margin: 0 auto;
+    }
+
+    .o_cmc_dash_figure {
+        font-variant-numeric: tabular-nums;
+    }
+
+    .o_cmc_dash_busy {
+        opacity: 0.6;
+        transition: opacity 0.15s ease-out;
+    }
+
+    .o_cmc_dash_kpi,
+    .o_cmc_dash_card,
+    .o_cmc_dash_chart {
+        border-color: var(--bs-border-color);
+        background-color: var(--bs-body-bg);
+    }
+
+    .o_cmc_dash_card_link:hover {
+        background-color: var(--bs-tertiary-bg);
+    }
+
+    .o_cmc_dash_chart_wrap {
+        position: relative;
+        height: 18rem;
+    }
+
+    .o_cmc_dash_skel_block {
+        height: 6rem;
+        border-radius: var(--bs-border-radius);
+        background-color: var(--bs-secondary-bg);
+        animation: o_cmc_dash_pulse 1.2s ease-in-out infinite;
+    }
+    .o_cmc_dash_skel_wide {
+        height: 12rem;
+    }
+
+    .o_cmc_dash_alert:focus-visible,
+    .o_cmc_dash_period .btn:focus-visible,
+    .o_cmc_dash_period .btn.active:focus-visible,
+    .o_cmc_dash_card:has(.stretched-link:focus-visible) {
+        outline: 2px solid var(--bs-primary);
+        outline-offset: 2px;
+    }
+    .o_cmc_dash_alert:focus-visible,
+    .o_cmc_dash_period .btn:focus-visible {
+        position: relative;
+        z-index: 2;
+    }
+    .o_cmc_dash_card .badge {
+        white-space: nowrap;
+        overflow: visible;
+        text-overflow: clip;
+        flex-shrink: 0;
+    }
+    .o_cmc_dash_card .stretched-link:focus-visible {
+        outline: none;
+    }
+}
+
+@keyframes o_cmc_dash_pulse {
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .o_cmc_dashboard {
+        .o_cmc_dash_skel_block {
+            animation: none;
+        }
+        .o_cmc_dash_busy {
+            transition: none;
+        }
+    }
+}

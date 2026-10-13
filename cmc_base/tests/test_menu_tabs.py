@@ -78,6 +78,10 @@ DIRECT_PARENT = {
         "cmc_base.menu_dash_cost_center",
         "cmc_base.menu_dash_idle",
     ],
+    # UX-002 / AD-006: the old step guide moved out of the Cockpit into Configuration
+    "cmc_base.menu_cmc_config": [
+        "cmc_base.menu_cmc_setup_guide",
+    ],
 }
 
 # Menus that must have the given menu among their ancestors (any depth).
@@ -213,7 +217,10 @@ ACTIONS_USER = ACTIONS_RESPONSIBLE | {
     "cmc_target_lcc.action_cmc_target_cost",
     "cmc_tdabc.action_cmc_tdabc_run",
 }
+# AD-006 (deliberate change): + the Setup Guide client action, reachable through the manager-only Configuration
+# tab (the client action itself carries no group_ids in Odoo 19: gating is the menu). 114 -> 115 actions.
 ACTIONS_MANAGER = ACTIONS_USER | {
+    "cmc_base.action_cmc_setup_guide",
     "cmc_abc.action_cmc_abc_activity",
     "cmc_abc.action_cmc_abc_resource",
     "cmc_abc.action_cmc_abm_measure",
@@ -235,6 +242,10 @@ ACTIONS_MANAGER = ACTIONS_USER | {
     "cmc_tdabc.action_cmc_tdabc_characteristic",
     "cmc_tdabc.action_cmc_tdabc_resource",
 }
+
+
+# shells populated only by optional modules (budget/scenario, fin_analysis): empty on a minimal install
+OPTIONAL_SHELLS = {"cmc_base.menu_cmc_tab_planning", "cmc_base.menu_cmc_tab_fin", "cmc_base.menu_cmc_cfg_planning"}
 
 
 @tagged("post_install", "-at_install")
@@ -411,7 +422,7 @@ class TestMenuTabs(TransactionCase):
         # structurally: every action-less menu of the app has at least one child (moves leave no orphan shell)
         # why: these cmc_base folders are filled only by optional modules (budget/abb/scenario/target_lcc,
         # fin_analysis); with cmc_base alone they are legitimately empty and the web client hides them
-        optional_shells = {"cmc_base.menu_cmc_tab_planning", "cmc_base.menu_cmc_tab_fin", "cmc_base.menu_cmc_cfg_planning"}
+        optional_shells = OPTIONAL_SHELLS
         empty = [
             self._xmlid(menu)
             for menu in self._descendants(self.root)
@@ -427,6 +438,9 @@ class TestMenuTabs(TransactionCase):
             for xmlid, _seq, _grp in TABS:
                 tab = self._ref(xmlid)
                 if not tab or not tab.group_ids or not (tab.group_ids & user_groups):
+                    continue
+                # optional shells are filled only by optional modules: without them the tab is hidden by design
+                if xmlid in OPTIONAL_SHELLS and not self.env["ir.ui.menu"].search_count([("id", "child_of", tab.id), ("action", "!=", False)]):
                     continue
                 with self.subTest(role=role, tab=xmlid):
                     self.assertIn(tab.id, menus, f"{role} holds the group of {xmlid} but the tab is not shown")

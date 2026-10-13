@@ -1,6 +1,6 @@
 {
     "name": "CMC - Direct Costing & Decisional",
-    "version": "19.0.1.2.3",
+    "version": "19.0.1.2.4",
     "category": "Accounting/Accounting",
     "summary": "Contribution margin, break-even (CVR), operating leverage, decisions",
     "author": "2ST",

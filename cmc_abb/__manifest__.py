@@ -1,7 +1,7 @@
 {
     "name": "CMC - Activity-Based Budgeting and Capacity",
     "summary": "Reverse ABC from forecast volume, spending profiles, capacity time states, driver what-if, ABC variances",
-    "version": "19.0.1.0.2",
+    "version": "19.0.1.0.3",
     "category": "Accounting/Management Control",
     "license": "LGPL-3",
     "author": "EsseTech by DueEsseTi Srl",

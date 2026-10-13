@@ -539,3 +539,38 @@ msgstr "Non si è autorizzati a leggere la contabilità generale di %s."
 #: model_terms:ir.ui.view,arch_db:cmc_account.view_cmc_coge_reconciliation_form
 msgid "e.g. Q1 reconciliation"
 msgstr "es. Riconciliazione 1° trimestre"
+
+#. module: cmc_account
+#: model:ir.model,name:cmc_account.model_cmc_cockpit
+msgid "Cost Management Cockpit"
+msgstr "Cruscotto controllo di gestione"
+
+#. module: cmc_account
+#. odoo-python
+#: code:addons/cmc_account/models/cmc_cockpit.py:0
+msgid "GL-CA difference not explained: %s"
+msgstr "Scostamento COGE-COAN non spiegato: %s"
+
+#. module: cmc_account
+#. odoo-python
+#: code:addons/cmc_account/models/cmc_cockpit.py:0
+msgid "GL-CA reconciliation"
+msgstr "Riconciliazione COGE/COAN"
+
+#. module: cmc_account
+#. odoo-python
+#: code:addons/cmc_account/models/cmc_cockpit.py:0
+msgid "General ledger cost"
+msgstr "Costo COGE"
+
+#. module: cmc_account
+#. odoo-python
+#: code:addons/cmc_account/models/cmc_cockpit.py:0
+msgid "Management accounting cost"
+msgstr "Costo COAN"
+
+#. module: cmc_account
+#. odoo-python
+#: code:addons/cmc_account/models/cmc_cockpit.py:0
+msgid "Unexplained"
+msgstr "Non spiegato"

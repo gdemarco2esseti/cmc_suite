@@ -70,4 +70,4 @@ export class CmcCockpit extends Component {
     }
 }
 
-registry.category("actions").add("cmc_cockpit", CmcCockpit);
+registry.category("actions").add("cmc_setup_guide", CmcCockpit);

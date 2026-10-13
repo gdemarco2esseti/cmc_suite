@@ -4,3 +4,4 @@ from . import cmc_profit_result
 from . import cmc_profit_run
 from . import cmc_profit_engine
 from . import cmc_transfer_charge
+from . import cmc_cockpit

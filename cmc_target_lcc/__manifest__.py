@@ -1,7 +1,7 @@
 {
     "name": "CMC - Target Costing and Life-Cycle Costing",
     "summary": "Target and kaizen costing, feature costing from rates, life-cycle cost and profit with NPV",
-    "version": "19.0.1.0.2",
+    "version": "19.0.1.0.3",
     "category": "Accounting/Management Control",
     "license": "LGPL-3",
     "author": "EsseTech by DueEsseTi Srl",

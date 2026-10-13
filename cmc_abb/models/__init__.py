@@ -4,3 +4,4 @@ from . import cmc_rate
 from . import cmc_abb_run
 from . import cmc_abb_engine
 from . import cmc_abb_variance
+from . import cmc_cockpit

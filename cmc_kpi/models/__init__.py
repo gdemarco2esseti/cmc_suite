@@ -6,3 +6,4 @@ from . import cmc_kpi_run_snapshot
 from . import cmc_kpi_run
 from . import cmc_measure_quantity
 from . import stock_picking
+from . import cmc_cockpit

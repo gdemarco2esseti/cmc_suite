@@ -1808,3 +1808,44 @@ msgstr "Lavori in corso"
 #: code:addons/cmc_job_costing/models/project_project.py:0
 msgid "project_id"
 msgstr "Progetto"
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_cockpit.py:0
+msgid "%s EVM status reports out of control"
+msgstr "%s rilevazioni EVM fuori controllo"
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_cockpit.py:0
+msgid "%s EVM status reports with CPI < 1"
+msgstr "%s rilevazioni EVM con CPI < 1"
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_cockpit.py:0
+msgid "Completed jobs"
+msgstr "Commesse completate"
+
+#. module: cmc_job_costing
+#: model:ir.model,name:cmc_job_costing.model_cmc_cockpit
+msgid "Cost Management Cockpit"
+msgstr "Cruscotto controllo di gestione"
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_cockpit.py:0
+msgid "Work in progress"
+msgstr "Lavori in corso"
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_cockpit.py:0
+msgid "1 EVM status report out of control"
+msgstr "1 rilevazione EVM fuori controllo"
+
+#. module: cmc_job_costing
+#. odoo-python
+#: code:addons/cmc_job_costing/models/cmc_cockpit.py:0
+msgid "1 EVM status report with CPI < 1"
+msgstr "1 rilevazione EVM con CPI < 1"

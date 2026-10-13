@@ -1106,3 +1106,26 @@ msgstr "Scostamento di resa"
 
 #~ msgid "Draft"
 #~ msgstr "Bozza"
+
+#. module: cmc_standard_cost
+#. odoo-python
+#: code:addons/cmc_standard_cost/models/cmc_cockpit.py:0
+msgid "%s manufacturing orders without standard card"
+msgstr "%s ordini di produzione senza costo standard"
+
+#. module: cmc_standard_cost
+#: model:ir.model,name:cmc_standard_cost.model_cmc_cockpit
+msgid "Cost Management Cockpit"
+msgstr "Cruscotto controllo di gestione"
+
+#. module: cmc_standard_cost
+#. odoo-python
+#: code:addons/cmc_standard_cost/models/cmc_cockpit.py:0
+msgid "Total variance"
+msgstr "Scostamento totale"
+
+#. module: cmc_standard_cost
+#. odoo-python
+#: code:addons/cmc_standard_cost/models/cmc_cockpit.py:0
+msgid "1 manufacturing order without standard card"
+msgstr "1 ordine di produzione senza costo standard"

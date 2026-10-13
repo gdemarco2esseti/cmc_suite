@@ -2,3 +2,4 @@ from . import cmc_cvr
 from . import cmc_direct_costing
 from . import cmc_decision
 from . import cmc_scenario_evaluator
+from . import cmc_cockpit

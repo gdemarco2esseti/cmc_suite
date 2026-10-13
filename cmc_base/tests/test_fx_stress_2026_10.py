@@ -336,8 +336,15 @@ class TestFx008ResponsibleEntry(TransactionCase):
         if action._name == "ir.actions.act_window":
             self.assertTrue(self.env[action.res_model].with_user(self.responsible).has_access("read"), action.name)
             self.env[action.res_model].with_user(self.responsible).search([], limit=1)
-        elif action._name == "ir.actions.client" and action.tag == "cmc_cockpit":
-            self.env["cmc.cockpit"].with_user(self.responsible).get_cockpit_data()
+        elif action._name == "ir.actions.client" and action.tag == "cmc_controller_dashboard":
+            self.env["cmc.cockpit"].with_user(self.responsible).get_dashboard_data()
+        else:
+            self.assertEqual(action._name, "ir.actions.act_window", f"unexpected landing action {action._name}")
+
+    def test_fx008_dashboard_data_as_responsible(self):
+        # F6: the controller dashboard payload builds for a responsible without AccessError (omits what it cannot read)
+        data = self.env["cmc.cockpit"].with_user(self.responsible).get_dashboard_data()
+        self.assertEqual(set(data), {"header", "kpis", "alerts", "cards", "charts", "areas"})
 
     def test_fx008_responsible_cannot_archive(self):
         # FX-008 / AD-115: read-only role, archiving is refused

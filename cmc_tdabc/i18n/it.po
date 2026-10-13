@@ -722,3 +722,50 @@ msgstr "Calcolato"
 #: model:ir.model.fields.selection,name:cmc_base.selection__cmc_tdabc_run__state__draft
 msgid "Draft"
 msgstr "Bozza"
+
+#. module: cmc_tdabc
+#. odoo-python
+#: code:addons/cmc_tdabc/models/cmc_cockpit.py:0
+msgid "%s resources over capacity"
+msgstr "%s risorse oltre capacità"
+
+#. module: cmc_tdabc
+#. odoo-python
+#: code:addons/cmc_tdabc/models/cmc_cockpit.py:0
+msgid "Capacity use"
+msgstr "Utilizzo capacità"
+
+#. module: cmc_tdabc
+#: model:ir.model,name:cmc_tdabc.model_cmc_cockpit
+msgid "Cost Management Cockpit"
+msgstr "Cruscotto controllo di gestione"
+
+#. module: cmc_tdabc
+#. odoo-python
+#: code:addons/cmc_tdabc/models/cmc_cockpit.py:0
+msgid "No data in this period"
+msgstr "Nessun dato nel periodo"
+
+#. module: cmc_tdabc
+#. odoo-python
+#: code:addons/cmc_tdabc/models/cmc_cockpit.py:0
+msgid "Time-driven ABC"
+msgstr "Time-Driven ABC"
+
+#. module: cmc_tdabc
+#. odoo-python
+#: code:addons/cmc_tdabc/models/cmc_cockpit.py:0
+msgid "Unused capacity"
+msgstr "Capacità inutilizzata"
+
+#. module: cmc_tdabc
+#. odoo-python
+#: code:addons/cmc_tdabc/models/cmc_cockpit.py:0
+msgid "from TDABC"
+msgstr "da TDABC"
+
+#. module: cmc_tdabc
+#. odoo-python
+#: code:addons/cmc_tdabc/models/cmc_cockpit.py:0
+msgid "1 resource over capacity"
+msgstr "1 risorsa oltre capacità"

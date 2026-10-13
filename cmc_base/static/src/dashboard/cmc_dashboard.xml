@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+<t t-name="cmc_base.CmcDashboard">
+    <div t-att-class="props.className">
+        <Layout display="display" className="'o_cmc_dashboard'">
+            <div t-ref="root" class="o_cmc_dash_body container-fluid p-3 p-lg-4"
+                 t-att-aria-busy="state.loading ? 'true' : 'false'"
+                 t-att-class="{'o_cmc_dash_busy': state.loading}">
+
+                <!-- header -->
+                <header class="o_cmc_dash_header d-flex flex-wrap align-items-center gap-3 mb-4">
+                    <h1 class="visually-hidden">Dashboard</h1>
+                    <div class="me-auto"/>
+                    <div class="d-flex align-items-center gap-2">
+                        <button type="button" class="btn btn-light o_cmc_dash_prev" aria-label="Previous period"
+                                t-att-disabled="!header or !header.period.prev_ref"
+                                t-on-click="() => this.shift(header.period.prev_ref)">
+                            <i class="fa fa-chevron-left" aria-hidden="true"/>
+                        </button>
+                        <div class="btn-group o_cmc_dash_period d-none d-md-inline-flex" role="group" aria-label="Period">
+                            <t t-foreach="periodKinds" t-as="pk" t-key="pk.kind">
+                                <button type="button" class="btn btn-outline-secondary"
+                                        t-att-class="{'active': state.period.kind === pk.kind}"
+                                        t-att-data-kind="pk.kind"
+                                        t-att-aria-pressed="state.period.kind === pk.kind ? 'true' : 'false'"
+                                        t-on-click="() => this.setKind(pk.kind)">
+                                    <t t-esc="pk.label"/>
+                                </button>
+                            </t>
+                        </div>
+                        <select class="form-select w-auto d-md-none o_cmc_dash_period_select" aria-label="Period"
+                                t-on-change="(ev) => this.setKind(ev.target.value)">
+                            <t t-foreach="periodKinds" t-as="pk" t-key="pk.kind">
+                                <option t-att-value="pk.kind" t-att-selected="state.period.kind === pk.kind" t-esc="pk.label"/>
+                            </t>
+                        </select>
+                        <button type="button" class="btn btn-light o_cmc_dash_next" aria-label="Next period"
+                                t-att-disabled="!header or !header.period.next_ref"
+                                t-on-click="() => this.shift(header.period.next_ref)">
+                            <i class="fa fa-chevron-right" aria-hidden="true"/>
+                        </button>
+                        <span class="o_cmc_dash_range text-muted" t-if="header" t-esc="rangeLabel"/>
+                    </div>
+                    <button type="button" class="btn btn-secondary o_cmc_dash_guide_btn" t-on-click="openSetupGuide">
+                        <i class="fa fa-compass me-1" aria-hidden="true"/>Setup guide
+                    </button>
+                </header>
+
+                <!-- first load skeleton -->
+                <div t-if="!state.data" class="o_cmc_dash_skeleton" role="status">
+                    <span class="visually-hidden">Loading…</span>
+                    <div class="row g-3 mb-4">
+                        <div t-foreach="[1, 2, 3, 4, 5]" t-as="n" t-key="n" class="col-6 col-md-4 col-xl">
+                            <div class="o_cmc_dash_skel_block"/>
+                        </div>
+                    </div>
+                    <div class="o_cmc_dash_skel_block o_cmc_dash_skel_wide"/>
+                </div>
+
+                <!-- global empty state -->
+                <div t-elif="header.global_empty" class="o_cmc_dash_global_empty text-center p-5">
+                    <i class="fa fa-compass fa-3x text-muted mb-3" aria-hidden="true"/>
+                    <p class="mb-3">Start by setting up the cost base: centers, elements and allocation rules.</p>
+                    <button type="button" class="btn btn-primary" t-on-click="openSetupGuide">Open setup guide</button>
+                </div>
+
+                <t t-else="">
+                    <!-- KPIs -->
+                    <section t-if="state.data.kpis.length" class="o_cmc_dash_kpis row g-3 mb-4">
+                        <t t-foreach="state.data.kpis" t-as="kpi" t-key="kpi.key">
+                            <div class="col-6 col-xl">
+                                <div class="card o_cmc_dash_kpi h-100" role="group"
+                                     t-att-title="kpi.value_full or kpi.value"
+                                     t-attf-aria-label="{{ kpi.label }}: {{ kpi.value_full or kpi.value }}">
+                                    <div class="card-body">
+                                        <div class="text-muted small text-uppercase" t-esc="kpi.label"/>
+                                        <div class="o_cmc_dash_figure fs-3 fw-bold" t-esc="kpi.value"/>
+                                        <div t-if="kpi.trend" class="small" t-att-class="trendClass(kpi.trend)">
+                                            <i t-attf-class="fa {{ trendIcon(kpi.trend) }}" aria-hidden="true"/>
+                                            <span class="ms-1" t-esc="kpi.trend.text"/>
+                                        </div>
+                                        <div t-if="kpi.sub" class="small o_cmc_dash_figure" t-esc="kpi.sub"/>
+                                        <div t-if="kpi.caption" class="small text-muted" t-esc="kpi.caption"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </section>
+
+                    <!-- alerts -->
+                    <section class="o_cmc_dash_alerts mb-4" aria-labelledby="o_cmc_dash_alerts_title">
+                        <h2 id="o_cmc_dash_alerts_title" class="h5 mb-2">Needs attention</h2>
+                        <p t-if="!state.data.alerts.length" class="o_cmc_dash_no_alerts text-muted m-0">
+                            <i class="fa fa-check-circle text-success me-1" aria-hidden="true"/>No issues in this period
+                        </p>
+                        <div t-else="" class="list-group">
+                            <t t-foreach="visibleAlerts" t-as="alert" t-key="alert.key">
+                                <t t-set="sev" t-value="severity(alert)"/>
+                                <button t-if="alert.action" type="button"
+                                        class="o_cmc_dash_alert list-group-item list-group-item-action d-flex align-items-center gap-2"
+                                        t-att-data-alert="alert.key"
+                                        t-on-click="() => this.openAction(alert.action, alert.domain)">
+                                    <i t-attf-class="fa {{ sev.icon }}" aria-hidden="true"/>
+                                    <span class="visually-hidden" t-esc="sev.label"/>
+                                    <span class="flex-grow-1 text-start o_cmc_dash_figure" t-esc="alert.label"/>
+                                    <i class="fa fa-chevron-right text-muted" aria-hidden="true"/>
+                                </button>
+                                <div t-else="" class="o_cmc_dash_alert list-group-item d-flex align-items-center gap-2"
+                                     t-att-data-alert="alert.key">
+                                    <i t-attf-class="fa {{ sev.icon }}" aria-hidden="true"/>
+                                    <span class="visually-hidden" t-esc="sev.label"/>
+                                    <span class="flex-grow-1 o_cmc_dash_figure" t-esc="alert.label"/>
+                                </div>
+                            </t>
+                        </div>
+                        <button t-if="hiddenAlertsCount" type="button" class="btn btn-link px-0 o_cmc_dash_alerts_toggle"
+                                t-att-aria-expanded="state.showAllAlerts ? 'true' : 'false'"
+                                t-on-click="() => state.showAllAlerts = !state.showAllAlerts">
+                            <t t-if="state.showAllAlerts">Show less</t>
+                            <t t-else="" t-esc="showAllLabel"/>
+                        </button>
+                    </section>
+
+                    <!-- areas -->
+                    <section t-if="state.data.areas.length" class="o_cmc_dash_areas mb-4">
+                        <h2 class="h5 mb-3">Status by area</h2>
+                        <t t-foreach="state.data.areas" t-as="area" t-key="area.key">
+                            <h3 class="h6 text-muted text-uppercase mb-2" t-esc="area.label"/>
+                            <div class="row g-3 mb-4">
+                                <t t-foreach="cardsOf(area)" t-as="card" t-key="card.key">
+                                    <t t-set="st" t-value="cardStatus(card)"/>
+                                    <div class="col-12 col-md-6 col-xl-3">
+                                        <div class="card o_cmc_dash_card h-100" t-att-data-card="card.key"
+                                             t-att-class="{'o_cmc_dash_card_link': card.action}">
+                                            <div class="card-body">
+                                                <div class="d-flex flex-wrap align-items-start gap-2 mb-2">
+                                                    <button t-if="card.action and card.status !== 'empty'" type="button"
+                                                            class="btn btn-link p-0 fw-bold text-start stretched-link flex-grow-1"
+                                                            t-on-click="() => this.openAction(card.action, card.domain)"
+                                                            t-esc="card.title"/>
+                                                    <span t-else="" class="fw-bold flex-grow-1" t-esc="card.title"/>
+                                                    <span t-attf-class="badge {{ st.cls }} text-nowrap flex-shrink-0">
+                                                        <i t-attf-class="fa {{ st.icon }} me-1" aria-hidden="true"/><t t-esc="st.label"/>
+                                                    </span>
+                                                </div>
+                                                <t t-if="card.status === 'empty'">
+                                                    <p class="small text-muted mb-2" t-esc="card.subtitle"/>
+                                                    <button t-if="card.action" type="button"
+                                                            class="btn btn-link p-0 stretched-link"
+                                                            t-on-click="() => this.openAction(card.action, card.domain)">Create</button>
+                                                </t>
+                                                <t t-else="">
+                                                    <dl class="mb-2">
+                                                        <t t-foreach="card.figures" t-as="fig" t-key="fig.key">
+                                                            <div class="d-flex justify-content-between gap-2">
+                                                                <dt class="fw-normal text-muted small" t-esc="fig.label"/>
+                                                                <dd class="m-0 o_cmc_dash_figure fw-semibold" t-esc="fig.value"/>
+                                                            </div>
+                                                        </t>
+                                                    </dl>
+                                                    <div t-if="card.subtitle" class="small text-muted" t-esc="card.subtitle"/>
+                                                </t>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </t>
+                    </section>
+
+                    <!-- charts -->
+                    <section t-if="state.data.charts.length" class="o_cmc_dash_charts row g-3">
+                        <t t-foreach="state.data.charts" t-as="chart" t-key="chart.key">
+                            <div class="col-12 col-xl-6">
+                                <div class="card o_cmc_dash_chart h-100" t-att-data-chart="chart.key">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <h2 class="h6 m-0 me-auto" t-esc="chart.title"/>
+                                            <button type="button" class="btn btn-link btn-sm o_cmc_dash_table_toggle"
+                                                    t-att-aria-pressed="state.tables[chart.key] ? 'true' : 'false'"
+                                                    t-on-click="() => this.toggleTable(chart.key)">Show table</button>
+                                        </div>
+                                        <div class="o_cmc_dash_chart_wrap" t-att-class="{'d-none': state.tables[chart.key]}">
+                                            <canvas t-att-data-chart="chart.key"/>
+                                        </div>
+                                        <div t-if="state.tables[chart.key]" class="table-responsive">
+                                            <table class="table table-sm o_cmc_dash_table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col"/>
+                                                        <th t-foreach="chart.datasets" t-as="ds" t-key="ds_index" scope="col"
+                                                            class="text-end" t-esc="ds.label"/>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr t-foreach="chart.labels" t-as="lbl" t-key="lbl_index">
+                                                        <th scope="row" class="fw-normal" t-esc="lbl"/>
+                                                        <td t-foreach="chart.datasets" t-as="ds" t-key="ds_index"
+                                                            class="text-end o_cmc_dash_figure"
+                                                            t-esc="ds.formatted[lbl_index]"/>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </section>
+                </t>
+            </div>
+        </Layout>
+    </div>
+</t>
+
+</templates>

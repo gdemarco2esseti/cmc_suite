@@ -70,6 +70,8 @@ msgid "A seasonality weight cannot be negative."
 msgstr "Un peso di stagionalità non può essere negativo."
 
 #. module: cmc_budget
+#. odoo-python
+#: code:addons/cmc_budget/models/cmc_cockpit.py:0
 #: model_terms:ir.ui.view,arch_db:cmc_budget.view_cmc_budget_bva_list
 #: model_terms:ir.ui.view,arch_db:cmc_budget.view_cmc_budget_variance_run_form
 msgid "Actual"
@@ -169,6 +171,8 @@ msgid "Behavior"
 msgstr "Comportamento"
 
 #. module: cmc_budget
+#. odoo-python
+#: code:addons/cmc_budget/models/cmc_cockpit.py:0
 #: model_terms:ir.ui.view,arch_db:cmc_budget.view_cmc_budget_line_pivot
 #: model_terms:ir.ui.view,arch_db:cmc_budget.view_cmc_plan_version_form_budget
 msgid "Budget"
@@ -1001,3 +1005,86 @@ msgstr "es. Picco estivo"
 #: model:ir.ui.menu,name:cmc_budget.menu_cmc_budget_variance_run
 msgid "Budget Variance Runs"
 msgstr "Elaborazioni scostamenti di budget"
+
+#. module: cmc_budget
+#. odoo-python
+#: code:addons/cmc_budget/models/cmc_cockpit.py:0
+msgid "%s budget lines over threshold"
+msgstr "%s voci di budget oltre soglia"
+
+#. module: cmc_budget
+#. odoo-python
+#: code:addons/cmc_budget/models/cmc_cockpit.py:0
+msgid "Actual %(actual)s vs budget %(plan)s"
+msgstr "Consuntivo %(actual)s su budget %(plan)s"
+
+#. module: cmc_budget
+#. odoo-python
+#: code:addons/cmc_budget/models/cmc_cockpit.py:0
+msgid "Budget variance"
+msgstr "Scostamento budget"
+
+#. module: cmc_budget
+#. odoo-python
+#: code:addons/cmc_budget/models/cmc_cockpit.py:0
+msgid "Budget vs actual"
+msgstr "Budget vs consuntivo"
+
+#. module: cmc_budget
+#. odoo-python
+#: code:addons/cmc_budget/models/cmc_cockpit.py:0
+msgid "Budget vs actual by month"
+msgstr "Budget vs consuntivo per mese"
+
+#. module: cmc_budget
+#: model:ir.model,name:cmc_budget.model_cmc_cockpit
+msgid "Cost Management Cockpit"
+msgstr "Cruscotto controllo di gestione"
+
+#. module: cmc_budget
+#. odoo-python
+#: code:addons/cmc_budget/models/cmc_cockpit.py:0
+msgid "No data in this period"
+msgstr "Nessun dato nel periodo"
+
+#. module: cmc_budget
+#. odoo-python
+#: code:addons/cmc_budget/models/cmc_cockpit.py:0
+msgid "actual vs budget"
+msgstr "consuntivo vs budget"
+
+#. module: cmc_budget
+#. odoo-python
+#: code:addons/cmc_budget/models/cmc_cockpit.py:0
+msgid "1 budget line over threshold"
+msgstr "1 voce di budget oltre soglia"
+
+#. module: cmc_budget
+#. odoo-python
+#: code:addons/cmc_budget/models/cmc_cockpit.py:0
+msgid "Current month not closed yet"
+msgstr "Mese corrente non ancora chiuso"
+
+#. module: cmc_budget
+#. odoo-python
+#: code:addons/cmc_budget/models/cmc_cockpit.py:0
+msgid "Favourable"
+msgstr "Favorevole"
+
+#. module: cmc_budget
+#. odoo-python
+#: code:addons/cmc_budget/models/cmc_cockpit.py:0
+msgid "Unfavourable"
+msgstr "Sfavorevole"
+
+#. module: cmc_budget
+#. odoo-python
+#: code:addons/cmc_budget/models/cmc_cockpit.py:0
+msgid "actual vs budget, through %s"
+msgstr "consuntivo vs budget, fino a %s"
+
+#. module: cmc_budget
+#. odoo-python
+#: code:addons/cmc_budget/models/cmc_cockpit.py:0
+msgid "through %s"
+msgstr "fino a %s"

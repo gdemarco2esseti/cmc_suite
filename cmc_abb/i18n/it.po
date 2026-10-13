@@ -1567,3 +1567,32 @@ msgstr "Elaborazioni scostamenti ABB"
 #: model:ir.ui.menu,name:cmc_abb.menu_cmc_abb_whatif
 msgid "ABB What-if Scenarios"
 msgstr "Scenari what-if ABB"
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_cockpit.py:0
+msgid "Activity-based budgeting"
+msgstr "Budgeting basato sulle attività (ABB)"
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_cockpit.py:0
+msgid "Assigned cost"
+msgstr "Costo assegnato"
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_cockpit.py:0
+msgid "Budgeted cost"
+msgstr "Costo a budget"
+
+#. module: cmc_abb
+#: model:ir.model,name:cmc_abb.model_cmc_cockpit
+msgid "Cost Management Cockpit"
+msgstr "Cruscotto controllo di gestione"
+
+#. module: cmc_abb
+#. odoo-python
+#: code:addons/cmc_abb/models/cmc_cockpit.py:0
+msgid "Unused capacity cost"
+msgstr "Costo della capacità inutilizzata"

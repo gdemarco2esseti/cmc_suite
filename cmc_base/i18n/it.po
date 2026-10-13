@@ -981,6 +981,8 @@ msgid "Copied From"
 msgstr "Copiato da"
 
 #. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
 #: model:ir.model.fields,field_description:cmc_base.field_account_analytic_line__cmc_cost_amount
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_center_cost_report__cost
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_cost_function_step__amount
@@ -2226,6 +2228,8 @@ msgid "Model %s cannot carry attributes."
 msgstr "Il modello %s non può avere attributi."
 
 #. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/dashboard/cmc_dashboard.js:0
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_center_cost_report__date
 #: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_center_cost_report_search
 #: model_terms:ir.ui.view,arch_db:cmc_base.view_cmc_measure_quantity_search
@@ -3288,6 +3292,8 @@ msgid "Version Type"
 msgstr "Tipo di versione"
 
 #. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/dashboard/cmc_dashboard.js:0
 #: model:ir.model.fields,field_description:cmc_base.field_cmc_data_check_wizard_line__warning
 msgid "Warning"
 msgstr "Avviso"
@@ -3408,16 +3414,22 @@ msgid "— pick the one you need and apply it"
 msgstr "— scegli e applica quella che ti serve"
 
 #. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
 #: model:ir.ui.menu,name:cmc_base.menu_cmc_tab_decision
 msgid "Analysis & Decisions"
 msgstr "Analisi e decisioni"
 
 #. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
 #: model:ir.ui.menu,name:cmc_base.menu_cmc_tab_planning
 msgid "Budget & Scenarios"
 msgstr "Budget e scenari"
 
 #. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
 #: model:ir.ui.menu,name:cmc_base.menu_cmc_tab_recording
 msgid "Cost Recording"
 msgstr "Rilevazione costi"
@@ -3443,11 +3455,15 @@ msgid "Data Quality"
 msgstr "Qualità dei dati"
 
 #. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
 #: model:ir.ui.menu,name:cmc_base.menu_cmc_tab_fin
 msgid "Financial Analysis"
 msgstr "Analisi di bilancio"
 
 #. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
 #: model:ir.ui.menu,name:cmc_base.menu_cmc_responsibility
 msgid "Performance"
 msgstr "Performance"
@@ -3458,6 +3474,8 @@ msgid "Planning"
 msgstr "Pianificazione"
 
 #. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
 #: model:ir.ui.menu,name:cmc_base.menu_cmc_operations
 msgid "Product Costing"
 msgstr "Calcolo costi"
@@ -3466,3 +3484,291 @@ msgstr "Calcolo costi"
 #: model:ir.ui.menu,name:cmc_base.menu_cmc_sec_responsibility
 msgid "Responsibility Accounting"
 msgstr "Contabilità per responsabilità"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
+msgid "%(count)s unclassified cost lines (%(amount)s)"
+msgstr "%(count)s righe di costo non classificate (%(amount)s)"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
+msgid "%(pct)s %% vs same period %(period)s"
+msgstr "%(pct)s %% vs stesso periodo %(period)s"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
+msgid "%s analyses"
+msgstr "%s analisi"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
+msgid "%s closing not run"
+msgstr "Chiusura di %s non eseguita"
+
+#. module: cmc_base
+#. odoo-javascript
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
+#: code:addons/cmc_base/static/src/dashboard/cmc_dashboard.js:0
+msgid "All"
+msgstr "Tutto"
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/dashboard/cmc_dashboard.js:0
+msgid "Attention"
+msgstr "Attenzione"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
+msgid "Booked costs"
+msgstr "Costi rilevati"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
+msgid "Capacity"
+msgstr "Capacità"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
+msgid "Cost distributed"
+msgstr "Costo ribaltato"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
+msgid "Costs by nature"
+msgstr "Costi per natura"
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/dashboard/cmc_dashboard.xml:0
+msgid "Create"
+msgstr "Crea"
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/dashboard/cmc_dashboard.js:0
+msgid "Critical"
+msgstr "Critico"
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/dashboard/cmc_dashboard.xml:0
+msgid "Dashboard"
+msgstr "Cruscotto"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
+msgid "Fixed cost"
+msgstr "Costo fisso"
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/dashboard/cmc_dashboard.js:0
+msgid "Info"
+msgstr "Info"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
+msgid "Invalid dashboard period."
+msgstr "Periodo del cruscotto non valido."
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/dashboard/cmc_dashboard.xml:0
+msgid "Needs attention"
+msgstr "Da verificare"
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/dashboard/cmc_dashboard.xml:0
+msgid "Next period"
+msgstr "Periodo successivo"
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/dashboard/cmc_dashboard.js:0
+msgid "No computation"
+msgstr "Nessuna elaborazione"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
+msgid "No computation yet. Create the first one to see results here."
+msgstr ""
+"Nessuna elaborazione ancora. Crea la prima per vedere qui i risultati."
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
+msgid "No data in this period"
+msgstr "Nessun dato nel periodo"
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/dashboard/cmc_dashboard.xml:0
+msgid "No issues in this period"
+msgstr "Nessuna anomalia nel periodo"
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/dashboard/cmc_dashboard.xml:0
+msgid "Open setup guide"
+msgstr "Avvia la guida configurazione"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
+msgid "Others"
+msgstr "Altri"
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/dashboard/cmc_dashboard.js:0
+msgid "Outdated"
+msgstr "Da aggiornare"
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/dashboard/cmc_dashboard.xml:0
+msgid "Period"
+msgstr "Periodo"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
+msgid "Period closing"
+msgstr "Chiusura periodo"
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/dashboard/cmc_dashboard.xml:0
+msgid "Previous period"
+msgstr "Periodo precedente"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
+msgid "Q%(quarter)s %(year)s"
+msgstr "T%(quarter)s %(year)s"
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/dashboard/cmc_dashboard.js:0
+msgid "Quarter"
+msgstr "Trimestre"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
+msgid "Residual cost"
+msgstr "Costo residuo"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
+msgid "Residual costs not allocated: %s"
+msgstr "Costi residui non ribaltati: %s"
+
+#. module: cmc_base
+#: model:ir.actions.client,name:cmc_base.action_cmc_setup_guide
+#: model:ir.ui.menu,name:cmc_base.menu_cmc_setup_guide
+msgid "Setup Guide"
+msgstr "Guida configurazione"
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/dashboard/cmc_dashboard.xml:0
+msgid "Setup guide"
+msgstr "Guida configurazione"
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/dashboard/cmc_dashboard.js:0
+msgid "Show all (%(n)s)"
+msgstr "Mostra tutti (%(n)s)"
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/dashboard/cmc_dashboard.xml:0
+msgid "Show less"
+msgstr "Mostra meno"
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/dashboard/cmc_dashboard.xml:0
+msgid "Show table"
+msgstr "Mostra tabella"
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/dashboard/cmc_dashboard.xml:0
+msgid ""
+"Start by setting up the cost base: centers, elements and allocation rules."
+msgstr ""
+"Inizia configurando la base costi: centri, elementi e regole di "
+"ribaltamento."
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/dashboard/cmc_dashboard.xml:0
+msgid "Status by area"
+msgstr "Stato per area"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
+msgid "Unused capacity"
+msgstr "Capacità inutilizzata"
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/dashboard/cmc_dashboard.js:0
+msgid "Up to date"
+msgstr "Aggiornato"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
+msgid "Utilisation"
+msgstr "Utilizzo"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
+msgid "Utilisation %s"
+msgstr "Utilizzo %s"
+
+#. module: cmc_base
+#. odoo-javascript
+#: code:addons/cmc_base/static/src/dashboard/cmc_dashboard.js:0
+msgid "Year"
+msgstr "Anno"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
+msgid "from Capacity Analysis"
+msgstr "da Analisi di capacità"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
+msgid "from Cost Entry"
+msgstr "da Registrazioni di costo"
+
+#. module: cmc_base
+#. odoo-python
+#: code:addons/cmc_base/models/cmc_cockpit.py:0
+msgid "1 unclassified cost line (%(amount)s)"
+msgstr "1 riga di costo non classificata (%(amount)s)"

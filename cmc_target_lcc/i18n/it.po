@@ -1529,3 +1529,38 @@ msgstr "Calcolato"
 #: model:ir.model.fields.selection,name:cmc_base.selection__cmc_tlc_run_mixin__state__draft
 msgid "Draft"
 msgstr "Bozza"
+
+#. module: cmc_target_lcc
+#. odoo-python
+#: code:addons/cmc_target_lcc/models/cmc_cockpit.py:0
+msgid "%s products above target cost"
+msgstr "%s prodotti oltre il costo obiettivo"
+
+#. module: cmc_target_lcc
+#: model:ir.model,name:cmc_target_lcc.model_cmc_cockpit
+msgid "Cost Management Cockpit"
+msgstr "Cruscotto controllo di gestione"
+
+#. module: cmc_target_lcc
+#. odoo-python
+#: code:addons/cmc_target_lcc/models/cmc_cockpit.py:0
+msgid "Cost gap"
+msgstr "Scostamento di costo"
+
+#. module: cmc_target_lcc
+#. odoo-python
+#: code:addons/cmc_target_lcc/models/cmc_cockpit.py:0
+msgid "Life-cycle profit (NPV)"
+msgstr "Utile del ciclo di vita (VAN)"
+
+#. module: cmc_target_lcc
+#. odoo-python
+#: code:addons/cmc_target_lcc/models/cmc_cockpit.py:0
+msgid "Target & life-cycle costing"
+msgstr "Target e life-cycle costing"
+
+#. module: cmc_target_lcc
+#. odoo-python
+#: code:addons/cmc_target_lcc/models/cmc_cockpit.py:0
+msgid "1 product above target cost"
+msgstr "1 prodotto oltre il costo obiettivo"

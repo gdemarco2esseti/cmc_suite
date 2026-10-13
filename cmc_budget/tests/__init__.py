@@ -11,3 +11,4 @@ from . import test_budget_versions
 from . import test_budget_scenario_evaluator
 from . import test_budget_stress_fixes
 from . import test_stress_rilancio
+from . import test_dashboard

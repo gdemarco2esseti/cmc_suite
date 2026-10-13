@@ -1,6 +1,6 @@
 {
     "name": "CMC - Cost Management & Controlling (Base)",
-    "version": "19.0.1.6.4",
+    "version": "19.0.1.6.5",
     "category": "Accounting/Accounting",
     "summary": "Fondamenta del controllo di gestione: tassonomia dei costi e oggetto di costo",
     "author": "2ST",
@@ -39,6 +39,10 @@
         "web.assets_backend": [
             "cmc_base/static/src/cockpit/**/*",
             "cmc_base/static/src/reclass/**/*",
+            "cmc_base/static/src/dashboard/**/*",
+        ],
+        "web.assets_tests": [
+            "cmc_base/static/tests/tours/**/*",
         ],
     },
     "installable": True,

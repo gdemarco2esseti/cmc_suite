@@ -1,32 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem id="menu_cmc_sec_profitability" name="Profitability"
-              parent="cmc_base.menu_cmc_operations" sequence="25"/>
-    <menuitem id="menu_cmc_profit_run" name="Profitability Runs" parent="menu_cmc_sec_profitability"
-              action="action_cmc_profit_run" sequence="10"/>
-    <menuitem id="menu_cmc_profit_fact" name="Profit Facts" parent="menu_cmc_sec_profitability"
-              action="action_cmc_profit_fact" sequence="20"/>
-    <menuitem id="menu_cmc_profit_customer" name="Customer Margins" parent="menu_cmc_sec_profitability"
-              action="action_cmc_profit_customer" sequence="30"/>
-    <menuitem id="menu_cmc_profit_product" name="Product Margins" parent="menu_cmc_sec_profitability"
-              action="action_cmc_profit_product" sequence="40"/>
-    <menuitem id="menu_cmc_profit_channel" name="Channel Margins" parent="menu_cmc_sec_profitability"
-              action="action_cmc_profit_channel" sequence="50"/>
-    <menuitem id="menu_cmc_profit_whale" name="Whale Curve" parent="menu_cmc_sec_profitability"
-              action="action_cmc_profit_whale" sequence="60"/>
-    <menuitem id="menu_cmc_profit_quadrant" name="Quadrants" parent="menu_cmc_sec_profitability"
-              action="action_cmc_profit_quadrant" sequence="70"/>
-    <menuitem id="menu_cmc_profit_waterfall" name="Price Waterfall" parent="menu_cmc_sec_profitability"
-              action="action_cmc_profit_waterfall_customer" sequence="80"/>
-    <menuitem id="menu_cmc_profit_supplier" name="Supplier TCO" parent="menu_cmc_sec_profitability"
-              action="action_cmc_profit_supplier" sequence="90"/>
-    <menuitem id="menu_cmc_profit_sbu" name="SBU Report" parent="menu_cmc_sec_profitability"
-              action="action_cmc_profit_sbu" sequence="100"/>
+    <menuitem id="menu_cmc_sec_profitability"
+              name="Profitability"
+              parent="cmc_base.menu_cmc_tab_decision"
+              sequence="30"/>
+    <menuitem id="menu_cmc_profit_run"
+              name="Profitability Runs"
+              parent="menu_cmc_sec_profitability"
+              action="action_cmc_profit_run"
+              sequence="10"/>
+    <menuitem id="menu_cmc_profit_fact"
+              name="Profit Facts"
+              parent="menu_cmc_sec_profitability"
+              action="action_cmc_profit_fact"
+              sequence="110"/>
+    <menuitem id="menu_cmc_profit_customer"
+              name="Customer Margins"
+              parent="menu_cmc_sec_profitability"
+              action="action_cmc_profit_customer"
+              sequence="20"/>
+    <menuitem id="menu_cmc_profit_product"
+              name="Product Margins"
+              parent="menu_cmc_sec_profitability"
+              action="action_cmc_profit_product"
+              sequence="30"/>
+    <menuitem id="menu_cmc_profit_channel"
+              name="Channel Margins"
+              parent="menu_cmc_sec_profitability"
+              action="action_cmc_profit_channel"
+              sequence="40"/>
+    <menuitem id="menu_cmc_profit_whale"
+              name="Whale Curve"
+              parent="menu_cmc_sec_profitability"
+              action="action_cmc_profit_whale"
+              sequence="50"/>
+    <menuitem id="menu_cmc_profit_quadrant"
+              name="Profitability Quadrants"
+              parent="menu_cmc_sec_profitability"
+              action="action_cmc_profit_quadrant"
+              sequence="60"/>
+    <menuitem id="menu_cmc_profit_waterfall"
+              name="Price Waterfall"
+              parent="menu_cmc_sec_profitability"
+              action="action_cmc_profit_waterfall_customer"
+              sequence="70"/>
+    <menuitem id="menu_cmc_profit_supplier"
+              name="Supplier TCO"
+              parent="menu_cmc_sec_profitability"
+              action="action_cmc_profit_supplier"
+              sequence="80"/>
+    <menuitem id="menu_cmc_profit_sbu"
+              name="SBU Report"
+              parent="menu_cmc_sec_profitability"
+              action="action_cmc_profit_sbu"
+              sequence="90"/>
     <menuitem id="menu_cmc_transfer_charge" name="Chargeback Runs" parent="menu_cmc_sec_profitability"
-              action="action_cmc_transfer_charge" sequence="110"/>
+              action="action_cmc_transfer_charge" sequence="100"/>
 
-    <menuitem id="menu_cmc_cfg_profitability" name="Profitability" parent="cmc_base.menu_cmc_config"
-              sequence="45" groups="cmc_base.group_cmc_manager"/>
+    <menuitem id="menu_cmc_cfg_profitability"
+              name="Profitability"
+              parent="cmc_base.menu_cmc_config"
+              sequence="60"
+              groups="cmc_base.group_cmc_manager"/>
     <menuitem id="menu_cmc_profit_price_element" name="Price Waterfall Elements" parent="menu_cmc_cfg_profitability"
               action="action_cmc_profit_price_element" sequence="10"/>
 </odoo>

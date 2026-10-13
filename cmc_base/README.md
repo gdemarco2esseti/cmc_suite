@@ -22,12 +22,12 @@ Costruire la **base di costo** su cui poggiano tutte le metodologie di costing:
 1. **Installa** `cmc_base` (le app capillari si installano sopra, quando servono).
 2. Assegna all'utente il gruppo **Controllo di gestione / Manager** (o Utente) da
    *Impostazioni › Utenti*.
-3. Vai in **Controllo di gestione › Configurazione › Anagrafiche**:
+3. Vai in **Controllo di gestione › Configurazione › Struttura dei costi**:
    - **Elementi di costo** (*Cost Elements*): crea la tassonomia per natura
      (es. Materie prime, Manodopera diretta, Ammortamenti). Marca come *figurativo*
      gli elementi che non transitano in co.ge. (es. interessi di computo).
    - **Cost Driver**: crea le basi di ripartizione (es. *Ore macchina*, *Ore servizio*).
-4. In **Operazioni › Base di costo › Centri di costo** crea i centri e assegna il
+4. In **Rilevazione costi › Base di costo › Centri di costo** crea i centri e assegna il
    **Tipo di centro** (finale / ausiliario) oppure marca *centro di periodo* per i
    costi che restano fuori dal ribaltamento (es. Commerciale).
 
@@ -35,17 +35,17 @@ Costruire la **base di costo** su cui poggiano tutte le metodologie di costing:
 
 ## Utilizzo (step-by-step)
 
-1. **Registra i costi**: *Operazioni › Base di costo › Registrazione costi* — ogni riga
+1. **Registra i costi**: *Rilevazione costi › Base di costo › Registrazioni di costo* — ogni riga
    analitica porta centro, importo, comportamento ed elemento di costo.
-2. **Servizi inter-centro**: *Base di costo › Servizi inter-centro* — dichiara le
+2. **Servizi inter-centro**: *Rilevazione costi › Base di costo › Servizi inter-centro* — dichiara le
    prestazioni dei centri ausiliari verso gli altri centri (provider → receiver, driver, quantità).
-3. **Ribaltamento**: *Base di costo › Ribaltamento* → nuovo record, scegli il **Metodo**
+3. **Ribaltamento**: *Rilevazione costi › Base di costo › Ripartizioni di costo* → nuovo record, scegli il **Metodo**
    (diretto / step-down / reciproco) e premi **Calcola**. I centri ausiliari si azzerano
    sui finali; la matrice centro × elemento viene generata.
 
    ![Ribaltamento](static/description/closing.png)
 
-4. **Capacità**: *Analisi & controllo › Unused Capacity* → inserisci capacità teorica,
+4. **Capacità**: *Analisi e decisioni › Analisi dei costi › Analisi di capacità* → inserisci capacità teorica,
    pratica e consuntiva del centro; il sistema isola il **costo della capacità inutilizzata**
    (costi fissi su base pratica).
 

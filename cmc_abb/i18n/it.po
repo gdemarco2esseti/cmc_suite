@@ -165,7 +165,6 @@ msgstr "Scostamento ABC per risorsa"
 
 #. module: cmc_abb
 #: model:ir.actions.act_window,name:cmc_abb.action_cmc_abb_variance_run
-#: model:ir.ui.menu,name:cmc_abb.menu_cmc_abb_variance_run
 #: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_run_form
 #: model_terms:ir.ui.view,arch_db:cmc_abb.view_cmc_abb_variance_run_list
 msgid "ABC Variances"
@@ -1514,11 +1513,6 @@ msgid "Variable Rate"
 msgstr "Tariffa variabile"
 
 #. module: cmc_abb
-#: model:ir.ui.menu,name:cmc_abb.menu_cmc_abb_variance_line
-msgid "Variance Analysis"
-msgstr "Analisi degli scostamenti"
-
-#. module: cmc_abb
 #: model:ir.model.fields.selection,name:cmc_abb.selection__cmc_abb_warning__warning_type__volume
 msgid "Volume"
 msgstr "Volume"
@@ -1556,6 +1550,20 @@ msgstr "Scenario what-if"
 
 #. module: cmc_abb
 #: model:ir.actions.act_window,name:cmc_abb.action_cmc_abb_whatif
-#: model:ir.ui.menu,name:cmc_abb.menu_cmc_abb_whatif
 msgid "What-if Scenarios"
 msgstr "Scenari what-if"
+
+#. module: cmc_abb
+#: model:ir.ui.menu,name:cmc_abb.menu_cmc_abb_variance_line
+msgid "ABB Variance Analysis"
+msgstr "Analisi scostamenti ABB"
+
+#. module: cmc_abb
+#: model:ir.ui.menu,name:cmc_abb.menu_cmc_abb_variance_run
+msgid "ABB Variance Runs"
+msgstr "Elaborazioni scostamenti ABB"
+
+#. module: cmc_abb
+#: model:ir.ui.menu,name:cmc_abb.menu_cmc_abb_whatif
+msgid "ABB What-if Scenarios"
+msgstr "Scenari what-if ABB"

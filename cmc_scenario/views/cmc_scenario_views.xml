@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem id="menu_cmc_sec_scenario" name="Scenarios &amp; Risk" parent="cmc_base.menu_cmc_operations" sequence="50"/>
+    <menuitem id="menu_cmc_sec_scenario"
+              name="Scenarios &amp; Risk"
+              parent="cmc_base.menu_cmc_tab_planning"
+              sequence="30"/>
 
     <!-- FCS-02: scenario creation from a version -->
     <record id="view_cmc_plan_version_form_scenario" model="ir.ui.view">

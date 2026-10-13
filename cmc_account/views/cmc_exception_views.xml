@@ -54,7 +54,9 @@
         <field name="code">records._cmc_auto_classify()</field>
     </record>
 
-    <menuitem id="menu_cmc_unclassified" name="Unclassified Cost Lines"
-              parent="cmc_base.menu_cmc_sec_analysis"
-              action="action_cmc_unclassified_lines" sequence="7"/>
+    <menuitem id="menu_cmc_unclassified"
+              name="Unclassified Cost Lines"
+              parent="cmc_base.menu_cmc_sec_data_quality"
+              action="action_cmc_unclassified_lines"
+              sequence="10"/>
 </odoo>

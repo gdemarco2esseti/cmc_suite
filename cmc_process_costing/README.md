@@ -5,7 +5,7 @@ equivalent units per cost element (transferred-in, materials, conversion), cost 
 (weighted average or FIFO), normal / abnormal spoilage, ending WIP, control total, chaining of departments.
 
 ## Use
-1. Menu Operations > Process Costing > Process Runs: new run (department, process output, month, method).
+1. Menu Calcolo costi › Costo per processo (process costing) › Esecuzioni di processo: new run (department, process output, month, method).
 2. Type the WIP percentages and the ending units, then **Prefill from MRP** (produced and scrap quantities of the
    `cmc_mrp` feeders; beginning WIP from the previous month run; starts from the upstream department run).
 3. **Compute**, then print the Cost of Production Report. Reset to draft to change the inputs.

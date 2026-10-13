@@ -124,12 +124,12 @@
 
     <menuitem id="menu_cmc_responsibility_center"
               name="Responsibility Centers"
-              parent="menu_cmc_responsibility"
+              parent="menu_cmc_sec_responsibility"
               action="action_cmc_responsibility_center"
               sequence="10"/>
     <menuitem id="menu_cmc_responsibility_summary"
               name="Controllable Cost and ROI"
-              parent="menu_cmc_responsibility"
+              parent="menu_cmc_sec_responsibility"
               action="action_cmc_responsibility_summary"
-              sequence="20"/>
+              sequence="30"/>
 </odoo>

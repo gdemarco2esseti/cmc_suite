@@ -1,6 +1,6 @@
 {
     "name": "CMC - Standard Cost",
-    "version": "19.0.1.1.1",
+    "version": "19.0.1.1.2",
     "category": "Accounting/Accounting",
     "summary": "Standard cost cards, predetermined rates, MO variances, over/under-absorbed overhead, standard price push",
     "author": "EsseTech by DueEsseTi Srl",

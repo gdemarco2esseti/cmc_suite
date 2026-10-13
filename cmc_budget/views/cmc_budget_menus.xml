@@ -2,8 +2,8 @@
 <odoo>
     <menuitem id="menu_cmc_sec_budget"
               name="Budget &amp; Variances"
-              parent="cmc_base.menu_cmc_operations"
-              sequence="30"/>
+              parent="cmc_base.menu_cmc_tab_planning"
+              sequence="10"/>
     <menuitem id="menu_cmc_budget_line"
               name="Budget Lines"
               parent="menu_cmc_sec_budget"
@@ -16,7 +16,7 @@
               sequence="20"
               groups="cmc_base.group_cmc_user,cmc_base.group_cmc_responsible"/>
     <menuitem id="menu_cmc_budget_variance_run"
-              name="Variance Runs"
+              name="Budget Variance Runs"
               parent="menu_cmc_sec_budget"
               action="action_cmc_budget_variance_run"
               sequence="30"/>
@@ -28,8 +28,8 @@
               groups="cmc_base.group_cmc_user"/>
     <menuitem id="menu_cmc_budget_seasonality"
               name="Seasonality Profiles"
-              parent="cmc_base.menu_cmc_cfg_master"
+              parent="cmc_base.menu_cmc_cfg_planning"
               action="action_cmc_budget_seasonality"
-              sequence="40"
+              sequence="10"
               groups="cmc_base.group_cmc_manager"/>
 </odoo>

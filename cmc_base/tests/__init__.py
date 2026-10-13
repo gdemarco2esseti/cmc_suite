@@ -36,3 +36,4 @@ from . import test_run_lock
 from . import test_wp11_stats
 from . import test_fx_stress_2026_10
 from . import test_stress_rilancio
+from . import test_menu_tabs

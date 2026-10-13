@@ -998,8 +998,8 @@
     <!-- Menus -->
     <menuitem id="menu_cmc_sec_abm"
               name="Activity-Based Management"
-              parent="cmc_base.menu_cmc_operations"
-              sequence="55"/>
+              parent="cmc_base.menu_cmc_tab_decision"
+              sequence="40"/>
     <menuitem id="menu_cmc_abm_process" name="Process View"
               parent="menu_cmc_sec_abm" action="action_cmc_abm_process" sequence="10"/>
     <menuitem id="menu_cmc_abm_matrix" name="Activity x Center Matrix"
@@ -1010,8 +1010,11 @@
               parent="menu_cmc_sec_abm" action="action_cmc_abm_waste" sequence="40"/>
     <menuitem id="menu_cmc_abm_pareto" name="Pareto of Activities"
               parent="menu_cmc_sec_abm" action="action_cmc_abm_pareto" sequence="50"/>
-    <menuitem id="menu_cmc_abm_quadrant" name="Quadrant"
-              parent="menu_cmc_sec_abm" action="action_cmc_abm_quadrant" sequence="60"/>
+    <menuitem id="menu_cmc_abm_quadrant"
+              name="Activity Quadrant"
+              parent="menu_cmc_sec_abm"
+              action="action_cmc_abm_quadrant"
+              sequence="60"/>
     <menuitem id="menu_cmc_abm_performance" name="Activity Performance"
               parent="menu_cmc_sec_abm" action="action_cmc_abm_performance" sequence="70"/>
     <menuitem id="menu_cmc_abm_coq" name="Cost of Quality"
@@ -1020,8 +1023,6 @@
               parent="menu_cmc_sec_abm" action="action_cmc_abm_initiative" sequence="90"/>
     <menuitem id="menu_cmc_abm_benchmark" name="Activity Benchmark"
               parent="menu_cmc_sec_abm" action="action_cmc_abm_benchmark" sequence="100"/>
-    <menuitem id="menu_cmc_abm_measure" name="Activity Measures"
-              parent="cmc_base.menu_cmc_cfg_master" action="action_cmc_abm_measure" sequence="42"/>
 
     <!-- Menus ABC -->
     <menuitem id="menu_cmc_sec_abc"
@@ -1046,10 +1047,23 @@
     <menuitem id="menu_cmc_abc_unused_capacity" name="Unused Capacity"
               parent="menu_cmc_sec_abc"
               action="action_cmc_abc_unused_capacity" sequence="60"/>
-    <menuitem id="menu_cmc_abc_activity" name="ABC Activities"
-              parent="cmc_base.menu_cmc_cfg_master"
-              action="action_cmc_abc_activity" sequence="40"/>
-    <menuitem id="menu_cmc_abc_resource" name="ABC Resources"
-              parent="cmc_base.menu_cmc_cfg_master"
-              action="action_cmc_abc_resource" sequence="41"/>
+    <menuitem id="menu_cmc_cfg_abc"
+              name="ABC &amp; ABM"
+              parent="cmc_base.menu_cmc_config"
+              sequence="30"/>
+    <menuitem id="menu_cmc_abc_activity"
+              name="ABC Activities"
+              parent="menu_cmc_cfg_abc"
+              action="action_cmc_abc_activity"
+              sequence="10"/>
+    <menuitem id="menu_cmc_abc_resource"
+              name="ABC Resources"
+              parent="menu_cmc_cfg_abc"
+              action="action_cmc_abc_resource"
+              sequence="20"/>
+    <menuitem id="menu_cmc_abm_measure"
+              name="Activity Measures"
+              parent="menu_cmc_cfg_abc"
+              action="action_cmc_abm_measure"
+              sequence="30"/>
 </odoo>

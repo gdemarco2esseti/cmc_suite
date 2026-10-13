@@ -17,15 +17,14 @@ Costeggiare i prodotti con l'**ABC classico a due stadi**:
 ## Configurazione (step-by-step)
 
 1. Installa `cmc_abc` (richiede `cmc_base`).
-2. Vai in **Configurazione › Anagrafiche › ABC Activities** e crea le **attività**
+2. Vai in **Configurazione › ABC e ABM › Attività ABC** e crea le **attività**
    (es. *Attrezzaggio*, *Collaudo*) con codice e (opzionale) driver di default.
-3. **Tagga i costi**: nelle righe analitiche di costo (*Base di costo › Registrazione
-   costi*) valorizza il campo **Attività ABC** per far confluire quel costo nel pool
+3. **Tagga i costi**: nelle righe analitiche di costo (*Rilevazione costi › Base di costo › Registrazioni di costo*) valorizza il campo **Attività ABC** per far confluire quel costo nel pool
    dell'attività (stadio 1).
 
 ## Utilizzo (step-by-step)
 
-1. **Operazioni › Activity-Based Costing › Calcolo ABC** → **Nuovo**.
+1. **Calcolo costi › Activity-Based Costing › Calcolo ABC** → **Nuovo**.
 
    ![Form ABC](static/description/abc_form.png)
 

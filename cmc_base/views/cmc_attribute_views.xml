@@ -55,6 +55,6 @@
               name="Attributes"
               parent="menu_cmc_cfg_master"
               action="action_cmc_attribute"
-              sequence="20"
+              sequence="50"
               groups="cmc_base.group_cmc_manager"/>
 </odoo>

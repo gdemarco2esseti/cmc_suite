@@ -211,7 +211,9 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <menuitem id="menu_cmc_decision" name="Decisions"
+    <menuitem id="menu_cmc_decision"
+              name="Decisions"
               parent="menu_cmc_sec_direct"
-              action="action_cmc_decision" sequence="25"/>
+              action="action_cmc_decision"
+              sequence="30"/>
 </odoo>

@@ -656,7 +656,6 @@ msgstr "Valore dell'analisi di bilancio"
 #: model:ir.actions.report,name:cmc_fin_analysis.action_report_cmc_fin_analysis
 #: model:ir.model,name:cmc_fin_analysis.model_cmc_fin_analysis
 #: model:ir.ui.menu,name:cmc_fin_analysis.menu_cmc_cfg_fin_analysis
-#: model:ir.ui.menu,name:cmc_fin_analysis.menu_cmc_sec_fin_analysis
 msgid "Financial Statement Analysis"
 msgstr "Analisi di bilancio"
 
@@ -1323,7 +1322,6 @@ msgstr "Valori degli indici"
 
 #. module: cmc_fin_analysis
 #: model:ir.actions.act_window,name:cmc_fin_analysis.action_cmc_fin_ratio
-#: model:ir.ui.menu,name:cmc_fin_analysis.menu_cmc_fin_ratio
 #: model:ir.ui.menu,name:cmc_fin_analysis.menu_cmc_fin_ratio_value
 #: model_terms:ir.ui.view,arch_db:cmc_fin_analysis.view_cmc_fin_analysis_form
 msgid "Ratios"
@@ -1736,3 +1734,18 @@ msgstr "n.c."
 
 #~ msgid "Computed"
 #~ msgstr "Calcolato"
+
+#. module: cmc_fin_analysis
+#: model:ir.ui.menu,name:cmc_fin_analysis.menu_cmc_sec_fin_inputs
+msgid "Inputs & Registers"
+msgstr "Input e registri"
+
+#. module: cmc_fin_analysis
+#: model:ir.ui.menu,name:cmc_fin_analysis.menu_cmc_fin_ratio
+msgid "Ratio Definitions"
+msgstr "Definizioni degli indici"
+
+#. module: cmc_fin_analysis
+#: model:ir.ui.menu,name:cmc_fin_analysis.menu_cmc_sec_fin_analysis
+msgid "Results"
+msgstr "Risultati"

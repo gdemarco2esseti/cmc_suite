@@ -3,7 +3,7 @@
     <menuitem id="menu_cmc_sec_process_costing"
               name="Process Costing"
               parent="cmc_base.menu_cmc_operations"
-              sequence="37"/>
+              sequence="30"/>
     <menuitem id="menu_cmc_process_run"
               name="Process Runs"
               parent="menu_cmc_sec_process_costing"

@@ -47,7 +47,7 @@
 
     <menuitem id="menu_cmc_data_check"
               name="Data Checks"
-              parent="menu_cmc_sec_analysis"
+              parent="menu_cmc_sec_data_quality"
               action="action_cmc_data_check_wizard"
-              sequence="80"/>
+              sequence="30"/>
 </odoo>

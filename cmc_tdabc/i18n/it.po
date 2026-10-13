@@ -461,7 +461,6 @@ msgstr ""
 "La risorsa %(r)s non ha capacità pratica; impossibile derivare una tariffa."
 
 #. module: cmc_tdabc
-#: model:ir.ui.menu,name:cmc_tdabc.menu_cmc_tdabc_resource
 #: model_terms:ir.ui.view,arch_db:cmc_tdabc.view_cmc_tdabc_resource_list
 msgid "Resources"
 msgstr "Risorse"
@@ -581,6 +580,7 @@ msgstr "Risorsa TDABC (fornitore di capacità)"
 
 #. module: cmc_tdabc
 #: model:ir.actions.act_window,name:cmc_tdabc.action_cmc_tdabc_resource
+#: model:ir.ui.menu,name:cmc_tdabc.menu_cmc_tdabc_resource
 msgid "TDABC Resources"
 msgstr "Risorse TDABC"
 
@@ -645,6 +645,7 @@ msgstr "Termini equazione di tempo"
 #. module: cmc_tdabc
 #: model:ir.actions.act_window,name:cmc_tdabc.action_cmc_tdabc_run
 #: model:ir.ui.menu,name:cmc_tdabc.menu_cmc_sec_tdabc
+#: model:ir.ui.menu,name:cmc_tdabc.menu_cmc_cfg_tdabc
 msgid "Time-Driven ABC"
 msgstr "Time-Driven ABC"
 

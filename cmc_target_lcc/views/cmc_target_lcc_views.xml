@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem id="menu_cmc_sec_target_lcc" name="Target &amp; Life-Cycle Costing" parent="cmc_base.menu_cmc_operations" sequence="45"/>
+    <menuitem id="menu_cmc_sec_target_lcc"
+              name="Target &amp; Life-Cycle Costing"
+              parent="cmc_base.menu_cmc_tab_planning"
+              sequence="40"/>
 
     <record id="view_cmc_target_cost_list" model="ir.ui.view">
         <field name="name">cmc.target.cost.list</field>
@@ -317,8 +320,11 @@
         <field name="res_model">cmc.design.guideline</field>
         <field name="view_mode">list</field>
     </record>
-    <menuitem id="menu_cmc_design_guideline" name="Design Guidelines" parent="cmc_base.menu_cmc_cfg_master"
-              action="action_cmc_design_guideline" sequence="60"/>
+    <menuitem id="menu_cmc_design_guideline"
+              name="Design Guidelines"
+              parent="cmc_base.menu_cmc_cfg_planning"
+              action="action_cmc_design_guideline"
+              sequence="20"/>
 
     <record id="view_cmc_lcc_model_list" model="ir.ui.view">
         <field name="name">cmc.lcc.model.list</field>

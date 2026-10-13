@@ -25,12 +25,12 @@ Strato **decisionale** basato sul margine di contribuzione (direct costing):
 ## Utilizzo (step-by-step)
 
 ### Direct costing (margine di contribuzione)
-1. **Operazioni › Direct costing & decisioni › Direct Costing (MC)** → **Nuovo**.
+1. **Analisi e decisioni › Direct costing e decisioni › Direct costing (MC)** → **Nuovo**.
 2. Aggiungi le righe (prodotto/linea): ricavo, costo variabile, costo fisso specifico.
 3. Imposta il costo fisso comune. Il sistema calcola MC lordo/semilordo e risultato.
 
 ### CVR / break-even
-1. **Operazioni › Direct costing & decisioni › CVR / Break-even** → **Nuovo**.
+1. **Analisi e decisioni › Direct costing e decisioni › CVR / punto di pareggio** → **Nuovo**.
 
    ![Form CVR](static/description/cvr_form.png)
 
@@ -40,7 +40,7 @@ Strato **decisionale** basato sul margine di contribuzione (direct costing):
    operativa e la curva di pareggio. Se MC ≤ 0 il break-even è disattivato (guardia).
 
 ### Analisi differenziale (make-or-buy)
-1. **Operazioni › Direct costing & decisioni › Differential Analysis** → **Nuovo**.
+1. **Analisi e decisioni › Direct costing e decisioni › Decisioni** → **Nuovo**.
 2. Scegli lo scenario (produrre/acquistare, eliminare linea, sostituire) e compila i
    costi rilevanti. Il **verdetto** si aggiorna in tempo reale.
 

@@ -1607,7 +1607,6 @@ msgid "Project type"
 msgstr "Tipo di progetto"
 
 #. module: cmc_abc
-#: model:ir.ui.menu,name:cmc_abc.menu_cmc_abm_quadrant
 #: model_terms:ir.ui.view,arch_db:cmc_abc.view_cmc_abc_activity_cost_quadrant_list
 msgid "Quadrant"
 msgstr "Quadrante"
@@ -2348,3 +2347,13 @@ msgstr "Calcolato"
 #: model:ir.model.fields.selection,name:cmc_base.selection__cmc_abc_run__state__draft
 msgid "Draft"
 msgstr "Bozza"
+
+#. module: cmc_abc
+#: model:ir.ui.menu,name:cmc_abc.menu_cmc_cfg_abc
+msgid "ABC & ABM"
+msgstr "ABC e ABM"
+
+#. module: cmc_abc
+#: model:ir.ui.menu,name:cmc_abc.menu_cmc_abm_quadrant
+msgid "Activity Quadrant"
+msgstr "Quadrante delle attività"

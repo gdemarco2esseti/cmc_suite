@@ -23,13 +23,13 @@ Include la riconciliazione vs `standard_price` con evidenza degli scostamenti.
    **ribaltamento** eseguito (vedi README di `cmc_base`).
 3. Imposta il **prezzo standard** dei prodotti (*Vendite/Inventario › Prodotto ›
    Costo*) — alimenta il costo primo.
-4. (Opzionale) In *Operazioni › Costo pieno › Costi figurativi* dichiara i costi
+4. (Opzionale) In *Calcolo costi › Costo pieno (full costing) › Costi figurativi* dichiara i costi
    figurativi (metodo *lump* o *interesse* su capitale × tasso) da imputare al livello
    economico-tecnico.
 
 ## Utilizzo (step-by-step)
 
-1. Vai in **Operazioni › Costo pieno › Full Costing** → **Nuovo**.
+1. Vai in **Calcolo costi › Costo pieno (full costing) › Elaborazioni di costing** → **Nuovo**.
 2. Collega il **Ribaltamento** di riferimento (fonte dei costi indiretti).
 3. Scegli la **Base**: *unica* (un solo driver) o *multipla* (un driver per centro).
 4. Seleziona i **prodotti** e compila le righe *centro × prodotto × driver × quantità*.

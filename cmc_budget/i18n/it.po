@@ -946,7 +946,6 @@ msgstr "Elaborazione scostamenti"
 
 #. module: cmc_budget
 #: model:ir.actions.act_window,name:cmc_budget.action_cmc_budget_variance_run
-#: model:ir.ui.menu,name:cmc_budget.menu_cmc_budget_variance_run
 #: model_terms:ir.ui.view,arch_db:cmc_budget.view_cmc_budget_variance_run_list
 msgid "Variance Runs"
 msgstr "Elaborazioni scostamenti"
@@ -997,3 +996,8 @@ msgstr "es. Picco estivo"
 
 #~ msgid "Draft"
 #~ msgstr "Bozza"
+
+#. module: cmc_budget
+#: model:ir.ui.menu,name:cmc_budget.menu_cmc_budget_variance_run
+msgid "Budget Variance Runs"
+msgstr "Elaborazioni scostamenti di budget"

@@ -79,5 +79,5 @@
               name="Cost Entries"
               parent="menu_cmc_sec_base"
               action="action_cmc_analytic_lines"
-              sequence="5"/>
+              sequence="20"/>
 </odoo>

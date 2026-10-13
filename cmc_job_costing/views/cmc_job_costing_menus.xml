@@ -3,7 +3,7 @@
     <menuitem id="menu_cmc_sec_job_costing"
               name="Job Costing"
               parent="cmc_base.menu_cmc_operations"
-              sequence="35"/>
+              sequence="20"/>
     <menuitem id="menu_cmc_job_cost_run"
               name="Job Cost Runs"
               parent="menu_cmc_sec_job_costing"

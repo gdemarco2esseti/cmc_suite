@@ -341,7 +341,10 @@
         </field>
     </record>
 
-    <menuitem id="menu_cmc_sec_standard" name="Standard Cost" parent="cmc_base.menu_cmc_operations" sequence="40"/>
+    <menuitem id="menu_cmc_sec_standard"
+              name="Standard Cost"
+              parent="cmc_base.menu_cmc_operations"
+              sequence="40"/>
     <menuitem id="menu_cmc_standard_card" name="Cost Cards" parent="menu_cmc_sec_standard" action="action_cmc_standard_card" sequence="10"/>
     <menuitem id="menu_cmc_standard_variance_run" name="Variance Runs" parent="menu_cmc_sec_standard"
               action="action_cmc_standard_variance_run" sequence="20"/>

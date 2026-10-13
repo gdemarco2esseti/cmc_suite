@@ -53,5 +53,5 @@
               name="Rates"
               parent="menu_cmc_sec_analysis"
               action="action_cmc_rate"
-              sequence="50"/>
+              sequence="30"/>
 </odoo>

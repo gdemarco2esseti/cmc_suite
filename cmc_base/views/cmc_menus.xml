@@ -6,27 +6,63 @@
               sequence="95"
               groups="cmc_base.group_cmc_user,cmc_base.group_cmc_responsible"/>
 
-    <menuitem id="menu_cmc_operations"
-              name="Operations"
+    <menuitem id="menu_cmc_tab_recording"
+              name="Cost Recording"
               parent="menu_cmc_root"
               sequence="10"
               groups="cmc_base.group_cmc_user"/>
 
-    <menuitem id="menu_cmc_responsibility"
-              name="Responsibility"
+    <menuitem id="menu_cmc_operations"
+              name="Product Costing"
               parent="menu_cmc_root"
-              sequence="15"
+              sequence="20"
+              groups="cmc_base.group_cmc_user"/>
+
+    <menuitem id="menu_cmc_responsibility"
+              name="Performance"
+              parent="menu_cmc_root"
+              sequence="50"
               groups="cmc_base.group_cmc_responsible"/>
+
+    <menuitem id="menu_cmc_tab_planning"
+              name="Budget &amp; Scenarios"
+              parent="menu_cmc_root"
+              sequence="30"
+              groups="cmc_base.group_cmc_user"/>
+    <menuitem id="menu_cmc_tab_decision"
+              name="Analysis &amp; Decisions"
+              parent="menu_cmc_root"
+              sequence="40"
+              groups="cmc_base.group_cmc_user"/>
+    <menuitem id="menu_cmc_tab_fin"
+              name="Financial Analysis"
+              parent="menu_cmc_root"
+              sequence="60"
+              groups="cmc_base.group_cmc_user"/>
 
     <!-- ===== Sezioni tematiche (sempre presenti, cmc_base) ===== -->
     <menuitem id="menu_cmc_sec_base"
               name="Cost Base"
-              parent="menu_cmc_operations"
+              parent="menu_cmc_tab_recording"
               sequence="10"/>
     <menuitem id="menu_cmc_sec_analysis"
-              name="Analysis &amp; Control"
-              parent="menu_cmc_operations"
+              name="Cost Analysis"
+              parent="menu_cmc_tab_decision"
+              sequence="10"/>
+
+    <menuitem id="menu_cmc_sec_data_quality"
+              name="Data Quality"
+              parent="menu_cmc_tab_recording"
               sequence="20"/>
+    <menuitem id="menu_cmc_sec_responsibility"
+              name="Responsibility Accounting"
+              parent="menu_cmc_responsibility"
+              sequence="10"/>
+    <menuitem id="menu_cmc_sec_dashboards"
+              name="Dashboards"
+              parent="menu_cmc_responsibility"
+              sequence="30"
+              groups="cmc_base.group_cmc_user"/>
 
     <menuitem id="menu_cmc_cost_center"
               name="Cost Centers"
@@ -37,12 +73,12 @@
               name="Cost Allocations"
               parent="menu_cmc_sec_base"
               action="action_cmc_allocation"
-              sequence="20"/>
+              sequence="40"/>
     <menuitem id="menu_cmc_center_service"
               name="Inter-Center Services"
               parent="menu_cmc_sec_base"
               action="action_cmc_center_service"
-              sequence="30"/>
+              sequence="50"/>
 
     <menuitem id="menu_cmc_config"
               name="Configuration"
@@ -50,12 +86,16 @@
               sequence="90"
               groups="cmc_base.group_cmc_manager"/>
     <menuitem id="menu_cmc_cfg_master"
-              name="Master Data"
+              name="Cost Structure"
               parent="menu_cmc_config"
               sequence="10"/>
+    <menuitem id="menu_cmc_cfg_planning"
+              name="Planning"
+              parent="menu_cmc_config"
+              sequence="50"/>
     <menuitem id="menu_cmc_cost_driver"
               name="Cost Drivers"
               parent="menu_cmc_cfg_master"
               action="action_cmc_cost_driver"
-              sequence="10"/>
+              sequence="30"/>
 </odoo>

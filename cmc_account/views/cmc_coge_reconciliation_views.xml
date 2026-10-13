@@ -98,7 +98,9 @@
         </field>
     </record>
 
-    <menuitem id="menu_cmc_coge_reconciliation" name="COGE - COAN Reconciliation"
-              parent="cmc_base.menu_cmc_sec_analysis"
-              action="action_cmc_coge_reconciliation" sequence="8"/>
+    <menuitem id="menu_cmc_coge_reconciliation"
+              name="COGE - COAN Reconciliation"
+              parent="cmc_base.menu_cmc_sec_data_quality"
+              action="action_cmc_coge_reconciliation"
+              sequence="20"/>
 </odoo>

@@ -1,7 +1,7 @@
 {
     "name": "CMC - Job Costing (Commesse)",
     "summary": "Job cost sheet per project: direct costs, hours x resource rate, applied overhead, WIP, job margin",
-    "version": "19.0.1.2.1",
+    "version": "19.0.1.2.2",
     "category": "Accounting/Management Control",
     "license": "LGPL-3",
     "author": "EsseTech by DueEsseTi Srl",

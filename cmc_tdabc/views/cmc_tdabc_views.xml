@@ -285,16 +285,34 @@
     </record>
 
     <!-- Menus -->
-    <menuitem id="menu_cmc_sec_tdabc" name="Time-Driven ABC"
-              parent="cmc_base.menu_cmc_operations" sequence="60"/>
+    <menuitem id="menu_cmc_sec_tdabc"
+              name="Time-Driven ABC"
+              parent="cmc_base.menu_cmc_operations"
+              sequence="60"/>
     <menuitem id="menu_cmc_tdabc_run" name="TDABC Computation"
               parent="menu_cmc_sec_tdabc" action="action_cmc_tdabc_run" sequence="10"/>
-    <menuitem id="menu_cmc_tdabc_resource" name="Resources"
-              parent="cmc_base.menu_cmc_cfg_master" action="action_cmc_tdabc_resource" sequence="50"/>
-    <menuitem id="menu_cmc_tdabc_activity" name="TDABC Activities"
-              parent="cmc_base.menu_cmc_cfg_master" action="action_cmc_tdabc_activity" sequence="51"/>
-    <menuitem id="menu_cmc_tdabc_characteristic" name="Characteristics"
-              parent="cmc_base.menu_cmc_cfg_master" action="action_cmc_tdabc_characteristic" sequence="52"/>
-    <menuitem id="menu_cmc_tdabc_char_value" name="Characteristic Values"
-              parent="cmc_base.menu_cmc_cfg_master" action="action_cmc_tdabc_char_value" sequence="53"/>
+    <menuitem id="menu_cmc_cfg_tdabc"
+              name="Time-Driven ABC"
+              parent="cmc_base.menu_cmc_config"
+              sequence="40"/>
+    <menuitem id="menu_cmc_tdabc_resource"
+              name="TDABC Resources"
+              parent="menu_cmc_cfg_tdabc"
+              action="action_cmc_tdabc_resource"
+              sequence="10"/>
+    <menuitem id="menu_cmc_tdabc_activity"
+              name="TDABC Activities"
+              parent="menu_cmc_cfg_tdabc"
+              action="action_cmc_tdabc_activity"
+              sequence="20"/>
+    <menuitem id="menu_cmc_tdabc_characteristic"
+              name="Characteristics"
+              parent="menu_cmc_cfg_tdabc"
+              action="action_cmc_tdabc_characteristic"
+              sequence="30"/>
+    <menuitem id="menu_cmc_tdabc_char_value"
+              name="Characteristic Values"
+              parent="menu_cmc_cfg_tdabc"
+              action="action_cmc_tdabc_char_value"
+              sequence="40"/>
 </odoo>

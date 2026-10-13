@@ -1,13 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem id="menu_cmc_sec_kpi" name="KPI &amp; Scorecard" parent="cmc_base.menu_cmc_operations" sequence="35"/>
-    <menuitem id="menu_cmc_kpi_run" name="Measurement Runs" parent="menu_cmc_sec_kpi" action="action_cmc_kpi_run" sequence="10"/>
-    <menuitem id="menu_cmc_kpi_value" name="Measurements" parent="menu_cmc_sec_kpi" action="action_cmc_kpi_value" sequence="20"/>
-    <menuitem id="menu_cmc_kpi_scorecard_result" name="Scorecard Results" parent="menu_cmc_sec_kpi"
-              action="action_cmc_kpi_scorecard_result" sequence="30"/>
-    <menuitem id="menu_cmc_kpi" name="KPI Library" parent="menu_cmc_sec_kpi" action="action_cmc_kpi" sequence="40"/>
-    <menuitem id="menu_cmc_kpi_scorecard" name="Balanced Scorecards" parent="menu_cmc_sec_kpi" action="action_cmc_kpi_scorecard" sequence="50"/>
+    <menuitem id="menu_cmc_sec_kpi"
+              name="KPI &amp; Scorecard"
+              parent="cmc_base.menu_cmc_responsibility"
+              sequence="20"
+              groups="cmc_base.group_cmc_user"/>
+    <menuitem id="menu_cmc_kpi_run"
+              name="Measurement Runs"
+              parent="menu_cmc_sec_kpi"
+              action="action_cmc_kpi_run"
+              sequence="30"/>
+    <menuitem id="menu_cmc_kpi_value"
+              name="Measurements"
+              parent="menu_cmc_sec_kpi"
+              action="action_cmc_kpi_value"
+              sequence="20"/>
+    <menuitem id="menu_cmc_kpi_scorecard_result"
+              name="Scorecard Results"
+              parent="menu_cmc_sec_kpi"
+              action="action_cmc_kpi_scorecard_result"
+              sequence="10"/>
+    <menuitem id="menu_cmc_kpi"
+              name="KPI Library"
+              parent="menu_cmc_sec_kpi"
+              action="action_cmc_kpi"
+              sequence="50"/>
+    <menuitem id="menu_cmc_kpi_scorecard"
+              name="Balanced Scorecards"
+              parent="menu_cmc_sec_kpi"
+              action="action_cmc_kpi_scorecard"
+              sequence="40"/>
 
-    <menuitem id="menu_cmc_kpi_own" name="My KPIs" parent="cmc_base.menu_cmc_responsibility" action="action_cmc_kpi_value"
-              sequence="40" groups="cmc_base.group_cmc_responsible"/>
+    <menuitem id="menu_cmc_kpi_own"
+              name="My KPIs"
+              parent="cmc_base.menu_cmc_sec_responsibility"
+              action="action_cmc_kpi_value"
+              sequence="40"
+              groups="cmc_base.group_cmc_responsible"/>
 </odoo>

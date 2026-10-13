@@ -25,7 +25,7 @@ I **sottoprodotti** sono valorizzati a NRV = max(qty·prezzo − costo separabil
 
 ## Utilizzo (step-by-step)
 
-1. **Operazioni › Costi congiunti › Ripartizione congiunti** → **Nuovo**.
+1. **Calcolo costi › Costi congiunti › Ripartizione congiunti** → **Nuovo**.
 
    ![Form congiunti](static/description/joint_form.png)
 
